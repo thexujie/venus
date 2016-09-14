@@ -58,20 +58,29 @@ protected:
 template<typename FunT>
 struct VENUS_API proc_helper {};
 
+#ifdef BIT32
+
 template<typename RetT, typename... ArgsT>
 struct VENUS_API proc_helper<RetT __stdcall(ArgsT...)>
 {
 	typedef RetT return_t;
-	typedef proc_base<RetT (__stdcall *)(ArgsT...), RetT, ArgsT...> proc_base_t;
+	typedef proc_base<RetT(__stdcall *)(ArgsT...), RetT, ArgsT...> proc_base_t;
 };
-
-#ifdef BIT32
 
 template<typename RetT, typename... ArgsT>
 struct VENUS_API proc_helper<RetT __cdecl(ArgsT...)>
 {
 	typedef RetT return_t;
 	typedef proc_base<RetT(__cdecl *)(ArgsT...), RetT, ArgsT...> proc_base_t;
+};
+
+#else
+
+template<typename RetT, typename... ArgsT>
+struct VENUS_API proc_helper<RetT(ArgsT...)>
+{
+	typedef RetT return_t;
+	typedef proc_base<RetT(*)(ArgsT...), RetT, ArgsT...> proc_base_t;
 };
 
 #endif // BIT32

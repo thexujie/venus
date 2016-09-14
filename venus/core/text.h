@@ -668,7 +668,7 @@ public:
 	bool operator == (const CharT * _text) const
 	{
 		if(!_text)
-			throw exp_null_pointer();
+			throw exp_nullptr();
 		else if(!m_data)
 			return false;
 		else

@@ -3,186 +3,172 @@
 
 VENUS_BEG
 
-CDataInputStream::CDataInputStream()
-	:m_pInputStream(0), m_endian(StreamEndianSmall)
+CBinaryReader::CBinaryReader()
+	:m_pInputStream(nullptr), m_endian(EndianSmall)
 {
 
 }
-CDataInputStream::CDataInputStream(IInputStream * m_pInputStream)
-	:m_pInputStream(m_pInputStream), m_endian(StreamEndianSmall)
-{
-
+CBinaryReader::CBinaryReader(IInputStream * m_pInputStream)
+	:m_pInputStream(m_pInputStream), m_endian(EndianSmall)
+{ 
 }
 
-CDataInputStream::CDataInputStream(IInputStream * m_pInputStream, StreamEndianE endian)
+CBinaryReader::CBinaryReader(IInputStream * m_pInputStream, EndianE endian)
 	:m_pInputStream(m_pInputStream), m_endian(endian)
 {
+}
 
-}
-CDataInputStream::~CDataInputStream()
+CBinaryReader::~CBinaryReader()
 {
-	m_pInputStream = 0;
+	m_pInputStream = nullptr;
 }
-bool CDataInputStream::CanRead() const
+
+bool CBinaryReader::CanRead() const noexcept
 {
-	ConfirmInputStream();
+	if(!m_pInputStream)
+		return false;
+
 	return m_pInputStream->CanRead();
 }
-int_x CDataInputStream::ReadAviliable()
+
+int_x CBinaryReader::ReadAviliable() const noexcept
 {
-	ConfirmInputStream();
+	if(!m_pInputStream)
+		return 0;
+
 	return m_pInputStream->ReadAviliable();
 }
 
-byte_t CDataInputStream::ReadByte()
+byte_t CBinaryReader::Read()
 {
-	ConfirmInputStream();
-	return m_pInputStream->ReadByte();
+	_Ready();
+	return m_pInputStream->Read();
 }
 
-int_x CDataInputStream::Read(void * pBytes, int_x iLength)
+int_x CBinaryReader::Read(void * pBytes, int_x iLength)
 {
+	_Ready();
 	if(m_pInputStream)
 		return m_pInputStream->Read(pBytes, iLength);
 	else
 		return 0;
 }
 
-bool CDataInputStream::SeekSurpport(StreamSeekE seek) const
+bool CBinaryReader::CanSeek() const
 {
-	ConfirmInputStream();
-	return m_pInputStream->SeekSurpport(seek);
+	_Ready();
+	return m_pInputStream->CanSeek();
 }
-int_x CDataInputStream::Seek(StreamSeekE seek, int_x iSeek)
+
+int_x CBinaryReader::Seek(SeekE seek, int_x iSeek)
 {
-	ConfirmInputStream();
+	_Ready();
 	return m_pInputStream->Seek(seek, iSeek);
 }
 
-void CDataInputStream::SetDataInputEndian(StreamEndianE endian)
+void CBinaryReader::SetEndian(EndianE endian)
 {
-	ConfirmInputStream();
 	m_endian = endian;
 }
-StreamEndianE CDataInputStream::GetDataInputEndian() const
+EndianE CBinaryReader::GetEndian() const
 {
-	ConfirmInputStream();
 	return m_endian;
 }
 
-int_8 CDataInputStream::ReadInt8()
+int_8 CBinaryReader::ReadInt8()
 {
-	ConfirmAvilibale(1);
-	Read8();
-	return m_adapter.i8Val;
-}
-void CDataInputStream::ReadInt8Array(char_8 * pi8Array, int_x iLength)
-{
-	ConfirmAvilibale(iLength);
-	for(int_x cnt = 0; cnt < iLength; ++cnt)
-	{
-		Read8();
-		pi8Array[cnt] = m_adapter.i8Val;
-	}
-}
-uint_8 CDataInputStream::ReadUInt8()
-{
-	ConfirmAvilibale(1);
-	Read8();
-	return m_adapter.ui8Val;
-}
-void CDataInputStream::ReadUInt8Array(uint_8 * pui8Array, int_x iLength)
-{
-	ConfirmAvilibale(iLength);
-	for(int_x cnt = 0; cnt < iLength; ++cnt)
-	{
-		Read8();
-		pui8Array[cnt] = m_adapter.ui8Val;
-	}
+	_Ready();
+	return _Read8();
 }
 
-int_16 CDataInputStream::ReadInt16()
+void CBinaryReader::ReadInt8Array(char_8 * pi8Array, int_x iLength)
 {
-	ConfirmAvilibale(2);
-	Read16();
-	return m_adapter.i16Val;
-}
-
-void CDataInputStream::ReadInt16Array(int_16 * pi16Array, int_x iLength)
-{
-	ConfirmAvilibale(iLength << 1);
+	_Ready();
 	for(int_x cnt = 0; cnt < iLength; ++cnt)
 	{
-		Read16();
-		pi16Array[cnt] = m_adapter.i16Val;
+		pi8Array[cnt] = _Read8();
 	}
 }
-uint_16 CDataInputStream::ReadUInt16()
+uint_8 CBinaryReader::ReadUInt8()
 {
-	ConfirmAvilibale(2);
-	Read16();
-	return m_adapter.ui16Val;
+	_Ready();
+	return _Read8();
 }
 
-void CDataInputStream::ReadUInt16Array(uint_16 * pui16Array, int_x iLength)
+void CBinaryReader::ReadUInt8Array(uint_8 * pui8Array, int_x iLength)
 {
-	ConfirmAvilibale(iLength << 1);
+	_Ready();
 	for(int_x cnt = 0; cnt < iLength; ++cnt)
 	{
-		Read16();
-		pui16Array[cnt] = m_adapter.ui16Val;
+		pui8Array[cnt] = _Read8();
 	}
 }
 
-int_32 CDataInputStream::ReadInt32()
+int_16 CBinaryReader::ReadInt16()
 {
-	ConfirmAvilibale(4);
-	Read32();
-	return m_adapter.i32Val;
+	_Ready();
+	return _Read16();
 }
-void CDataInputStream::ReadInt32Array(int_32 * pi32Array, int_x iLength)
+
+void CBinaryReader::ReadInt16Array(int_16 * pi16Array, int_x iLength)
 {
-	ConfirmAvilibale(iLength << 2);
+	_Ready();
 	for(int_x cnt = 0; cnt < iLength; ++cnt)
 	{
-		Read32();
-		pi32Array[cnt] = m_adapter.i32Val;
+		pi16Array[cnt] = _Read16();
+	}
+}
+uint_16 CBinaryReader::ReadUInt16()
+{
+	_Ready();
+	return _Read16();
+}
+
+void CBinaryReader::ReadUInt16Array(uint_16 * pui16Array, int_x iLength)
+{
+	_Ready();
+	for(int_x cnt = 0; cnt < iLength; ++cnt)
+	{
+		pui16Array[cnt] = _Read16();
 	}
 }
 
-uint_32 CDataInputStream::ReadUInt32()
+int_32 CBinaryReader::ReadInt32()
 {
-	ConfirmAvilibale(4);
-	Read32();
-	return m_adapter.ui32Val;
+	_Ready();
+	return _Read32();
 }
-void CDataInputStream::ReadUInt32Array(uint_32 * pui32Array, int_x iLength)
+void CBinaryReader::ReadInt32Array(int_32 * pi32Array, int_x iLength)
 {
-	ConfirmAvilibale(iLength << 2);
+	_Ready();
 	for(int_x cnt = 0; cnt < iLength; ++cnt)
 	{
-		Read32();
-		pui32Array[cnt] = m_adapter.ui32Val;
+		pi32Array[cnt] = _Read32();
 	}
 }
 
-IInputStream * CDataInputStream::GetInputStream()
+uint_32 CBinaryReader::ReadUInt32()
 {
-	return m_pInputStream;
+	_Ready();
+	return _Read32();
 }
-IInputStream * CDataInputStream::ResetInputStream(IInputStream * pNewInputStream)
+
+void CBinaryReader::ReadUInt32Array(uint_32 * pui32Array, int_x iLength)
 {
-	IInputStream * pOldInputStream  = m_pInputStream;
-	m_pInputStream = pNewInputStream;
-	return pOldInputStream;
+	_Ready();
+	for(int_x cnt = 0; cnt < iLength; ++cnt)
+	{
+		pui32Array[cnt] = _Read32();
+	}
 }
 
 // ----------------------------------- String
-int_x CDataInputStream::ReadText(char_16 * pText, int_x iSize/* = IX_MAX*/)
+int_x CBinaryReader::ReadText(char_16 * pText, int_x iSize/* = IX_MAX*/)
 {
-	ConfirmInputStream();
+	_Ready();
+
 	if(!pText || !iSize)
-		throw exp_illegal_argument(_T("参数错误！"));
+		throw exp_illegal_argument();
 
 	int_x iRead = 0;
 	int_x iLen = iSize;
@@ -190,8 +176,7 @@ int_x CDataInputStream::ReadText(char_16 * pText, int_x iSize/* = IX_MAX*/)
 
 	do
 	{
-		Read16();
-		cTemp = m_adapter.c16Val;
+		cTemp = _Read16();
 
 		if(iSize)
 		{
@@ -204,146 +189,68 @@ int_x CDataInputStream::ReadText(char_16 * pText, int_x iSize/* = IX_MAX*/)
 	return iRead;
 }
 
-int_x CDataInputStream::ReadText(char_8 * pText, int_x iSize/* = IX_MAX*/)
+int_x CBinaryReader::ReadText(char_8 * pText, int_x iSize/* = IX_MAX*/)
 {
-	ConfirmInputStream();
-	if(!pText || !iSize)
-		throw exp_illegal_argument(_T("参数错误！"));
+	_Ready();
+
+	if(!pText || iSize < 0)
+		throw exp_illegal_argument();
 
 	int_x iRead = 0;
-	int_x iLen = iSize;
-	char_8 cTemp = 0;
-
-	do
-	{
-		Read8();
-		cTemp = m_adapter.c8Val;
-
-		if(iSize)
-		{
-			pText[iRead++] = cTemp;
-			--iSize;
-		}
-	}
-	while(cTemp);
-	pText[iRead] = 0;
-	return iRead;
-}
-
-int_x CDataInputStream:: ReadLine(char_16 * pText, int_x iSize/* = IX_MAX*/)
-{
-	ConfirmInputStream();
-	if(!pText || !iSize)
-		throw exp_illegal_argument(_T("参数错误！"));
-
-	int_x iRead = 0;
-	int_x iLen = iSize;
-	char_16 cTemp = 0;
+	char_8 ch = 0;
 	bool bReading = true;
+
 	do
 	{
-		if(m_pInputStream->ReadAviliable() > 1)
+		if(m_pInputStream->ReadAviliable() >= 1)
 		{
-			Read16();
+			ch = _Read8();
 
-			cTemp = m_adapter.c16Val;
-
-			switch(cTemp)
+			if(ch && --iSize)
 			{
-			case L'\r':
-				break;
-			case L'\n':
-				bReading = false;
-				break;
-			default:
-				if(iSize)
-				{
-					pText[iRead++] = cTemp;
-					--iSize;
-				}
-				break;
+				pText[iRead++] = ch;
+				--iSize;
 			}
 		}
 		else
 			bReading = false;
 	}
-	while(bReading);
+	while(bReading && ch);
 
 	pText[iRead] = 0;
 	return iRead;
 }
 
-int_x CDataInputStream::ReadLine(char_8 * pText, int_x iSize/* = IX_MAX*/)
+int_x CBinaryReader::CSharpReadText(char_16 * pText, int_x iSize/* = IX_MAX*/)
 {
-	ConfirmInputStream();
-	if(!pText || !iSize)
-		throw exp_illegal_argument(_T("参数错误！"));
-
-	int_x iRead = 0;
-	int_x iLen = iSize;
-	char_8 cTemp = 0;
-	bool bReading = true;
-	do
-	{
-		if(m_pInputStream->ReadAviliable() > 0)
-		{
-			Read8();
-
-			cTemp = m_adapter.c8Val;
-
-			switch(cTemp)
-			{
-			case '\r':
-				break;
-			case '\n':
-				bReading = false;
-				break;
-			default:
-				if(iSize)
-				{
-					pText[iRead++] = cTemp;
-					--iSize;
-				}
-				break;
-			}
-		}
-		else
-			bReading = false;
-	}
-	while(bReading);
-
-	pText[iRead] = 0;
-	return iRead;
-}
-int_x CDataInputStream::CSharpReadText(char_16 * pText, int_x iLength/* = IX_MAX*/)
-{
-	int_x iLen = 0;
+	int_x iLength = 0;
 	int_x iLenTmp = ReadInt8();
 	if(iLenTmp >= 0)
-		iLen = iLenTmp;
+		iLength = iLenTmp;
 	else
 	{
-		iLen = iLenTmp + 256;
+		iLength = iLenTmp + 256;
 		int_x iNumber = 1 << 7;
 
 		while(true)
 		{
-			iLenTmp = ReadInt8();
+			iLenTmp = _Read8();
 			if(iLenTmp > 0)
 				break;
-			iLen += (iLenTmp + 255) * iNumber;
+			iLength += (iLenTmp + 255) * iNumber;
 			iNumber <<= 7;
 		}
-		iLen += (iLenTmp - 1) * iNumber;
+
+		iLength += (iLenTmp - 1) * iNumber;
 	}
-	iLen >>= 1;
+	iLength >>= 1;
 
 	char_16 ch = 0;
 	char_16 * pTemp = pText;
 	int_x iRead = 0;
-	while(iLen-- && --iLength)
+	while(iLength-- && --iSize)
 	{
-		ch = ReadUInt16();
+		ch = _Read16();
 		if(ch)
 			pTemp[iRead++] = ch;
 		else
@@ -353,7 +260,7 @@ int_x CDataInputStream::CSharpReadText(char_16 * pText, int_x iLength/* = IX_MAX
 	return iRead;
 }
 
-int_x CDataInputStream::AS3ReadText(char_16 * pText, int_x iLength/* = IX_MAX*/)
+int_x CBinaryReader::AS3ReadText(char_16 * pText, int_x iLength/* = IX_MAX*/)
 {
 	int_x iLen = ReadInt32() >> 1; 
 	char_16 * pTemp = pText;
@@ -361,7 +268,7 @@ int_x CDataInputStream::AS3ReadText(char_16 * pText, int_x iLength/* = IX_MAX*/)
 	int_x iRead = 0;
 	while(iLen-- && --iLength)
 	{
-		ch = ReadUInt16();
+		ch = _Read16();
 		if(ch)
 			pTemp[iRead++] = ch;
 		else
@@ -371,269 +278,268 @@ int_x CDataInputStream::AS3ReadText(char_16 * pText, int_x iLength/* = IX_MAX*/)
 	return iRead;
 }
 
-void CDataInputStream::ConfirmInputStream() const
+void CBinaryReader::_Ready() const
 {
 	if(!m_pInputStream)
-		throw exp_null_pointer(_T("无效的输入流！"));
+		throw exp_nullptr();
 	if(!m_pInputStream->CanRead())
-		throw exp_illegal_operation(_T("流不支持输入！"));
+		throw exp_illegal_operation();
 }
 
-void CDataInputStream::ConfirmAvilibale(int_x iLength) const
+uint_8 CBinaryReader::_Read8()
 {
-	if(!m_pInputStream)
-		throw exp_null_pointer(_T("无效的输入流！"));
-	if(!m_pInputStream->CanRead())
-		throw exp_illegal_operation(_T("流不支持输入！"));
-	if(m_pInputStream->ReadAviliable() < iLength)
-		throw exp_end_of_stream(_T("剩余字节数不足！"));
-}
-void CDataInputStream::Read8()
-{
-	m_adapter.a = m_pInputStream->ReadByte();
+	return m_pInputStream->Read();
 }
 
-void CDataInputStream::Read16()
+uint_16 CBinaryReader::_Read16()
 {
-	if(m_endian == StreamEndianSmall)
+	union
 	{
-		m_adapter.a = m_pInputStream->ReadByte();
-		m_adapter.b = m_pInputStream->ReadByte();
+		uint_16 val;
+		struct
+		{
+			uint_8 aval;
+			uint_8 bval;
+		};
+	};
+
+	if(m_endian == EndianSmall)
+	{
+		aval = m_pInputStream->Read();
+		bval = m_pInputStream->Read();
 	}
 	else
 	{
-		m_adapter.b = m_pInputStream->ReadByte();
-		m_adapter.a = m_pInputStream->ReadByte();
+		bval = m_pInputStream->Read();
+		aval = m_pInputStream->Read();
 	}
+	return val;
 }
-void CDataInputStream::Read32()
+
+uint_32 CBinaryReader::_Read32()
 {
-	if(m_endian == StreamEndianSmall)
+	union
 	{
-		m_adapter.a = m_pInputStream->ReadByte();
-		m_adapter.b = m_pInputStream->ReadByte();
-		m_adapter.c = m_pInputStream->ReadByte();
-		m_adapter.d = m_pInputStream->ReadByte();
+		uint_32 val;
+		struct
+		{
+			uint_8 aval;
+			uint_8 bval;
+			uint_8 cval;
+			uint_8 dval;
+		};
+	};
+
+	if(m_endian == EndianSmall)
+	{
+		aval = m_pInputStream->Read();
+		bval = m_pInputStream->Read();
+		cval = m_pInputStream->Read();
+		dval = m_pInputStream->Read();
 	}
 	else
 	{
-		m_adapter.d = m_pInputStream->ReadByte();
-		m_adapter.c = m_pInputStream->ReadByte();
-		m_adapter.b = m_pInputStream->ReadByte();
-		m_adapter.a = m_pInputStream->ReadByte();
+		dval = m_pInputStream->Read();
+		cval = m_pInputStream->Read();
+		bval = m_pInputStream->Read();
+		aval = m_pInputStream->Read();
 	}
+	return val;
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////// 
 ///////////////////////////////////////////////////////////////////////////////////////////// 
 
 
-
-CDataOutputStream::CDataOutputStream()
-	: m_pOutputStream(0), m_endian(StreamEndianSmall)
+CBinaryWriter::CBinaryWriter()
+	: m_pOutputStream(nullptr), m_endian(EndianSmall)
 {
 
 }
-CDataOutputStream::CDataOutputStream(IOutputStream * pOutputStream)
-	: m_pOutputStream(pOutputStream), m_endian(StreamEndianSmall)
-{
 
-}
-bool CDataOutputStream::CanWrite() const
-{
-	if(!m_pOutputStream)
-		throw exp_null_pointer(_T("无效的输出流！"));
-	return m_pOutputStream->CanWrite();
-}
-CDataOutputStream::CDataOutputStream(IOutputStream * pOutputStream, StreamEndianE endian)
+CBinaryWriter::CBinaryWriter(IOutputStream * pOutputStream, EndianE endian)
 	: m_pOutputStream(pOutputStream), m_endian(endian)
 {
+}
 
-}
-CDataOutputStream::~CDataOutputStream()
+CBinaryWriter::~CBinaryWriter()
 {
-	m_pOutputStream = 0;
 }
-int_x CDataOutputStream::WriteAviliable()
+
+bool CBinaryWriter::CanSeek() const
 {
-	ConfirmOutputStream();
+	_Ready();
+	return m_pOutputStream->CanSeek();
+}
+
+int_x CBinaryWriter::Seek(SeekE seek, int_x iSeek)
+{
+	_Ready();
+	return m_pOutputStream->Seek(seek, iSeek);
+}
+
+bool CBinaryWriter::CanWrite() const noexcept
+{
+	if(!m_pOutputStream)
+		return false;
+
+	return m_pOutputStream->CanWrite();
+}
+
+int_x CBinaryWriter::WriteAviliable() const noexcept
+{
+	if(!m_pOutputStream)
+		return 0;
+
 	return m_pOutputStream->WriteAviliable();
 }
 
-void CDataOutputStream::WriteByte(byte_t byte)
+void CBinaryWriter::Write(byte_t byte)
 {
-	ConfirmOutputStream();
-	m_pOutputStream->WriteByte(byte);
+	_Ready();
+	m_pOutputStream->Write(byte);
 }
 
-void CDataOutputStream::Write(const void * pBytes, int_x iLength)
+void CBinaryWriter::Write(const void * pBytes, int_x iLength)
 {
-	ConfirmWriteAvilibale(iLength);
+	_Ready();
 	m_pOutputStream->Write(pBytes, iLength);
 }
 
-void CDataOutputStream::Flush()
+void CBinaryWriter::Flush()
 {
-	ConfirmOutputStream();
+	_Ready();
 	m_pOutputStream->Flush();
 }
 
-bool CDataOutputStream::SeekSurpport(StreamSeekE seek) const
+void CBinaryWriter::WriteInt8(int_8 i8)
 {
-	ConfirmOutputStream();
-	return m_pOutputStream->SeekSurpport(seek);
+	_Ready();
+	_Write8(i8);
 }
-int_x CDataOutputStream::Seek(StreamSeekE seek, int_x iSeek)
+
+void CBinaryWriter::WriteInt8Array(const int_8 * pi8Array, int_x iLength)
 {
-	ConfirmOutputStream();
-	return m_pOutputStream->Seek(seek, iSeek);
-}
-void CDataOutputStream::WriteInt8(int_8 i8)
-{
-	ConfirmWriteAvilibale(1);
-	m_adapter.i8Val = i8;
-	Write8();
-}
-void CDataOutputStream::WriteInt8Array(const int_8 * pi8Array, int_x iLength)
-{
-	ConfirmWriteAvilibale(iLength);
+	_Ready();
 	for(int_x cnt = 0; cnt < iLength; ++cnt)
 	{
-		m_adapter.i8Val = pi8Array[cnt];
-		Write8();
-	}
-}
-void CDataOutputStream::WriteUInt8(uint_8 ui8)
-{
-	ConfirmWriteAvilibale(1);
-	m_adapter.ui8Val = ui8;
-	Write8();
-}
-void CDataOutputStream::WriteUInt8Array(const uint_8 * pui8Array, int_x iLength)
-{
-	ConfirmWriteAvilibale(iLength);
-	for(int_x cnt = 0; cnt < iLength; ++cnt)
-	{
-		m_adapter.ui8Val = pui8Array[cnt];
-		Write8();
+		_Write8(pi8Array[cnt]);
 	}
 }
 
-void CDataOutputStream::WriteInt16(int_16 i16)
+void CBinaryWriter::WriteUInt8(uint_8 ui8)
 {
-	ConfirmWriteAvilibale(2);
-	m_adapter.i16Val = i16;
-	Write16();
+	_Ready();
+	_Write8(ui8);
 }
-void CDataOutputStream::WriteInt16Array(const int_16 * pi16Array, int_x iLength)
+
+void CBinaryWriter::WriteUInt8Array(const uint_8 * pui8Array, int_x iLength)
 {
-	ConfirmWriteAvilibale(iLength << 1);
+	_Ready();
 	for(int_x cnt = 0; cnt < iLength; ++cnt)
 	{
-		m_adapter.i16Val = pi16Array[cnt];
-		Write16();
-	}
-}
-void CDataOutputStream::WriteUInt16(uint_16 ui16)
-{
-	ConfirmWriteAvilibale(2);
-	m_adapter.ui16Val = ui16;
-	Write16();
-}
-void CDataOutputStream::WriteUInt16Array(const uint_16 * pui16Array, int_x iLength)
-{
-	ConfirmWriteAvilibale(iLength << 1);
-	for(int_x cnt = 0; cnt < iLength; ++cnt)
-	{
-		m_adapter.ui16Val = pui16Array[cnt];
-		Write16();
+		_Write8(pui8Array[cnt]);
 	}
 }
 
-void CDataOutputStream::WriteInt32(int_32 i32)
+void CBinaryWriter::WriteInt16(int_16 i16)
 {
-	ConfirmWriteAvilibale(4);
-	m_adapter.i32Val = i32;
-	Write32();
+	_Ready();
+	_Write16(i16);
 }
-void CDataOutputStream::WriteInt32Array(const int_32 * pi32Array, int_x iLength)
+
+void CBinaryWriter::WriteInt16Array(const int_16 * pi16Array, int_x iLength)
 {
-	ConfirmWriteAvilibale(iLength << 2);
+	_Ready();
 	for(int_x cnt = 0; cnt < iLength; ++cnt)
 	{
-		m_adapter.i32Val = pi32Array[cnt];
-		Write32();
-	}
-}
-void CDataOutputStream::WriteUInt32(uint_32 ui32)
-{
-	ConfirmWriteAvilibale(4);
-	m_adapter.ui32Val = ui32;
-	Write32();
-}
-void CDataOutputStream::WriteUInt32Array(const uint_32 * pui32Array, int_x iLength)
-{
-	ConfirmWriteAvilibale(iLength << 2);
-	for(int_x cnt = 0; cnt < iLength; ++cnt)
-	{
-		m_adapter.ui32Val = pui32Array[cnt];
-		Write32();
+		_Write16(pi16Array[cnt]);
 	}
 }
 
-void CDataOutputStream::WriteFloat32(float_32 f32)
+void CBinaryWriter::WriteUInt16(uint_16 ui16)
 {
-	ConfirmWriteAvilibale(4);
-	m_adapter.f32Val = f32;
-	Write32();
+	_Ready();
+	_Write16(ui16);
 }
 
-void CDataOutputStream::WriteFloatArray(const float_32 * pf32, int_x iLength)
+void CBinaryWriter::WriteUInt16Array(const uint_16 * pui16Array, int_x iLength)
 {
-	ConfirmWriteAvilibale(iLength << 2);
+	_Ready();
 	for(int_x cnt = 0; cnt < iLength; ++cnt)
 	{
-		m_adapter.f32Val = pf32[cnt];
-		Write32();
+		_Write16(pui16Array[cnt]);
 	}
 }
 
-void CDataOutputStream::WriteText(const char_16 * pText, int_x iLength)
+void CBinaryWriter::WriteInt32(int_32 i32)
 {
-	ConfirmOutputStream();
+	_Ready();
+	_Write32(i32);
+}
+
+void CBinaryWriter::WriteInt32Array(const int_32 * pi32Array, int_x iLength)
+{
+	_Ready();
+	for(int_x cnt = 0; cnt < iLength; ++cnt)
+	{
+		_Write32(pi32Array[cnt]);
+	}
+}
+
+void CBinaryWriter::WriteUInt32(uint_32 ui32)
+{
+	_Ready();
+	_Write32(ui32);
+}
+
+void CBinaryWriter::WriteUInt32Array(const uint_32 * pui32Array, int_x iLength)
+{
+	_Ready();
+	for(int_x cnt = 0; cnt < iLength; ++cnt)
+	{
+		_Write32(pui32Array[cnt]);
+	}
+}
+
+void CBinaryWriter::WriteFloat32(float_32 f32)
+{
+	_Ready();
+	_Write32(*reinterpret_cast<const uint_32 *>(&f32));
+}
+
+void CBinaryWriter::WriteFloatArray(const float_32 * pf32, int_x iLength)
+{
+	_Ready();
+	for(int_x cnt = 0; cnt < iLength; ++cnt)
+	{
+		_Write32(*reinterpret_cast<const uint_32 *>(pf32 + cnt));
+	}
+}
+
+void CBinaryWriter::WriteString(const char_16 * pText, int_x iLength)
+{
+	_Ready();
 	if(iLength < 0)
 		iLength = textlen(pText);
-	WriteInt16Array((const int_16 *)pText, iLength + 1);
-}
-void CDataOutputStream::WriteText(const char_8 * pText, int_x iLength)
-{
-	ConfirmOutputStream();
-	if(iLength < 0)
-		iLength = textlen(pText);
-	WriteInt8Array((const int_8 *)pText, iLength);
-	WriteInt8(0);
+	WriteInt16Array(reinterpret_cast<const int_16 *>(pText), iLength);
+	_Write16(0);
 }
 
-void CDataOutputStream::WriteString(const char_16 * pText, int_x iLength)
+void CBinaryWriter::WriteString(const char_8 * pText, int_x iLength)
 {
-	ConfirmOutputStream();
+	_Ready();
 	if(iLength < 0)
 		iLength = textlen(pText);
-	WriteInt16Array((const int_16 *)pText, iLength);
+	WriteInt8Array(reinterpret_cast<const int_8 *>(pText), iLength);
+	_Write8(0);
 }
 
-void CDataOutputStream::WriteString(const char_8 * pText, int_x iLength)
+void CBinaryWriter::CSharpWriteText(const char_16 * pText, int_x iLength)
 {
-	ConfirmOutputStream();
-	if(iLength < 0)
-		iLength = textlen(pText);
-	WriteInt8Array((const int_8 *)pText, iLength);
-}
-
-void CDataOutputStream::CSharpWriteText(const char_16 * pText, int_x iLength)
-{
-	ConfirmOutputStream();
+	_Ready();
 	if(iLength < 0)
 		iLength = textlen(pText);
 
@@ -641,80 +547,87 @@ void CDataOutputStream::CSharpWriteText(const char_16 * pText, int_x iLength)
 	iLen <<= 1;
 	while(iLen >= 0x80)
 	{
-		WriteInt8((int_8)((iLen % 0x80) - 0x80));
+		_Write8(static_cast<uint_8>((iLen % 0x80) - 0x80));
 		iLen >>= 7;
 	}
-	WriteInt8((int_8)iLen);
-	WriteUInt16Array((const uint_16 *)pText, iLength);
+	WriteInt8(static_cast<uint_8>(iLen));
+	WriteUInt16Array(reinterpret_cast<const uint_16 *>(pText), iLength);
 }
-void CDataOutputStream::AS3WriteText(const char_16 * pText, int_x iLength)
+
+void CBinaryWriter::AS3WriteText(const char_16 * pText, int_x iLength)
 {
-	ConfirmOutputStream();
+	_Ready();
 	if(iLength < 0)
 		iLength = textlen(pText);
-	WriteInt32((int_32)iLength);
-	WriteUInt16Array((const uint_16 *)pText, iLength);
+	WriteInt32(static_cast<int_32>(iLength));
+	WriteUInt16Array(reinterpret_cast<const uint_16 *>(pText), iLength);
 }
 
-IOutputStream * CDataOutputStream::GetOutputStream()
-{
-	return m_pOutputStream;
-}
-IOutputStream * CDataOutputStream::SetOutputStream(IOutputStream * pNewOutputStream)
-{
-	IOutputStream * pOldOutputStream = m_pOutputStream;
-	m_pOutputStream = pNewOutputStream;
-	return pOldOutputStream;
-}
-void CDataOutputStream::ConfirmOutputStream() const
+void CBinaryWriter::_Ready() const
 {
 	if(!m_pOutputStream)
-		throw exp_null_pointer(_T("无效的输出流！"));
+		throw exp_nullptr();
 	if(!m_pOutputStream->CanWrite())
-		throw exp_illegal_operation(_T("流不支持输出！"));
-}
-void CDataOutputStream::ConfirmWriteAvilibale(int_x iLength) const
-{
-	if(!m_pOutputStream)
-		throw exp_null_pointer(_T("无效的输出流！"));
-	if(!m_pOutputStream->CanWrite())
-		throw exp_illegal_operation(_T("流不支持输出！"));
-	if(m_pOutputStream->WriteAviliable() < iLength)
-		throw exp_null_pointer(_T("剩余字节数不足！"));
+		throw exp_illegal_operation();
 }
 
-void CDataOutputStream::Write8()
+void CBinaryWriter::_Write8(uint_8 val)
 {
-	m_pOutputStream->WriteByte(m_adapter.bVal);
+	m_pOutputStream->Write(val);
 }
-void CDataOutputStream::Write16()
+
+void CBinaryWriter::_Write16(uint_16 val)
 {
-	if(m_endian == StreamEndianSmall)
+	union
 	{
-		m_pOutputStream->WriteByte(m_adapter.a);
-		m_pOutputStream->WriteByte(m_adapter.b);
+		uint_16 _val;
+		struct
+		{
+			uint_8 aval;
+			uint_8 bval;
+		};
+	};
+
+	_val = val;
+
+	if(m_endian == EndianSmall)
+	{
+		m_pOutputStream->Write(aval);
+		m_pOutputStream->Write(bval);
 	}
 	else
 	{
-		m_pOutputStream->WriteByte(m_adapter.b);
-		m_pOutputStream->WriteByte(m_adapter.a);
+		m_pOutputStream->Write(bval);
+		m_pOutputStream->Write(aval);
 	}
 }
-void CDataOutputStream::Write32()
+
+void CBinaryWriter::_Write32(uint_32 val)
 {
-	if(m_endian == StreamEndianSmall)
+	union
 	{
-		m_pOutputStream->WriteByte(m_adapter.a);
-		m_pOutputStream->WriteByte(m_adapter.b);
-		m_pOutputStream->WriteByte(m_adapter.c);
-		m_pOutputStream->WriteByte(m_adapter.d);
+		uint_32 val;
+		struct
+		{
+			uint_8 aval;
+			uint_8 bval;
+			uint_8 cval;
+			uint_8 dval;
+		};
+	};
+	if(m_endian == EndianSmall)
+	{
+		m_pOutputStream->Write(aval);
+		m_pOutputStream->Write(bval);
+		m_pOutputStream->Write(cval);
+		m_pOutputStream->Write(dval);
 	}
 	else
 	{
-		m_pOutputStream->WriteByte(m_adapter.d);
-		m_pOutputStream->WriteByte(m_adapter.c);
-		m_pOutputStream->WriteByte(m_adapter.b);
-		m_pOutputStream->WriteByte(m_adapter.a);
+		m_pOutputStream->Write(dval);
+		m_pOutputStream->Write(cval);
+		m_pOutputStream->Write(bval);
+		m_pOutputStream->Write(aval);
 	}
 }
 

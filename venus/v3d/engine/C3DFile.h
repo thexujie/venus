@@ -13,12 +13,12 @@ public:
 	int_x GetSize() const;
 	const byte_t * GetBuffer() const;
 
-	bool CanRead() const;
-	int_x ReadAviliable();
+	bool CanRead() const noexcept;
+	int_x ReadAviliable() const noexcept;
 	int_x Read(void * pBytes, int_x iLength);
-	byte_t ReadByte();
-	bool SeekSurpport(StreamSeekE seek) const;
-	int_x Seek(StreamSeekE seek, int_x iSeek);
+	byte_t Read();
+	bool CanSeek() const;
+	int_x Seek(SeekE seek, int_x iSeek);
 
 protected:
 	int_x m_size;

@@ -4,26 +4,26 @@
 
 VENUS_BEG
 
-class CORE_API CDataInputStream : public IDataInputStream
+class CORE_API CBinaryReader : public IInputStream, public IDataStream
 {
 public:
-	CDataInputStream();
-	CDataInputStream(IInputStream * m_pInputStream);
-	CDataInputStream(IInputStream * m_pInputStream, StreamEndianE endian);
-	~CDataInputStream();
+	CBinaryReader();
+	CBinaryReader(IInputStream * m_pInputStream);
+	CBinaryReader(IInputStream * m_pInputStream, EndianE endian);
+	~CBinaryReader();
 public:
-	bool CanRead() const;
-	int_x ReadAviliable();
+	bool CanRead() const noexcept;
+	int_x ReadAviliable() const noexcept;
 
-	byte_t ReadByte();
+	byte_t Read();
 	int_x Read(void * pBytes, int_x iLength);
 
-	bool SeekSurpport(StreamSeekE seek) const;
-	int_x Seek(StreamSeekE seek, int_x iSeek);
+	bool CanSeek() const;
+	int_x Seek(SeekE seek, int_x iSeek);
 
 public :
-	void SetDataInputEndian(StreamEndianE endian);
-	StreamEndianE GetDataInputEndian() const;
+	void SetEndian(EndianE endian);
+	EndianE GetEndian() const;
 
 	int_8 ReadInt8();
 	void ReadInt8Array(char_8 * pi8Array, int_x iLength);
@@ -40,51 +40,44 @@ public :
 	uint_32 ReadUInt32();
 	void ReadUInt32Array(uint_32 * pui32Array, int_x iLength);
 
-	IInputStream * GetInputStream();
-	IInputStream * ResetInputStream(IInputStream * pNewInputStream);
-
 	// ----------------------------------- String
 	int_x ReadText(char_16 * pText, int_x iSize = IX_MAX);
 	int_x ReadText(char_8 * pText, int_x iSize = IX_MAX);
-	int_x ReadLine(char_16 * pText, int_x iSize = IX_MAX); // \r \n
-	int_x ReadLine(char_8 * pText, int_x iSize = IX_MAX); // \r \n
 	int_x CSharpReadText(char_16 * pText, int_x iSize = IX_MAX);
 	int_x AS3ReadText(char_16 * pText, int_x iSize = IX_MAX);
 
 protected:
-	void ConfirmInputStream() const;
-	void ConfirmAvilibale(int_x iLength) const;
+	void _Ready() const;
+	uint_8 _Read8();
+	uint_16 _Read16();
+	uint_32 _Read32();
 
-	void Read8();
-	void Read16();
-	void Read32();
 protected:
 	IInputStream * m_pInputStream;
-	StreamEndianE m_endian;
-	DataAdapter32 m_adapter;
+	EndianE m_endian;
 };
 
 /************************************************************************/
 /* 数据输出流
 /************************************************************************/
-class CORE_API CDataOutputStream : public IDataOutputStream
+class CORE_API CBinaryWriter : public IOutputStream, public IDataStream
 {
 public:
-	CDataOutputStream();
-	CDataOutputStream(IOutputStream * pOutputStream);
-	CDataOutputStream(IOutputStream * pOutputStream, StreamEndianE endian);
-	~CDataOutputStream();
-public :
-	bool CanWrite() const;
+	CBinaryWriter();
+	CBinaryWriter(IOutputStream * pOutputStream, EndianE endian = EndianSmall);
+	~CBinaryWriter();
 
-	int_x WriteAviliable();
-	void WriteByte(byte_t byte);
+public :
+	bool CanSeek() const;
+	int_x Seek(SeekE seek, int_x iSeek);
+
+	bool CanWrite() const noexcept;
+	int_x WriteAviliable() const noexcept;
+	void Write(byte_t byte);
 	void Write(const void * pData, int_x iLength);
 
 	void Flush();
 
-	bool SeekSurpport(StreamSeekE seek) const;
-	int_x Seek(StreamSeekE seek, int_x iSeek);
 public :
 	void WriteInt8(int_8 i8);
 	void WriteInt8Array(const int_8 * pi8Array, int_x iLength);
@@ -104,28 +97,20 @@ public :
 	void WriteFloat32(float_32 f32);
 	void WriteFloatArray(const float_32 * pf32, int_x iLength);
 
-	//- Text会写入终止符，WriteString不会写入终止符。
-	void WriteText(const char_16 * pText, int_x iLength = -1);
-	void WriteText(const char_8 * pText, int_x iLength = -1);
 	void WriteString(const char_16 * pText, int_x iLength = -1);
 	void WriteString(const char_8 * pText, int_x iLength = -1);
 
 	void CSharpWriteText(const char_16 * pText, int_x iLength = -1);
 	void AS3WriteText(const char_16 * pText, int_x iLength = -1);
 
-	IOutputStream * GetOutputStream();
-	IOutputStream * SetOutputStream(IOutputStream * pNewOutputStream);
 protected:
-	void ConfirmOutputStream() const;
-	void ConfirmWriteAvilibale(int_x iLength) const;
-
-	void Write8();
-	void Write16();
-	void Write32();
+	void _Ready() const;
+	void _Write8(uint_8 val);
+	void _Write16(uint_16 val);
+	void _Write32(uint_32 val);
 protected:
 	IOutputStream * m_pOutputStream;
-	StreamEndianE m_endian;
-	DataAdapter32 m_adapter;
+	EndianE m_endian;
 };
 
 VENUS_END

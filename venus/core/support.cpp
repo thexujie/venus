@@ -11,7 +11,7 @@ IApp * GetApp()
 	if(g_iApp)
 	{
 		int_x iValue = tls_get(g_iApp);
-		return (IApp *)(void *)iValue;
+		return static_cast<IApp *>(reinterpret_cast<void *>(iValue));
 	}
 	else
 		return nullptr;
@@ -24,7 +24,7 @@ IApp * SetApp(IApp * pApp)
 		if(!g_iApp)
 			g_iApp = tls_create();
 
-		tls_set(g_iApp, (int_x)(void *)pApp);
+		tls_set(g_iApp, reinterpret_cast<int_x>(static_cast<void *>(pApp)));
 	}
 	else
 	{

@@ -4,7 +4,7 @@
 
 VENUS_BEG
 
-class CORE_API CFileStream : public IIOStream
+class CORE_API CFileStream : public IInputStream, public IOutputStream
 {
 private:
 	CFileStream();
@@ -15,18 +15,18 @@ public:
 
 public:
 	bool IsValid() const;
-	bool CanRead() const;
-	bool CanWrite() const;
+	bool CanRead() const noexcept;
+	bool CanWrite() const noexcept;
 
-	bool SeekSurpport(StreamSeekE seek) const;
-	int_x Seek(StreamSeekE seek, int_x iSeek = 0);
+	bool CanSeek() const;
+	int_x Seek(SeekE seek, int_x iSeek = 0);
 
-	int_x ReadAviliable();
-	byte_t ReadByte();
+	int_x ReadAviliable() const noexcept;
+	byte_t Read();
 	int_x Read(void * pBytes, int_x iLength);
 
-	int_x WriteAviliable();
-	void WriteByte(byte_t byte);
+	int_x WriteAviliable() const noexcept;
+	void Write(byte_t byte);
 	void Write(const void * pData, int_x iLength);
 	void Flush();
 

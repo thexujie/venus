@@ -83,6 +83,7 @@ static int FileShareFlagFromStreamMode(StreamModeE streamMode, OpenModeE openMod
 
 
 CFileStream::CFileStream(textw filePath, StreamModeE streamMode, OpenModeE openMode, ShareModeE shareMode)
+	:m_iFile(0), m_streamMode(StreamModeNone), m_openMode(OpenModeOpen), m_shareMode(ShareModeAll)
 {
 	Open(filePath, streamMode, openMode, shareMode);
 }
@@ -102,7 +103,7 @@ bool CFileStream::IsValid() const
 	return m_iFile != -1;
 }
 
-bool CFileStream::CanRead() const
+bool CFileStream::CanRead() const noexcept
 {
 	if(m_iFile == INVALID_FILE)
 		return false;
@@ -110,7 +111,7 @@ bool CFileStream::CanRead() const
 	return (m_streamMode & StreamModeRead) == StreamModeRead;
 }
 
-bool CFileStream::CanWrite() const
+bool CFileStream::CanWrite() const noexcept
 {
 	if(m_iFile == INVALID_FILE)
 		return false;
@@ -118,29 +119,29 @@ bool CFileStream::CanWrite() const
 	return IsValid() && (m_streamMode & (StreamModeWrite | StreamModeAppend));
 }
 
-bool CFileStream::SeekSurpport(StreamSeekE seek) const
+bool CFileStream::CanSeek() const
 {
 	if(m_iFile == INVALID_FILE)
 		return false;
 	return true;
 }
-int_x CFileStream::Seek(StreamSeekE seek, int_x iSeek/* = 0*/)
+int_x CFileStream::Seek(SeekE seek, int_x iSeek/* = 0*/)
 {
 	if(m_iFile == INVALID_FILE)
 		return -1;
 
 	switch(seek)
 	{
-	case StreamSeekBegin:
+	case SeekBegin:
 		_lseek(m_iFile, (int_32)iSeek, SEEK_SET);
 		break;
-	case StreamSeekEnd:
+	case SeekEnd:
 		_lseek(m_iFile, (int_32)iSeek, SEEK_END);
 		break;
-	case StreamSeekCurr:
+	case SeekCurr:
 		_lseek(m_iFile, (int_32)iSeek, SEEK_CUR);
 		break;
-	case StreamSeekTell:
+	case SeekTell:
 		break;
 	default:
 		Assert(0);
@@ -149,21 +150,21 @@ int_x CFileStream::Seek(StreamSeekE seek, int_x iSeek/* = 0*/)
 	return (int_x)_tell(m_iFile);
 }
 
-int_x CFileStream::ReadAviliable()
+int_x CFileStream::ReadAviliable() const noexcept
 {
 	if(m_iFile == INVALID_FILE)
 		return 0;
 
 	if(!(m_streamMode & StreamModeRead))
 		return 0;
-	int_x iCurr = Seek(StreamSeekTell);
-	Seek(StreamSeekEnd);
-	int_x iAviliable = Seek(StreamSeekTell) - iCurr;
-	Seek(StreamSeekBegin, iCurr);
+	int_x iCurr = _tell(m_iFile);
+	_lseek(m_iFile, 0, SEEK_END);
+	int_x iAviliable = _tell(m_iFile) - iCurr;
+	_lseek(m_iFile, static_cast<int_32>(iCurr), SEEK_SET);
 	return iAviliable;
 }
 
-byte_t CFileStream::ReadByte()
+byte_t CFileStream::Read()
 {
 	if(m_iFile == INVALID_FILE)
 		return 0;
@@ -175,10 +176,10 @@ byte_t CFileStream::ReadByte()
 		if(iRead == 1)
 			return temp;
 		else
-			throw exp_bad_state(_T("读取出错"));
+			throw exp_bad_state();
 	}
 	else
-		throw exp_end_of_stream(_T("已到达文件末尾！"));
+		throw exp_end_of_stream();
 }
 
 int_x CFileStream::Read(void * pBytes, int_x iLength)
@@ -190,7 +191,7 @@ int_x CFileStream::Read(void * pBytes, int_x iLength)
 	return iRead;
 }
 
-int_x CFileStream::WriteAviliable()
+int_x CFileStream::WriteAviliable() const noexcept
 {
 	if(m_iFile == INVALID_FILE)
 		return 0;
@@ -201,7 +202,7 @@ int_x CFileStream::WriteAviliable()
 }
 
 
-void CFileStream::WriteByte(byte_t byte)
+void CFileStream::Write(byte_t byte)
 {
 	if(!WriteAviliable())
 		throw exp_end_of_stream(_T("已达文件末尾！"));
@@ -234,7 +235,7 @@ byte_buffer_t CFileStream::ReadFile()
 	buffer.reallocate(iFileSize);
 	buffer.resize(iFileSize);
 
-	Seek(StreamSeekBegin, 0);
+	Seek(SeekBegin, 0);
 	Read(buffer.buffer, iFileSize);
 	return buffer;
 }
@@ -243,7 +244,7 @@ int_x CFileStream::GetCurr()
 {
 	if(m_iFile == INVALID_FILE)
 		return 0;
-	return Seek(StreamSeekTell);
+	return Seek(SeekTell);
 }
 
 int_x CFileStream::GetFileSize() const
@@ -271,46 +272,48 @@ bool CFileStream::SetFileSize(int_x iSize)
 bool CFileStream::Open(textw filePath, StreamModeE streamMode, OpenModeE openMode, ShareModeE shareMode)
 {
 	Close();
-	if(_wsopen_s(&m_iFile, filePath,
+	errno_t err = _wsopen_s(&m_iFile, filePath,
 		FileOpenFlagFromStreamMode(streamMode, openMode, shareMode),
 		FileShareFlagFromStreamMode(streamMode, openMode, shareMode),
-		0))
+		0);
+	if(err)
 	{
 		log2(L"Can not open file \"%s\"", filePath);
 		m_streamMode = StreamModeNone;
 		m_openMode = OpenModeOpen;
 		m_shareMode = ShareModeNone;
-		return true;
+		return false;
 	}
 	else
 	{
 		m_streamMode = streamMode;
 		m_openMode = openMode;
 		m_shareMode = shareMode;
-		return false;
+		return true;
 	}
 }
 
 bool CFileStream::Open(texta filePath, StreamModeE streamMode, OpenModeE openMode, ShareModeE shareMode)
 {
 	Close();
-	if(_sopen_s(&m_iFile, filePath,
+	errno_t err = _sopen_s(&m_iFile, filePath,
 		FileOpenFlagFromStreamMode(streamMode, openMode, shareMode),
 		FileShareFlagFromStreamMode(streamMode, openMode, shareMode),
-		0))
+		0);
+	if(err)
 	{
 		log2(L"Can not open file \"%s\"", filePath);
 		m_streamMode = StreamModeNone;
 		m_openMode = OpenModeOpen;
 		m_shareMode = ShareModeNone;
-		return true;
+		return false;
 	}
 	else
 	{
 		m_streamMode = streamMode;
 		m_openMode = openMode;
 		m_shareMode = shareMode;
-		return false;
+		return true;
 	}
 }
 

@@ -17,15 +17,15 @@ CMemoryStream::~CMemoryStream()
 	SafeDelete(m_pBuffer);
 }
 
-bool CMemoryStream::CanRead() const { return true;}
-bool CMemoryStream::CanWrite() const { return true;}
+bool CMemoryStream::CanRead() const noexcept { return true;}
+bool CMemoryStream::CanWrite() const noexcept { return true;}
 // ------------------------------ ∂¡»°
-int_x CMemoryStream::ReadAviliable()
+int_x CMemoryStream::ReadAviliable() const noexcept
 {
 	return m_iSize - m_iLength;
 }
 
-byte_t CMemoryStream::ReadByte()
+byte_t CMemoryStream::Read()
 {
 	if(m_iLength < m_iSize)
 		return m_pBuffer[m_iLength++];
@@ -47,12 +47,12 @@ int_x CMemoryStream::Read(void * pArray, int_x iLength)
 }
 
 // ------------------------------ –¥»Î
-int_x CMemoryStream::WriteAviliable()
+int_x CMemoryStream::WriteAviliable() const noexcept
 {
 	return m_iSize - m_iLength;
 }
 
-void CMemoryStream::WriteByte(byte_t byte)
+void CMemoryStream::Write(byte_t byte)
 {
 	if(m_iLength >= m_iSize)
 		SetSizeIncrease(m_iLength + 1);
@@ -73,25 +73,25 @@ void CMemoryStream::Flush()
 
 }
 
-bool CMemoryStream::SeekSurpport(StreamSeekE seek) const
+bool CMemoryStream::CanSeek(SeekE seek) const
 {
 	return true;
 }
 
-int_x CMemoryStream::Seek(StreamSeekE seek, int_x iSeek)
+int_x CMemoryStream::Seek(SeekE seek, int_x iSeek)
 {
-	if(seek != StreamSeekTell)
+	if(seek != SeekTell)
 	{
 		int_x iPosition = 0;
 		switch(seek)
 		{
-		case StreamSeekBegin:
+		case SeekBegin:
 			iPosition = iSeek;
 			break;
-		case StreamSeekEnd:
+		case SeekEnd:
 			iPosition = m_iSize - iSeek;
 			break;
-		case StreamSeekCurr:
+		case SeekCurr:
 			iPosition = m_iLength + iSeek;
 			break;
 		default:

@@ -103,11 +103,11 @@ public:
 	}
 };
 
-class CORE_API exp_null_pointer : public exp_base
+class CORE_API exp_nullptr : public exp_base
 {
 public:
-	exp_null_pointer(const char_x * szWhat = PCHAR_EMPTY)
-		: exp_base(NullPointerException, _T("exp_null_pointer"), szWhat)
+	exp_nullptr(const char_x * szWhat = PCHAR_EMPTY)
+		: exp_base(NullPointerException, _T("exp_nullptr"), szWhat)
 	{
 	}
 };
@@ -157,37 +157,36 @@ public:
 	}
 };
 
-class CORE_API exp_bad_stream : public exp_base
+class CORE_API exp_io : public exp_base
 {
 public:
-	exp_bad_stream(uint_x uiNumber, const char_x * szName)
-		: exp_base(uiNumber, szName)
+	exp_io()
 	{
 	}
-	exp_bad_stream(uint_x uiNumber, const char_x * szName, const char_x * szWhat)
-		: exp_base(uiNumber, szName, szWhat)
+	exp_io(const char_x * szWhat)
+		: exp_base(szWhat)
 	{
 	}
 };
 
-class CORE_API exp_end_of_stream : public exp_bad_stream
+class CORE_API exp_end_of_stream : public exp_io
 {
 public:
-	exp_end_of_stream(const char_x * szWhat = PCHAR_EMPTY)
-		: exp_bad_stream(EndOfStreamException, _T("EndOfStreamException"), szWhat)
+	exp_end_of_stream(){}
+	exp_end_of_stream(const char_x * szWhat)
+		: exp_io(szWhat)
 	{
 	}
 };
 
-class CORE_API exp_file_not_found : public exp_bad_stream
+class CORE_API exp_file_not_found : public exp_io
 {
 public:
 	exp_file_not_found()
-		: exp_bad_stream(FileNotFoundException, _T("FileNotFoundException"))
 	{
 	}
 	exp_file_not_found(const char_x * szWhat)
-		: exp_bad_stream(FileNotFoundException, _T("FileNotFoundException"), szWhat)
+		: exp_io(szWhat)
 	{
 	}
 };

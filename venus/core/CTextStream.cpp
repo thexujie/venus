@@ -4,133 +4,67 @@
 
 VENUS_BEG
 
-CTextInputStream::CTextInputStream(IInputStream * pInputStream)
-	: m_pInputStream(pInputStream), m_eEncoding(TextEncodingInvalid), m_iCodePage(GetCRTCodePage()), m_pfnReadChar(nullptr)
+CTextReader::CTextReader(IInputStream * pInputStream)
+	: m_pInputStream(pInputStream), m_eEncoding(EncodingUnknown)
 {
 
 }
 
-CTextInputStream::~CTextInputStream()
+CTextReader::~CTextReader()
 {
 	m_pInputStream = nullptr;
-	m_eEncoding = TextEncodingInvalid;
+	m_eEncoding = EncodingUnknown;
 }
 
-bool CTextInputStream::CanRead() const
+bool CTextReader::CanRead() const noexcept
 {
-	ConfirmInputStream();
 	return m_pInputStream->CanRead();
 }
 
-int_x CTextInputStream::ReadAviliable()
+int_x CTextReader::ReadAviliable() const noexcept
 {
-	ConfirmInputStream();
+	_Ready();
 	return m_pInputStream->ReadAviliable();
 }
 
-byte_t CTextInputStream::ReadByte()
+byte_t CTextReader::Read()
 {
-	ConfirmInputStream();
-	return m_pInputStream->ReadByte();
+	_Ready();
+	return m_pInputStream->Read();
 }
 
-int_x CTextInputStream::Read(void * pBytes, int_x iLength)
+int_x CTextReader::Read(void * data, int_x size)
 {
-	ConfirmInputStream();
-	return m_pInputStream->Read(pBytes, iLength);
+	_Ready();
+	return m_pInputStream->Read(data, size);
 }
 
-bool CTextInputStream::SeekSurpport(StreamSeekE seek) const
+bool CTextReader::CanSeek() const
 {
-	ConfirmInputStream();
-	return m_pInputStream->SeekSurpport(seek);
+	_Ready();
+	return m_pInputStream->CanSeek();
 }
-int_x CTextInputStream::Seek(StreamSeekE seek, int_x iSeek)
+int_x CTextReader::Seek(SeekE seek, int_x iSeek)
 {
-	ConfirmInputStream();
+	_Ready();
 	return m_pInputStream->Seek(seek, iSeek);
 }
 
-IInputStream * CTextInputStream::GetInputStream()
-{
-	return m_pInputStream;
-}
-IInputStream * CTextInputStream::ResetInputStream(IInputStream * pNewInputStream)
-{
-	IInputStream * pOldInputStream = m_pInputStream;
-	m_pInputStream = pNewInputStream;
-	m_eEncoding = TextEncodingInvalid;
-	if(m_pInputStream)
-		ReadEncoding();
-	return pOldInputStream;
-}
-
-void CTextInputStream::SetTextInputEncoding(TextEncodingE eEncoding)
+void CTextReader::SetEncoding(EncodingE eEncoding)
 {
 	m_eEncoding = eEncoding;
-	m_pfnReadChar = nullptr;
-	switch(m_eEncoding)
-	{
-	case TextEncodingAnsi:
-		switch(m_iCodePage)
-		{
-		case CodePageGB2312:
-			m_pfnReadChar = &CTextInputStream::ReadCharAnsiGB2312;
-			break;
-		case CodePageGBK:
-			m_pfnReadChar = &CTextInputStream::ReadCharAnsiGBK;
-			break;
-		}
-		break;
-	case TextEncodingUnicode16:
-		m_pfnReadChar = &CTextInputStream::ReadCharUnicode16;
-		break;
-	case TextEncodingUnicode16BigEndian:
-		m_pfnReadChar = &CTextInputStream::ReadCharUnicode16BigEndian;
-		break;
-	case TextEncodingUTF8:
-		m_pfnReadChar = &CTextInputStream::ReadCharUTF8;
-		break;
-	default:
-		break;
-	}
 }
 
-TextEncodingE CTextInputStream::GetTextInputEncoding() const
+EncodingE CTextReader::GetEncoding() const
 {
-	ConfirmInputStream();
+	_Ready();
 	return m_eEncoding;
 }
 
-void CTextInputStream::SetCodePage(int_x eCodePage)
+EncodingE CTextReader::ReadEncoding()
 {
-	m_iCodePage = eCodePage;
-	if(m_eEncoding == TextEncodingAnsi)
-	{
-		switch(m_iCodePage)
-		{
-		case CodePageGBK:
-			m_pfnReadChar = &CTextInputStream::ReadCharAnsiGBK;
-			break;
-		case CodePageGB2312:
-			m_pfnReadChar = &CTextInputStream::ReadCharAnsiGB2312;
-			break;
-		default:
-			m_pfnReadChar = nullptr;
-		}
-	}
-	else {}
-}
-
-int_x CTextInputStream::GetCodepage() const
-{
-	return m_iCodePage;
-}
-
-TextEncodingE CTextInputStream::ReadEncoding()
-{
-	ConfirmInputStream();
-	TextEncodingE eEncoding = TextEncodingInvalid;
+	_Ready();
+	EncodingE eEncoding = EncodingDefault;
 	int_x iAviliable = m_pInputStream->ReadAviliable();
 	if(iAviliable >= 2)
 	{
@@ -141,10 +75,10 @@ TextEncodingE CTextInputStream::ReadEncoding()
 		case 0xBBEF:
 			if(m_pInputStream->ReadAviliable())
 			{
-				switch(m_pInputStream->ReadByte())
+				switch(m_pInputStream->Read())
 				{
 				case 0xBF:
-					eEncoding = TextEncodingUTF8;
+					eEncoding = EncodingUtf8;
 					break;
 				default:
 					throw exp_not_supported();
@@ -152,39 +86,164 @@ TextEncodingE CTextInputStream::ReadEncoding()
 			}
 			break;
 		case 0xFEFF:
-			eEncoding = TextEncodingUnicode16;
+			eEncoding = EncodingUnicode16;
 			break;
 		case 0xFFFE:
-			eEncoding = TextEncodingUnicode16BigEndian;
+			eEncoding = EncodingUnicode16BigEndian;
 			break;
 		default:
-			eEncoding = TextEncodingAnsi;
-			m_pInputStream->Seek(StreamSeekCurr, -2);
+			eEncoding = EncodingAnsi;
+			m_pInputStream->Seek(SeekCurr, -2);
 			break;
 		}
 	}
 	else // 字节数不够，无法判断
-		eEncoding = TextEncodingInvalid;
-	SetTextInputEncoding(eEncoding);
+		eEncoding = EncodingDefault;
+	SetEncoding(eEncoding);
 	return eEncoding;
 }
 
-void CTextInputStream::ConfirmInputStream() const
+void CTextReader::_Ready() const
 {
 	Verify(m_pInputStream);
 }
 
+int_32 CTextReader::_ReadChar()
+{
+	int_32 ch = 0;
+	switch(m_eEncoding)
+	{
+	case EncodingAnsi:
+		// TODO：检测默认的编码
+		ch = ReadCharGBK();
+		break;
+	case EncodingGBK:
+		ch = ReadCharGBK();
+		break;
+	case EncodingUnicode16:
+		ch = ReadCharUtf16LE();
+		break;
+	case EncodingUnicode16BigEndian:
+		ch = ReadCharUtf16BE();
+		break;
+	case EncodingUtf8:
+		ch = ReadCharUtf8();
+		break;
+	default:
+		ch = ReadCharUtf8();
+		break;
+	}
+	return ch;
+}
 
-int_32 CTextInputStream::ReadChar()
+int_32 CTextReader::ReadChar()
 {
 	Verify(m_pInputStream);
-	if(m_pfnReadChar)
-		return (this->*m_pfnReadChar)();
+
+	if(m_eEncoding == EncodingUnknown)
+	{
+		int_32 ch = Read();
+
+		// le tag
+		if(ch == 0xEF)
+		{
+			ch = Read();
+			if(ch != 0xBB)
+				throw exp_io();
+			ch = Read();
+			if(ch != 0xBF)
+				throw exp_io();
+			m_eEncoding = EncodingUtf8;
+			return _ReadChar();
+		}
+		else if(ch == 0xFF)
+		{
+			ch = Read();
+			if(ch != 0xFE)
+				throw exp_io();
+			m_eEncoding = EncodingUnicode16;
+			return _ReadChar();
+		}
+		else if(ch == 0xFE)
+		{
+			ch = Read();
+			if(ch != 0xFF)
+				throw exp_io();
+			m_eEncoding = EncodingUnicode16BigEndian;
+			return _ReadChar();
+		}
+		else if(ch == 0x5c)
+		{
+			ch = Read();
+			if(ch != 0x75)
+				throw exp_io();
+			m_eEncoding = EncodingAnsi;
+			return _ReadChar();
+		}
+		else
+		{
+			m_eEncoding = EncodingDefault;
+			return ch;
+		}
+	}
 	else
-		return m_pInputStream->ReadByte();
+		return _ReadChar();
 }
 
-int_x CTextInputStream::ReadLine(char_16 * szBuffer, int_x iSize)
+int_x CTextReader::ReadText(char_16 * szBuffer, int_x iLength)
+{
+	char_16 ch = 0;
+	bool bRuning = true;
+	int_x iIndex = 0;
+	while(bRuning)
+	{
+		if(m_pInputStream->ReadAviliable() && iLength-- > 0)
+		{
+			ch = ReadChar();
+			szBuffer[iIndex++] = ch;
+		}
+		else
+			bRuning = false;
+	}
+	szBuffer[iIndex] = L'\0';
+	return iIndex;
+}
+
+textw CTextReader::ReadText(int_x iLength)
+{
+	textw text;
+	bool bRuning = true;
+	while(bRuning)
+	{
+		if(m_pInputStream->ReadAviliable() && iLength-- > 0)
+		{
+			char_16 ch = ReadChar();
+			text.append(ch);
+		}
+		else
+			bRuning = false;
+	}
+	return text;
+}
+
+texta CTextReader::ReadTextA(int_x iLength)
+{
+	texta text;
+	bool bRuning = true;
+	while(bRuning)
+	{
+		if(m_pInputStream->ReadAviliable() && iLength-- > 0)
+		{
+			char_8 ch = Read();
+			text.append(ch);
+		}
+		else
+			bRuning = false;
+	}
+	return text;
+}
+
+int_x CTextReader::ReadLine(char_16 * szBuffer, int_x iSize)
 {
 	--iSize;
 	char_16 ch = 0;
@@ -195,13 +254,22 @@ int_x CTextInputStream::ReadLine(char_16 * szBuffer, int_x iSize)
 		if(m_pInputStream->ReadAviliable())
 		{
 			ch = ReadChar();
-			if(ch == L'\n')
-				bRuning = false;
-			else
+			if(ch == L'\r')
+				continue;
+
+			switch(ch)
 			{
-				if(ch != L'\r' && iIndex < iSize)
+			case L'\u000A': // LF 换行
+			case L'\u000B': // VT 垂直定位
+			case L'\u000C': // FF 换页
+			case L'\u2028': // LS 分行
+			case L'\u2029': // PS 分段
+				bRuning = false;
+				break;
+			default:
+				if(iIndex < iSize)
 					szBuffer[iIndex++] = ch;
-				else {}
+				break;
 			}
 		}
 		else
@@ -211,32 +279,7 @@ int_x CTextInputStream::ReadLine(char_16 * szBuffer, int_x iSize)
 	return iIndex;
 }
 
-texta CTextInputStream::ReadLineA()
-{
-	texta text;
-	char_8 ch = 0;
-	bool bRuning = true;
-	while(bRuning)
-	{
-		if(m_pInputStream->ReadAviliable())
-		{
-			ch = (char_8)ReadByte();
-			if(ch == '\n')
-				bRuning = false;
-			else
-			{
-				if(ch != '\r')
-					text.append(ch);
-				else {}
-			}
-		}
-		else
-			bRuning = false;
-	}
-	return text;
-}
-
-textw CTextInputStream::ReadLineW()
+textw CTextReader::ReadLine()
 {
 	textw text;
 	char_16 ch = 0;
@@ -246,13 +289,21 @@ textw CTextInputStream::ReadLineW()
 		if(m_pInputStream->ReadAviliable())
 		{
 			ch = ReadChar();
-			if(ch == L'\n')
-				bRuning = false;
-			else
+			if(ch == L'\r')
+				continue;
+
+			switch(ch)
 			{
-				if(ch != L'\r')
-					text.append(ch);
-				else {}
+			case L'\u000A': // LF 换行
+			case L'\u000B': // VT 垂直定位
+			case L'\u000C': // FF 换页
+			case L'\u2028': // LS 分行
+			case L'\u2029': // PS 分段
+				bRuning = false;
+				break;
+			default:
+				text.append(ch);
+				break;
 			}
 		}
 		else
@@ -261,25 +312,78 @@ textw CTextInputStream::ReadLineW()
 	return text;
 }
 
-int_32 CTextInputStream::ReadCharUnicode16()
+texta CTextReader::ReadLineA()
 {
-	ConfirmInputStream();
-	m_adapter.a = m_pInputStream->ReadByte();
-	m_adapter.b = m_pInputStream->ReadByte();
-	return m_adapter.c16Val;
-}
-int_32 CTextInputStream::ReadCharUnicode16BigEndian()
-{
-	ConfirmInputStream();
-	m_adapter.b = m_pInputStream->ReadByte();
-	m_adapter.a = m_pInputStream->ReadByte();
-	return m_adapter.c16Val;
-}
-int_32 CTextInputStream::ReadCharUTF8()
-{
-	ConfirmInputStream();
+	texta text;
+	char_8 ch = 0;
+	bool bRuning = true;
+	while(bRuning)
+	{
+		if(m_pInputStream->ReadAviliable())
+		{
+			ch = Read();
+			if(ch == L'\r')
+				continue;
 
-	byte_t bVal = m_pInputStream->ReadByte();
+			switch(ch)
+			{
+			case L'\u000A': // LF 换行
+			case L'\u000B': // VT 垂直定位
+			case L'\u000C': // FF 换页
+				bRuning = false;
+				break;
+			default:
+				text.append(ch);
+				break;
+			}
+		}
+		else
+			bRuning = false;
+	}
+	return text;
+}
+
+int_32 CTextReader::ReadCharUtf16LE()
+{
+	_Ready();
+	union
+	{
+		uint_16 val;
+		struct
+		{
+			uint_8 aval;
+			uint_8 bval;
+		};
+	};
+
+	aval = m_pInputStream->Read();
+	bval = m_pInputStream->Read();
+	return val;
+}
+
+int_32 CTextReader::ReadCharUtf16BE()
+{
+	_Ready();
+	union
+	{
+		uint_16 val;
+		struct
+		{
+			uint_8 aval;
+			uint_8 bval;
+		};
+	};
+
+	bval = m_pInputStream->Read();
+	aval = m_pInputStream->Read();
+	return val;
+}
+
+int_32 CTextReader::ReadCharUtf8()
+{
+	_Ready();
+
+	byte_t bVal = m_pInputStream->Read();
 	if(bVal & 0x80)
 	{
 		int_x iCount = 1;
@@ -309,12 +413,12 @@ int_32 CTextInputStream::ReadCharUTF8()
 			iCount = 2;
 			iChar = bVal & 0x1F;
 		}
-		else 
+		else
 			throw exp_bad_state();
 
 		while(--iCount)
 		{
-			bVal = m_pInputStream->ReadByte();
+			bVal = m_pInputStream->Read();
 			iChar <<= 6;
 			iChar |= (bVal & 0x3F);
 		}
@@ -324,28 +428,14 @@ int_32 CTextInputStream::ReadCharUTF8()
 		return bVal;
 }
 
-int_32 CTextInputStream::ReadCharAnsiGB2312()
+int_32 CTextReader::ReadCharGBK()
 {
-	ConfirmInputStream();
+	_Ready();
 
-	byte_t bVal = m_pInputStream->ReadByte();
+	byte_t bVal = m_pInputStream->Read();
 	if(bVal >= 0x80)
 	{
-		byte_t bVal2 = m_pInputStream->ReadByte();
-		return CP20936ToUnicode(bVal, bVal2);
-	}
-	else
-		return bVal;
-}
-
-int_32 CTextInputStream::ReadCharAnsiGBK()
-{
-	ConfirmInputStream();
-
-	byte_t bVal = m_pInputStream->ReadByte();
-	if(bVal >= 0x80)
-	{
-		byte_t bVal2 = m_pInputStream->ReadByte();
+		byte_t bVal2 = m_pInputStream->Read();
 		return CP936ToUnicode(bVal, bVal2);
 	}
 	else
@@ -354,16 +444,16 @@ int_32 CTextInputStream::ReadCharAnsiGBK()
 
 
 
-CTextOutputStream::CTextOutputStream(IOutputStream * pOutputStream) :
-m_pOutputStream(pOutputStream)
+CTextWriter::CTextWriter(IOutputStream * pOutputStream) :
+	m_pOutputStream(pOutputStream)
 {
 }
 
-CTextOutputStream::~CTextOutputStream()
+CTextWriter::~CTextWriter()
 {
 }
 
-bool CTextOutputStream::CanWrite() const
+bool CTextWriter::CanWrite() const noexcept
 {
 	if(m_pOutputStream)
 		return m_pOutputStream->CanWrite();
@@ -371,7 +461,7 @@ bool CTextOutputStream::CanWrite() const
 		return false;
 }
 
-int_x CTextOutputStream::WriteAviliable()
+int_x CTextWriter::WriteAviliable() const noexcept
 {
 	if(m_pOutputStream)
 		return m_pOutputStream->WriteAviliable();
@@ -379,33 +469,33 @@ int_x CTextOutputStream::WriteAviliable()
 		return 0;
 }
 
-void CTextOutputStream::WriteByte(byte_t byte)
+void CTextWriter::Write(byte_t byte)
 {
 	if(m_pOutputStream)
-		return m_pOutputStream->WriteByte(byte);
+		return m_pOutputStream->Write(byte);
 }
 
-void CTextOutputStream::Write(const void * pData, int_x iLength)
+void CTextWriter::Write(const void * data, int_x size)
 {
 	if(m_pOutputStream)
-		return m_pOutputStream->Write(pData, iLength);
+		return m_pOutputStream->Write(data, size);
 }
 
-void CTextOutputStream::Flush()
+void CTextWriter::Flush()
 {
 	if(m_pOutputStream)
 		m_pOutputStream->Flush();
 }
 
-bool CTextOutputStream::SeekSurpport(StreamSeekE seek) const
+bool CTextWriter::CanSeek() const
 {
 	if(m_pOutputStream)
-		return m_pOutputStream->SeekSurpport(seek);
+		return m_pOutputStream->CanSeek();
 	else
 		return false;
 }
 
-int_x CTextOutputStream::Seek(StreamSeekE seek, int_x iSeek)
+int_x CTextWriter::Seek(SeekE seek, int_x iSeek)
 {
 	if(m_pOutputStream)
 		return m_pOutputStream->Seek(seek, iSeek);
@@ -413,20 +503,42 @@ int_x CTextOutputStream::Seek(StreamSeekE seek, int_x iSeek)
 		return 0;
 }
 
-void CTextOutputStream::WriteText(const char_16 * pText, int_x iLength, LineTagE eLineTag)
+void CTextWriter::WriteText(const char_16 * pText, int_x iLength)
 {
 	if(iLength < 0)
 		iLength = textlen(pText);
 	m_pOutputStream->Write(pText, iLength * 2);
+}
+
+void CTextWriter::WriteText(const textw & text)
+{
+	m_pOutputStream->Write(text, text.length() * 2);
+}
+
+void CTextWriter::WriteTextA(const texta & text)
+{
+	m_pOutputStream->Write(text, text.length());
+}
+
+void CTextWriter::WriteLine(const char_16 * pText, int_x iLength, LineTagE eLineTag)
+{
+	WriteText(pText, iLength);
 	WriteLineTag(eLineTag);
 }
 
-void CTextOutputStream::WriteText(const textw & text, LineTagE eLineTag)
+void CTextWriter::WriteLine(const textw & text, LineTagE eLineTag)
 {
-	WriteText(text, text.length(), eLineTag);
+	WriteText(text);
+	WriteLineTag(eLineTag);
 }
 
-void CTextOutputStream::WriteLineTag(LineTagE eLineTag)
+void CTextWriter::WriteLineA(const texta & text, LineTagE eLineTag)
+{
+	WriteTextA(text);
+	WriteLineTagA(eLineTag);
+}
+
+void CTextWriter::WriteLineTag(LineTagE eLineTag)
 {
 	static const char_16 LINE_TAG_0[] = L"\0";
 	static const char_16 LINE_TAG_R[] = L"\r";
@@ -454,13 +566,41 @@ void CTextOutputStream::WriteLineTag(LineTagE eLineTag)
 	}
 }
 
-void CTextOutputStream::WriteFormat(const char_16 * szFormat, ...)
+void CTextWriter::WriteLineTagA(LineTagE eLineTag)
+{
+	static const char_8 LINE_TAG_0[] = "\0";
+	static const char_8 LINE_TAG_R[] = "\r";
+	static const char_8 LINE_TAG_N[] = "\n";
+	static const char_8 LINE_TAG_RN[] = "\r\n";
+
+	switch(eLineTag)
+	{
+	case LineTagNone:
+		break;
+	case LineTag0:
+		m_pOutputStream->Write(LINE_TAG_0, 1);
+		break;
+	case LineTagR:
+		m_pOutputStream->Write(LINE_TAG_R, 1);
+		break;
+	case LineTagN:
+		m_pOutputStream->Write(LINE_TAG_N, 1);
+		break;
+	case LineTagRN:
+		m_pOutputStream->Write(LINE_TAG_RN, 2);
+		break;
+	default:
+		break;
+	}
+}
+
+void CTextWriter::WriteFormat(const char_16 * szFormat, ...)
 {
 	va_list pArgs = nullptr;
 	va_start(pArgs, szFormat);
 	m_bufferW.format_args(szFormat, pArgs);
 	va_end(pArgs);
-	WriteText(m_bufferW, LineTagNone);
+	WriteLine(m_bufferW, LineTagNone);
 }
 
 VENUS_END

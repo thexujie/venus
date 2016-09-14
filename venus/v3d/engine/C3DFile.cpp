@@ -44,12 +44,12 @@ const byte_t * C3DFile::GetBuffer() const
 	return m_buffer;
 }
 
-bool C3DFile::CanRead() const
+bool C3DFile::CanRead() const noexcept
 {
 	return true;
 }
 
-int_x C3DFile::ReadAviliable()
+int_x C3DFile::ReadAviliable() const noexcept
 {
 	return m_size - m_curr;
 }
@@ -63,7 +63,7 @@ int_x C3DFile::Read(void * pBytes, int_x iLength)
 	return iLength;
 }
 
-byte_t C3DFile::ReadByte()
+byte_t C3DFile::Read()
 {
 	if(m_size - m_curr > 0)
 	{
@@ -75,12 +75,12 @@ byte_t C3DFile::ReadByte()
 		throw exp_end_of_stream();
 }
 
-bool C3DFile::SeekSurpport(StreamSeekE seek) const
+bool C3DFile::CanSeek() const
 {
 	return false;
 }
 
-int_x C3DFile::Seek(StreamSeekE seek, int_x iSeek)
+int_x C3DFile::Seek(SeekE seek, int_x iSeek)
 {
 	return m_curr;
 }

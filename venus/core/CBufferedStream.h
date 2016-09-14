@@ -15,14 +15,14 @@ public :
 	CBufferedInputStream(IInputStream * pInputStream, byte_t * pBuffer, int_x iSize);
 	~CBufferedInputStream();
 
-	bool CanRead() const;
-	int_x ReadAviliable();
+	bool CanRead() const noexcept;
+	int_x ReadAviliable() const noexcept;
 
-	byte_t ReadByte();
+	byte_t Read();
 	int_x Read(void * pBytes, int_x iLength);
 
-	bool SeekSurpport(StreamSeekE seek) const;
-	int_x Seek(StreamSeekE seek, int_x iSeek);
+	bool CanSeek() const;
+	int_x Seek(SeekE seek, int_x iSeek);
 
 	void SetBufferSize(int_x iSize);
 	int_x GetBufferSize() const;
@@ -57,15 +57,15 @@ public :
 	CBufferedOutputStream(IOutputStream * pOutputStream, byte_t * pBuffer, int_x iSize);
 	~CBufferedOutputStream();
 
-	bool CanWrite() const;
-	int_x WriteAviliable();
+	bool CanWrite() const noexcept;
+	int_x WriteAviliable() const noexcept;
 
-	void WriteByte(byte_t bVal);
+	void Write(byte_t bVal);
 	void Write(const void * pData, int_x iLength);
 	void Flush();
 
-	bool SeekSurpport(StreamSeekE seek) const;
-	int_x Seek(StreamSeekE seek, int_x iSeek);
+	bool CanSeek() const;
+	int_x Seek(SeekE seek, int_x iSeek);
 
 	void SetBufferSize(int_x iSize);
 

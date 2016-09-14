@@ -32,7 +32,7 @@ CBufferedInputStream::~CBufferedInputStream()
 	m_pInputStream = nullptr;
 }
 
-bool CBufferedInputStream::CanRead() const
+bool CBufferedInputStream::CanRead() const noexcept
 {
 	ConfirmBufferedInputStream();
 	if(m_iPosition != m_iLength)
@@ -41,13 +41,13 @@ bool CBufferedInputStream::CanRead() const
 		return m_pInputStream->CanRead();
 }
 
-int_x CBufferedInputStream::ReadAviliable()
+int_x CBufferedInputStream::ReadAviliable() const noexcept
 {
 	ConfirmBufferedInputStream();
 	return m_iLength - m_iPosition + m_pInputStream->ReadAviliable();
 }
 
-byte_t CBufferedInputStream::ReadByte()
+byte_t CBufferedInputStream::Read()
 {
 	ConfirmBufferedInputStream();
 	if(m_iPosition == m_iLength)
@@ -93,18 +93,18 @@ int_x CBufferedInputStream::Read(void * pBytes, int_x iLength)
 	return iLength;
 }
 
-bool CBufferedInputStream::SeekSurpport(StreamSeekE seek) const
+bool CBufferedInputStream::CanSeek() const
 {
 	ConfirmBufferedInputStream();
-	return m_pInputStream->SeekSurpport(seek);
+	return m_pInputStream->CanSeek();
 }
 
-int_x CBufferedInputStream::Seek(StreamSeekE seek, int_x iSeek)
+int_x CBufferedInputStream::Seek(SeekE seek, int_x iSeek)
 {
 	ConfirmBufferedInputStream();
-	if(seek == StreamSeekTell)
-		return m_pInputStream->Seek(StreamSeekTell, iSeek) - (m_iLength - m_iPosition);
-	else if(seek == StreamSeekCurr)
+	if(seek == SeekTell)
+		return m_pInputStream->Seek(SeekTell, iSeek) - (m_iLength - m_iPosition);
+	else if(seek == SeekCurr)
 	{
 		if(iSeek < 0)
 		{
@@ -129,7 +129,7 @@ int_x CBufferedInputStream::Seek(StreamSeekE seek, int_x iSeek)
 			}
 		}
 		else {}
-		return m_pInputStream->Seek(StreamSeekTell, iSeek) + m_iPosition;
+		return m_pInputStream->Seek(SeekTell, iSeek) + m_iPosition;
 	}
 	else
 	{
@@ -191,7 +191,7 @@ int_x CBufferedInputStream::GetBufferRemain() const
 void CBufferedInputStream::ConfirmBufferedInputStream() const
 {
 	if(!m_pInputStream)
-		throw exp_null_pointer(_T("无效的输入流"));
+		throw exp_nullptr(_T("无效的输入流"));
 	else if(m_iPosition > m_iLength)
 		throw exp_bad_state(_T("缓冲流已经被破坏"));
 	else {}
@@ -243,7 +243,7 @@ CBufferedOutputStream::~CBufferedOutputStream()
 	m_iPosition = 0;
 }
 
-bool CBufferedOutputStream::CanWrite() const
+bool CBufferedOutputStream::CanWrite() const noexcept
 {
 	ConfirmBufferedOutputStream();
 	if(!m_iPosition)
@@ -252,14 +252,14 @@ bool CBufferedOutputStream::CanWrite() const
 		return m_pOutputStream->WriteAviliable() > m_iPosition;
 }
 
-int_x CBufferedOutputStream::WriteAviliable()
+int_x CBufferedOutputStream::WriteAviliable() const noexcept
 {
 	ConfirmBufferedOutputStream();
 	int_x iAviliable = m_pOutputStream->WriteAviliable() - m_iPosition;
 	return iAviliable < 0 ? 0 : iAviliable;
 }
 
-void CBufferedOutputStream::WriteByte(byte_t bVal)
+void CBufferedOutputStream::Write(byte_t bVal)
 {
 	ConfirmBufferedOutputStream();
 	if(m_iPosition == m_iSize)
@@ -294,17 +294,17 @@ void CBufferedOutputStream::Flush()
 	m_pOutputStream->Flush();
 }
 
-bool CBufferedOutputStream::SeekSurpport(StreamSeekE seek) const
+bool CBufferedOutputStream::CanSeek() const
 {
 	ConfirmBufferedOutputStream();
-	return m_pOutputStream->SeekSurpport(seek);
+	return m_pOutputStream->CanSeek();
 }
-int_x CBufferedOutputStream::Seek(StreamSeekE seek, int_x iSeek)
+int_x CBufferedOutputStream::Seek(SeekE seek, int_x iSeek)
 {
 	ConfirmBufferedOutputStream();
-	if(seek == StreamSeekTell)
-		return m_pOutputStream->Seek(StreamSeekTell, iSeek) + m_iPosition;
-	else if(seek == StreamSeekCurr)
+	if(seek == SeekTell)
+		return m_pOutputStream->Seek(SeekTell, iSeek) + m_iPosition;
+	else if(seek == SeekCurr)
 	{
 		if(iSeek < 0)
 		{
@@ -328,7 +328,7 @@ int_x CBufferedOutputStream::Seek(StreamSeekE seek, int_x iSeek)
 			}
 		}
 		else {}
-		return m_pOutputStream->Seek(StreamSeekTell, iSeek) + m_iPosition;
+		return m_pOutputStream->Seek(SeekTell, iSeek) + m_iPosition;
 	}
 	else
 	{
@@ -445,14 +445,14 @@ void CBufferedOutputStream::FlushBufferToThat()
 //	return count;
 //}
 //// 剩余可写数
-//INT_32 CBufferedOutputStream::WriteAviliable()
+//INT_32 CBufferedOutputStream::WriteAviliable() const noexcept
 //{
-//	return m_pOutputStream->WriteAviliable() - (m_iBufferAviliable - m_iCurrPos);
+//	return m_pOutputStream->WriteAviliable() const noexcept - (m_iBufferAviliable - m_iCurrPos);
 //}
 //// 重置输出流
 //VOID CBufferedOutputStream::Flush()
 //{
-//	if(m_pOutputStream->WriteAviliable() > 0 && m_iBufferAviliable > 0)
+//	if(m_pOutputStream->WriteAviliable() const noexcept > 0 && m_iBufferAviliable > 0)
 //	{
 //		m_iCurrPos = m_iCurrPos - m_pOutputStream->WriteUInt8Array(m_pBuffer, m_iCurrPos);
 //		m_pOutputStream->Flush();
@@ -462,7 +462,7 @@ void CBufferedOutputStream::FlushBufferToThat()
 //		return ;
 //	else
 //	{
-//		m_iBufferAviliable = Min<int_x>(m_pOutputStream->WriteAviliable(), m_iBufferSize);
+//		m_iBufferAviliable = Min<int_x>(m_pOutputStream->WriteAviliable() const noexcept, m_iBufferSize);
 //	}
 //}
 
