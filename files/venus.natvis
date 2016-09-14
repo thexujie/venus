@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="venus::function&lt;*&gt;">
+		<DisplayString Condition="m_this==0">{_global_}</DisplayString>
+		<DisplayString Condition="m_this!=0">{_class_}</DisplayString>
+	</Type>
+	<Type Name="venus::xmt">
+		<DisplayString>{{{fx},{fy},{fz},{fw}}}</DisplayString>
+		<Expand>
+			<Item Name="f32">af</Item>
+			<Item Name="i32">ai</Item>
+			<Item Name="ui32">aui</Item>
+		</Expand>
+	</Type>
+	<Type Name="venus::tlrect_t">
+		<DisplayString>{{{x},{y},{w},{h}}}</DisplayString>
+	</Type>
+	<Type Name="venus::lrange_t">
+		<DisplayString>{{{x},{y},{w},{h}}}</DisplayString>
+	</Type>
+	<Type Name="venus::trange_t">
+		<DisplayString>{{{index}, {length}}}</DisplayString>
+	</Type>
+	<Type Name="venus::grange_t">
+		<DisplayString>{{{index}, {length}}}</DisplayString>
+	</Type>
+	<Type Name="venus::crange_t">
+		<DisplayString>{{{index}, {length}}}</DisplayString>
+	</Type>
+	<Type Name="venus::lrange_t">
+		<DisplayString>{{{index}, {length}}}</DisplayString>
+	</Type>
+	<Type Name="venus::txb_paragraph_t">
+		<DisplayString>{{{para}, trange:{trange}, crange:{crange}, lrange:{lrange}, tag:{tag}}}</DisplayString>
+	</Type>
+	<Type Name="venus::tl_line_t">
+		<DisplayString>{{{para}-{line}, trange={trange}, crange={crange}, tlrect={tlrect}}}</DisplayString>
+	</Type>
+	<Type Name="venus::tl_cluster_t">
+		<DisplayString>{{{para}-{line}-{cluster}, trange:{trange}, tlrect:{tlrect}}}</DisplayString>
+	</Type>
+	<Type Name="venus::tl_para_t">
+		<DisplayString>{{{para}, trange:{trange}, crange:{crange}, lrange:{lrange}}}</DisplayString>
+	</Type>
+	<Type Name="venus::tl_range_t">
+		<DisplayString>{{{para}-{line}, trange={trange}, crange={crange}, tlrect={tlrect}}}</DisplayString>
+	</Type>
+	
+	<!--usp-->
+	<Type Name="venus::usp_cluster_t">
+		<DisplayString>{{{para}-{line}-{cluster}, run={run}, grange={grange}, trange={trange}, tlrect={tlrect}}}</DisplayString>
+	</Type>
+	<Type Name="__m64">
+		<DisplayString>{{{m64_i16[0]},{m64_i16[1]},{m64_i16[2]},{m64_i16[3]}}}</DisplayString>
+	</Type>
+	<Type Name="venus::guid_t">
+		<DisplayString>{*(const GUID *)this}</DisplayString>
+	</Type>
+	<Type Name="venus::winerr_t">
+		<DisplayString>{hResult}</DisplayString>
+	</Type>
+	<Type Name="venus::ObjectT&lt;*&gt;">
+		<DisplayString>{{ref={m_iRef}}}</DisplayString>
+	</Type>
+  <Type Name="venus::pathinfo_t">
+    <DisplayString>{path,su}</DisplayString>
+  </Type>
+  <Type Name="venus::fileinfo_t">
+    <DisplayString>{path,su}</DisplayString>
+  </Type>
+  <Type Name="venus::folderinfo_t">
+    <DisplayString>{path,su}</DisplayString>
+  </Type>
+  <Type Name="venus::version_t">
+    <DisplayString>[{major}.{minor}.{revision}.{build}]</DisplayString>
+  </Type>
+  <Type Name="venus::vec2&lt;*&gt;">
+    <DisplayString>{{{x}, {y}}}</DisplayString>
+  </Type>
+	<Type Name="venus::vec3&lt;*&gt;">
+		<DisplayString>{{{x}, {y}, {z}}}</DisplayString>
+	</Type>
+  <Type Name="venus::size_tmpl&lt;*&gt;">
+    <DisplayString>{{{w}, {h}}}</DisplayString>
+  </Type>
+	<Type Name="venus::font_t">
+		<DisplayString>{{{name}({charset}),{size}px}}</DisplayString>
+	</Type>
+	<Type Name="venus::textformat_t">
+		<DisplayString>{{{font},{align},{wrap},{trimming},{direction}}}</DisplayString>
+	</Type>
+	<Type Name="venus::daytime_t">
+		<DisplayString>{{{year}/{month}/{day} {hour}:{minute}:{second}:{millisecond} 星期{(int)dayweek}}}</DisplayString>
+	</Type>
+	<Type Name="venus::xml_node">
+		<DisplayString>{{{type},{name},{text}}}</DisplayString>
+		<Expand>
+			<Item Name="type">type</Item>
+			<Item Name="name">name</Item>
+			<Item Name="text">text</Item>
+			<Item Name="attributes">attributes</Item>
+			<ExpandedItem Condition="children.m_size > 0">children</ExpandedItem>
+		</Expand>
+	</Type>
+	<Type Name="venus::byte_buffer_t">
+		<DisplayString>{{{size},{capability},{buffer,s}}}</DisplayString>
+	</Type>
+  
+  <!--矩形-->
+  <Type Name="venus::rect_tmpl&lt;*&gt;">
+    <DisplayString>{{{x}, {y}, {w}, {h}}}</DisplayString>
+  </Type>
+  <Type Name="venus::edge_tmpl&lt;*&gt;">
+    <DisplayString>{{{left}, {top}, {right}, {bottom}}}</DisplayString>
+  </Type>
+  
+  <!--数组-->
+	<Type Name="venus::array&lt;*&gt;">
+		<DisplayString>{buffer}</DisplayString>
+		<Expand>
+			<ExpandedItem>buffer</ExpandedItem>
+		</Expand>
+	</Type>
+  <Type Name="venus::vector&lt;*,*&gt;">
+    <DisplayString>{{size={m_size}, capability={m_capability}}}</DisplayString>
+    <Expand>
+      <Item Name="size" ExcludeView="simple" >m_size</Item>
+      <Item Name="capability" ExcludeView="simple">m_capability</Item>
+      <ArrayItems>
+        <Size>m_size</Size>
+        <ValuePointer>m_buffer</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <Type Name="venus::pair&lt;*,*&gt;">
+    <DisplayString>{{{key}={value}}}</DisplayString>
+  </Type>
+  
+  <Type Name="venus::ListTmpl&lt;*&gt;">
+    <DisplayString>{{Length={m_iLength}}}</DisplayString>
+    <Expand>
+      <Item Name="[Length]" ExcludeView="simple" >m_iLength</Item>
+      <LinkedListItems>
+        <Size>m_iLength</Size>
+        <HeadPointer>m_pHead</HeadPointer>
+        <NextPointer>pNext</NextPointer>
+        <ValueNode>data</ValueNode>
+      </LinkedListItems>
+    </Expand>
+  </Type>
+  <Type Name="venus::AutoPointerTmpl&lt;*&gt;">
+    <DisplayString>[{m_pRef}, {m_pData}]</DisplayString>
+    <Expand>
+      <Item Name="[Ref]">m_pRef</Item>
+      <Item Name="[Pointer]">m_pData</Item>
+    </Expand>
+  </Type>
+  <Type Name="venus::chbuffer&lt;wchar_t,*&gt;">
+    <DisplayString>{buffer, su}</DisplayString>
+    <StringView>buffer,su</StringView>
+    <Expand>
+      <ExpandedItem>buffer</ExpandedItem>
+    </Expand>
+  </Type>
+  <Type Name="venus::chbuffer&lt;char,*&gt;">
+    <DisplayString>{buffer, s}</DisplayString>
+    <StringView>buffer,s</StringView>
+    <Expand>
+      <ExpandedItem>buffer</ExpandedItem>
+    </Expand>
+  </Type>
+  <Type Name="venus::text_data_t&lt;wchar_t&gt;">
+    <DisplayString Condition="m_buffer==0">(0)[empty]</DisplayString>
+    <DisplayString Condition="m_buffer!=0">({m_ref}){m_buffer, su}</DisplayString>
+    <StringView>m_buffer,su</StringView>
+    <Expand>
+      <Item Name="ref">m_ref</Item>
+      <Item Name="size">m_size</Item>
+      <Item Name="capability">m_capability</Item>
+      <ArrayItems>
+        <Size>m_size</Size>
+        <ValuePointer>m_buffer</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="venus::text_data_t&lt;char&gt;">
+    <DisplayString Condition="m_buffer==0">(0)[empty]</DisplayString>
+    <DisplayString Condition="m_buffer!=0">({m_ref}){m_buffer, s}</DisplayString>
+    <StringView>m_buffer, s</StringView>
+    <Expand>
+      <Item Name="ref">m_ref</Item>
+      <Item Name="size">m_size</Item>
+      <Item Name="capability">m_capability</Item>
+      <ArrayItems>
+        <Size>m_size</Size>
+        <ValuePointer>m_buffer</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <Type Name="venus::text_base&lt;wchar_t&gt;">
+    <DisplayString Condition="m_data!=0">{m_data-&gt;m_buffer,su}</DisplayString>
+    <DisplayString Condition="m_data==0">[empty]</DisplayString>
+    <StringView Condition="m_data!=0">m_data-&gt;m_buffer,su</StringView>
+    <Expand>
+      <ExpandedItem Condition="m_data!=0">m_data</ExpandedItem>
+    </Expand>
+  </Type>
+  <Type Name="venus::text_base&lt;char&gt;">
+    <DisplayString Condition="m_data!=0">{m_data-&gt;m_buffer,s,na}</DisplayString>
+    <DisplayString Condition="m_data==0">[empty]</DisplayString>
+    <StringView Condition="m_data!=0">m_data-&gt;m_buffer,s</StringView>
+    <Expand>
+      <ExpandedItem Condition="m_data!=0">m_data</ExpandedItem>
+    </Expand>
+  </Type>
+	<Type Name="venus::ListViewItemT">
+		<DisplayString>{Text}</DisplayString>
+	</Type>
+	<Type Name="venus::FolderListViewRow">
+		<DisplayString>{path}</DisplayString>
+	</Type>
+	
+  <!--Venus3D-->
+  <Type Name="venus::Matrix4Tmpl&lt;*&gt;">
+    <DisplayString>{Values[0]}...</DisplayString>
+    <Expand>
+      <Item Name="[0]">Values[0]</Item>
+      <Item Name="[1]">Values[1]</Item>
+      <Item Name="[2]">Values[2]</Item>
+      <Item Name="[3]">Values[3]</Item>
+    </Expand>
+  </Type>
+  <Type Name="VmpMaterialT">
+    <DisplayString>{{{Texture}}}</DisplayString>
+  </Type>
+  <Type Name="Vector3Tmpl&lt;*&gt;">
+    <DisplayString>{{{X}, {Y}, {Z}}}</DisplayString>
+  </Type>
+  <Type Name="Vector4Tmpl&lt;*&gt;">
+    <DisplayString>{{{X}, {Y}, {Z}, {W}}}</DisplayString>
+  </Type>
+  <Type Name="KeyPosT">
+    <DisplayString>[{Time}]({Position.X},{Position.Y},{Position.Z})</DisplayString>
+  </Type>
+  <Type Name="KeyRotT">
+    <DisplayString>[{Time}]({Rotation.X},{Rotation.Y},{Rotation.Z},{Rotation.W})</DisplayString>
+  </Type>
+  <Type Name="KeySclT">
+    <DisplayString>[{Time}]({Scale.X},{Scale.Y},{Scale.Z})</DisplayString>
+  </Type>
+  <!--Textlayout-->
+  <Type Name="TextClusterT">
+    <DisplayString>{{Text[{Index}, {Length}], Cluster[{ClusterIndex}, {ClusterLength}], Rect[{X}, {Y}, {Width}, {Height}]}}</DisplayString>
+    <Expand>
+      <Item Name="Index">Index</Item>
+      <Item Name="Length">Length</Item>
+      <Item Name="ClusterIndex">ClusterIndex</Item>
+      <Item Name="ClusterLength">ClusterLength</Item>
+      <Item Name="IsSoftBreak">IsSoftBreak</Item>
+    </Expand>
+  </Type>
+  <Type Name="UspClusterT">
+    <DisplayString>{{[{RunIndex}] Text[{Index}, {Length}], Cluster[{ClusterIndex}, {ClusterLength}], Rect[{X}, {Y}, {Width}, {Height}], Glyph[{GlyphIndex}, {GlyphLength}]}}</DisplayString>
+    <Expand>
+      <Item Name="RunIndex">RunIndex</Item>
+      <Item Name="Index">Index</Item>
+      <Item Name="Length">Length</Item>
+      <Item Name="ClusterIndex">ClusterIndex</Item>
+      <Item Name="ClusterLength">ClusterLength</Item>
+      <Item Name="X">X</Item>
+      <Item Name="Y">Y</Item>
+      <Item Name="Width">Width</Item>
+      <Item Name="Height">Height</Item>
+      <Item Name="GlyphIndex">GlyphIndex</Item>
+      <Item Name="GlyphLength">GlyphLength</Item>
+      <Item Name="IsSoftBreak">IsSoftBreak</Item>
+    </Expand>
+  </Type>
+  <Type Name="UspLineT">
+    <DisplayString>{{Text[{Index}, {Length}] Cluster[{ClusterIndex}, {ClusterLength}], Size[{Width}, {Height}]}}</DisplayString>    
+  </Type>
+	<Type Name="venus::CImage">
+		<DisplayString>[{m_data.width}x{m_data.height}]</DisplayString>
+		<Expand>
+			<Item Name="data">m_data</Item>
+			<Item Name="cache">m_pCache</Item>
+		</Expand>
+	</Type>
+
+  <!--<Type Name="venus::CMetaHelper::meta_t">
+    <DisplayString>{dynamic_cast&lt;info&gt;(*data)}</DisplayString>
+  </Type>-->
+    
+  
+  
+  <Type Name="venus::float2">
+    <DisplayString>{{{x}, {y}}}</DisplayString>
+    <Expand>
+      <Item Name="x">x</Item>
+      <Item Name="y">y</Item>
+      <Item Name="af">af</Item>
+    </Expand>
+  </Type>
+  <Type Name="venus::float3">
+    <DisplayString>{{{x}, {y}, {z}}}</DisplayString>
+    <Expand>
+      <Item Name="x">x</Item>
+      <Item Name="y">y</Item>
+      <Item Name="z">z</Item>
+      <Item Name="af">af</Item>
+    </Expand>
+  </Type>
+  <Type Name="venus::float4">
+    <DisplayString>{{{x}, {y}, {z}, {w}}}</DisplayString>
+    <Expand>
+      <Item Name="x">x</Item>
+      <Item Name="y">y</Item>
+      <Item Name="z">z</Item>
+      <Item Name="w">w</Item>
+      <Item Name="af">af</Item>
+      <Item Name="ai">ai</Item>
+      <Item Name="aui">aui</Item>
+    </Expand>
+  </Type>
+  <Type Name="venus::float4x4">
+    <DisplayString>{{{row0},...}}</DisplayString>
+    <Expand>
+      <Item Name="[0]">row0</Item>
+      <Item Name="[1]">row1</Item>
+      <Item Name="[2]">row2</Item>
+      <Item Name="[3]">row3</Item>
+    </Expand>
+  </Type>
+  <Type Name="XmlAttribute">
+    <DisplayString>{Name}={Value}</DisplayString>
+  </Type>
+  <Type Name="Vector3F">
+    <DisplayString>{{{x}, {y}, {z}}}</DisplayString>
+  </Type>
+  <Type Name="Vector4F">
+    <DisplayString>{{{x}, {y}, {z}, {w}}}</DisplayString>
+  </Type>
+  <Type Name="xmv">
+    <DisplayString>{{{af[0]}, {af[1]}, {af[2]}, {af[3]}}}</DisplayString>
+  </Type>
+  <Type Name="xmm">
+    <DisplayString>{{{row0}, {row1}, {row2}, {row3}}}</DisplayString>
+    <Expand>
+      <Item Name="[0]">row0</Item>
+      <Item Name="[1]">row1</Item>
+      <Item Name="[2]">row2</Item>
+      <Item Name="[3]">row3</Item>
+    </Expand>
+  </Type>
+  <Type Name="DirectX::XMMATRIX">
+    <DisplayString>{{{r[0]}, {r[1]}, {r[2]}, {r[3]}}}</DisplayString>
+    <Expand>
+      <Item Name="[0]">r[0]</Item>
+      <Item Name="[1]">r[1]</Item>
+      <Item Name="[2]">r[2]</Item>
+      <Item Name="[3]">r[3]</Item>
+    </Expand>
+  </Type>
+  <Type Name="venus::oid_t">
+    <DisplayString>{{{name,su}}}</DisplayString>
+  </Type>
+  <Type Name="venus::vertex_pnt">
+    <DisplayString>{{{position}, {normal}, {texcoord}}}</DisplayString>
+  </Type>
+  
+  <!-- mmx -->
+  <Type Name="__m128">
+    <DisplayString>{{{m128_f32[0]}, {m128_f32[1]}, {m128_f32[2]}, {m128_f32[3]}}}</DisplayString>
+  </Type>
+  <Type Name="__m128i">
+    <DisplayString>{{{m128i_i32[0]}, {m128i_i32[1]}, {m128i_i32[2]}, {m128i_i32[3]}}}</DisplayString>
+  </Type>
+
+  <Type Name="venus::TreeItemT">
+    <DisplayString>{{{Text}}}</DisplayString>
+  </Type>
+  <Type Name="venus::FolderTreeItemT">
+    <DisplayString>{{{Path, su}}}</DisplayString>
+  </Type>
+
+  <Type Name="venus::CControl">
+    <DisplayString>{{control {m_name},{m_rect},{m_text}}}</DisplayString>
+		<Expand>
+			<Synthetic Name="MouseControl">
+				<Expand>
+					<CustomListItems>
+						<Variable Name="pMouseControl" InitialValue="m_pMouseControl"/>
+						<Loop>
+							<If Condition="pMouseControl == nullptr">
+								<Break Condition="pMouseControl==nullptr"/>
+							</If>
+							<Item>pMouseControl</Item>
+							<Exec>pMouseControl = ((venus::CControl *)pMouseControl)->m_pMouseControl</Exec>
+						</Loop>
+					</CustomListItems>
+				</Expand>
+			</Synthetic>
+		</Expand>
+  </Type>
+  <Type Name="venus::CSpace">
+    <DisplayString>{{space {m_name},{m_rect},{m_text}}}</DisplayString>
+  </Type>
+  <Type Name="venus::CStatic">
+    <DisplayString>{{static {m_name},{m_rect},{m_text}}}</DisplayString>
+  </Type>
+  <Type Name="venus::CButton">
+    <DisplayString>{{button {m_name},{m_rect},{m_text}}}</DisplayString>
+  </Type>
+  <Type Name="venus::CTextLine">
+    <DisplayString>{{textline {m_name},{m_rect}}}</DisplayString>
+  </Type>
+  <Type Name="venus::CTextBox">
+    <DisplayString>{{textbox {m_name},{m_rect}}}</DisplayString>
+  </Type>
+  <Type Name="venus::CGroupBox">
+    <DisplayString>{{groupbox {m_name},{m_rect}}}</DisplayString>
+  </Type>
+  <Type Name="venus::CListBox">
+    <DisplayString>{{listbox {m_name},{m_rect}}}</DisplayString>
+  </Type>
+  <Type Name="venus::CCheckBox">
+    <DisplayString>{{checkbox {m_name},{m_rect}}}</DisplayString>
+  </Type>
+  <Type Name="venus::CListView">
+    <DisplayString>{{listview {m_name},{m_rect}}}</DisplayString>
+  </Type>
+	<Type Name="venus::CTreeView">
+		<DisplayString>{{treeview {m_name},{m_rect}}}</DisplayString>
+	</Type>
+	<Type Name="venus::CScrollView">
+		<DisplayString>{{scrollview {m_name},{m_rect}}}</DisplayString>
+	</Type>
+  <Type Name="venus::CScrollBar">
+    <DisplayString>{{scrollbar {m_name},{m_rect}}}</DisplayString>
+  </Type>
+  <Type Name="venus::CMenuBar">
+    <DisplayString>{{menubar {m_name},{m_rect}}}</DisplayString>
+  </Type>
+	<Type Name="venus::CPane">
+		<DisplayString>{{pane {m_name},{m_rect},{m_text}}}</DisplayString>
+	</Type>
+	<Type Name="venus::CPanel">
+		<DisplayString>{{panel {m_name},{m_rect},{m_text}}}</DisplayString>
+	</Type>
+  <Type Name="venus::CForm">
+    <DisplayString>{{form {m_name},{m_rect},{m_text}}}</DisplayString>
+  </Type>
+  <Type Name="venus::CTabControl">
+    <DisplayString>{{tabcontrol {m_name},{m_rect}}}</DisplayString>
+  </Type>
+	<Type Name="venus::CCaption">
+		<DisplayString>{{caption {m_name},{m_rect}}}</DisplayString>
+	</Type>
+	<Type Name="venus::CCaption">
+		<DisplayString>{{{GetOid().name} {m_name},{m_rect}}}</DisplayString>
+	</Type>
+
+	<Type Name="venus::CDockFrame">
+		<DisplayString>{{dockframe {m_name},{m_rect}}}</DisplayString>
+	</Type>
+	<Type Name="venus::CDockNode">
+		<DisplayString>{m_rcNode}-&gt;{m_pControl,na}</DisplayString>
+		<Expand>
+			<CustomListItems>
+				<Variable Name="pNode" InitialValue="m_pChild"/>
+				<Loop>
+					<If Condition="pNode == nullptr">
+						<Break Condition="pNode==nullptr"/>
+					</If>
+					<Item>pNode</Item>
+					<Exec>pNode = ((venus::CDockNode *)pNode)->m_pNext</Exec>
+				</Loop>
+			</CustomListItems>
+		</Expand>
+	</Type>
+
+	<Type Name="venus::color_argb_t">
+		<DisplayString>{{{color,x}}}</DisplayString>
+	</Type>
+
+	<Type Name="venus::sign_ele_t">
+		<DisplayString>{(char *)text,[4]na}</DisplayString>
+	</Type>
+	<Type Name="venus::paramid_t">
+		<DisplayString>{{{name},id={id}}}</DisplayString>
+	</Type>
+	<Type Name="venus::CDx11Effect">
+		<DisplayString>{{{m_szName,su}}}</DisplayString>
+	</Type>
+	<Type Name="venus::C3DFile">
+		<DisplayString>{{{m_path}}}</DisplayString>
+	</Type>
+	<!-- ==================================================================== 编辑器使用-->
+	<Type Name="CXeTerrain">
+		<DisplayString>{{{m_name},[{m_file}]}}</DisplayString>
+	</Type>
+</AutoVisualizer>

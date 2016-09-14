@@ -1,0 +1,893 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="core\CBufferedStream.cpp">
+      <Filter>core\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="core\CByteStream.cpp">
+      <Filter>core\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="core\CDataStream.cpp">
+      <Filter>core\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="core\CFileStream.cpp">
+      <Filter>core\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="core\CMemoryStream.cpp">
+      <Filter>core\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="core\CTextStream.cpp">
+      <Filter>core\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="core\IStream.cpp">
+      <Filter>core\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="core\text.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\file.cpp">
+      <Filter>core\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="core\math.cpp">
+      <Filter>core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="core\unicode.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\function.cpp">
+      <Filter>core\base\struct</Filter>
+    </ClCompile>
+    <ClCompile Include="core\daytime.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\color.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\core_inc.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\core_api.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\platform_api_win32.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\support.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\math\xmm\float4x4.cpp">
+      <Filter>core\math\xmm</Filter>
+    </ClCompile>
+    <ClCompile Include="core\codepage.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\base\Menu.cpp">
+      <Filter>v2d\ui\base</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CButton.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CCheckBox.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CComboBox.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CControl.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CGroupBox.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CLabel.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CListBox.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CListView.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CMenuBar.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CProgressBar.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CRadio.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CScrollBar.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CStatic.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CTabControl.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CTextBox.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CTextLine.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CTreeView.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="core\math\xmm\xm\xmf.cpp">
+      <Filter>core\math\xmm\xm</Filter>
+    </ClCompile>
+    <ClCompile Include="core\math\xmm\xm\xmi.cpp">
+      <Filter>core\math\xmm\xm</Filter>
+    </ClCompile>
+    <ClCompile Include="core\math\xmm\xm\xmi_argb.cpp">
+      <Filter>core\math\xmm\xm</Filter>
+    </ClCompile>
+    <ClCompile Include="core\math\xmm\xmm.cpp">
+      <Filter>core\math\xmm</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DExplorer.cpp">
+      <Filter>v3d\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DScene.cpp">
+      <Filter>v3d\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\formats\bmp.cpp">
+      <Filter>v2d\image\formats</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\formats\dds.cpp">
+      <Filter>v2d\image\formats</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\formats\ico.cpp">
+      <Filter>v2d\image\formats</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\formats\png.cpp">
+      <Filter>v2d\image\formats</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\formats\tga.cpp">
+      <Filter>v2d\image\formats</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\image.cpp">
+      <Filter>v2d\image</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\image_api.cpp">
+      <Filter>v2d\image</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\image_converter.cpp">
+      <Filter>v2d\image</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\image_type.cpp">
+      <Filter>v2d\image</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\converter\image_converter_cmyk.cpp">
+      <Filter>v2d\image\converter</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\converter\image_converter_gray.cpp">
+      <Filter>v2d\image\converter</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\converter\image_converter_rgb.cpp">
+      <Filter>v2d\image\converter</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\converter\image_converter_ycck.cpp">
+      <Filter>v2d\image\converter</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\converter\image_converter_yuv.cpp">
+      <Filter>v2d\image\converter</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\v3d_inc.cpp">
+      <Filter>v3d</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DAction.cpp">
+      <Filter>v3d\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DMaterial.cpp">
+      <Filter>v3d\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DMesh.cpp">
+      <Filter>v3d\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CButtonBase.cpp">
+      <Filter>v2d\ui\base</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\math\intersect.cpp">
+      <Filter>v3d\math</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\math\ray.cpp">
+      <Filter>v3d\math</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\math\bbox.cpp">
+      <Filter>v3d\math</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\math\line.cpp">
+      <Filter>v3d\math</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\math\view_frustum.cpp">
+      <Filter>v3d\math</Filter>
+    </ClCompile>
+    <ClCompile Include="core\byte_buffer.cpp">
+      <Filter>core\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\CImage.cpp">
+      <Filter>v2d\image</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\formats\jpg.cpp">
+      <Filter>v2d\image\formats</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\XmlParser.cpp">
+      <Filter>v3d\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DCameraFly.cpp">
+      <Filter>v3d\engine\cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DCameraFP.cpp">
+      <Filter>v3d\engine\cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DCamera.cpp">
+      <Filter>v3d\engine\cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DFileDriver.cpp">
+      <Filter>v3d\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DFile.cpp">
+      <Filter>v3d\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DEntity.cpp">
+      <Filter>v3d\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="core\xml.cpp">
+      <Filter>core\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="core\math\xmm\float2.cpp">
+      <Filter>core\math\xmm</Filter>
+    </ClCompile>
+    <ClCompile Include="core\math\xmm\float3.cpp">
+      <Filter>core\math\xmm</Filter>
+    </ClCompile>
+    <ClCompile Include="core\math\xmm\float4.cpp">
+      <Filter>core\math\xmm</Filter>
+    </ClCompile>
+    <ClCompile Include="core\math\xmm\quat4.cpp">
+      <Filter>core\math\xmm</Filter>
+    </ClCompile>
+    <ClCompile Include="core\math\math_base.cpp">
+      <Filter>core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="core\random.cpp">
+      <Filter>core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\math\cbuffer.cpp">
+      <Filter>v3d\math</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\math\v3d_algorithm.cpp">
+      <Filter>v3d\math</Filter>
+    </ClCompile>
+    <ClCompile Include="core\tools\IMetaHelper.cpp">
+      <Filter>core\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="core\tools\IData.cpp">
+      <Filter>core\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\tools\CUILoaderXml.cpp">
+      <Filter>v2d\ui\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CSpace.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CPane.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\IControl.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CPanel.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\forms\CForm.cpp">
+      <Filter>v2d\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\forms\CMessageBox.cpp">
+      <Filter>v2d\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\forms\CPopMenu.cpp">
+      <Filter>v2d\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\dock\CDockPane.cpp">
+      <Filter>v2d\ui\dock</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\dock\CDockFrameTest.cpp">
+      <Filter>v2d\ui\dock</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\dock\CDockNode.cpp">
+      <Filter>v2d\ui\dock</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\dock\CDockFrame.cpp">
+      <Filter>v2d\ui\dock</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\forms\CPopForm.cpp">
+      <Filter>v2d\ui\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CLayout.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DTerrain.cpp">
+      <Filter>v3d\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\controls\CFoldingView.cpp">
+      <Filter>v2d\ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\image\image_save.cpp">
+      <Filter>v2d\image</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\paint\IPaint.cpp">
+      <Filter>v2d\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\paint\CPaintBase.cpp">
+      <Filter>v2d\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\paint\CSamplerBase.cpp">
+      <Filter>v2d\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\ui\base\BasePaint.cpp">
+      <Filter>v2d\ui\base</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\paint\textformat.cpp">
+      <Filter>v2d\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\paint\IDocument.cpp">
+      <Filter>v2d\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="v2d\paint\CPath.cpp">
+      <Filter>v2d\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\engine\C3DEffect.cpp">
+      <Filter>v3d\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="v3d\v3d_api.cpp">
+      <Filter>v3d</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="vs2003.h" />
+    <ClInclude Include="core\CBufferedStream.h">
+      <Filter>core\stream</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CByteStream.h">
+      <Filter>core\stream</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CDataStream.h">
+      <Filter>core\stream</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CFileStream.h">
+      <Filter>core\stream</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CMemoryStream.h">
+      <Filter>core\stream</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CTextStream.h">
+      <Filter>core\stream</Filter>
+    </ClInclude>
+    <ClInclude Include="core\IStream.h">
+      <Filter>core\stream</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CMatrix3.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CMatrix5.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\MatrixTmpl.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\text.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\CTriangle.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\file.h">
+      <Filter>core\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="core\unicode.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\function.h">
+      <Filter>core\base\struct</Filter>
+    </ClInclude>
+    <ClInclude Include="core\hash_map.h">
+      <Filter>core\base\struct</Filter>
+    </ClInclude>
+    <ClInclude Include="core\list.h">
+      <Filter>core\base\struct</Filter>
+    </ClInclude>
+    <ClInclude Include="core\pair.h">
+      <Filter>core\base\struct</Filter>
+    </ClInclude>
+    <ClInclude Include="core\doc.h" />
+    <ClInclude Include="core\daytime.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\color.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\core_inc.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\core_api.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\core_exp.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\platform_api.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\support.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\xmm\float4x4.h">
+      <Filter>core\math\xmm</Filter>
+    </ClInclude>
+    <ClInclude Include="core\codepage.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\v2d_inc.h">
+      <Filter>v2d</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\base\Menu.h">
+      <Filter>v2d\ui\base</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CButton.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CCheckBox.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CComboBox.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CControl.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CGroupBox.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CLabel.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CListBox.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CListView.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CMenuBar.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CProgressBar.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CRadio.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CScrollBar.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CStatic.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CTabControl.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CTextBox.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CTextLine.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CTreeView.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\base\UIBase.h">
+      <Filter>v2d\ui\base</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\v3d_inc.h">
+      <Filter>v3d</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\xmm\xm\xm.h">
+      <Filter>core\math\xmm\xm</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\xmm\xm\xmf.h">
+      <Filter>core\math\xmm\xm</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\xmm\xm\xmi.h">
+      <Filter>core\math\xmm\xm</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\xmm\xm\xmi_argb.h">
+      <Filter>core\math\xmm\xm</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\xmm\xmm.h">
+      <Filter>core\math\xmm</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DExplorer.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DScene.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\Cameras.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\Engine.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\formats\bmp.h">
+      <Filter>v2d\image\formats</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\formats\dds.h">
+      <Filter>v2d\image\formats</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\formats\ico.h">
+      <Filter>v2d\image\formats</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\formats\png.h">
+      <Filter>v2d\image\formats</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\formats\tga.h">
+      <Filter>v2d\image\formats</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\image.h">
+      <Filter>v2d\image</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\image_api.h">
+      <Filter>v2d\image</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\image_converter.h">
+      <Filter>v2d\image</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\image_type.h">
+      <Filter>v2d\image</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\converter\image_converter_cmyk.h">
+      <Filter>v2d\image\converter</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\converter\image_converter_gray.h">
+      <Filter>v2d\image\converter</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\converter\image_converter_rgb.h">
+      <Filter>v2d\image\converter</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\converter\image_converter_ycck.h">
+      <Filter>v2d\image\converter</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\converter\image_converter_yuv.h">
+      <Filter>v2d\image\converter</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DAction.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DMaterial.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DMesh.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\vme.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CButtonBase.h">
+      <Filter>v2d\ui\base</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\math\intersect.h">
+      <Filter>v3d\math</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\math\ray.h">
+      <Filter>v3d\math</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\math\bbox.h">
+      <Filter>v3d\math</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\math\line.h">
+      <Filter>v3d\math</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\math\plane.h">
+      <Filter>v3d\math</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\math\view_frustum.h">
+      <Filter>v3d\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\byte_buffer.h">
+      <Filter>core\stream</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\CImage.h">
+      <Filter>v2d\image</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\image\formats\jpg.h">
+      <Filter>v2d\image\formats</Filter>
+    </ClInclude>
+    <ClInclude Include="core\object_ptr.h">
+      <Filter>core\base\struct</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\base\TreeItem.h">
+      <Filter>v2d\ui\base</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\XmlParser.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DCameraFly.h">
+      <Filter>v3d\engine\cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DCameraFP.h">
+      <Filter>v3d\engine\cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DCamera.h">
+      <Filter>v3d\engine\cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="core\vector.h">
+      <Filter>core\base\struct</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DFileDriver.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DFile.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DNode.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DEntity.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="core\xml.h">
+      <Filter>core\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\v3d_enum.h">
+      <Filter>v3d</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\xmm\float2.h">
+      <Filter>core\math\xmm</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\xmm\float3.h">
+      <Filter>core\math\xmm</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\xmm\float4.h">
+      <Filter>core\math\xmm</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\xmm\quat4.h">
+      <Filter>core\math\xmm</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\math_base.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\random.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\math\cbuffer.h">
+      <Filter>v3d\math</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\math\v3d_algorithm.h">
+      <Filter>v3d\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\vec2.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\vec4.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\align.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\edge.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\rect.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\tools\IMetaHelper.h">
+      <Filter>core\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="core\tools\IData.h">
+      <Filter>core\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\tools\CUILoaderXml.h">
+      <Filter>v2d\ui\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CSpace.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CPane.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="core\core_def.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\IControl.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CPanel.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\forms\CForm.h">
+      <Filter>v2d\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\forms\CMessageBox.h">
+      <Filter>v2d\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\forms\CPopMenu.h">
+      <Filter>v2d\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\dock\CDockPane.h">
+      <Filter>v2d\ui\dock</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\dock\IDock.h">
+      <Filter>v2d\ui\dock</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\dock\CDockFrameTest.h">
+      <Filter>v2d\ui\dock</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\dock\CDockNode.h">
+      <Filter>v2d\ui\dock</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\dock\CDockFrame.h">
+      <Filter>v2d\ui\dock</Filter>
+    </ClInclude>
+    <ClInclude Include="core\stl\type_traits.h">
+      <Filter>core\stl</Filter>
+    </ClInclude>
+    <ClInclude Include="core\stl\stl.h">
+      <Filter>core\stl</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\forms\CPopForm.h">
+      <Filter>v2d\ui\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\controls\CLayout.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DTerrain.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\mesh.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="venus.h" />
+    <ClInclude Include="v2d\ui\controls\CFoldingView.h">
+      <Filter>v2d\ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\v3d_def.h">
+      <Filter>v3d</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h" />
+    <ClInclude Include="v2d\image\image_save.h">
+      <Filter>v2d\image</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\paint\IPaint.h">
+      <Filter>v2d\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\paint\CPaintBase.h">
+      <Filter>v2d\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\paint\CSamplerBase.h">
+      <Filter>v2d\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\ui\base\BasePaint.h">
+      <Filter>v2d\ui\base</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\paint\textformat.h">
+      <Filter>v2d\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\paint\IDocument.h">
+      <Filter>v2d\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="v2d\paint\CPath.h">
+      <Filter>v2d\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\array.h">
+      <Filter>core\base\struct</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\engine\C3DEffect.h">
+      <Filter>v3d\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="core\linear_map.h">
+      <Filter>core\base\struct</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\vec3.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="v3d\v3d_api.h">
+      <Filter>v3d</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{ba5cee7d-6442-4ccd-96c7-78d019c75fbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\base">
+      <UniqueIdentifier>{c60295b2-de8c-414f-a525-b77444fd2e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\stream">
+      <UniqueIdentifier>{07dce65c-0f77-449e-a5bd-75cd1edee4cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\tools">
+      <UniqueIdentifier>{87ff0e34-2702-49af-9a78-7a4a113100d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\base\struct">
+      <UniqueIdentifier>{314e216b-9930-4776-955b-258d5c59ebe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\math">
+      <UniqueIdentifier>{151399a3-4d53-468e-8b52-d09184b6b006}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\math\xmm">
+      <UniqueIdentifier>{dd0a241e-a971-4da6-8369-ac79766d6693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\math\xmm\xm">
+      <UniqueIdentifier>{66798b4c-080d-4ce2-9ccb-ee46ca85448c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v3d">
+      <UniqueIdentifier>{5100028b-a05d-4568-8c26-aaae0f278986}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v3d\engine">
+      <UniqueIdentifier>{dc54def7-8bb2-4abc-a762-23ec3713cdad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v3d\math">
+      <UniqueIdentifier>{1da30c7c-4347-4635-8af9-c1b6ac51d779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v2d">
+      <UniqueIdentifier>{a751e14c-c13a-47e4-9f48-9d18d44d8d5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v2d\ui">
+      <UniqueIdentifier>{f5409a2a-c03f-4c68-944d-a561fcbb3d49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v2d\ui\controls">
+      <UniqueIdentifier>{7ee1ed85-2d77-4afe-aa3d-4d146399d3cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v2d\ui\base">
+      <UniqueIdentifier>{33143b14-c188-478f-a332-e533c92fbda3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v2d\image">
+      <UniqueIdentifier>{3527a2c7-1a91-4a15-9a17-eb4373a7a016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v2d\image\formats">
+      <UniqueIdentifier>{1f4ea12f-4e9c-404a-bad1-fba2b1e9d135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v2d\image\converter">
+      <UniqueIdentifier>{b351576b-c15e-4401-8c36-8a5adc32e142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v3d\engine\cameras">
+      <UniqueIdentifier>{d7e92d57-c850-4e4e-90ba-58c8c668ba19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v2d\ui\tools">
+      <UniqueIdentifier>{9b8dac22-2983-4d54-9b61-6e32813a904b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v2d\ui\forms">
+      <UniqueIdentifier>{6b1f8f13-d02a-4e58-b4a7-df12aaa363b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v2d\ui\dock">
+      <UniqueIdentifier>{d0260c48-11a8-449c-879d-495bd8036aa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\stl">
+      <UniqueIdentifier>{9de6c756-9659-4876-9db3-8ae81de3f2ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v2d\paint">
+      <UniqueIdentifier>{a3235b74-97a2-448f-b8ff-d54c3a3a84f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="core\math\xmm\xm\xmf_base.inl">
+      <Filter>core\math\xmm\xm</Filter>
+    </None>
+    <None Include="core\math\xmm\xm\xmf_matr.inl">
+      <Filter>core\math\xmm\xm</Filter>
+    </None>
+    <None Include="core\math\xmm\xm\xmf_quat.inl">
+      <Filter>core\math\xmm\xm</Filter>
+    </None>
+    <None Include="core\math\xmm\xm\xmf_vec.inl">
+      <Filter>core\math\xmm\xm</Filter>
+    </None>
+  </ItemGroup>
+</Project>

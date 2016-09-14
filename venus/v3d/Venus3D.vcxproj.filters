@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C3DScene.cpp">
+      <Filter>venus</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DAnimatorRotation.cpp">
+      <Filter>venus</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DNode.cpp">
+      <Filter>venus\node</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DOctree.cpp">
+      <Filter>venus</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DNodeRect.cpp">
+      <Filter>venus\node</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="Venus3D.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DExplorer.cpp">
+      <Filter>venus</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DFileData.cpp">
+      <Filter>venus</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DMesh.cpp">
+      <Filter>venus\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DMeshVmp.cpp">
+      <Filter>venus\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DRenderFactory.cpp">
+      <Filter>venus</Filter>
+    </ClCompile>
+    <ClCompile Include="vxm.cpp">
+      <Filter>math\vxm</Filter>
+    </ClCompile>
+    <ClCompile Include="xmm.cpp">
+      <Filter>math\vxm</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DCameraFly.cpp">
+      <Filter>venus\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DCameraFP.cpp">
+      <Filter>venus\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseInc.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="float2x1.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="float3x1.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="float4x1.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="float4x4.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBox.cpp">
+      <Filter>venus</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewFrustum.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="quat4x1.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="VmpMesh.cpp">
+      <Filter>mesh\vmp</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxMesh.cpp">
+      <Filter>mesh\fbx</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BaseInc.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DScene.h">
+      <Filter>venus</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DAnimatorRotation.h">
+      <Filter>venus</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DNode.h">
+      <Filter>venus\node</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DOctree.h">
+      <Filter>venus</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DNodeRect.h">
+      <Filter>venus\node</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DExplorer.h">
+      <Filter>venus</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DFileData.h">
+      <Filter>venus</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DMesh.h">
+      <Filter>venus\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DMeshVmp.h">
+      <Filter>venus\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DRenderFactory.h">
+      <Filter>venus</Filter>
+    </ClInclude>
+    <ClInclude Include="vxm.h">
+      <Filter>math\vxm</Filter>
+    </ClInclude>
+    <ClInclude Include="xmm.h">
+      <Filter>math\vxm</Filter>
+    </ClInclude>
+    <ClInclude Include="xm_base.inl">
+      <Filter>math\vxm</Filter>
+    </ClInclude>
+    <ClInclude Include="xm_quat.inl">
+      <Filter>math\vxm</Filter>
+    </ClInclude>
+    <ClInclude Include="xm_vec.inl">
+      <Filter>math\vxm</Filter>
+    </ClInclude>
+    <ClInclude Include="xm_matr.inl">
+      <Filter>math\vxm</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DCameraFly.h">
+      <Filter>venus\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DCameraFP.h">
+      <Filter>venus\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Venus3D.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="float4x4.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="float2x1.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="float3x1.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="float4x1.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingBox.h">
+      <Filter>venus</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewFrustum.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="Line3.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane3.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="quat4x1.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="Cameras.h">
+      <Filter>venus\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="VmpMesh.h">
+      <Filter>mesh\vmp</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxMesh.h">
+      <Filter>mesh\fbx</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="app">
+      <UniqueIdentifier>{750b17d1-a227-4196-b195-162d8b7bc0a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mesh">
+      <UniqueIdentifier>{f0ace3dc-5e69-4846-a796-6a5a439fbc95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mesh\fbx">
+      <UniqueIdentifier>{a1c787af-ffee-41ef-a14a-7605d15a29a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mesh\vmp">
+      <UniqueIdentifier>{13f6843b-d69e-4e10-8ce5-d0bb34ceea77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="venus">
+      <UniqueIdentifier>{102cd67c-4ef5-4500-a37c-1522667dee05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="venus\mesh">
+      <UniqueIdentifier>{df0eb2cc-db66-4205-a6d0-bfba166bd507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="venus\node">
+      <UniqueIdentifier>{447290e4-e3b2-4157-9d1e-3bd789c5af82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="venus\camera">
+      <UniqueIdentifier>{83824511-25c8-4f88-b229-5b96ddb4644f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{0b4b6d57-6822-4d26-845d-0c20c802b792}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math\vxm">
+      <UniqueIdentifier>{7a80aeb5-214a-4faa-892e-2d64e04245ab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

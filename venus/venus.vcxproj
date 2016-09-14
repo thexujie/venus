@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libs\libjpeg\libjpeg.vcxproj">
+      <Project>{0eff8869-28a7-4736-ad19-046b893652fa}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\libpng\libpng.vcxproj">
+      <Project>{21cb22f3-74ea-4a22-a953-c6ca294d7d8d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\zlib\zlib.vcxproj">
+      <Project>{d2202452-772a-4e11-b3d8-5e7849065cc1}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{327EADFF-ED36-413C-89FE-D9DC08BE57BE}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Condition="Exists('$(SolutionDir)\$(SolutionName).cpp.default.props')" Project="$(SolutionDir)\$(SolutionName).cpp.default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <Import Condition="Exists('$(SolutionDir)\$(SolutionName).props')" Project="$(SolutionDir)\$(SolutionName).props" />
+  <ItemGroup>
+    <ClCompile Include="CButtonBase.cpp" />
+    <ClCompile Include="core\CBufferedStream.cpp" />
+    <ClCompile Include="core\CByteStream.cpp" />
+    <ClCompile Include="core\codepage.cpp" />
+    <ClCompile Include="core\color.cpp" />
+    <ClCompile Include="core\CDataStream.cpp" />
+    <ClCompile Include="core\CFileStream.cpp" />
+    <ClCompile Include="core\byte_buffer.cpp" />
+    <ClCompile Include="core\CMemoryStream.cpp" />
+    <ClCompile Include="core\core_api.cpp" />
+    <ClCompile Include="core\core_inc.cpp" />
+    <ClCompile Include="core\random.cpp" />
+    <ClCompile Include="core\CTextStream.cpp" />
+    <ClCompile Include="core\file.cpp" />
+    <ClCompile Include="core\function.cpp" />
+    <ClCompile Include="core\IStream.cpp" />
+    <ClCompile Include="core\math.cpp" />
+    <ClCompile Include="core\math\math_base.cpp" />
+    <ClCompile Include="core\math\xmm\float2.cpp" />
+    <ClCompile Include="core\math\xmm\float3.cpp" />
+    <ClCompile Include="core\math\xmm\float4.cpp" />
+    <ClCompile Include="core\math\xmm\float4x4.cpp" />
+    <ClCompile Include="core\math\xmm\quat4.cpp" />
+    <ClCompile Include="core\math\xmm\xmm.cpp" />
+    <ClCompile Include="core\math\xmm\xm\xmf.cpp" />
+    <ClCompile Include="core\math\xmm\xm\xmi.cpp" />
+    <ClCompile Include="core\math\xmm\xm\xmi_argb.cpp" />
+    <ClCompile Include="core\platform_api_win32.cpp" />
+    <ClCompile Include="core\support.cpp" />
+    <ClCompile Include="core\text.cpp" />
+    <ClCompile Include="core\daytime.cpp" />
+    <ClCompile Include="core\tools\IData.cpp" />
+    <ClCompile Include="core\tools\IMetaHelper.cpp" />
+    <ClCompile Include="core\unicode.cpp" />
+    <ClCompile Include="core\xml.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="v2d\image\CImage.cpp" />
+    <ClCompile Include="v2d\image\converter\image_converter_cmyk.cpp" />
+    <ClCompile Include="v2d\image\converter\image_converter_gray.cpp" />
+    <ClCompile Include="v2d\image\converter\image_converter_rgb.cpp" />
+    <ClCompile Include="v2d\image\converter\image_converter_ycck.cpp" />
+    <ClCompile Include="v2d\image\converter\image_converter_yuv.cpp" />
+    <ClCompile Include="v2d\image\formats\bmp.cpp" />
+    <ClCompile Include="v2d\image\formats\dds.cpp" />
+    <ClCompile Include="v2d\image\formats\ico.cpp" />
+    <ClCompile Include="v2d\image\formats\jpg.cpp" />
+    <ClCompile Include="v2d\image\formats\png.cpp" />
+    <ClCompile Include="v2d\image\formats\tga.cpp" />
+    <ClCompile Include="v2d\image\image.cpp" />
+    <ClCompile Include="v2d\image\image_api.cpp" />
+    <ClCompile Include="v2d\image\image_converter.cpp" />
+    <ClCompile Include="v2d\image\image_save.cpp" />
+    <ClCompile Include="v2d\image\image_type.cpp" />
+    <ClCompile Include="v2d\paint\CPaintBase.cpp" />
+    <ClCompile Include="v2d\paint\CPath.cpp" />
+    <ClCompile Include="v2d\paint\CSamplerBase.cpp" />
+    <ClCompile Include="v2d\paint\IDocument.cpp" />
+    <ClCompile Include="v2d\paint\IPaint.cpp" />
+    <ClCompile Include="v2d\paint\textformat.cpp" />
+    <ClCompile Include="v2d\ui\base\BasePaint.cpp" />
+    <ClCompile Include="v2d\ui\base\Menu.cpp" />
+    <ClCompile Include="v2d\ui\controls\CButton.cpp" />
+    <ClCompile Include="v2d\ui\controls\CCheckBox.cpp" />
+    <ClCompile Include="v2d\ui\controls\CComboBox.cpp" />
+    <ClCompile Include="v2d\ui\controls\CControl.cpp" />
+    <ClCompile Include="v2d\ui\controls\CLayout.cpp" />
+    <ClCompile Include="v2d\ui\controls\CGroupBox.cpp" />
+    <ClCompile Include="v2d\ui\controls\CLabel.cpp" />
+    <ClCompile Include="v2d\ui\controls\CListBox.cpp" />
+    <ClCompile Include="v2d\ui\controls\CListView.cpp" />
+    <ClCompile Include="v2d\ui\controls\CMenuBar.cpp" />
+    <ClCompile Include="v2d\ui\controls\CPane.cpp" />
+    <ClCompile Include="v2d\ui\controls\CPanel.cpp" />
+    <ClCompile Include="v2d\ui\controls\CProgressBar.cpp" />
+    <ClCompile Include="v2d\ui\controls\CRadio.cpp" />
+    <ClCompile Include="v2d\ui\controls\CScrollBar.cpp" />
+    <ClCompile Include="v2d\ui\controls\CFoldingView.cpp" />
+    <ClCompile Include="v2d\ui\controls\CSpace.cpp" />
+    <ClCompile Include="v2d\ui\controls\CStatic.cpp" />
+    <ClCompile Include="v2d\ui\controls\CTabControl.cpp" />
+    <ClCompile Include="v2d\ui\controls\CTextBox.cpp" />
+    <ClCompile Include="v2d\ui\controls\CTextLine.cpp" />
+    <ClCompile Include="v2d\ui\controls\CTreeView.cpp" />
+    <ClCompile Include="v2d\ui\controls\IControl.cpp" />
+    <ClCompile Include="v2d\ui\dock\CDockFrame.cpp" />
+    <ClCompile Include="v2d\ui\dock\CDockFrameTest.cpp" />
+    <ClCompile Include="v2d\ui\dock\CDockNode.cpp" />
+    <ClCompile Include="v2d\ui\dock\CDockPane.cpp" />
+    <ClCompile Include="v2d\ui\forms\CForm.cpp" />
+    <ClCompile Include="v2d\ui\forms\CMessageBox.cpp" />
+    <ClCompile Include="v2d\ui\forms\CPopForm.cpp" />
+    <ClCompile Include="v2d\ui\forms\CPopMenu.cpp" />
+    <ClCompile Include="v2d\ui\tools\CUILoaderXml.cpp" />
+    <ClCompile Include="v3d\engine\C3DAction.cpp" />
+    <ClCompile Include="v3d\engine\C3DCamera.cpp" />
+    <ClCompile Include="v3d\engine\C3DCameraFly.cpp" />
+    <ClCompile Include="v3d\engine\C3DCameraFP.cpp" />
+    <ClCompile Include="v3d\engine\C3DEffect.cpp" />
+    <ClCompile Include="v3d\engine\C3DEntity.cpp" />
+    <ClCompile Include="v3d\engine\C3DExplorer.cpp" />
+    <ClCompile Include="v3d\engine\C3DFile.cpp" />
+    <ClCompile Include="v3d\engine\C3DFileDriver.cpp" />
+    <ClCompile Include="v3d\engine\C3DMaterial.cpp" />
+    <ClCompile Include="v3d\engine\C3DMesh.cpp" />
+    <ClInclude Include="core\array.h" />
+    <ClInclude Include="core\core_def.h" />
+    <ClInclude Include="core\math\align.h" />
+    <ClInclude Include="core\math\edge.h" />
+    <ClInclude Include="core\math\math_base.h" />
+    <ClInclude Include="core\math\rect.h" />
+    <ClInclude Include="core\math\vec2.h" />
+    <ClInclude Include="core\math\vec3.h" />
+    <ClInclude Include="core\math\vec4.h" />
+    <ClInclude Include="core\stl\stl.h" />
+    <ClInclude Include="core\stl\type_traits.h" />
+    <ClInclude Include="core\tools\IData.h" />
+    <ClInclude Include="core\tools\IMetaHelper.h" />
+    <ClInclude Include="v2d\image\image_save.h" />
+    <ClInclude Include="v2d\paint\CPaintBase.h" />
+    <ClInclude Include="v2d\paint\CPath.h" />
+    <ClInclude Include="v2d\paint\CSamplerBase.h" />
+    <ClInclude Include="v2d\paint\IDocument.h" />
+    <ClInclude Include="v2d\paint\IPaint.h" />
+    <ClInclude Include="v2d\paint\textformat.h" />
+    <ClInclude Include="v2d\ui\base\BasePaint.h" />
+    <ClInclude Include="v2d\ui\controls\CLayout.h" />
+    <ClInclude Include="v2d\ui\controls\CPane.h" />
+    <ClInclude Include="v2d\ui\controls\CPanel.h" />
+    <ClInclude Include="v2d\ui\controls\CFoldingView.h" />
+    <ClInclude Include="v2d\ui\controls\CSpace.h" />
+    <ClInclude Include="v2d\ui\controls\IControl.h" />
+    <ClInclude Include="v2d\ui\dock\CDockFrame.h" />
+    <ClInclude Include="v2d\ui\dock\CDockFrameTest.h" />
+    <ClInclude Include="v2d\ui\dock\CDockNode.h" />
+    <ClInclude Include="v2d\ui\dock\CDockPane.h" />
+    <ClInclude Include="v2d\ui\dock\IDock.h" />
+    <ClInclude Include="v2d\ui\forms\CForm.h" />
+    <ClInclude Include="v2d\ui\forms\CMessageBox.h" />
+    <ClInclude Include="v2d\ui\forms\CPopForm.h" />
+    <ClInclude Include="v2d\ui\forms\CPopMenu.h" />
+    <ClInclude Include="v2d\ui\tools\CUILoaderXml.h" />
+    <ClInclude Include="v3d\engine\C3DEffect.h" />
+    <ClInclude Include="v3d\engine\C3DEntity.h" />
+    <ClInclude Include="v3d\engine\C3DNode.h" />
+    <ClCompile Include="v3d\engine\C3DScene.cpp" />
+    <ClCompile Include="v3d\engine\C3DTerrain.cpp" />
+    <ClCompile Include="v3d\engine\XmlParser.cpp" />
+    <ClCompile Include="v3d\math\bbox.cpp" />
+    <ClCompile Include="v3d\math\cbuffer.cpp" />
+    <ClCompile Include="v3d\math\intersect.cpp" />
+    <ClCompile Include="v3d\math\line.cpp" />
+    <ClCompile Include="v3d\math\ray.cpp" />
+    <ClCompile Include="v3d\math\v3d_algorithm.cpp" />
+    <ClCompile Include="v3d\math\view_frustum.cpp" />
+    <ClCompile Include="v3d\v3d_api.cpp" />
+    <ClCompile Include="v3d\v3d_inc.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CButtonBase.h" />
+    <ClInclude Include="core\vector.h" />
+    <ClInclude Include="core\CBufferedStream.h" />
+    <ClInclude Include="core\CByteStream.h" />
+    <ClInclude Include="core\CDataStream.h" />
+    <ClInclude Include="core\codepage.h" />
+    <ClInclude Include="core\core_exp.h" />
+    <ClInclude Include="core\core_inc.h" />
+    <ClInclude Include="core\CFileStream.h" />
+    <ClInclude Include="core\CMatrix3.h" />
+    <ClInclude Include="core\CMatrix5.h" />
+    <ClInclude Include="core\byte_buffer.h" />
+    <ClInclude Include="core\CMemoryStream.h" />
+    <ClInclude Include="core\color.h" />
+    <ClInclude Include="core\random.h" />
+    <ClInclude Include="core\CTextStream.h" />
+    <ClInclude Include="core\CTriangle.h" />
+    <ClInclude Include="core\doc.h" />
+    <ClInclude Include="core\file.h" />
+    <ClInclude Include="core\function.h" />
+    <ClInclude Include="core\hash_map.h" />
+    <ClInclude Include="core\IStream.h" />
+    <ClInclude Include="core\list.h" />
+    <ClInclude Include="core\linear_map.h" />
+    <ClInclude Include="core\math.h" />
+    <ClInclude Include="core\math\xmm\float2.h" />
+    <ClInclude Include="core\math\xmm\float3.h" />
+    <ClInclude Include="core\math\xmm\float4.h" />
+    <ClInclude Include="core\math\xmm\float4x4.h" />
+    <ClInclude Include="core\math\xmm\quat4.h" />
+    <ClInclude Include="core\math\xmm\xmm.h" />
+    <ClInclude Include="core\math\xmm\xm\xm.h" />
+    <ClInclude Include="core\math\xmm\xm\xmf.h" />
+    <ClInclude Include="core\math\xmm\xm\xmi.h" />
+    <ClInclude Include="core\math\xmm\xm\xmi_argb.h" />
+    <ClInclude Include="core\MatrixTmpl.h" />
+    <ClInclude Include="core\object_ptr.h" />
+    <ClInclude Include="core\pair.h" />
+    <ClInclude Include="core\platform_api.h" />
+    <ClInclude Include="core\support.h" />
+    <ClInclude Include="core\text.h" />
+    <ClInclude Include="core\core_api.h" />
+    <ClInclude Include="core\daytime.h" />
+    <ClInclude Include="core\unicode.h" />
+    <ClInclude Include="core\xml.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="v2d\image\CImage.h" />
+    <ClInclude Include="v2d\image\converter\image_converter_cmyk.h" />
+    <ClInclude Include="v2d\image\converter\image_converter_gray.h" />
+    <ClInclude Include="v2d\image\converter\image_converter_rgb.h" />
+    <ClInclude Include="v2d\image\converter\image_converter_ycck.h" />
+    <ClInclude Include="v2d\image\converter\image_converter_yuv.h" />
+    <ClInclude Include="v2d\image\formats\bmp.h" />
+    <ClInclude Include="v2d\image\formats\dds.h" />
+    <ClInclude Include="v2d\image\formats\ico.h" />
+    <ClInclude Include="v2d\image\formats\jpg.h" />
+    <ClInclude Include="v2d\image\formats\png.h" />
+    <ClInclude Include="v2d\image\formats\tga.h" />
+    <ClInclude Include="v2d\image\image.h" />
+    <ClInclude Include="v2d\image\image_api.h" />
+    <ClInclude Include="v2d\image\image_converter.h" />
+    <ClInclude Include="v2d\image\image_type.h" />
+    <ClInclude Include="v2d\ui\base\Menu.h" />
+    <ClInclude Include="v2d\ui\base\TreeItem.h" />
+    <ClInclude Include="v2d\ui\base\UIBase.h" />
+    <ClInclude Include="v2d\ui\controls\CButton.h" />
+    <ClInclude Include="v2d\ui\controls\CCheckBox.h" />
+    <ClInclude Include="v2d\ui\controls\CComboBox.h" />
+    <ClInclude Include="v2d\ui\controls\CControl.h" />
+    <ClInclude Include="v2d\ui\controls\CGroupBox.h" />
+    <ClInclude Include="v2d\ui\controls\CLabel.h" />
+    <ClInclude Include="v2d\ui\controls\CListBox.h" />
+    <ClInclude Include="v2d\ui\controls\CListView.h" />
+    <ClInclude Include="v2d\ui\controls\CMenuBar.h" />
+    <ClInclude Include="v2d\ui\controls\CProgressBar.h" />
+    <ClInclude Include="v2d\ui\controls\CRadio.h" />
+    <ClInclude Include="v2d\ui\controls\CScrollBar.h" />
+    <ClInclude Include="v2d\ui\controls\CStatic.h" />
+    <ClInclude Include="v2d\ui\controls\CTabControl.h" />
+    <ClInclude Include="v2d\ui\controls\CTextBox.h" />
+    <ClInclude Include="v2d\ui\controls\CTextLine.h" />
+    <ClInclude Include="v2d\ui\controls\CTreeView.h" />
+    <ClInclude Include="v2d\v2d_inc.h" />
+    <ClInclude Include="v3d\engine\C3DAction.h" />
+    <ClInclude Include="v3d\engine\C3DCamera.h" />
+    <ClInclude Include="v3d\engine\C3DCameraFly.h" />
+    <ClInclude Include="v3d\engine\C3DCameraFP.h" />
+    <ClInclude Include="v3d\engine\C3DExplorer.h" />
+    <ClInclude Include="v3d\engine\C3DFile.h" />
+    <ClInclude Include="v3d\engine\C3DFileDriver.h" />
+    <ClInclude Include="v3d\engine\C3DMaterial.h" />
+    <ClInclude Include="v3d\engine\C3DMesh.h" />
+    <ClInclude Include="v3d\engine\C3DScene.h" />
+    <ClInclude Include="v3d\engine\C3DTerrain.h" />
+    <ClInclude Include="v3d\engine\Cameras.h" />
+    <ClInclude Include="v3d\engine\Engine.h" />
+    <ClInclude Include="v3d\engine\mesh.h" />
+    <ClInclude Include="v3d\engine\vme.h" />
+    <ClInclude Include="v3d\engine\XmlParser.h" />
+    <ClInclude Include="v3d\math\bbox.h" />
+    <ClInclude Include="v3d\math\cbuffer.h" />
+    <ClInclude Include="v3d\math\intersect.h" />
+    <ClInclude Include="v3d\math\line.h" />
+    <ClInclude Include="v3d\math\plane.h" />
+    <ClInclude Include="v3d\math\ray.h" />
+    <ClInclude Include="v3d\math\v3d_algorithm.h" />
+    <ClInclude Include="v3d\math\view_frustum.h" />
+    <ClInclude Include="v3d\v3d_api.h" />
+    <ClInclude Include="v3d\v3d_enum.h" />
+    <ClInclude Include="v3d\v3d_inc.h" />
+    <ClInclude Include="v3d\v3d_def.h" />
+    <ClInclude Include="venus.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="vs2003.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="core\math\xmm\xm\xmf_base.inl" />
+    <None Include="core\math\xmm\xm\xmf_matr.inl" />
+    <None Include="core\math\xmm\xm\xmf_quat.inl" />
+    <None Include="core\math\xmm\xm\xmf_vec.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

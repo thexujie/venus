@@ -1,0 +1,1 @@
+Debug_*\ Release_*\ ReleaseS_*\ res\ .svn *.user *.suo Venus.rar bin\ old\

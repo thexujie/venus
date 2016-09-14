@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="app">
+      <UniqueIdentifier>{c1b93641-9c5d-40f5-adf6-8ee11e318e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{3873f05d-6ae8-498d-8ec0-05f4526e9ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="d2d">
+      <UniqueIdentifier>{428dc91a-e743-471f-a917-7f3c330b50b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="uniscribe">
+      <UniqueIdentifier>{c515fc39-458d-496c-94cc-9fa0d8a3ccdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gdi">
+      <UniqueIdentifier>{d322c770-c5fa-4525-bad4-11225dafc987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gdip">
+      <UniqueIdentifier>{38d59ffd-103b-4397-824c-1cdf3a4bbad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\process">
+      <UniqueIdentifier>{13314b64-bbc5-4450-ac2e-05ac3011beeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shell">
+      <UniqueIdentifier>{9c81b8c6-52d9-477c-a868-863501003ea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{6030c857-e5fb-49e5-91a2-032206fabb00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\controls">
+      <UniqueIdentifier>{09166b7e-4d10-4b50-86a8-f4bd00765500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxgi">
+      <UniqueIdentifier>{b4fc531b-c34c-449d-8a44-f5133235f04a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="win32.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="d2d\C2DDeviceD2D.h">
+      <Filter>d2d</Filter>
+    </ClInclude>
+    <ClInclude Include="d2d\CPaintD2D.h">
+      <Filter>d2d</Filter>
+    </ClInclude>
+    <ClInclude Include="d2d\D2DInc.h">
+      <Filter>d2d</Filter>
+    </ClInclude>
+    <ClInclude Include="d2d\CTextLayoutD2D.h">
+      <Filter>d2d</Filter>
+    </ClInclude>
+    <ClInclude Include="uniscribe\CTextLayoutUsp.h">
+      <Filter>uniscribe</Filter>
+    </ClInclude>
+    <ClInclude Include="uniscribe\CUspFactory.h">
+      <Filter>uniscribe</Filter>
+    </ClInclude>
+    <ClInclude Include="uniscribe\UspInc.h">
+      <Filter>uniscribe</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\bitmap.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\CHandle.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\UnknownT.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\guid.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="gdi\C2DDeviceGdi.h">
+      <Filter>gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="gdi\CImageGdi.h">
+      <Filter>gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="gdi\CPaintGdi.h">
+      <Filter>gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="gdi\GdiInc.h">
+      <Filter>gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="gdip\C2DDeviceGdip.h">
+      <Filter>gdip</Filter>
+    </ClInclude>
+    <ClInclude Include="gdip\CPaintGdip.h">
+      <Filter>gdip</Filter>
+    </ClInclude>
+    <ClInclude Include="gdip\GdipInc.h">
+      <Filter>gdip</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\process\CProcess.h">
+      <Filter>tools\process</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\process\CProcessSnapshot.h">
+      <Filter>tools\process</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\process\PEB.h">
+      <Filter>tools\process</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\CShellItemImage.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\CSHFileInfoBuffer.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\controls\CFolderListView.h">
+      <Filter>ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\controls\CFolderTreeView.h">
+      <Filter>ui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CWin32UILoaderXml.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CUITheme.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\CBmpBuffer.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\CDropTarget.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\CGlobalData.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\CInputContext.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\CModule.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\CMonitor.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\CRegKey.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\CSimpleStdOut.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\ResTools.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="CWin32App.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CWindow.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Window.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="dxgi\CDxgiSurface.h">
+      <Filter>dxgi</Filter>
+    </ClInclude>
+    <ClInclude Include="dxgi\DxgiInc.h">
+      <Filter>dxgi</Filter>
+    </ClInclude>
+    <ClInclude Include="gdip\GdipModule.h">
+      <Filter>gdip</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="win32.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="d2d\C2DDeviceD2D.cpp">
+      <Filter>d2d</Filter>
+    </ClCompile>
+    <ClCompile Include="d2d\CPaintD2D.cpp">
+      <Filter>d2d</Filter>
+    </ClCompile>
+    <ClCompile Include="d2d\d2d_image_rule.cpp">
+      <Filter>d2d</Filter>
+    </ClCompile>
+    <ClCompile Include="d2d\D2DInc.cpp">
+      <Filter>d2d</Filter>
+    </ClCompile>
+    <ClCompile Include="d2d\CTextLayoutD2D.cpp">
+      <Filter>d2d</Filter>
+    </ClCompile>
+    <ClCompile Include="uniscribe\CTextLayoutUsp.cpp">
+      <Filter>uniscribe</Filter>
+    </ClCompile>
+    <ClCompile Include="uniscribe\CUspFactory.cpp">
+      <Filter>uniscribe</Filter>
+    </ClCompile>
+    <ClCompile Include="uniscribe\UspInc.cpp">
+      <Filter>uniscribe</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\bitmap.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\CHandle.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="gdi\C2DDeviceGdi.cpp">
+      <Filter>gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="gdi\CImageGdi.cpp">
+      <Filter>gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="gdi\CPaintGdi.cpp">
+      <Filter>gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="gdi\GdiInc.cpp">
+      <Filter>gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="gdip\C2DDeviceGdip.cpp">
+      <Filter>gdip</Filter>
+    </ClCompile>
+    <ClCompile Include="gdip\CPaintGdip.cpp">
+      <Filter>gdip</Filter>
+    </ClCompile>
+    <ClCompile Include="gdip\GdipInc.cpp">
+      <Filter>gdip</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\process\CProcess.cpp">
+      <Filter>tools\process</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\process\CProcessSnapshot.cpp">
+      <Filter>tools\process</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\process\PEB.cpp">
+      <Filter>tools\process</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\CShellItemImage.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\CSHFileInfoBuffer.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\controls\CFolderListView.cpp">
+      <Filter>ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\controls\CFolderTreeView.cpp">
+      <Filter>ui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\CWin32UILoaderXml.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\CUITheme.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\CBmpBuffer.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\CDropTarget.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\CGlobalData.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\CInputContext.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\CModule.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\CMonitor.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\CRegKey.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\CSimpleStdOut.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\ResTools.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="CWin32App.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\CWindow.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Window.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="dxgi\CDxgiSurface.cpp">
+      <Filter>dxgi</Filter>
+    </ClCompile>
+    <ClCompile Include="dxgi\DxgiInc.cpp">
+      <Filter>dxgi</Filter>
+    </ClCompile>
+    <ClCompile Include="gdip\GdipModule.cpp">
+      <Filter>gdip</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

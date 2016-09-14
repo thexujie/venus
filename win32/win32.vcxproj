@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\venus\venus.vcxproj">
+      <Project>{327eadff-ed36-413c-89fe-d9dc08be57be}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{97483EE8-2FDD-454C-B382-A1328C27AB3B}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Condition="Exists('$(SolutionDir)\$(SolutionName).cpp.default.props')" Project="$(SolutionDir)\$(SolutionName).cpp.default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <Import Condition="Exists('$(SolutionDir)\$(SolutionName).props')" Project="$(SolutionDir)\$(SolutionName).props" />
+  <ItemGroup>
+    <ClInclude Include="CWin32App.h" />
+    <ClInclude Include="d2d\C2DDeviceD2D.h" />
+    <ClInclude Include="d2d\CTextLayoutD2D.h" />
+    <ClInclude Include="d2d\CPaintD2D.h" />
+    <ClInclude Include="d2d\D2DInc.h" />
+    <ClInclude Include="dxgi\CDxgiSurface.h" />
+    <ClInclude Include="dxgi\DxgiInc.h" />
+    <ClInclude Include="gdip\C2DDeviceGdip.h" />
+    <ClInclude Include="gdip\CPaintGdip.h" />
+    <ClInclude Include="gdip\GdipInc.h" />
+    <ClInclude Include="gdip\GdipModule.h" />
+    <ClInclude Include="gdi\C2DDeviceGdi.h" />
+    <ClInclude Include="gdi\CImageGdi.h" />
+    <ClInclude Include="gdi\CPaintGdi.h" />
+    <ClInclude Include="gdi\GdiInc.h" />
+    <ClInclude Include="shell\CShellItemImage.h" />
+    <ClInclude Include="shell\CSHFileInfoBuffer.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="tools\bitmap.h" />
+    <ClInclude Include="tools\CBmpBuffer.h" />
+    <ClInclude Include="tools\CDropTarget.h" />
+    <ClInclude Include="tools\CGlobalData.h" />
+    <ClInclude Include="tools\CHandle.h" />
+    <ClInclude Include="tools\CInputContext.h" />
+    <ClInclude Include="tools\CModule.h" />
+    <ClInclude Include="tools\CMonitor.h" />
+    <ClInclude Include="tools\CRegKey.h" />
+    <ClInclude Include="tools\CSimpleStdOut.h" />
+    <ClInclude Include="tools\guid.h" />
+    <ClInclude Include="tools\process\CProcess.h" />
+    <ClInclude Include="tools\process\CProcessSnapshot.h" />
+    <ClInclude Include="tools\process\PEB.h" />
+    <ClInclude Include="tools\ResTools.h" />
+    <ClInclude Include="tools\UnknownT.h" />
+    <ClInclude Include="ui\controls\CFolderListView.h" />
+    <ClInclude Include="ui\controls\CFolderTreeView.h" />
+    <ClInclude Include="ui\CUITheme.h" />
+    <ClInclude Include="ui\CWin32UILoaderXml.h" />
+    <ClInclude Include="ui\CWindow.h" />
+    <ClInclude Include="ui\Window.h" />
+    <ClInclude Include="uniscribe\CTextLayoutUsp.h" />
+    <ClInclude Include="uniscribe\CUspFactory.h" />
+    <ClInclude Include="uniscribe\UspInc.h" />
+    <ClInclude Include="win32.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CWin32App.cpp" />
+    <ClCompile Include="d2d\C2DDeviceD2D.cpp" />
+    <ClCompile Include="d2d\CTextLayoutD2D.cpp" />
+    <ClCompile Include="d2d\CPaintD2D.cpp" />
+    <ClCompile Include="d2d\D2DInc.cpp" />
+    <ClCompile Include="d2d\d2d_image_rule.cpp" />
+    <ClCompile Include="dxgi\CDxgiSurface.cpp" />
+    <ClCompile Include="dxgi\DxgiInc.cpp" />
+    <ClCompile Include="gdip\C2DDeviceGdip.cpp" />
+    <ClCompile Include="gdip\CPaintGdip.cpp" />
+    <ClCompile Include="gdip\GdipInc.cpp" />
+    <ClCompile Include="gdip\GdipModule.cpp" />
+    <ClCompile Include="gdi\C2DDeviceGdi.cpp" />
+    <ClCompile Include="gdi\CImageGdi.cpp" />
+    <ClCompile Include="gdi\CPaintGdi.cpp" />
+    <ClCompile Include="gdi\GdiInc.cpp" />
+    <ClCompile Include="shell\CShellItemImage.cpp" />
+    <ClCompile Include="shell\CSHFileInfoBuffer.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="tools\bitmap.cpp" />
+    <ClCompile Include="tools\CBmpBuffer.cpp" />
+    <ClCompile Include="tools\CDropTarget.cpp" />
+    <ClCompile Include="tools\CGlobalData.cpp" />
+    <ClCompile Include="tools\CHandle.cpp" />
+    <ClCompile Include="tools\CInputContext.cpp" />
+    <ClCompile Include="tools\CModule.cpp" />
+    <ClCompile Include="tools\CMonitor.cpp" />
+    <ClCompile Include="tools\CRegKey.cpp" />
+    <ClCompile Include="tools\CSimpleStdOut.cpp" />
+    <ClCompile Include="tools\process\CProcess.cpp" />
+    <ClCompile Include="tools\process\CProcessSnapshot.cpp" />
+    <ClCompile Include="tools\process\PEB.cpp" />
+    <ClCompile Include="tools\ResTools.cpp" />
+    <ClCompile Include="ui\controls\CFolderListView.cpp" />
+    <ClCompile Include="ui\controls\CFolderTreeView.cpp" />
+    <ClCompile Include="ui\CUITheme.cpp" />
+    <ClCompile Include="ui\CWin32UILoaderXml.cpp" />
+    <ClCompile Include="ui\CWindow.cpp" />
+    <ClCompile Include="ui\Window.cpp" />
+    <ClCompile Include="uniscribe\CTextLayoutUsp.cpp" />
+    <ClCompile Include="uniscribe\CUspFactory.cpp" />
+    <ClCompile Include="uniscribe\UspInc.cpp" />
+    <ClCompile Include="win32.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

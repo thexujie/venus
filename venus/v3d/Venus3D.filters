@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="BaseDef.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseInc.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEnum.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseType.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.h">
+      <Filter>api</Filter>
+    </ClInclude>
+    <ClInclude Include="CGlDevice.h">
+      <Filter>fun</Filter>
+    </ClInclude>
+    <ClInclude Include="Create3DDevice.h">
+      <Filter>fun</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix4.h">
+      <Filter>fun</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>fun</Filter>
+    </ClInclude>
+    <ClInclude Include="CDx9Device.h">
+      <Filter>dx</Filter>
+    </ClInclude>
+    <ClInclude Include="CDx9ResourceManager.h">
+      <Filter>dx</Filter>
+    </ClInclude>
+    <ClInclude Include="CDx9Texture.h">
+      <Filter>dx</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DScene.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DNode.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DCamera.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>fun</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>fun</Filter>
+    </ClInclude>
+    <ClInclude Include="CCubeMesh.h">
+      <Filter>scene\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DMeshObject.h">
+      <Filter>scene\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="CDx9IndexBuffer.h">
+      <Filter>dx</Filter>
+    </ClInclude>
+    <ClInclude Include="CDx9VertexBuffer.h">
+      <Filter>dx</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimatorRotation.h">
+      <Filter>scene\anim</Filter>
+    </ClInclude>
+    <ClInclude Include="VxViewFrustum.h">
+      <Filter>fun</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane3.h">
+      <Filter>fun</Filter>
+    </ClInclude>
+    <ClInclude Include="Line3.h">
+      <Filter>fun</Filter>
+    </ClInclude>
+    <ClInclude Include="VxMath.h">
+      <Filter>fun</Filter>
+    </ClInclude>
+    <ClInclude Include="VxBoundingBox.h">
+      <Filter>fun</Filter>
+    </ClInclude>
+    <ClInclude Include="CTerrain.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="C3DSubVertexBuffer.h">
+      <Filter>scene\public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="app">
+      <UniqueIdentifier>{efd40298-3ed8-4cc0-99c0-1175d9b5edcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="api">
+      <UniqueIdentifier>{10d36fb0-f825-433c-bf61-158a1ceae70a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="fun">
+      <UniqueIdentifier>{dbf856f7-df5e-449b-bb17-0dfc4464942f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dx">
+      <UniqueIdentifier>{7375129b-a1b0-47df-9a5c-d4d6a35f0c3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{904ebce1-a715-4095-8087-53ed06a9b1c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\mesh">
+      <UniqueIdentifier>{5118850f-514a-4e18-b05e-b4cac427915c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\node">
+      <UniqueIdentifier>{27d53df3-ed02-4f04-b08e-045f0222c24b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\anim">
+      <UniqueIdentifier>{ebf146ae-e76e-4aff-8767-eb68d2394f3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\public">
+      <UniqueIdentifier>{a292cf2a-9d87-460f-9513-6376dabce3ca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseType.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="CGlDevice.cpp">
+      <Filter>fun</Filter>
+    </ClCompile>
+    <ClCompile Include="Create3DDevice.cpp">
+      <Filter>fun</Filter>
+    </ClCompile>
+    <ClCompile Include="CDx9Device.cpp">
+      <Filter>dx</Filter>
+    </ClCompile>
+    <ClCompile Include="CDx9ResourceManager.cpp">
+      <Filter>dx</Filter>
+    </ClCompile>
+    <ClCompile Include="CDx9Texture.cpp">
+      <Filter>dx</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DScene.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DNode.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DCamera.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>fun</Filter>
+    </ClCompile>
+    <ClCompile Include="CCubeMesh.cpp">
+      <Filter>scene\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DMeshObject.cpp">
+      <Filter>scene\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="CDx9IndexBuffer.cpp">
+      <Filter>dx</Filter>
+    </ClCompile>
+    <ClCompile Include="CDx9VertexBuffer.cpp">
+      <Filter>dx</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimatorRotation.cpp">
+      <Filter>scene\anim</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4.cpp">
+      <Filter>fun</Filter>
+    </ClCompile>
+    <ClCompile Include="VxViewFrustum.cpp">
+      <Filter>fun</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane3.cpp">
+      <Filter>fun</Filter>
+    </ClCompile>
+    <ClCompile Include="Line3.cpp">
+      <Filter>fun</Filter>
+    </ClCompile>
+    <ClCompile Include="VxMath.cpp">
+      <Filter>fun</Filter>
+    </ClCompile>
+    <ClCompile Include="VxBoundingBox.cpp">
+      <Filter>fun</Filter>
+    </ClCompile>
+    <ClCompile Include="CTerrain.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="C3DSubVertexBuffer.cpp">
+      <Filter>scene\public</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
