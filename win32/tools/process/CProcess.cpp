@@ -67,7 +67,7 @@ void CProcess::Close()
 
 bool CProcess::Is64() const
 {
-#ifdef BIT_32
+#ifdef BIT32
 	return false;
 #else
 	if(IsWow64())
@@ -98,7 +98,7 @@ bool CProcess::GetCmdLine(char_16 * szText, int_x iSize) const
 	CModule mdNtdll(_T("ntdll"));
 	Win32::DebugSetLastError(0);
 
-#ifdef BIT_32
+#ifdef BIT32
 	BOOL bWow64 = FALSE;
 	if(!IsWow64Process(GetCurrentProcess(), &bWow64))
 		return false;
@@ -160,7 +160,7 @@ bool CProcess::GetCmdLine(char_16 * szText, int_x iSize) const
 		return true;
 	}
 	else
-#endif // BIT_32
+#endif // BIT32
 	{
 		typedef HRESULT(WINAPI * QueryInformationProcessFunT)(HANDLE, uint_32, void *, uint_32, uint_32 *);
 		typedef HRESULT(WINAPI * ReadVirtualMemoryFunT)(HANDLE, uint_x, void *, uint_x, uint_x *);
@@ -240,7 +240,7 @@ bool CProcess::GetFilePath(char_16 * szText, int_x iSize) const
 
 	CModule mdNtdll(_T("ntdll"));
 	Win32::DebugSetLastError(0);
-#ifdef BIT_32
+#ifdef BIT32
 	BOOL bWow64 = FALSE;
 	if(!IsWow64Process(GetCurrentProcess(), &bWow64))
 		return false;
@@ -303,7 +303,7 @@ bool CProcess::GetFilePath(char_16 * szText, int_x iSize) const
 		return true;
 	}
 	else
-#endif // BIT_32
+#endif // BIT32
 	{
 		proc_ptr<HRESULT(HANDLE, uint_32, void *, uint_32, uint_32 *)> pfnQueryInformationProcess;
 		proc_ptr<HRESULT(HANDLE, uint_x, void *, uint_x, uint_x *)> pfnReadVirtualMemory;

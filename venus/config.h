@@ -60,9 +60,9 @@
 #endif
 
 #if defined(_M_X64) || defined(_M_AMD64)
-#define BIT_64 1 // 64 位操作系统
+#define BIT64 1 // 64 位操作系统
 #elif defined(_M_IX86)
-#define BIT_32 1 // 32 位操作系统
+#define BIT32 1 // 32 位操作系统
 #endif
 
 

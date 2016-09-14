@@ -110,7 +110,7 @@ int_64 randi64()
 
 int_x randix()
 {
-#ifdef BIT_64
+#ifdef BIT64
 	return randi64();
 #else
 	return randi32();

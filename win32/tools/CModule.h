@@ -65,13 +65,16 @@ struct VENUS_API proc_helper<RetT __stdcall(ArgsT...)>
 	typedef proc_base<RetT (__stdcall *)(ArgsT...), RetT, ArgsT...> proc_base_t;
 };
 
+#ifdef BIT32
+
 template<typename RetT, typename... ArgsT>
 struct VENUS_API proc_helper<RetT __cdecl(ArgsT...)>
 {
 	typedef RetT return_t;
-	typedef proc_base<RetT (__cdecl *)(ArgsT...), RetT, ArgsT...> proc_base_t;
+	typedef proc_base<RetT(__cdecl *)(ArgsT...), RetT, ArgsT...> proc_base_t;
 };
 
+#endif // BIT32
 
 template<typename T>
 class VENUS_API proc_ptr : public proc_helper<T>::proc_base_t

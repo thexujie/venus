@@ -454,7 +454,7 @@ inline uint_64 u64fromi32(int_32 lval, int_32 hval)
 /*! @brief 获取 int_x 类型值的低16/32位。*/
 inline int_h ixlih(int_x iVal)
 {
-#ifdef BIT_64
+#ifdef BIT64
 	return i64li32(iVal);
 #else
 	return i32li16(iVal);
@@ -464,7 +464,7 @@ inline int_h ixlih(int_x iVal)
 /*! @brief 获取 int_x 类型值的高16/32位。*/
 inline int_h ixhih(int_x val)
 {
-#ifdef BIT_64
+#ifdef BIT64
 	return i64hi32(val);
 #else
 	return i32hi16(val);
@@ -474,7 +474,7 @@ inline int_h ixhih(int_x val)
 /*! @brief 获取 int_x 类型值的低16/32位。*/
 inline uint_h ixluh(int_x iVal)
 {
-#ifdef BIT_64
+#ifdef BIT64
 	return i64lu32(iVal);
 #else
 	return i32lu16(iVal);
@@ -484,7 +484,7 @@ inline uint_h ixluh(int_x iVal)
 /*! @brief 获取 int_x 类型值的高16/32位。*/
 inline int_h ixhuh(int_x val)
 {
-#ifdef BIT_64
+#ifdef BIT64
 	return i64hu32(val);
 #else
 	return i32hu16(val);
@@ -512,7 +512,7 @@ inline int_x ixfromuh(uint_h lval, uint_h hval)
 /*! @brief 获取 uint_x 类型值的低16/32位。*/
 inline uint_h uxluh(uint_x val)
 {
-#ifdef BIT_64
+#ifdef BIT64
 	return u64lu32(val);
 #else
 	return u32lu16(val);
@@ -522,7 +522,7 @@ inline uint_h uxluh(uint_x val)
 /*! @brief 获取 uint_x 类型值的高16/32位。*/
 inline uint_h uxhuh(uint_x val)
 {
-#ifdef BIT_64
+#ifdef BIT64
 	return u64hu32(val);
 #else
 	return u32hu16(val);
@@ -532,7 +532,7 @@ inline uint_h uxhuh(uint_x val)
 /*! @brief 获取 uint_x 类型值的高16/32位。*/
 inline int_h uxlih(uint_x val)
 {
-#ifdef BIT_64
+#ifdef BIT64
 	return u64li32(val);
 #else
 	return u32li16(val);
@@ -542,7 +542,7 @@ inline int_h uxlih(uint_x val)
 /*! @brief 获取 uint_x 类型值的低16/32位。*/
 inline int_h uxhih(uint_x val)
 {
-#ifdef BIT_64
+#ifdef BIT64
 	return u64hi32(val);
 #else
 	return u32hi16(val);
@@ -2666,7 +2666,7 @@ const int_32 DEF_BASE_32 = 0x01000193u;
 const int_32 DEF_SEED_32 = 0x811C9DC5u;
 const int_64 DEF_BASE_64 = 0x0100019301000193u;
 const int_64 DEF_SEED_64 = 0x811C9DC5811C9DC5u;
-#ifdef BIT_64
+#ifdef BIT64
 const int_64 DEF_BASE_X = DEF_BASE_64;
 const int_64 DEF_SEED_X = DEF_SEED_64;
 #else

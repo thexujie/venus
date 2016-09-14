@@ -28,7 +28,7 @@ CMapFile::CMapFile(const char_16 * szFile,
 		{
 			LARGE_INTEGER lint = {0};
 			::GetFileSizeEx(m_hFile, &lint);
-#ifdef BIT_32
+#ifdef BIT32
 			if(lint.HighPart)
 			{
 				CloseHandle(m_hMapFile);

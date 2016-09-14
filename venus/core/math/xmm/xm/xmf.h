@@ -40,7 +40,7 @@ union xmt
 	const float_32 & operator[](int_x iIndex) const { return af[iIndex]; }
 
 #ifdef VXM_SSE
-#ifdef BIT_64
+#ifdef BIT64
 	__m128 m128;
 	xmt(__m128 _m128) : m128(_m128) {}
 	operator const __m128 &() const { return m128; }
@@ -52,7 +52,7 @@ union xmt
 	operator const __m128i &() const { return m128i; }
 	operator __m128i &() { return m128i; }
 	xmt & operator = (__m128i _m128i) { m128i = _m128i; return *this; }
-#else // BIT_64
+#else // BIT64
 	xmt(__m128 _m128) : xmt(_m128.m128_f32[0], _m128.m128_f32[1], _m128.m128_f32[2], _m128.m128_f32[3]) {}
 	operator __m128 () const { return _mm_load_ps(af); }
 	xmt & operator = (__m128 _m128) { buffcpy(af, 4, _m128.m128_f32, 4); return *this; }
@@ -60,7 +60,7 @@ union xmt
 	xmt(__m128i _m128i) : xmt(_m128i.m128i_i32[0], _m128i.m128i_i32[1], _m128i.m128i_i32[2], _m128i.m128i_i32[3]) {}
 	operator __m128i () const { return _mm_castps_si128(*(const __m128 *)af); };
 	xmt & operator = (__m128i _m128i) { _mm_store_si128((__m128i *)af, _m128i); return *this; }
-#endif // BIT_64
+#endif // BIT64
 #endif // VXM_SSE
 };
 

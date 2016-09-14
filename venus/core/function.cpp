@@ -29,14 +29,14 @@ void make_fun(int_x & m_this, int_x & m_func, const void * p_this, const void * 
 	}
 	else if(size == sizeof(int_x)* 2)
 	{
-#ifdef BIT_64
+#ifdef BIT64
 		struct FunData2
 		{
 			int_x iFunc;
 			int_32 ivfIndex;
 			int_32 ivbIndex;
 		}fun;
-#elif defined BIT_32
+#elif defined BIT32
 		struct FunData2
 		{
 			int_32 iFunc;

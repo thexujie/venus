@@ -66,7 +66,7 @@ typedef unsigned long ulong_32;
 //! 无符号的 64 位整数，同@ref uint_64。取值范围为[0, @ref UI64_MAX]。
 typedef unsigned long long ulong_64;
 
-#ifndef BIT_64
+#ifndef BIT64
 //! 有符号的、等于机器位宽(32/64)的整数，取值范围为[@ref IX_MIN, @ref IX_MAX]。
 typedef int_32 int_x;
 //! 无符号的、等于机器位宽(32/64)的整数，取值范围为[@ref IX_MIN, @ref IX_MAX]。
@@ -174,7 +174,7 @@ const int_64 I64_MIN = -I64_MAX;
 //! uint_64 类型的最大值。
 const uint_64 UI64_MAX = 0xFFFFFFFFFFFFFFFF;
 
-#ifdef BIT_64
+#ifdef BIT64
 //! @ref int_x 类型的最小值。
 const int_64 IX_MIN = I64_MIN;
 //! @ref int_x 类型的最大值。

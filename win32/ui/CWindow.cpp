@@ -1367,7 +1367,7 @@ pointix CWindow::ClientToScreen(const pointix & point) const
 
 sizeix CWindow::MakeSizeFromInt(int_x iParam)
 {
-#ifdef BIT_64
+#ifdef BIT64
 	int_32 low = i64li32(iParam);
 	return sizeix(i32li16(low), i32hi16(low));
 #else
@@ -1377,7 +1377,7 @@ sizeix CWindow::MakeSizeFromInt(int_x iParam)
 
 pointix CWindow::MakePointFromInt(int_x iParam)
 {
-#ifdef BIT_64
+#ifdef BIT64
 	int_32 low = i64li32(iParam);
 	return pointix(i32li16(low), i32hi16(low));
 #else
@@ -1392,7 +1392,7 @@ sizeix CWindow::MakeSizeFromUInt(uint_x uiParam)
 
 pointix CWindow::MakePointFromUInt(int_x uiParam)
 {
-#ifdef BIT_64
+#ifdef BIT64
 	uint_32 low = i64lu32(uiParam);
 	return sizeix(u32li16(low), u32hi16(low));
 #else
