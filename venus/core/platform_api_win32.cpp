@@ -5,27 +5,66 @@
 
 VENUS_BEG
 
-int_x tls_create()
+CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_length,
+							int_x dst_codepage, void * dst, int_x dst_size, int_x & dst_length)
 {
-	DWORD dwTls = TlsAlloc();
-	return (int_x)dwTls;
-}
+	// for \0
+	--dst_size;
+	err_t err = err_ok;
+	int_32 length = 0;
+	switch(dst_codepage)
+	{
+		// to utf-8
+	case CP_UTF8:
+		switch(src_codepage)
+		{
+		case 1200:
+			length = WideCharToMultiByte(CP_UTF8, 0, (LPCWCH)src, src_length / 2, (LPSTR)dst, dst_size, NULL, NULL);
+			if(length <= dst_size && dst)
+				*((LPSTR)dst + length) = 0;
+			break;
+		default:
+			err = err_bad_format;
+			break;
+		}
+		break;
+	case 1200:
+		switch(src_codepage)
+		{
+		case CP_ACP:
+		case 936:
+		case CP_UTF8:
+			length = MultiByteToWideChar(src_codepage, 0, (LPCCH)src, src_length, (LPWSTR)dst, dst_size);
+			if(length <= dst_size && dst)
+				*((LPWSTR)dst + length) = 0;
+			break;
+		default:
+			err = err_bad_format;
+			break;
+		}
+		break;
+	default:
+		break;
+	}
 
-void tls_destroy(int_x iTls)
-{
-	TlsFree((DWORD)iTls);
+	dst_length = length;
+	if(!length)
+	{
+		int_32 lerr = GetLastError();
+		switch(lerr)
+		{
+		case ERROR_INSUFFICIENT_BUFFER:
+			err = err_bounds;
+			break;
+		case ERROR_NO_UNICODE_TRANSLATION:
+			err = err_bad_format;
+			break;
+		default:
+			break;
+		}
+	}
+	return err;
 }
-
-void tls_set(int_x iTls, int_x iValue)
-{
-	TlsSetValue((DWORD)iTls, (void *)iValue);
-}
-
-int_x tls_get(int_x iTls)
-{
-	return (int_x)TlsGetValue((DWORD)iTls);
-}
-
 
 void thread_set_name(int_x iThreadId, const char_8 * szName)
 {
@@ -33,10 +72,10 @@ void thread_set_name(int_x iThreadId, const char_8 * szName)
 #pragma pack(push, 4)
 	struct THREADNAME_INFO
 	{
-		DWORD dwType;        // must be 0x1000
-		LPCSTR szName;       // pointer to name (in same addr space)
-		DWORD dwThreadID;    // thread ID (-1 caller thread)
-		DWORD dwFlags;       // reserved for future use, most be zero
+		DWORD dwType; // must be 0x1000
+		LPCSTR szName; // pointer to name (in same addr space)
+		DWORD dwThreadID; // thread ID (-1 caller thread)
+		DWORD dwFlags; // reserved for future use, most be zero
 	};
 #pragma pack(pop)
 
@@ -52,7 +91,6 @@ void thread_set_name(int_x iThreadId, const char_8 * szName)
 	}
 	__except(EXCEPTION_CONTINUE_EXECUTION)
 	{
-
 	}
 #endif // _DEBUG
 }

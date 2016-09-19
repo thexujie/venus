@@ -7,7 +7,7 @@ VENUS_BEG
 class CORE_API CTextReader : public IInputStream, public ITextStream
 {
 public:
-	CTextReader(IInputStream * pInputStream);
+	CTextReader(IInputStream * pInputStream, EncodingE eEncoding = EncodingUnknown);
 	~CTextReader();
 
 	bool CanRead() const noexcept;
@@ -33,18 +33,16 @@ public:
 	texta ReadLineA();
 	EncodingE ReadEncoding();
 
-private:
+protected:
 	void _Ready() const;
-	int_32 _ReadChar();
 
 	int_32 ReadCharUtf8();
 	int_32 ReadCharUtf16LE();
 	int_32 ReadCharUtf16BE();
 
 	int_32 ReadCharGBK();
-private:
 
-private:
+protected:
 	IInputStream * m_pInputStream;
 	EncodingE m_eEncoding;
 };
@@ -52,7 +50,7 @@ private:
 class CORE_API CTextWriter : public IOutputStream
 {
 public:
-	CTextWriter(IOutputStream * pOutputStream);
+	CTextWriter(IOutputStream * pOutputStream, EncodingE eEncoding = EncodingUnknown);
 	~CTextWriter();
 
 	bool CanWrite() const noexcept;
@@ -65,6 +63,11 @@ public:
 	bool CanSeek() const;
 	int_x Seek(SeekE seek, int_x iSeek);
 
+	void SetEncoding(EncodingE eEncoding);
+	EncodingE GetEncoding() const;
+
+	void WriteChar(int_32 ch);
+
 	void WriteText(const char_16 * pText, int_x iLength = -1);
 	void WriteText(const textw & text);
 	void WriteTextA(const texta & text);
@@ -76,9 +79,20 @@ public:
 	void WriteFormat(const char_16 * szFormat, ...);
 	void WriteLineTag(LineTagE eLineTag = LineTagN);
 	void WriteLineTagA(LineTagE eLineTag = LineTagN);
-private:
+
+protected:
+	void _Ready() const;
+
+	void WriteCharUtf8(int_32 ch);
+	void WriteCharUtf16LE(int_32 ch);
+	void WriteCharUtf16BE(int_32 ch);
+
+	void WriteCharGBK(int_32 ch);
+
+protected:
 	IOutputStream * m_pOutputStream;
 	textw m_bufferW;
+	EncodingE m_eEncoding;
 };
 
 VENUS_END

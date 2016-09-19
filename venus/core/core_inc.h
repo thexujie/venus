@@ -50,6 +50,7 @@ namespace venus
 
 #include "function.h"
 
+#include "codepage.h"
 #include "unicode.h"
 #include "text.h"
 #include "color.h"

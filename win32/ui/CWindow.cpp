@@ -819,7 +819,7 @@ int_x CWindow::OnWmUnicodeChar(uint_32 uiMessage, uint_x uiParam, int_x iParam)
 	//if(uiParam != UNICODE_NOCHAR)
 	//	m_pControl->PreOnKeyInput((char_32)uiParam);
 
-	// unicode 窗口无法收到这个消息 
+	// utf16 窗口无法收到这个消息 
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms646288(v=vs.85).aspx
 	// WM_UNICHAR 返回 true 可以拒绝 WM_CHAR.
 	return 0;

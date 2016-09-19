@@ -3,38 +3,16 @@
 
 VENUS_BEG
 
-static int_x g_iApp = 0;
+static thread_local IApp * gApp = nullptr;
 
 IApp * GetApp()
 {
-	IApp * pService = nullptr;
-	if(g_iApp)
-	{
-		int_x iValue = tls_get(g_iApp);
-		return static_cast<IApp *>(reinterpret_cast<void *>(iValue));
-	}
-	else
-		return nullptr;
+	return gApp;
 }
 
 IApp * SetApp(IApp * pApp)
 {
-	if(pApp)
-	{
-		if(!g_iApp)
-			g_iApp = tls_create();
-
-		tls_set(g_iApp, reinterpret_cast<int_x>(static_cast<void *>(pApp)));
-	}
-	else
-	{
-		if(g_iApp)
-		{
-			tls_set(g_iApp, 0);
-			tls_destroy(g_iApp);
-			g_iApp = 0;
-		}
-	}
+	gApp = pApp;
 	return pApp;
 }
 

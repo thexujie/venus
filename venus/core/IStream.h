@@ -75,10 +75,10 @@ enum EncodingE
 	EncodingDefault,
 	EncodingAnsi,
 	EncodingGBK,
-	EncodingUnicode16,
-	EncodingUnicode16BigEndian,
-	EncodingUnicode32,
-	EncodingUnicode32BigEndian,
+	EncodingUtf16,
+	EncodingUtf16BE,
+	EncodingUtf32,
+	EncodingUtf32BE,
 	EncodingUtf8,
 };
 
