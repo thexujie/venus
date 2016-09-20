@@ -8,15 +8,15 @@ class CORE_API TriangleTmpl
 public:
 	TriangleTmpl();
 
-	template<typename FunT>
-	TriangleTmpl(const vec2<FunT> & a, const vec2<FunT> & b, const vec2<FunT> & c)
+	template<typename ValT>
+	TriangleTmpl(const vec2<ValT> & a, const vec2<ValT> & b, const vec2<ValT> & c)
 		: A(a), B(b), C(c)
 	{
 
 	}
 
-	template<typename FunT>
-	TriangleTmpl(const FunT & ax, const FunT & ay, const FunT & bx, const FunT & by, const FunT & cx, const FunT & cy)
+	template<typename ValT>
+	TriangleTmpl(const ValT & ax, const ValT & ay, const ValT & bx, const ValT & by, const ValT & cx, const ValT & cy)
 		: A(ax, ay), B(bx, by), C(cx, cy)
 	{
 

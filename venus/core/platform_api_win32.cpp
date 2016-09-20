@@ -8,8 +8,6 @@ VENUS_BEG
 CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_length,
 							int_x dst_codepage, void * dst, int_x dst_size, int_x & dst_length)
 {
-	// for \0
-	--dst_size;
 	err_t err = err_ok;
 	int_32 length = 0;
 	switch(dst_codepage)
@@ -20,7 +18,7 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 		{
 		case 1200:
 			length = WideCharToMultiByte(CP_UTF8, 0, (LPCWCH)src, src_length / 2, (LPSTR)dst, dst_size, NULL, NULL);
-			if(length <= dst_size && dst)
+			if(length < dst_size && dst)
 				*((LPSTR)dst + length) = 0;
 			break;
 		default:
@@ -35,7 +33,7 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 		case 936:
 		case CP_UTF8:
 			length = MultiByteToWideChar(src_codepage, 0, (LPCCH)src, src_length, (LPWSTR)dst, dst_size);
-			if(length <= dst_size && dst)
+			if(length < dst_size && dst)
 				*((LPWSTR)dst + length) = 0;
 			break;
 		default:

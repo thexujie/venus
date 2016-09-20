@@ -331,7 +331,7 @@
  * with testing, bug fixes, and patience.  This wouldn't have been
  * possible without all of you.
  *
- * Thanks to Frank J. FunT. Wojcik for helping with the documentation.
+ * Thanks to Frank J. ValT. Wojcik for helping with the documentation.
  */
 
 /*

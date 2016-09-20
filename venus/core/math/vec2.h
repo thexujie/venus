@@ -2,20 +2,20 @@
 
 VENUS_BEG
 
-template<typename FunT>
+template<typename ValT>
 class CORE_API vec2
 {
 public:
 	vec2() :x(0), y(0) {}
-	vec2(FunT _x, FunT _y) :x(_x), y(_y) {}
+	vec2(ValT _x, ValT _y) :x(_x), y(_y) {}
 	vec2(const vec2 & vec) : x(vec.x), y(vec.y) {}
 
-	void set(FunT _x, FunT _y)
+	void set(ValT _x, ValT _y)
 	{
 		x = _x; y = _y;
 	}
 
-	void expand(FunT _cx, FunT _cy)
+	void expand(ValT _cx, ValT _cy)
 	{
 		w += _cx * 2;
 		h += _cy * 2;
@@ -72,22 +72,22 @@ public:
 		x /= vec.x; y /= vec.y; return *this;
 	}
 
-	vec2 operator * (const FunT & rate) const
+	vec2 operator * (const ValT & rate) const
 	{
 		return vec2(x * rate, y * rate);
 	}
 
-	vec2 operator / (const FunT & rate)
+	vec2 operator / (const ValT & rate)
 	{
 		return vec2(x / rate, y / rate);
 	}
 
-	vec2 & operator *= (const FunT & rate)
+	vec2 & operator *= (const ValT & rate)
 	{
 		x *= rate; y *= rate; return *this;
 	}
 
-	vec2 & operator /= (const FunT & rate)
+	vec2 & operator /= (const ValT & rate)
 	{
 		x /= rate; y /= rate; return *this;
 	}
@@ -139,37 +139,37 @@ public:
 		struct
 		{
 			//! 横坐标。
-			FunT x;
+			ValT x;
 			//! 纵坐标。
-			FunT y;
+			ValT y;
 		};
 		struct
 		{
 			//! 横坐标。
-			FunT left;
+			ValT left;
 			//! 纵坐标。
-			FunT top;
+			ValT top;
 		};
 		struct
 		{
 			//! 宽。
-			FunT cx;
+			ValT cx;
 			//! 高。
-			FunT cy;
+			ValT cy;
 		};
 		struct
 		{
 			//! 宽。
-			FunT w;
+			ValT w;
 			//! 高。
-			FunT h;
+			ValT h;
 		};
 		struct
 		{
 			//! 列。
-			FunT col;
+			ValT col;
 			//! 行。
-			FunT row;
+			ValT row;
 		};
 	};
 };

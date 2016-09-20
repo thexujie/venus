@@ -7,7 +7,7 @@ VENUS_BEG
 class CORE_API CTextReader : public IInputStream, public ITextStream
 {
 public:
-	CTextReader(IInputStream * pInputStream, EncodingE eEncoding = EncodingUnknown);
+	CTextReader(IInputStream * pInputStream, encoding_t encoding = encodings::unknown);
 	~CTextReader();
 
 	bool CanRead() const noexcept;
@@ -19,8 +19,8 @@ public:
 	bool CanSeek() const;
 	int_x Seek(SeekE seek, int_x iSeek);
 
-	void SetEncoding(EncodingE eEncoding);
-	EncodingE GetEncoding() const;
+	void SetEncoding(encoding_t encoding);
+	encoding_t GetEncoding() const;
 
 	int_32 ReadChar();
 
@@ -36,21 +36,20 @@ public:
 protected:
 	void _Ready() const;
 
+	int_32 ReadCharAnsi(byte_t last);
 	int_32 ReadCharUtf8();
 	int_32 ReadCharUtf16LE();
 	int_32 ReadCharUtf16BE();
 
-	int_32 ReadCharGBK();
-
 protected:
 	IInputStream * m_pInputStream;
-	EncodingE m_eEncoding;
+	encoding_t m_encoding;
 };
 
 class CORE_API CTextWriter : public IOutputStream
 {
 public:
-	CTextWriter(IOutputStream * pOutputStream, EncodingE eEncoding = EncodingUnknown);
+	CTextWriter(IOutputStream * pOutputStream, encoding_t encoding = encodings::unknown);
 	~CTextWriter();
 
 	bool CanWrite() const noexcept;
@@ -63,8 +62,8 @@ public:
 	bool CanSeek() const;
 	int_x Seek(SeekE seek, int_x iSeek);
 
-	void SetEncoding(EncodingE eEncoding);
-	EncodingE GetEncoding() const;
+	void SetEncoding(encoding_t encoding);
+	encoding_t GetEncoding() const;
 
 	void WriteChar(int_32 ch);
 
@@ -82,6 +81,7 @@ public:
 
 protected:
 	void _Ready() const;
+	void _WriteBOM();
 
 	void WriteCharUtf8(int_32 ch);
 	void WriteCharUtf16LE(int_32 ch);
@@ -92,7 +92,8 @@ protected:
 protected:
 	IOutputStream * m_pOutputStream;
 	textw m_bufferW;
-	EncodingE m_eEncoding;
+	encoding_t m_encoding;
+	bool m_bom_ready;
 };
 
 VENUS_END

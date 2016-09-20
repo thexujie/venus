@@ -104,10 +104,10 @@ protected:
 	vector<ui_load_info_t> m_infos;
 
 public:
-	template<typename FunT>
+	template<typename ValT>
 	static IControl * CreateFunTmpl()
 	{
-		return new FunT();
+		return new ValT();
 	}
 };
 

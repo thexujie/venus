@@ -8,21 +8,6 @@
 
 VENUS_BEG
 
-int_x SetCRTCodePage(int_x iCodePage)
-{
-	_setmbcp((int)iCodePage);
-	return GetCRTCodePage();
-}
-int_x GetCRTCodePage()
-{
-	return static_cast<int_x>(_getmbcp());
-}
-
-int_x SetCRTCodePageDefault()
-{
-	return SetCRTCodePage(_MB_CP_ANSI);
-}
-
 int_32 CP936ToUnicode(uint_8 region, uint_8 index)
 {
 	if(0x81 <= region && region <= 0xFE)
@@ -64,23 +49,7 @@ bool encoding_t::is_singlebyte() const
 	}
 }
 
-encoding_t encoding_t::fromCP(int_x codepage)
-{
-	switch(codepage)
-	{
-	case 936:
-		return gb2312;
-	case 1200:
-		return utf16;
-	case 65001:
-		return utf8;
-	default:
-		return ansi;
-	}
-}
-
-template<int_x codepage>
-static err_t encoding_to(encoding_t src_encoding, const void * src, int_x src_length, void * dst, int_x dst_size, int_x * dst_length)
+err_t encoding_t::convert(encoding_t src_encoding, const void * src, int_x src_length, void * dst, int_x dst_size, int_x * dst_length) const
 {
 	int_x length = 0;
 	err_t err = text_encode(src_encoding.codepage, src, src_length, codepage, dst, dst_size, length);
@@ -88,10 +57,5 @@ static err_t encoding_to(encoding_t src_encoding, const void * src, int_x src_le
 		*dst_length = length;
 	return err;
 }
-
-encoding_t encoding_t::ansi = { 0, encoding_to<0> };
-encoding_t encoding_t::utf8 = { 65001, encoding_to<65001>};
-encoding_t encoding_t::utf16 = { 1200, encoding_to<1200> };
-encoding_t encoding_t::gb2312 = {936, encoding_to<936>};
 
 VENUS_END

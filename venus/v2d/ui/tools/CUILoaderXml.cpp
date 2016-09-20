@@ -323,8 +323,8 @@ err_t CUILoaderXml::ParseEvent(const textw & name, const textw &value, CMetaHelp
 	return err_ok;
 }
 
-template<typename FunT>
-static bool xml_attr_parse_text(const xml_node & node, const char_16 * szAttribute, const FunT & fun)
+template<typename ValT>
+static bool xml_attr_parse_text(const xml_node & node, const char_16 * szAttribute, const ValT & fun)
 {
 	const xml_attr & attr = node[szAttribute];
 	if(attr.is_valid())
@@ -335,8 +335,8 @@ static bool xml_attr_parse_text(const xml_node & node, const char_16 * szAttribu
 	return false;
 }
 
-template<typename FunT>
-static bool xml_attr_parse_bool(const xml_node & node, const char_16 * szAttribute, const FunT & fun)
+template<typename ValT>
+static bool xml_attr_parse_bool(const xml_node & node, const char_16 * szAttribute, const ValT & fun)
 {
 	const xml_attr & attr = node[szAttribute];
 	if(attr.is_valid())
@@ -347,8 +347,8 @@ static bool xml_attr_parse_bool(const xml_node & node, const char_16 * szAttribu
 	return false;
 }
 
-template<typename FunT>
-static bool xml_attr_parse_intx(const xml_node & node, const char_16 * szAttribute, const FunT & fun)
+template<typename ValT>
+static bool xml_attr_parse_intx(const xml_node & node, const char_16 * szAttribute, const ValT & fun)
 {
 	const xml_attr & attr = node[szAttribute];
 	if(attr.is_valid())
@@ -359,8 +359,8 @@ static bool xml_attr_parse_intx(const xml_node & node, const char_16 * szAttribu
 	return false;
 }
 
-template<typename FunT>
-static bool xml_attr_parse_f32(const xml_node & node, const char_16 * szAttribute, const FunT & fun)
+template<typename ValT>
+static bool xml_attr_parse_f32(const xml_node & node, const char_16 * szAttribute, const ValT & fun)
 {
 	const xml_attr & attr = node[szAttribute];
 	if(attr.is_valid())
@@ -371,8 +371,8 @@ static bool xml_attr_parse_f32(const xml_node & node, const char_16 * szAttribut
 	return false;
 }
 
-template<typename FunT, typename LamdaT>
-static bool xml_attr_parse_type(const xml_node & node, const char_16 * szAttribute, const LamdaT & lamda, const FunT & fun)
+template<typename ValT, typename LamdaT>
+static bool xml_attr_parse_type(const xml_node & node, const char_16 * szAttribute, const LamdaT & lamda, const ValT & fun)
 {
 	const xml_attr & attr = node[szAttribute];
 	if(attr.is_valid())

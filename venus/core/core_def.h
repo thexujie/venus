@@ -303,31 +303,31 @@ enum veformat_e
 * @brief 一个简单的内存管理类。
 * @details 分配、释放内存，构造、析构对象。
 */
-template<class FunT> class DefEleAllocator
+template<class ValT> class DefEleAllocator
 {
 public:
 	/**
 	* @brief 创建一个实例对象指针。
 	* @return 返回对象的一个实例指针。
 	*/
-	static FunT * Malloc()
+	static ValT * Malloc()
 	{
-		return (FunT *)malloc(sizeof(FunT));
+		return (ValT *)malloc(sizeof(ValT));
 	}
 	/**
 	* @brief 创建一个实例对象数组（指针）。
 	* @param iCount 指定的数组大小。
 	* @return 返回对象的一个实例数组（指针）。
 	*/
-	static FunT * Malloc(int_x iCount)
+	static ValT * Malloc(int_x iCount)
 	{
-		return (FunT *)malloc(iCount * sizeof(FunT));
+		return (ValT *)malloc(iCount * sizeof(ValT));
 	}
 	/**
 	* @brief 释放一个实例对象。
 	* @param data 实例对象的指针。
 	*/
-	static void Free(FunT * data)
+	static void Free(ValT * data)
 	{
 		free((void *)data);
 	}
@@ -337,9 +337,9 @@ public:
 	* @param data 构造的副本。
 	* @note 该函数对 基本数据类型 也有作用。
 	*/
-	static void Construct(FunT * pData, const FunT & data)
+	static void Construct(ValT * pData, const ValT & data)
 	{
-		new ((void *)pData) FunT(data);
+		new ((void *)pData) ValT(data);
 	}
 	/**
 	* @brief 使用一个实例构造另外一个实例。
@@ -347,9 +347,9 @@ public:
 	* @param data 构造的副本。
 	* @note 该函数对 基本数据类型 也有作用。
 	*/
-	static void MoveConstruct(FunT * pData, FunT & data)
+	static void MoveConstruct(ValT * pData, ValT & data)
 	{
-		new ((void *)pData) FunT(move(data));
+		new ((void *)pData) ValT(move(data));
 	}
 	/**
 	* @brief 调用实例的构造函数。
@@ -357,18 +357,18 @@ public:
 	* @param data 构造的副本。
 	* @note 该函数对 基本数据类型 也有作用。
 	*/
-	static void Construct(FunT * pData)
+	static void Construct(ValT * pData)
 	{
-		new ((void *)pData) FunT();
+		new ((void *)pData) ValT();
 	}
 	/**
 	* @brief 析构一个实例对象。
 	* @param pData 将要被析构的实例指针。
 	* @note 该函数对 基本数据类型 也有作用。
 	*/
-	static void Destruct(FunT * pData)
+	static void Destruct(ValT * pData)
 	{
-		pData->~FunT();
+		pData->~ValT();
 	}
 };
 

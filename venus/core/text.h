@@ -299,7 +299,7 @@ template<typename CharT>
 class CORE_API text_base
 {
 public:
-	typedef text_data_t<CharT> TextData;
+	typedef text_data_t<CharT> textdata_t;
 public:
 	text_base() : m_data(nullptr) {}
 	text_base(const text_base & another)
@@ -311,14 +311,14 @@ public:
 
 	text_base(const CharT * _text, int_x _length = -1)
 	{
-		m_data = new TextData(_text, _length, -1);
+		m_data = new textdata_t(_text, _length, -1);
 	}
 	explicit text_base(int_x _capability)
 	{
-		m_data = new TextData(_capability);
+		m_data = new textdata_t(_capability);
 	}
 
-	text_base(TextData * _data)
+	text_base(textdata_t * _data)
 	{
 		m_data = _data;
 	}
@@ -352,11 +352,11 @@ public:
 			else {}
 		}
 		else if(!m_data)
-			m_data = new TextData(_text, _length, -1);
+			m_data = new textdata_t(_text, _length, -1);
 		else if(m_data->ref() > 1)
 		{
 			m_data->release();
-			m_data = new TextData(_text, _length, -1);
+			m_data = new textdata_t(_text, _length, -1);
 		}
 		else
 			m_data->set(_text, _length);
@@ -383,12 +383,12 @@ public:
 				throw exp_out_of_bound();
 
 			CharT _text[2] = {_ch, 0};
-			m_data = new TextData(_text, 1, -1);
+			m_data = new textdata_t(_text, 1, -1);
 		}
 		else if(m_data->ref() > 1)
 		{
-			int_x capability = TextData::fit_capability(m_data->m_size + 1);
-			TextData * _data = new TextData(capability);
+			int_x capability = textdata_t::fit_capability(m_data->m_size + 1);
+			textdata_t * _data = new textdata_t(capability);
 			buffcpy(_data->m_buffer, m_data->m_buffer, _index);
 			_data->m_buffer[_index] = _ch;
 			buffcpy(_data->m_buffer + _index + 1, m_data->m_buffer + _index, m_data->m_size - _index);
@@ -410,7 +410,7 @@ public:
 		if(m_data->ref() > 1)
 		{
 			int_x capability = m_data->m_capability;
-			TextData * _data = new TextData(capability);
+			textdata_t * _data = new textdata_t(capability);
 
 			CharT * pNewText = _data->m_buffer;
 			buffcpy(_data->m_buffer, m_data->m_buffer, _index);
@@ -433,11 +433,11 @@ public:
 			_length = textlen(_text);
 
 		if(!m_data)
-			m_data = new TextData(_text, _length);
+			m_data = new textdata_t(_text, _length);
 		else if(m_data->ref() > 1)
 		{
-			int_x capability = TextData::fit_capability(m_data->m_size + _length);
-			TextData * _data = new TextData(capability);
+			int_x capability = textdata_t::fit_capability(m_data->m_size + _length);
+			textdata_t * _data = new textdata_t(capability);
 
 			buffcpy(_data->m_buffer, m_data->m_buffer, _index);
 			buffcpy(_data->m_buffer + _index, _text, _length);
@@ -471,7 +471,7 @@ public:
 		{
 			if(m_data->ref() > 1)
 			{
-				TextData * _data = new TextData(m_data->m_capability);
+				textdata_t * _data = new textdata_t(m_data->m_capability);
 				buffcpy(_data->m_buffer, m_data->m_buffer, _index);
 				buffcpy(_data->m_buffer + _index, m_data->m_buffer + _index + iLen, m_data->m_size - _index - _length);
 
@@ -613,10 +613,10 @@ public:
 		}
 
 		if(!m_data)
-			m_data = new TextData(_size, -1);
+			m_data = new textdata_t(_size, -1);
 		else if(m_data->ref() > 1)
 		{
-			TextData * _data = new TextData(_size, -1);
+			textdata_t * _data = new textdata_t(_size, -1);
 			m_data->release();
 			m_data = _data;
 		}
@@ -699,8 +699,8 @@ public:
 		else
 		{
 			int_x _size = size() + another.size();
-			int_x capability = TextData::fit_capability(_size);
-			TextData * _data = new TextData(capability);
+			int_x capability = textdata_t::fit_capability(_size);
+			textdata_t * _data = new textdata_t(capability);
 			buffcpy(_data->m_buffer, buffer(), size());
 			buffcpy(_data->m_buffer + size(), another.buffer(), another.size());
 			_data->m_size = _size;
@@ -719,8 +719,8 @@ public:
 		{
 			int_x _length = textlen(_text);
 			int_x _size = size() + _length;
-			int_x capability = TextData::fit_capability(_size);
-			TextData * _data = new TextData(capability);
+			int_x capability = textdata_t::fit_capability(_size);
+			textdata_t * _data = new textdata_t(capability);
 			buffcpy(_data->m_buffer, buffer(), size());
 			buffcpy(_data->m_buffer + size(), _text, _length);
 			_data->m_size = _size;
@@ -761,10 +761,10 @@ public:
 			}
 		}
 		else if(!m_data)
-			m_data = new TextData(_size, 0);
+			m_data = new textdata_t(_size, 0);
 		else if(m_data->ref() > 1)
 		{
-			TextData * _data = new TextData(_size, 0);
+			textdata_t * _data = new textdata_t(_size, 0);
 			textcpy(_data->m_buffer, _data->m_capability, m_data->m_buffer, m_data->m_size);
 			m_data->release();
 			m_data = _data;
@@ -779,10 +779,10 @@ public:
 			return;
 
 		if(!m_data)
-			m_data = new TextData(_capability);
+			m_data = new textdata_t(_capability);
 		else if(m_data->ref() > 1)
 		{
-			TextData * _data = new TextData(m_data->m_buffer, m_data->m_size, _capability);
+			textdata_t * _data = new textdata_t(m_data->m_buffer, m_data->m_size, _capability);
 			m_data->release();
 			m_data = _data;
 		}
@@ -817,8 +817,7 @@ public:
 
 	bool replace(int_x index_beg, int_x index_end, const CharT * pattern, int_x pattern_length)
 	{
-		int_x length = length();
-		if(index_beg < 0 || index_beg >= index_end || index_end > length)
+		if(index_beg < 0 || index_beg >= index_end || index_end > length())
 			return false;
 
 		int_x length_new = length() + (pattern_length - (index_end - index_beg));
@@ -842,7 +841,7 @@ public:
 			return 0;
 
 		int_x length_new = length_old + (dst_length - src_length) * count;
-		int_x _capability = TextData::fit_capability(length_new);
+		int_x _capability = textdata_t::fit_capability(length_new);
 		reallocate(_capability);
 		int_x count2 = textrplstr(buffer(), length_old, capability(), src, src_length, dst, dst_length, caps);
 		Assert(count == count2);
@@ -857,7 +856,7 @@ public:
 
 		if(m_data->ref() > 1)
 		{
-			TextData * pNewData = new TextData(*m_data);
+			textdata_t * pNewData = new textdata_t(*m_data);
 			m_data->release();
 			m_data = pNewData;
 		}
@@ -866,6 +865,7 @@ public:
 		m_data->m_size -= iLength;
 		return iLength;
 	}
+
 	operator const CharT * () const { return m_data ? m_data->m_buffer : nullptr; }
 	operator CharT * () { return m_data ? m_data->m_buffer : nullptr; }
 	bool is_empty() const { return m_data ? !(m_data->m_size > 0) : true; }
@@ -878,8 +878,9 @@ public:
 	CharT * buffer() { return m_data ? m_data->m_buffer : nullptr; }
 
 	void swap(text_base & another) { ::swap(m_data, another.m_data); }
+
 protected:
-	TextData * m_data;
+	textdata_t * m_data;
 };
 
 typedef text_base<char_16> textw;
@@ -890,10 +891,6 @@ typedef textw textx;
 #else
 typedef texta textx;
 #endif // UNICODE
-
-CORE_API textw tounicodetext(const char_8 * text, int_x length = -1);
-CORE_API textw tounicodetextex(const char_8 * text, int_x length, _locale_t locale);
-CORE_API texta toansitext(const char_16 * text, int_x length = -1);
 
 /**
 * @brief 简单的管理字符数组的类。

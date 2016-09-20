@@ -103,14 +103,14 @@ class CORE_API ITextStream
 {
 public:
 	virtual ~ITextStream() {}
-	virtual void SetEncoding(EncodingE encoding) = 0;
-	virtual EncodingE GetEncoding() const = 0;
+	virtual void SetEncoding(encoding_t encoding) = 0;
+	virtual encoding_t GetEncoding() const = 0;
 };
 
 class CORE_API IDataStream
 {
 public:
-	virtual ~IDataStream() = 0;
+	virtual ~IDataStream() {}
 	virtual void SetEndian(EndianE endian) = 0;
 	virtual EndianE GetEndian() const = 0;
 };
@@ -118,7 +118,7 @@ public:
 class CORE_API IBufferedStream
 {
 public:
-	virtual ~IBufferedStream() = 0;
+	virtual ~IBufferedStream() {}
 
 	virtual void SetBufferSize(int_x iSize) = 0;
 	virtual int_x GetBufferSize() const = 0;

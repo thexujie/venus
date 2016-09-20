@@ -1231,7 +1231,7 @@ ZEXTERN gzFile ZEXPORT gzopen OF((const char *path, const char *mode));
    a strategy: 'f' for filtered data as in "wb6f", 'h' for Huffman-only
    compression as in "wb1h", 'R' for run-length encoding as in "wb1R", or 'F'
    for fixed code compression as in "wb9F".  (See the description of
-   deflateInit2 for more information about the strategy parameter.)  'FunT' will
+   deflateInit2 for more information about the strategy parameter.)  'ValT' will
    request transparent writing or appending with no compression and not using
    the gzip format.
 

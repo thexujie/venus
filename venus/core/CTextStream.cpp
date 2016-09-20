@@ -4,16 +4,15 @@
 
 VENUS_BEG
 
-CTextReader::CTextReader(IInputStream * pInputStream, EncodingE eEncoding)
-	: m_pInputStream(pInputStream), m_eEncoding(eEncoding)
+CTextReader::CTextReader(IInputStream * pInputStream, encoding_t encoding)
+	: m_pInputStream(pInputStream), m_encoding(encoding)
 {
-
+	
 }
 
 CTextReader::~CTextReader()
 {
 	m_pInputStream = nullptr;
-	m_eEncoding = EncodingUnknown;
 }
 
 bool CTextReader::CanRead() const noexcept
@@ -50,15 +49,15 @@ int_x CTextReader::Seek(SeekE seek, int_x iSeek)
 	return m_pInputStream->Seek(seek, iSeek);
 }
 
-void CTextReader::SetEncoding(EncodingE eEncoding)
+void CTextReader::SetEncoding(encoding_t encoding)
 {
-	m_eEncoding = eEncoding;
+	m_encoding = encoding;
 }
 
-EncodingE CTextReader::GetEncoding() const
+encoding_t CTextReader::GetEncoding() const
 {
 	_Ready();
-	return m_eEncoding;
+	return m_encoding;
 }
 
 EncodingE CTextReader::ReadEncoding()
@@ -112,7 +111,7 @@ int_32 CTextReader::ReadChar()
 {
 	Verify(m_pInputStream);
 
-	if(m_eEncoding == EncodingUnknown)
+	if(m_encoding == encodings::unknown)
 	{
 		int_32 ch = Read();
 
@@ -125,72 +124,51 @@ int_32 CTextReader::ReadChar()
 			ch = Read();
 			if(ch != 0xBF)
 				throw exp_io();
-			m_eEncoding = EncodingUtf8;
+			m_encoding = encodings::utf8;
 		}
 		else if(ch == 0xFF)
 		{
 			ch = Read();
 			if(ch != 0xFE)
 				throw exp_io();
-			m_eEncoding = EncodingUtf16;
+			m_encoding = encodings::utf16;
 		}
 		else if(ch == 0xFE)
 		{
 			ch = Read();
 			if(ch != 0xFF)
 				throw exp_io();
-			m_eEncoding = EncodingUtf16BE;
+			m_encoding = encodings::utf16_be;
 		}
 		else if(ch == 0x5c)
 		{
 			ch = Read();
 			if(ch != 0x75)
 				throw exp_io();
-			m_eEncoding = EncodingAnsi;
+			m_encoding = encodings::ansi;
 		}
 		else
 		{
-			int_x iCodePage = GetCRTCodePage();
-			switch(iCodePage)
-			{
-			case 936:
-			case 20936:
-			case 52936:
-			case 54936:
-				m_eEncoding = EncodingGBK;
-				break;
-			case 50227:
-				m_eEncoding = EncodingGBK;
-				break;
-			case 10008:
-				m_eEncoding = EncodingGBK;
-				break;
-			default:
-				m_eEncoding = EncodingDefault;
-				break;
-			}
-			return ch;
+			m_encoding = encodings::ansi;
+			return ReadCharAnsi(ch);
 		}
 	}
 	else{}
 
 	int_32 ch = 0;
-	switch(m_eEncoding)
+	switch(m_encoding.codepage)
 	{
-	case EncodingAnsi:
+	case encodings::ansi.codepage:
 		// TODO£º¼ì²âÄ¬ÈÏµÄ±àÂë
-		ch = ReadCharGBK();
+		ch = ReadCharAnsi(0);
 		break;
-	case EncodingGBK:
-		ch = ReadCharGBK();
-		break;
-	case EncodingUtf16:
+	case encodings::utf16.codepage:
 		ch = ReadCharUtf16LE();
 		break;
-	case EncodingUtf16BE:
+	case encodings::utf16_be.codepage:
 		ch = ReadCharUtf16BE();
 		break;
-	case EncodingUtf8:
+	case encodings::utf8.codepage:
 		ch = ReadCharUtf8();
 		break;
 	default:
@@ -390,6 +368,24 @@ int_32 CTextReader::ReadCharUtf16BE()
 	return val;
 }
 
+int_32 CTextReader::ReadCharAnsi(byte_t last)
+{
+	_Ready();
+
+	byte_t bVal = last ? last : m_pInputStream->Read();
+	if(bVal >= 0x80)
+	{
+		byte_t bVal2 = m_pInputStream->Read();
+		byte_t vals[2] = { bVal, bVal2 };
+		char_16 ch;
+		int_x length = 0;
+		err_t err = encodings::utf16.convert(encodings::ansi, vals, 2, &ch, 1, &length);
+		return ch;
+	}
+	else
+		return bVal;
+}
+
 int_32 CTextReader::ReadCharUtf8()
 {
 	_Ready();
@@ -439,24 +435,10 @@ int_32 CTextReader::ReadCharUtf8()
 		return bVal;
 }
 
-int_32 CTextReader::ReadCharGBK()
-{
-	_Ready();
-
-	byte_t bVal = m_pInputStream->Read();
-	if(bVal >= 0x80)
-	{
-		byte_t bVal2 = m_pInputStream->Read();
-		return CP936ToUnicode(bVal, bVal2);
-	}
-	else
-		return bVal;
-}
 
 
-
-CTextWriter::CTextWriter(IOutputStream * pOutputStream, EncodingE eEncoding) :
-	m_pOutputStream(pOutputStream), m_eEncoding(eEncoding)
+CTextWriter::CTextWriter(IOutputStream * pOutputStream, encoding_t encoding) :
+	m_pOutputStream(pOutputStream), m_encoding(encoding), m_bom_ready(false)
 {
 }
 
@@ -482,14 +464,14 @@ int_x CTextWriter::WriteAviliable() const noexcept
 
 void CTextWriter::Write(byte_t byte)
 {
-	if(m_pOutputStream)
-		return m_pOutputStream->Write(byte);
+	_Ready();
+	return m_pOutputStream->Write(byte);
 }
 
 void CTextWriter::Write(const void * data, int_x size)
 {
-	if(m_pOutputStream)
-		return m_pOutputStream->Write(data, size);
+	_Ready();
+	return m_pOutputStream->Write(data, size);
 }
 
 void CTextWriter::Flush()
@@ -514,68 +496,38 @@ int_x CTextWriter::Seek(SeekE seek, int_x iSeek)
 		return 0;
 }
 
-void CTextWriter::SetEncoding(EncodingE eEncoding)
+void CTextWriter::SetEncoding(encoding_t encoding)
 {
-	m_eEncoding = eEncoding;
+	m_encoding = encoding;
 }
 
-EncodingE CTextWriter::GetEncoding() const
+encoding_t CTextWriter::GetEncoding() const
 {
-	return m_eEncoding;
+	return m_encoding;
 }
 
 void CTextWriter::WriteChar(int_32 ch)
 {
-	if(m_eEncoding == EncodingUnknown)
-	{
-		int_x iCodePage = GetCRTCodePage();
-		switch(iCodePage)
-		{
-		case 936:
-		case 20936:
-		case 52936:
-		case 54936:
-			m_eEncoding = EncodingGBK;
-			break;
-		case 50227:
-			m_eEncoding = EncodingGBK;
-			break;
-		case 10008:
-			m_eEncoding = EncodingGBK;
-			break;
-		default:
-			m_eEncoding = EncodingDefault;
-			break;
-		}
-	}
-
-	switch(m_eEncoding)
-	{
-	case EncodingAnsi:
-		break;
-	case EncodingGBK:
-		WriteCharGBK(ch);
-		break;
-	case EncodingUtf8:
-		WriteCharUtf8(ch);
-		break;
-	case EncodingUtf16:
-		WriteCharUtf16LE(ch);
-		break;
-	case EncodingUtf16BE:
-		WriteCharUtf16BE(ch);
-		break;
-	default:
-		Write(static_cast<byte_t>(ch));
-		break;
-	}
 }
 
 void CTextWriter::WriteText(const char_16 * pText, int_x iLength)
 {
+	_Ready();
+
 	if(iLength < 0)
 		iLength = textlen(pText);
-	m_pOutputStream->Write(pText, iLength * 2);
+	_WriteBOM();
+	if(m_encoding.codepage == encodings::utf16.codepage)
+		m_pOutputStream->Write(pText, iLength * 2);
+	else if(m_encoding.is_singlebyte())
+	{
+
+	}
+	else
+	{
+		textw text;
+
+	}
 }
 
 void CTextWriter::WriteText(const textw & text)
@@ -667,6 +619,38 @@ void CTextWriter::_Ready() const
 	if(!m_pOutputStream)
 		throw exp_nullptr();
 }
+
+void CTextWriter::_WriteBOM()
+{
+	if(m_bom_ready)
+		return;
+
+	_Ready();
+	m_bom_ready = true;
+
+	const byte_t BOM_ANSI[] = { 0x5c, 0x75 };
+	const byte_t BOM_UTF8[] = { 0xef, 0xbb, 0xbf };
+	const byte_t BOM_UTF16[] = { 0xff, 0xfe };
+	const byte_t BOM_UTF16_BE[] = { 0xfe, 0xff };
+	switch(m_encoding.codepage)
+	{
+	case encodings::ansi.codepage:
+		Write(BOM_ANSI, arraysize(BOM_ANSI));
+		break;
+	case encodings::utf8.codepage:
+		Write(BOM_UTF8, arraysize(BOM_UTF8));
+		break;
+	case encodings::utf16.codepage:
+		Write(BOM_UTF16, arraysize(BOM_UTF16));
+		break;
+	case encodings::utf16_be.codepage:
+		Write(BOM_UTF16_BE, arraysize(BOM_UTF16_BE));
+		break;
+	default:
+		break;
+	}
+}
+
 
 void CTextWriter::WriteCharUtf8(int_32 ch)
 {

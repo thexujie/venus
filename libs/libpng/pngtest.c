@@ -689,7 +689,7 @@ read_user_chunk_callback(png_struct *png_ptr, png_unknown_chunkp chunk)
     * Note that libpng has already taken care of the CRC handling.
     */
 
-   if (chunk->name[0] == 115 && chunk->name[1] ==  84 &&     /* s  FunT */
+   if (chunk->name[0] == 115 && chunk->name[1] ==  84 &&     /* s  ValT */
        chunk->name[2] ==  69 && chunk->name[3] ==  82)       /* E  R */
       {
          /* Found sTER chunk */

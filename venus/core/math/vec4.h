@@ -2,15 +2,15 @@
 
 VENUS_BEG
 
-template<typename FunT>
+template<typename ValT>
 class CORE_API vec4
 {
 public:
 	vec4() :x(0), y(0), z(0), w(0) {}
-	vec4(FunT _x, FunT _y, FunT _z, FunT _w) :x(_x), y(_y), z(_z), w(_w) {}
+	vec4(ValT _x, ValT _y, ValT _z, ValT _w) :x(_x), y(_y), z(_z), w(_w) {}
 	vec4(const vec4 & vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w) {}
 
-	void set(FunT _x, FunT _y, FunT _z, FunT _w)
+	void set(ValT _x, ValT _y, ValT _z, ValT _w)
 	{
 		x = _x; y = _y; z = _z; w = _w;
 	}
@@ -65,22 +65,22 @@ public:
 		x /= vec.x; y /= vec.y; z /= vec.z; w /= vec.w; return *this;
 	}
 
-	vec4 operator * (const FunT & rate) const
+	vec4 operator * (const ValT & rate) const
 	{
 		return vec4(x * rate, y * rate, z * rate, w * rate);
 	}
 
-	vec4 operator / (const FunT & rate)
+	vec4 operator / (const ValT & rate)
 	{
 		return vec4(x / rate, y / rate, z / rate, w / rate);
 	}
 
-	vec4 & operator *= (const FunT & rate)
+	vec4 & operator *= (const ValT & rate)
 	{
 		x *= rate; y *= rate; z *= rate; w *= rate; return *this;
 	}
 
-	vec4 & operator /= (const FunT & rate)
+	vec4 & operator /= (const ValT & rate)
 	{
 		x /= rate; y /= rate; z /= rate; w /= rate; return *this;
 	}
@@ -131,15 +131,15 @@ public:
 	{
 		struct
 		{
-			vec2<FunT> xy;
-			vec2<FunT> zw;
+			vec2<ValT> xy;
+			vec2<ValT> zw;
 		};
 		struct
 		{
-			FunT x;
-			FunT y;
-			FunT z;
-			FunT w;
+			ValT x;
+			ValT y;
+			ValT z;
+			ValT w;
 		};
 	};
 };

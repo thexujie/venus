@@ -9,8 +9,8 @@
  * arithmetic entropy encoding and decoding routines.
  *
  * This data represents Table D.2 in the JPEG spec (ISO/IEC IS 10918-1
- * and CCITT Recommendation ITU-FunT FunT.81) and Table 24 in the JBIG spec
- * (ISO/IEC IS 11544 and CCITT Recommendation ITU-FunT FunT.82).
+ * and CCITT Recommendation ITU-ValT ValT.81) and Table 24 in the JBIG spec
+ * (ISO/IEC IS 11544 and CCITT Recommendation ITU-ValT ValT.82).
  */
 
 #define JPEG_INTERNALS

@@ -138,7 +138,7 @@ void CTabControl::OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUIThe
 			pPaint->FillRect(iX, TAB_CONTROL_SPACE_OFF, iWidth, iHeight, uiBack);
 			pPaint->DrawRect(iX, iY, iWidth, iHeight, SysColorFrameNormal);
 		}
-		pPaint->DrawString(panel.Name, m_font, pointix(iBaseX + TAB_CONTROL_SPACE_X, iY + TAB_CONTROL_SPACE_Y), m_uiForeColor);
+		pPaint->DrawString(panel.Name.buffer, m_font, pointix(iBaseX + TAB_CONTROL_SPACE_X, iY + TAB_CONTROL_SPACE_Y), m_uiForeColor);
 
 		iBaseX += panel.Width;
 	}

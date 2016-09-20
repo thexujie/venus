@@ -6,7 +6,7 @@
  * For conditions of distribution and use, see the accompanying README file.
  *
  * This file contains portable arithmetic entropy decoding routines for JPEG
- * (implementing the ISO/IEC IS 10918-1 and CCITT Recommendation ITU-FunT FunT.81).
+ * (implementing the ISO/IEC IS 10918-1 and CCITT Recommendation ITU-ValT ValT.81).
  *
  * Both sequential and progressive modes are supported in this single module.
  *

@@ -2,11 +2,11 @@
 
 VENUS_BEG
 
-template<typename FunT, typename RetT, typename... ArgsT>
+template<typename ValT, typename RetT, typename... ArgsT>
 class VENUS_API proc_base
 {
 public:
-	typedef FunT fun_type;
+	typedef ValT fun_type;
 	typedef RetT return_type;
 
 	proc_base()
@@ -55,7 +55,7 @@ protected:
 	fun_type pfn;
 };
 
-template<typename FunT>
+template<typename ValT>
 struct VENUS_API proc_helper {};
 
 #ifdef BIT32

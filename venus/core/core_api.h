@@ -37,8 +37,8 @@ inline constfun uint_32 make_fourcc(char_8 ch0, char_8 ch1, char_8 ch2, char_8 c
 CORE_API void breakpoint();
 
 /*!@brief 断言，如果失败，会触发一个调试断点。非Debug版该函数不起任何作用。*/
-template<typename FunT>
-void Assert(const FunT & val)
+template<typename ValT>
+void Assert(const ValT & val)
 {
 #ifdef _DEBUG
 	if(val == 0)
@@ -46,8 +46,8 @@ void Assert(const FunT & val)
 #endif
 }
 /*!@brief 断言，如果失败，会触发一个调试断点。非Debug版该函数也会起作用。*/
-template<typename FunT>
-void Verify(const FunT & val)
+template<typename ValT>
+void Verify(const ValT & val)
 {
 	if(val == 0)
 		breakpoint();
@@ -62,8 +62,8 @@ void Verify(const FunT & val)
 删除方式为 delete ptr
 * @param ptr 需要被 delete 的指针的引用。
 */
-template<typename FunT>
-void SafeDelete(FunT *& ptr)
+template<typename ValT>
+void SafeDelete(ValT *& ptr)
 {
 	if(ptr)
 	{
@@ -77,8 +77,8 @@ void SafeDelete(FunT *& ptr)
 * 删除方式为 delete[] ptr
 *@param ptr 需要被 delete 的数组指针的引用。
 */
-template<typename FunT>
-void SafeDeleteArray(FunT *& ptr)
+template<typename ValT>
+void SafeDeleteArray(ValT *& ptr)
 {
 	if(ptr)
 	{
@@ -92,8 +92,8 @@ void SafeDeleteArray(FunT *& ptr)
 * 删除方式为 delete ptr[n]
 *@param ptr 需要被 delete 的数组指针的引用。
 */
-template<typename FunT>
-void SafeDeleteArray(FunT * ptr[], int_x iLength)
+template<typename ValT>
+void SafeDeleteArray(ValT * ptr[], int_x iLength)
 {
 	if(ptr)
 	{
@@ -106,8 +106,8 @@ void SafeDeleteArray(FunT * ptr[], int_x iLength)
 * @brief 安全地 调用 Release 指针，并将指针赋 nullptr。
 * @param ptr 需要被 Release 的指针的引用。
 */
-template<typename FunT>
-void SafeRelease(FunT *& ptr)
+template<typename ValT>
+void SafeRelease(ValT *& ptr)
 {
 	if(ptr)
 	{
@@ -116,8 +116,8 @@ void SafeRelease(FunT *& ptr)
 	}
 }
 
-template<typename FunT>
-void SafeReleasePtr(FunT ** ptr)
+template<typename ValT>
+void SafeReleasePtr(ValT ** ptr)
 {
 	if(ptr && *ptr)
 	{
@@ -130,8 +130,8 @@ void SafeReleasePtr(FunT ** ptr)
 * @brief 安全地将指针赋 nullptr。
 * @param ptr 需要被赋 nullptr 的指针的引用。
 */
-template<typename FunT>
-void SafeNull(FunT *& ptr)
+template<typename ValT>
+void SafeNull(ValT *& ptr)
 {
 	ptr = nullptr;
 }
@@ -140,8 +140,8 @@ void SafeNull(FunT *& ptr)
 * @brief 安全地 调用 Release 一个数组，并将数组中每个指针赋 nullptr。
 * @param ptr 需要被 Release 的指针的引用。
 */
-template<typename FunT>
-void SafeReleaseArray(FunT ** pPtr, int_x iLength)
+template<typename ValT>
+void SafeReleaseArray(ValT ** pPtr, int_x iLength)
 {
 	for(int_x cnt = 0; cnt < iLength; ++cnt)
 	{
@@ -157,8 +157,8 @@ void SafeReleaseArray(FunT ** pPtr, int_x iLength)
 * @brief 安全地 调用 AddRef。
 * @param ptr 需要被 AddRef 的指针的引用。
 */
-template<typename FunT>
-void SafeAddRef(FunT * const & ptr)
+template<typename ValT>
+void SafeAddRef(ValT * const & ptr)
 {
 	if(ptr)
 	{
@@ -172,8 +172,8 @@ void SafeAddRef(FunT * const & ptr)
 *        的引用计数
 * @param ptr 目标指针
 */
-template<typename FunT>
-void FakeAddRef(FunT *& ptr)
+template<typename ValT>
+void FakeAddRef(ValT *& ptr)
 {
 
 }
@@ -184,15 +184,15 @@ void FakeAddRef(FunT *& ptr)
 *        的引用计数
 * @param ptr 目标指针
 */
-template<typename FunT>
-void FakeRelease(FunT *& ptr)
+template<typename ValT>
+void FakeRelease(ValT *& ptr)
 {
 	if(ptr)
 		ptr = nullptr;
 }
 
-template<typename FunT>
-void SafeAddRefPtr(FunT ** ptr)
+template<typename ValT>
+void SafeAddRefPtr(ValT ** ptr)
 {
 	if(ptr && *ptr)
 	{
@@ -205,8 +205,8 @@ void SafeAddRefPtr(FunT ** ptr)
 * @param a,b 要比较的两个数的 const 引用。
 * @return 返回较小的一个数的 const 引用。
 */
-template<typename FunT>
-constfun const FunT & minof(const FunT & a, const FunT & b)
+template<typename ValT>
+constfun const ValT & minof(const ValT & a, const ValT & b)
 {
 	return a > b ? b : a;
 }
@@ -216,8 +216,8 @@ constfun const FunT & minof(const FunT & a, const FunT & b)
 * @param params,v 要比较的数
 * @return 返回较小的一个数的 const 引用。
 */
-template<typename ...ParamsT, typename FunT>
-constfun const FunT & minof(const FunT & a, const FunT & b, const ParamsT & ...params)
+template<typename ...ParamsT, typename ValT>
+constfun const ValT & minof(const ValT & a, const ValT & b, const ParamsT & ...params)
 {
 	return minof(minof(a, b), params...);
 }
@@ -227,8 +227,8 @@ constfun const FunT & minof(const FunT & a, const FunT & b, const ParamsT & ...p
 * @param a,b 要比较的两个数的 const 引用。
 * @return 返回较大的一个数的 const 引用。
 */
-template<typename FunT>
-constfun const FunT & maxof(const FunT & a, const FunT & b)
+template<typename ValT>
+constfun const ValT & maxof(const ValT & a, const ValT & b)
 {
 	return a > b ? a : b;
 }
@@ -238,15 +238,15 @@ constfun const FunT & maxof(const FunT & a, const FunT & b)
 * @param params,v 要比较的数
 * @return 返回较大的一个数的 const 引用。
 */
-template<typename ...ParamsT, typename FunT>
-constfun const FunT & maxof(const FunT & a, const FunT & b, const ParamsT & ...params)
+template<typename ...ParamsT, typename ValT>
+constfun const ValT & maxof(const ValT & a, const ValT & b, const ParamsT & ...params)
 {
 	return maxof(maxof(a, b), params...);
 }
 
 
-template<typename FunT>
-constfun const FunT & saturate(const FunT & value, const FunT & min, const FunT & max)
+template<typename ValT>
+constfun const ValT & saturate(const ValT & value, const ValT & min, const ValT & max)
 {
 	return value < min ? value : (value > max ? max : value);
 }
@@ -254,19 +254,19 @@ constfun const FunT & saturate(const FunT & value, const FunT & min, const FunT 
 * @brief 交换两个数字的值。
 * @param a,b 要交换的两个数的 const 引用。
 */
-template<typename FunT>
-void swap(FunT & a, FunT & b)
+template<typename ValT>
+void swap(ValT & a, ValT & b)
 {
-	FunT tmp = a; a = b; b = tmp;
+	ValT tmp = a; a = b; b = tmp;
 }
 /**
 * @brief 交换两个指针所指向的数据的值。
 * @param a,b 要交换的两个数的 const 引用。
 */
-template<typename FunT>
-void swap_ptr(FunT * pA, FunT * pB)
+template<typename ValT>
+void swap_ptr(ValT * pA, ValT * pB)
 {
-	FunT temp = *pA; *pA = *pB; *pB = temp;
+	ValT temp = *pA; *pA = *pB; *pB = temp;
 }
 
 /**
@@ -275,8 +275,8 @@ void swap_ptr(FunT * pA, FunT * pB)
 * @return 返回输入数字的绝对值。
 * @warning 对无符号数调用 Abs 没有意义，并且会触发编译器警告。
 */
-template<typename FunT>
-FunT abs(const FunT & val)
+template<typename ValT>
+ValT abs(const ValT & val)
 {
 	return val > 0 ? val : -val;
 }
@@ -670,44 +670,44 @@ inline int_x buffcmp8(void * dst, const void * src, int_x count)
 }
 
 /**!@brief 将 val 按字节重置为0。*/
-template<typename FunT>
-inline void buffclr(FunT & val)
+template<typename ValT>
+inline void buffclr(ValT & val)
 {
-	buffset8(&val, sizeof(FunT), 0);
+	buffset8(&val, sizeof(ValT), 0);
 }
 
-template<typename FunT>
-inline void buffset(FunT * dst, int_x size, const FunT & val)
+template<typename ValT>
+inline void buffset(ValT * dst, int_x size, const ValT & val)
 {
 	for(int_x cnt = 0; cnt < size; ++cnt)
 		dst[cnt] = val;
 }
 
 /*!brief 复制 将 src 按字节复制到 dst。*/
-template<typename FunT>
-inline void buffcpy(FunT & dst, const FunT & src)
+template<typename ValT>
+inline void buffcpy(ValT & dst, const ValT & src)
 {
-	buffcpy8(&dst, &src, sizeof(FunT));
+	buffcpy8(&dst, &src, sizeof(ValT));
 }
 
-template<typename FunT>
-inline void buffcpy(FunT * dst, const FunT * src, int_x count)
+template<typename ValT>
+inline void buffcpy(ValT * dst, const ValT * src, int_x count)
 {
-	buffcpy8(dst, src, sizeof(FunT) * count);
+	buffcpy8(dst, src, sizeof(ValT) * count);
 }
 
-/*!brief 复制 将 count 个 src<FunT> 按字节复制到 dst。*/
-template<typename FunT>
-inline void buffcpy(FunT * dst, int_x size, const FunT * src, int_x count)
+/*!brief 复制 将 count 个 src<ValT> 按字节复制到 dst。*/
+template<typename ValT>
+inline void buffcpy(ValT * dst, int_x size, const ValT * src, int_x count)
 {
 	buffcpy(dst, src, minof(size, count));
 }
 
 /*!@brief 移动 将 src 中的 count 个字节到容量为 count 字节的 count 中。*/
-template<typename FunT>
-inline void buffmov(FunT * dst, const FunT * src, int_x count)
+template<typename ValT>
+inline void buffmov(ValT * dst, const ValT * src, int_x count)
 {
-	buffmov8(dst, src, count * sizeof(FunT));
+	buffmov8(dst, src, count * sizeof(ValT));
 }
 
 /**

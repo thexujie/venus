@@ -33,10 +33,10 @@ public:
 	*/
 	virtual void help(const char_16 * szName, const type_info & info, void * pData) = 0;
 
-	template<typename FunT>
-	void help(const char_16 * szName, FunT * pData)
+	template<typename ValT>
+	void help(const char_16 * szName, ValT * pData)
 	{
-		const type_info & info = typeid(FunT);
+		const type_info & info = typeid(ValT);
 		help(szName, info, (void *)pData);
 	}
 
