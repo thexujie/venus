@@ -2,7 +2,6 @@
 
 #include "text.h"
 #include "vector.h"
-#include "IStream.h"
 
 VENUS_BEG
 

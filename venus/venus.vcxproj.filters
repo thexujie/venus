@@ -2,27 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="core\CBufferedStream.cpp">
-      <Filter>core\stream</Filter>
-    </ClCompile>
-    <ClCompile Include="core\CByteStream.cpp">
-      <Filter>core\stream</Filter>
-    </ClCompile>
-    <ClCompile Include="core\CDataStream.cpp">
-      <Filter>core\stream</Filter>
-    </ClCompile>
-    <ClCompile Include="core\CFileStream.cpp">
-      <Filter>core\stream</Filter>
-    </ClCompile>
-    <ClCompile Include="core\CMemoryStream.cpp">
-      <Filter>core\stream</Filter>
-    </ClCompile>
-    <ClCompile Include="core\CTextStream.cpp">
-      <Filter>core\stream</Filter>
-    </ClCompile>
-    <ClCompile Include="core\IStream.cpp">
-      <Filter>core\stream</Filter>
-    </ClCompile>
     <ClCompile Include="core\text.cpp">
       <Filter>core\base</Filter>
     </ClCompile>
@@ -206,9 +185,6 @@
     <ClCompile Include="v3d\math\view_frustum.cpp">
       <Filter>v3d\math</Filter>
     </ClCompile>
-    <ClCompile Include="core\byte_buffer.cpp">
-      <Filter>core\stream</Filter>
-    </ClCompile>
     <ClCompile Include="v2d\image\CImage.cpp">
       <Filter>v2d\image</Filter>
     </ClCompile>
@@ -347,31 +323,31 @@
     <ClCompile Include="v3d\v3d_api.cpp">
       <Filter>v3d</Filter>
     </ClCompile>
+    <ClCompile Include="core\io\CBufferedStream.cpp">
+      <Filter>core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="core\io\CByteStream.cpp">
+      <Filter>core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="core\io\CDataStream.cpp">
+      <Filter>core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="core\io\CFileStream.cpp">
+      <Filter>core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="core\io\CMemoryStream.cpp">
+      <Filter>core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="core\io\CTextStream.cpp">
+      <Filter>core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="core\byte_buffer.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="vs2003.h" />
-    <ClInclude Include="core\CBufferedStream.h">
-      <Filter>core\stream</Filter>
-    </ClInclude>
-    <ClInclude Include="core\CByteStream.h">
-      <Filter>core\stream</Filter>
-    </ClInclude>
-    <ClInclude Include="core\CDataStream.h">
-      <Filter>core\stream</Filter>
-    </ClInclude>
-    <ClInclude Include="core\CFileStream.h">
-      <Filter>core\stream</Filter>
-    </ClInclude>
-    <ClInclude Include="core\CMemoryStream.h">
-      <Filter>core\stream</Filter>
-    </ClInclude>
-    <ClInclude Include="core\CTextStream.h">
-      <Filter>core\stream</Filter>
-    </ClInclude>
-    <ClInclude Include="core\IStream.h">
-      <Filter>core\stream</Filter>
-    </ClInclude>
     <ClInclude Include="core\CMatrix3.h">
       <Filter>core\math</Filter>
     </ClInclude>
@@ -598,9 +574,6 @@
     <ClInclude Include="v3d\math\view_frustum.h">
       <Filter>v3d\math</Filter>
     </ClInclude>
-    <ClInclude Include="core\byte_buffer.h">
-      <Filter>core\stream</Filter>
-    </ClInclude>
     <ClInclude Include="v2d\image\CImage.h">
       <Filter>v2d\image</Filter>
     </ClInclude>
@@ -801,6 +774,30 @@
     <ClInclude Include="v3d\v3d_api.h">
       <Filter>v3d</Filter>
     </ClInclude>
+    <ClInclude Include="core\io\CBufferedStream.h">
+      <Filter>core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="core\io\CByteStream.h">
+      <Filter>core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="core\io\CDataStream.h">
+      <Filter>core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="core\io\CFileStream.h">
+      <Filter>core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="core\io\CMemoryStream.h">
+      <Filter>core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="core\io\CTextStream.h">
+      <Filter>core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="core\io\IStream.h">
+      <Filter>core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="core\byte_buffer.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="core">
@@ -808,9 +805,6 @@
     </Filter>
     <Filter Include="core\base">
       <UniqueIdentifier>{c60295b2-de8c-414f-a525-b77444fd2e4d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="core\stream">
-      <UniqueIdentifier>{07dce65c-0f77-449e-a5bd-75cd1edee4cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="core\tools">
       <UniqueIdentifier>{87ff0e34-2702-49af-9a78-7a4a113100d9}</UniqueIdentifier>
@@ -874,6 +868,9 @@
     </Filter>
     <Filter Include="v2d\paint">
       <UniqueIdentifier>{a3235b74-97a2-448f-b8ff-d54c3a3a84f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\io">
+      <UniqueIdentifier>{07dce65c-0f77-449e-a5bd-75cd1edee4cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

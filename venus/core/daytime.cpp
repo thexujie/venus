@@ -63,8 +63,8 @@ daytime_t::daytime_t(int_64 msec)
 	hour = ltime.tm_hour;
 	minute = ltime.tm_min;
 	second = ltime.tm_sec;
-	millisecond = (int_x)(msec % 1000);
-	dayweek = (dayweek_e)((ltime.tm_wday + 6) % 7);
+	millisecond = static_cast<int_x>(msec % 1000);
+	dayweek = static_cast<dayweek_e>((ltime.tm_wday + 6) % 7);
 	dayyear = ltime.tm_yday;
 }
 
@@ -102,14 +102,20 @@ daytime_t & daytime_t::operator = (const daytime_t & another)
 	return *this;
 }
 
-daytime_t daytime_t::from_s(int_64 sec)
+daytime_t daytime_t::now_utc()
 {
-	return daytime_t(sec * 1000);
+	timeb tb;
+	ftime(&tb);
+
+	return daytime_t(1000i64 * tb.time + tb.millitm);
 }
 
-daytime_t daytime_t::from_ms(int_64 msec)
+daytime_t daytime_t::now()
 {
-	return daytime_t(msec);
+	timeb tb;
+	ftime(&tb);
+
+	return daytime_t(1000i64 * tb.time + tb.millitm + _timezone);
 }
 
 int_64 daytime_t::to_s() const

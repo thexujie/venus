@@ -2,9 +2,6 @@
 
 VENUS_BEG
 
-CORE_API int_32 CP936ToUnicode(uint_8 region, uint_8 index);
-CORE_API bool CPUnicodeTo936(int_32 utf16, uint_8 & region, uint_8 & index);
-
 struct CORE_API encoding_t
 {
 	int_x codepage;
@@ -31,7 +28,14 @@ namespace encodings
 	constdata encoding_t utf16 = encoding_t(1200);
 	constdata encoding_t utf16_be = encoding_t(1201);
 	constdata encoding_t gb2312 = encoding_t(936);
-	CORE_API encoding_t get_default();
+
+#ifdef _UNICODE
+	constdata encoding_t system_encoding = utf16;
+#else
+	constdata encoding_t system_encoding = ansi;
+#endif
+
+	CORE_API encoding_t crt_encoding();
 }
 
 VENUS_END

@@ -16,7 +16,7 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 		switch(src_codepage)
 		{
 		case 1200:
-			length = WideCharToMultiByte(936, 0, (LPCWCH)src, src_length, (LPSTR)dst, dst_size, NULL, NULL);
+			length = WideCharToMultiByte(936, 0, (LPCWCH)src, (int_32)src_length, (LPSTR)dst, (int_32)dst_size, NULL, NULL);
 			if(length < dst_size && dst)
 				*((LPSTR)dst + length) = 0;
 			break;
@@ -29,7 +29,7 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 		switch(src_codepage)
 		{
 		case 1200:
-			length = WideCharToMultiByte(CP_ACP, 0, (LPCWCH)src, src_length, (LPSTR)dst, dst_size, NULL, NULL);
+			length = WideCharToMultiByte(CP_ACP, 0, (LPCWCH)src, (int_32)src_length, (LPSTR)dst, (int_32)dst_size, NULL, NULL);
 			if(length < dst_size && dst)
 				*((LPSTR)dst + length) = 0;
 			break;
@@ -43,7 +43,7 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 		switch(src_codepage)
 		{
 		case 1200:
-			length = WideCharToMultiByte(CP_UTF8, 0, (LPCWCH)src, src_length, (LPSTR)dst, dst_size, NULL, NULL);
+			length = WideCharToMultiByte(CP_UTF8, 0, (LPCWCH)src, (int_32)src_length, (LPSTR)dst, (int_32)dst_size, NULL, NULL);
 			if(length < dst_size && dst)
 				*((LPSTR)dst + length) = 0;
 			break;
@@ -58,7 +58,7 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 		case CP_ACP:
 		case 936:
 		case CP_UTF8:
-			length = MultiByteToWideChar(src_codepage, 0, (LPCCH)src, src_length, (LPWSTR)dst, dst_size);
+			length = MultiByteToWideChar((uint_32)src_codepage, 0, (LPCCH)src, (int_32)src_length, (LPWSTR)dst, (int_32)dst_size);
 			if(length < dst_size && dst)
 				*((LPWSTR)dst + length) = 0;
 			break;

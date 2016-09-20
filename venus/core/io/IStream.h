@@ -2,27 +2,12 @@
 
 VENUS_BEG
 
-enum FileBomE
-{
-	FileBomInvalid = 0,
-	FileBomAnsi,
-	FileBomUtf8,
-	FileBomUtf16SmallEdian,
-	FileBomUtf16BigEdian,
-};
-
 enum SeekE
 {
 	SeekBegin = 0,
 	SeekEnd,
 	SeekCurr,
 	SeekTell,
-};
-
-enum EndianE
-{
-	EndianSmall = 0,
-	EndianBig,
 };
 
 // ------------------------- 文件的打开模式。
@@ -68,15 +53,6 @@ enum ShareModeE
 	ShareModeNone = 0x4,
 };
 declare_flags(ShareModeE)
-
-enum LineTagE
-{
-	LineTagNone,
-	LineTag0,
-	LineTagR,
-	LineTagN,
-	LineTagRN,
-};
 
 class CORE_API IBaseStream
 {

@@ -53,8 +53,8 @@ public:
 	//! 一年中第几天 [0, 365]
 	int_x dayyear;
 
-	static daytime_t from_s(int_64 sec);
-	static daytime_t from_ms(int_64 msec);
+	static daytime_t now_utc();
+	static daytime_t now();
 };
 
 CORE_API bool is_leap_year(int_x year);

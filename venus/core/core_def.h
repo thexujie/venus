@@ -473,4 +473,28 @@ struct version_t
 	}
 };
 
+enum FileBomE
+{
+	FileBomInvalid = 0,
+	FileBomAnsi,
+	FileBomUtf8,
+	FileBomUtf16SmallEdian,
+	FileBomUtf16BigEdian,
+};
+
+enum linetag_e
+{
+	linetag_none,
+	linetag_0,
+	linetag_r,
+	linetag_n,
+	linetag_rn,
+};
+
+enum EndianE
+{
+	EndianSmall = 0,
+	EndianBig,
+};
+
 VENUS_END

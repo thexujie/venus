@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "CTextStream.h"
-#include "codepage.h"
 
 VENUS_BEG
 
@@ -396,7 +395,7 @@ int_32 CTextReader::ReadCharUtf8()
 
 
 CTextWriter::CTextWriter(IOutputStream * pOutputStream, encoding_t encoding) :
-	m_pOutputStream(pOutputStream), m_encoding(encoding), m_bom_ready(false)
+	m_pOutputStream(pOutputStream), m_encoding(encoding), m_bom_ready(false), m_linetag(linetag_n)
 {
 }
 
@@ -462,6 +461,16 @@ void CTextWriter::SetEncoding(encoding_t encoding)
 encoding_t CTextWriter::GetEncoding() const
 {
 	return m_encoding;
+}
+
+void CTextWriter::SetLineTag(linetag_e linetag)
+{
+	m_linetag = linetag;
+}
+
+linetag_e CTextWriter::GetLineTag() const
+{
+	return m_linetag;
 }
 
 void CTextWriter::Write(const char_16 * pText, int_x iLength)
@@ -538,31 +547,31 @@ void CTextWriter::Write(const texta & text)
 	}
 }
 
-void CTextWriter::WriteLine(const char_16 * pText, int_x iLength, LineTagE eLineTag)
+void CTextWriter::WriteLine(const char_16 * pText, int_x iLength)
 {
 	Write(pText, iLength);
-	NewLine(eLineTag);
+	WriteLine();
 }
 
-void CTextWriter::WriteLine(const textw & text, LineTagE eLineTag)
+void CTextWriter::WriteLine(const textw & text)
 {
 	Write(text);
-	NewLine(eLineTag);
+	WriteLine();
 }
 
-void CTextWriter::WriteLine(const char_8 * pText, int_x iLength, LineTagE eLineTag)
+void CTextWriter::WriteLine(const char_8 * pText, int_x iLength)
 {
 	Write(pText, iLength);
-	NewLine(eLineTag);
+	WriteLine();
 }
 
-void CTextWriter::WriteLine(const texta & text, LineTagE eLineTag)
+void CTextWriter::WriteLine(const texta & text)
 {
 	Write(text);
-	NewLine(eLineTag);
+	WriteLine();
 }
 
-void CTextWriter::NewLine(LineTagE eLineTag)
+void CTextWriter::WriteLine()
 {
 	static const char_16 LINE_TAG_0[] = L"\0";
 	static const char_16 LINE_TAG_R[] = L"\r";
@@ -574,57 +583,77 @@ void CTextWriter::NewLine(LineTagE eLineTag)
 	static const char_8 A_LINE_TAG_N[] = "\n";
 	static const char_8 A_LINE_TAG_RN[] = "\r\n";
 
-	switch(eLineTag)
+	switch(m_linetag)
 	{
-	case LineTagNone:
+	case linetag_none:
 		break;
-	case LineTag0:
+	case linetag_0:
 		if(m_encoding.singlebyte())
 			Write(A_LINE_TAG_0, 1);
 		else
 			Write(LINE_TAG_0, 1);
 		break;
-	case LineTagR:
+	case linetag_r:
 		if(m_encoding.singlebyte())
 			Write(A_LINE_TAG_R, 1);
 		else
 			Write(LINE_TAG_R, 1);
 		break;
-	case LineTagN:
+	case linetag_n:
 		if(m_encoding.singlebyte())
 			Write(A_LINE_TAG_N, 1);
 		else
 			Write(LINE_TAG_N, 1);
 		break;
-	case LineTagRN:
+	case linetag_rn:
 		if(m_encoding.singlebyte())
-			Write(A_LINE_TAG_RN, 1);
+			Write(A_LINE_TAG_RN, 2);
 		else
-			Write(LINE_TAG_RN, 1);
+			Write(LINE_TAG_RN, 2);
 		break;
 	default:
 		break;
 	}
 }
 
-void CTextWriter::WriteFormat(const char_16 * szFormat, ...)
+void CTextWriter::Format(const char_16 * szFormat, ...)
 {
 	textw buffer;
 	va_list pArgs = nullptr;
 	va_start(pArgs, szFormat);
 	buffer.format_args(szFormat, pArgs);
 	va_end(pArgs);
-	WriteLine(buffer, LineTagNone);
+	Write(buffer);
 }
 
-void CTextWriter::WriteFormat(const char_8 * szFormat, ...)
+void CTextWriter::Format(const char_8 * szFormat, ...)
 {
 	texta buffer;
 	va_list pArgs = nullptr;
 	va_start(pArgs, szFormat);
 	buffer.format_args(szFormat, pArgs);
 	va_end(pArgs);
-	WriteLine(buffer, LineTagNone);
+	Write(buffer);
+}
+
+void CTextWriter::FormatLine(const char_16 * szFormat, ...)
+{
+	textw buffer;
+	va_list pArgs = nullptr;
+	va_start(pArgs, szFormat);
+	buffer.format_args(szFormat, pArgs);
+	va_end(pArgs);
+	WriteLine(buffer);
+}
+
+void CTextWriter::FormatLine(const char_8 * szFormat, ...)
+{
+	texta buffer;
+	va_list pArgs = nullptr;
+	va_start(pArgs, szFormat);
+	buffer.format_args(szFormat, pArgs);
+	va_end(pArgs);
+	WriteLine(buffer);
 }
 
 void CTextWriter::_Ready() const
@@ -641,7 +670,7 @@ void CTextWriter::_WriteBOM()
 	_Ready();
 	m_bom_ready = true;
 
-	const byte_t BOM_ANSI[] = { 0x5c, 0x75 };
+	//const byte_t BOM_ANSI[] = { 0x5c, 0x75 };
 	const byte_t BOM_UTF8[] = { 0xef, 0xbb, 0xbf };
 	const byte_t BOM_UTF16[] = { 0xff, 0xfe };
 	const byte_t BOM_UTF16_BE[] = { 0xfe, 0xff };
@@ -651,7 +680,7 @@ void CTextWriter::_WriteBOM()
 		m_encoding = encodings::ansi;
 		break;
 	case encodings::ansi.codepage:
-		Write(BOM_ANSI, arraysize(BOM_ANSI));
+		//Write(BOM_ANSI, arraysize(BOM_ANSI));
 		break;
 	case encodings::utf8.codepage:
 		Write(BOM_UTF8, arraysize(BOM_UTF8));

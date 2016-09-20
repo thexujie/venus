@@ -64,20 +64,25 @@ public:
 	void SetEncoding(encoding_t encoding);
 	encoding_t GetEncoding() const;
 
+	void SetLineTag(linetag_e linetag);
+	linetag_e GetLineTag() const;
+
 	void Write(const char_16 * pText, int_x iLength = -1);
 	void Write(const textw & text);
 	void Write(const char_8 * pText, int_x iLength = -1);
 	void Write(const texta & text);
 
-	void WriteLine(const char_16 * pText, int_x iLength = -1, LineTagE eLineTag = LineTagN);
-	void WriteLine(const textw & text, LineTagE eLineTag = LineTagN);
-	void WriteLine(const char_8 * pText, int_x iLength = -1, LineTagE eLineTag = LineTagN);
-	void WriteLine(const texta & text, LineTagE eLineTag = LineTagN);
+	void WriteLine();
+	void WriteLine(const char_16 * pText, int_x iLength = -1);
+	void WriteLine(const textw & text);
+	void WriteLine(const char_8 * pText, int_x iLength = -1);
+	void WriteLine(const texta & text);
 
-	void WriteFormat(const char_16 * szFormat, ...);
-	void WriteFormat(const char_8 * szFormat, ...);
+	void Format(const char_16 * szFormat, ...);
+	void Format(const char_8 * szFormat, ...);
+	void FormatLine(const char_16 * szFormat, ...);
+	void FormatLine(const char_8 * szFormat, ...);
 
-	void NewLine(LineTagE eLineTag = LineTagN);
 
 protected:
 	void _Ready() const;
@@ -86,6 +91,7 @@ protected:
 protected:
 	IOutputStream * m_pOutputStream;
 	encoding_t m_encoding;
+	linetag_e m_linetag;
 	bool m_bom_ready;
 };
 
