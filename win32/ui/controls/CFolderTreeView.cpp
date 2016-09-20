@@ -49,7 +49,7 @@ void CFolderTreeView::SetRoot(const char_16 * szRoot)
 		for(int_x cnt = 0, len = drivers.size(); cnt < len; ++cnt)
 		{
 			const driverinfo_t & driver = drivers[cnt];
-			driver.get_driver(szDriver, MAX_FILE_PATH);
+			driver.driver(szDriver, MAX_FILE_PATH);
 			switch(driver.type)
 			{
 			case driver_invalid:
@@ -94,7 +94,7 @@ void CFolderTreeView::SetRoot(const char_16 * szRoot)
 		for(int_x cnt = 0, size = folders.size(); cnt < size; ++cnt)
 		{
 			const folderinfo_t & folderInfo = folders[cnt];
-			folderInfo.get_name(szName, MAX_FILE_PATH);
+			folderInfo.name(szName, MAX_FILE_PATH);
 
 			IWin32ShellItemImage * pImage = pShellBuffer->GetShellIcon(L"/");
 			FolderTreeItemT * pItem = new FolderTreeItemT(szName, pImage, nullptr, folderInfo.path);
@@ -230,7 +230,7 @@ bool CFolderTreeView::BeforeExpand(TreeItemT * pItem)
 	for(int_x cnt = 0, size = folders.size(); cnt < size; ++cnt)
 	{
 		const folderinfo_t & folder = folders[cnt];
-		folder.get_name(szName, MAX_FILE_PATH);
+		folder.name(szName, MAX_FILE_PATH);
 
 		IWin32ShellItemImage * pImage = pShellBuffer->GetShellIcon(L"/");
 		FolderTreeItemT * pSubItem = new FolderTreeItemT(szName, pImage, pItem, folder.path);

@@ -58,9 +58,9 @@ void pathinfo_t::generate(const char_x * szFile, int_x iLength)
 		exists = true;
 		int_x iColon = textch(path, iLength, (char_x)':');
 		if(iColon >= 0 && iColon  + 1 == iLength)
-			driver = true;
+			disk = true;
 		else
-			driver = false;
+			disk = false;
 	}
 	else
 		_attributes = 0;
@@ -100,7 +100,7 @@ void pathinfo_t::generate(const char_x * szFolder, const char_x * szFile, int_x 
 		_attributes = uiAttributes & FILE_ATTR_MASK;
 		exists = true;
 		int_x iColon = textch(path, -1, (char_x)':');
-		driver = iColon >= 0 && iLength - iColon <= 1;
+		disk = iColon >= 0 && iLength - iColon <= 1;
 	}
 	else
 		_attributes = 0;
@@ -112,48 +112,48 @@ void pathinfo_t::refresh()
 	generate(szFullName);
 }
 
-int_x pathinfo_t::get_driver(char_x * szDriver, int_x iSize) const
+int_x pathinfo_t::driver(char_x * szDriver, int_x iSize) const
 {
 	return textsplitpath_drive(path, -1, szDriver, iSize);
 }
 
-int_x pathinfo_t::get_folder(char_x * szDir, int_x iSize) const
+int_x pathinfo_t::folder(char_x * szDir, int_x iSize) const
 {
 	return textsplitpath_folder(path, -1, szDir, iSize);
 }
 
-int_x pathinfo_t::get_name(char_x * szName, int_x iSize) const
+int_x pathinfo_t::name(char_x * szName, int_x iSize) const
 {
 	return textsplitpath_name(path, -1, szName, iSize);
 }
 
-int_x pathinfo_t::get_ext(char_x * szExt, int_x iSize) const
+int_x pathinfo_t::extention(char_x * szExt, int_x iSize) const
 {
 	return textsplitpath_ext(path, -1, szExt, iSize);
 }
 
-textw pathinfo_t::get_driver() const
+textw pathinfo_t::driver() const
 {
 	char_x szTemp[MAX_FILE_PATH] = {};
 	int_x iLength = textsplitpath_drive(path, -1, szTemp, MAX_FILE_PATH);
 	return textw(szTemp, iLength);
 }
 
-textw pathinfo_t::get_folder() const
+textw pathinfo_t::folder() const
 {
 	char_x szFolder[MAX_FILE_PATH] = {};
 	int_x iLength = textsplitpath_folder(path, -1, szFolder, MAX_FILE_PATH);
 	return textw(szFolder, iLength);
 }
 
-textw pathinfo_t::get_name() const
+textw pathinfo_t::name() const
 {
 	char_x szTemp[MAX_FILE_PATH] = {};
 	int_x iLength = textsplitpath_name(path, -1, szTemp, MAX_FILE_PATH);
 	return textw(szTemp, iLength);
 }
 
-textw pathinfo_t::get_ext() const
+textw pathinfo_t::extention() const
 {
 	char_x szTemp[MAX_FILE_PATH] = {};
 	int_x iLength = textsplitpath_ext(path, -1, szTemp, MAX_FILE_PATH);
@@ -211,9 +211,9 @@ vector<pathinfo_t> pathinfo_t::get_paths(uint_32 uiAttrCare, uint_32 uiAttr, con
 
 bool pathinfo_t::operator < (const pathinfo_t & another) const
 {
-	if(folder && !another.folder)
+	if(directory && !another.directory)
 		return true;
-	else if(!folder && another.folder)
+	else if(!directory && another.directory)
 		return false;
 	else
 		return textcmp(path, -1, another.path, -1) < 0;
@@ -231,7 +231,7 @@ fileinfo_t::fileinfo_t(const char_x * szDirectory, const char_x * szFile)
 {
 }
 
-int_x fileinfo_t::get_filename(char_x * szName, int_x iSize) const
+int_x fileinfo_t::filename(char_x * szName, int_x iSize) const
 {
 	const char_x * pDot = textprch(path, -1, _T('.'));
 	const char_x * pSlash = textprch(path, -1, _T('/'));
@@ -244,6 +244,13 @@ int_x fileinfo_t::get_filename(char_x * szName, int_x iSize) const
 		textempty(szName, iSize);
 		return 0;
 	}
+}
+
+textx fileinfo_t::filename() const
+{
+	char_x szFileName[MAX_FILE_PATH] = {};
+	int_x iLength = textsplitpath_filename(path, -1, szFileName, MAX_FILE_PATH);
+	return textw(szFileName, iLength);
 }
 
 bool fileinfo_t::create(bool bForce)
@@ -262,7 +269,7 @@ bool fileinfo_t::rename(const char_x * szFileName, int_x iLength, bool bForce)
 {
 	char_x szFolder[MAX_FILE_PATH] = {0};
 	char_x szNewFile[MAX_FILE_PATH] = {0};
-	get_folder(szFolder, MAX_FILE_PATH);
+	folder(szFolder, MAX_FILE_PATH);
 	textmakepath(szNewFile, MAX_FILE_PATH, szFolder, -1, szFileName, -1);
 
 	if(File::Copy(path, szNewFile, bForce) && File::Delete(path))

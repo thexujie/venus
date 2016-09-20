@@ -46,6 +46,13 @@ public :
 	int_x CSharpReadText(char_16 * pText, int_x iSize = IX_MAX);
 	int_x AS3ReadText(char_16 * pText, int_x iSize = IX_MAX);
 
+	template<typename T>
+	T Read()
+	{
+		T val;
+		Read(static_cast<void *>(&val), sizeof(T));
+		return val;
+	}
 protected:
 	void _Ready() const;
 	uint_8 _Read8();
@@ -103,6 +110,11 @@ public :
 	void CSharpWriteText(const char_16 * pText, int_x iLength = -1);
 	void AS3WriteText(const char_16 * pText, int_x iLength = -1);
 
+	template<typename T>
+	void Write(const T & data)
+	{
+		Write(static_cast<const void *>(&data), sizeof(T));
+	}
 protected:
 	void _Ready() const;
 	void _Write8(uint_8 val);
