@@ -31,7 +31,6 @@ public:
 	int_x ReadLine(char_16 * szBuffer, int_x iSize);
 	textw ReadLine();
 	texta ReadLineA();
-	EncodingE ReadEncoding();
 
 protected:
 	void _Ready() const;
@@ -65,33 +64,27 @@ public:
 	void SetEncoding(encoding_t encoding);
 	encoding_t GetEncoding() const;
 
-	void WriteChar(int_32 ch);
-
-	void WriteText(const char_16 * pText, int_x iLength = -1);
-	void WriteText(const textw & text);
-	void WriteTextA(const texta & text);
+	void Write(const char_16 * pText, int_x iLength = -1);
+	void Write(const textw & text);
+	void Write(const char_8 * pText, int_x iLength = -1);
+	void Write(const texta & text);
 
 	void WriteLine(const char_16 * pText, int_x iLength = -1, LineTagE eLineTag = LineTagN);
 	void WriteLine(const textw & text, LineTagE eLineTag = LineTagN);
-	void WriteLineA(const texta & text, LineTagE eLineTag = LineTagN);
+	void WriteLine(const char_8 * pText, int_x iLength = -1, LineTagE eLineTag = LineTagN);
+	void WriteLine(const texta & text, LineTagE eLineTag = LineTagN);
 
 	void WriteFormat(const char_16 * szFormat, ...);
-	void WriteLineTag(LineTagE eLineTag = LineTagN);
-	void WriteLineTagA(LineTagE eLineTag = LineTagN);
+	void WriteFormat(const char_8 * szFormat, ...);
+
+	void NewLine(LineTagE eLineTag = LineTagN);
 
 protected:
 	void _Ready() const;
 	void _WriteBOM();
 
-	void WriteCharUtf8(int_32 ch);
-	void WriteCharUtf16LE(int_32 ch);
-	void WriteCharUtf16BE(int_32 ch);
-
-	void WriteCharGBK(int_32 ch);
-
 protected:
 	IOutputStream * m_pOutputStream;
-	textw m_bufferW;
 	encoding_t m_encoding;
 	bool m_bom_ready;
 };

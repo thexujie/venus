@@ -60,48 +60,6 @@ encoding_t CTextReader::GetEncoding() const
 	return m_encoding;
 }
 
-EncodingE CTextReader::ReadEncoding()
-{
-	_Ready();
-	EncodingE eEncoding = EncodingDefault;
-	int_x iAviliable = m_pInputStream->ReadAviliable();
-	if(iAviliable >= 2)
-	{
-		uint_16 uiCoding = 0;
-		m_pInputStream->Read(&uiCoding, 2);
-		switch(uiCoding)
-		{
-		case 0xBBEF:
-			if(m_pInputStream->ReadAviliable())
-			{
-				switch(m_pInputStream->Read())
-				{
-				case 0xBF:
-					eEncoding = EncodingUtf8;
-					break;
-				default:
-					throw exp_not_supported();
-				}
-			}
-			break;
-		case 0xFEFF:
-			eEncoding = EncodingUtf16;
-			break;
-		case 0xFFFE:
-			eEncoding = EncodingUtf16BE;
-			break;
-		default:
-			eEncoding = EncodingAnsi;
-			m_pInputStream->Seek(SeekCurr, -2);
-			break;
-		}
-	}
-	else // 字节数不够，无法判断
-		eEncoding = EncodingDefault;
-	SetEncoding(eEncoding);
-	return eEncoding;
-}
-
 void CTextReader::_Ready() const
 {
 	Verify(m_pInputStream);
@@ -379,7 +337,7 @@ int_32 CTextReader::ReadCharAnsi(byte_t last)
 		byte_t vals[2] = { bVal, bVal2 };
 		char_16 ch;
 		int_x length = 0;
-		err_t err = encodings::utf16.convert(encodings::ansi, vals, 2, &ch, 1, &length);
+		err_t err = encodings::utf16.encode(encodings::ansi, vals, 2, &ch, 1, &length);
 		return ch;
 	}
 	else
@@ -506,112 +464,167 @@ encoding_t CTextWriter::GetEncoding() const
 	return m_encoding;
 }
 
-void CTextWriter::WriteChar(int_32 ch)
-{
-}
-
-void CTextWriter::WriteText(const char_16 * pText, int_x iLength)
+void CTextWriter::Write(const char_16 * pText, int_x iLength)
 {
 	_Ready();
+	_WriteBOM();
 
 	if(iLength < 0)
 		iLength = textlen(pText);
-	_WriteBOM();
-	if(m_encoding.codepage == encodings::utf16.codepage)
-		m_pOutputStream->Write(pText, iLength * 2);
-	else if(m_encoding.is_singlebyte())
-	{
 
+	if(m_encoding.singlebyte())
+	{
+		texta text = encodings::encocde(pText, iLength, encodings::utf16, m_encoding);
+		m_pOutputStream->Write(text.buffer(), text.length());
+	}
+	else if(m_encoding == encodings::utf16)
+	{
+		m_pOutputStream->Write(pText, iLength * 2);
+	}
+	else
+		throw exp_not_supported();
+}
+
+void CTextWriter::Write(const textw & text)
+{
+	_Ready();
+	_WriteBOM();
+
+	if(m_encoding.singlebyte())
+	{
+		texta dst_text = encodings::encocde(text, encodings::utf16, m_encoding);
+		m_pOutputStream->Write(dst_text.buffer(), dst_text.length());
+	}
+	else if(m_encoding == encodings::utf16)
+	{
+		m_pOutputStream->Write(text, text.length() * 2);
+	}
+	else
+		throw exp_not_supported();
+}
+
+void CTextWriter::Write(const char_8 * pText, int_x iLength)
+{
+	_Ready();
+	_WriteBOM();
+
+	if(iLength < 0)
+		iLength = textlen(pText);
+
+	if(m_encoding.singlebyte())
+	{
+		m_pOutputStream->Write(pText, iLength);
 	}
 	else
 	{
-		textw text;
-
+		textw dst_text = encodings::encocde(pText, iLength, encodings::ansi, m_encoding);
+		m_pOutputStream->Write(dst_text.buffer(), dst_text.length() * 2);
 	}
 }
 
-void CTextWriter::WriteText(const textw & text)
+void CTextWriter::Write(const texta & text)
 {
-	m_pOutputStream->Write(text, text.length() * 2);
-}
+	_Ready();
+	_WriteBOM();
 
-void CTextWriter::WriteTextA(const texta & text)
-{
-	m_pOutputStream->Write(text, text.length());
+	if(m_encoding.singlebyte())
+	{
+		m_pOutputStream->Write(text, text.length());
+	}
+	else
+	{
+		textw dst_text = encodings::encocde(text, encodings::ansi, m_encoding);
+		m_pOutputStream->Write(dst_text.buffer(), dst_text.length() * 2);
+	}
 }
 
 void CTextWriter::WriteLine(const char_16 * pText, int_x iLength, LineTagE eLineTag)
 {
-	WriteText(pText, iLength);
-	WriteLineTag(eLineTag);
+	Write(pText, iLength);
+	NewLine(eLineTag);
 }
 
 void CTextWriter::WriteLine(const textw & text, LineTagE eLineTag)
 {
-	WriteText(text);
-	WriteLineTag(eLineTag);
+	Write(text);
+	NewLine(eLineTag);
 }
 
-void CTextWriter::WriteLineA(const texta & text, LineTagE eLineTag)
+void CTextWriter::WriteLine(const char_8 * pText, int_x iLength, LineTagE eLineTag)
 {
-	WriteTextA(text);
-	WriteLineTagA(eLineTag);
+	Write(pText, iLength);
+	NewLine(eLineTag);
 }
 
-void CTextWriter::WriteLineTag(LineTagE eLineTag)
+void CTextWriter::WriteLine(const texta & text, LineTagE eLineTag)
+{
+	Write(text);
+	NewLine(eLineTag);
+}
+
+void CTextWriter::NewLine(LineTagE eLineTag)
 {
 	static const char_16 LINE_TAG_0[] = L"\0";
 	static const char_16 LINE_TAG_R[] = L"\r";
 	static const char_16 LINE_TAG_N[] = L"\n";
 	static const char_16 LINE_TAG_RN[] = L"\r\n";
 
+	static const char_8 A_LINE_TAG_0[] = "\0";
+	static const char_8 A_LINE_TAG_R[] = "\r";
+	static const char_8 A_LINE_TAG_N[] = "\n";
+	static const char_8 A_LINE_TAG_RN[] = "\r\n";
+
 	switch(eLineTag)
 	{
 	case LineTagNone:
 		break;
 	case LineTag0:
-		m_pOutputStream->Write(LINE_TAG_0, 2);
+		if(m_encoding.singlebyte())
+			Write(A_LINE_TAG_0, 1);
+		else
+			Write(LINE_TAG_0, 1);
 		break;
 	case LineTagR:
-		m_pOutputStream->Write(LINE_TAG_R, 2);
+		if(m_encoding.singlebyte())
+			Write(A_LINE_TAG_R, 1);
+		else
+			Write(LINE_TAG_R, 1);
 		break;
 	case LineTagN:
-		m_pOutputStream->Write(LINE_TAG_N, 2);
+		if(m_encoding.singlebyte())
+			Write(A_LINE_TAG_N, 1);
+		else
+			Write(LINE_TAG_N, 1);
 		break;
 	case LineTagRN:
-		m_pOutputStream->Write(LINE_TAG_RN, 4);
+		if(m_encoding.singlebyte())
+			Write(A_LINE_TAG_RN, 1);
+		else
+			Write(LINE_TAG_RN, 1);
 		break;
 	default:
 		break;
 	}
 }
 
-void CTextWriter::WriteLineTagA(LineTagE eLineTag)
+void CTextWriter::WriteFormat(const char_16 * szFormat, ...)
 {
-	static const char_8 LINE_TAG_0[] = "\0";
-	static const char_8 LINE_TAG_R[] = "\r";
-	static const char_8 LINE_TAG_N[] = "\n";
-	static const char_8 LINE_TAG_RN[] = "\r\n";
+	textw buffer;
+	va_list pArgs = nullptr;
+	va_start(pArgs, szFormat);
+	buffer.format_args(szFormat, pArgs);
+	va_end(pArgs);
+	WriteLine(buffer, LineTagNone);
+}
 
-	switch(eLineTag)
-	{
-	case LineTagNone:
-		break;
-	case LineTag0:
-		m_pOutputStream->Write(LINE_TAG_0, 1);
-		break;
-	case LineTagR:
-		m_pOutputStream->Write(LINE_TAG_R, 1);
-		break;
-	case LineTagN:
-		m_pOutputStream->Write(LINE_TAG_N, 1);
-		break;
-	case LineTagRN:
-		m_pOutputStream->Write(LINE_TAG_RN, 2);
-		break;
-	default:
-		break;
-	}
+void CTextWriter::WriteFormat(const char_8 * szFormat, ...)
+{
+	texta buffer;
+	va_list pArgs = nullptr;
+	va_start(pArgs, szFormat);
+	buffer.format_args(szFormat, pArgs);
+	va_end(pArgs);
+	WriteLine(buffer, LineTagNone);
 }
 
 void CTextWriter::_Ready() const
@@ -634,6 +647,9 @@ void CTextWriter::_WriteBOM()
 	const byte_t BOM_UTF16_BE[] = { 0xfe, 0xff };
 	switch(m_encoding.codepage)
 	{
+	case encodings::unknown.codepage:
+		m_encoding = encodings::ansi;
+		break;
 	case encodings::ansi.codepage:
 		Write(BOM_ANSI, arraysize(BOM_ANSI));
 		break;
@@ -652,51 +668,5 @@ void CTextWriter::_WriteBOM()
 }
 
 
-void CTextWriter::WriteCharUtf8(int_32 ch)
-{
-	_Ready();
-}
-
-void CTextWriter::WriteCharUtf16LE(int_32 ch)
-{
-	_Ready();
-}
-
-void CTextWriter::WriteCharUtf16BE(int_32 ch)
-{
-	_Ready();
-}
-
-void CTextWriter::WriteCharGBK(int_32 ch)
-{
-	_Ready();
-
-	uint_8 region = 0;
-	uint_8 index = 0;
-	CPUnicodeTo936(ch, region, index);
-	Write(region);
-	Write(index);
-
-	//byte_t bVal = m_pInputStream->Read();
-	//if(bVal >= 0x80)
-	//{
-	//	byte_t bVal2 = m_pInputStream->Read();
-	//	return CP936ToUnicode(bVal, bVal2);
-	//}
-	//else
-	//	return bVal;
-
-
-}
-
-
-void CTextWriter::WriteFormat(const char_16 * szFormat, ...)
-{
-	va_list pArgs = nullptr;
-	va_start(pArgs, szFormat);
-	m_bufferW.format_args(szFormat, pArgs);
-	va_end(pArgs);
-	WriteLine(m_bufferW, LineTagNone);
-}
 
 VENUS_END

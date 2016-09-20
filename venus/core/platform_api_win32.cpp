@@ -12,12 +12,38 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 	int_32 length = 0;
 	switch(dst_codepage)
 	{
+	case 936:
+		switch(src_codepage)
+		{
+		case 1200:
+			length = WideCharToMultiByte(936, 0, (LPCWCH)src, src_length, (LPSTR)dst, dst_size, NULL, NULL);
+			if(length < dst_size && dst)
+				*((LPSTR)dst + length) = 0;
+			break;
+		default:
+			err = err_bad_format;
+			break;
+		}
+		break;
+	case CP_ACP:
+		switch(src_codepage)
+		{
+		case 1200:
+			length = WideCharToMultiByte(CP_ACP, 0, (LPCWCH)src, src_length, (LPSTR)dst, dst_size, NULL, NULL);
+			if(length < dst_size && dst)
+				*((LPSTR)dst + length) = 0;
+			break;
+		default:
+			err = err_bad_format;
+			break;
+		}
+		break;
 		// to utf-8
 	case CP_UTF8:
 		switch(src_codepage)
 		{
 		case 1200:
-			length = WideCharToMultiByte(CP_UTF8, 0, (LPCWCH)src, src_length / 2, (LPSTR)dst, dst_size, NULL, NULL);
+			length = WideCharToMultiByte(CP_UTF8, 0, (LPCWCH)src, src_length, (LPSTR)dst, dst_size, NULL, NULL);
 			if(length < dst_size && dst)
 				*((LPSTR)dst + length) = 0;
 			break;

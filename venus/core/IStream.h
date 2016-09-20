@@ -69,19 +69,6 @@ enum ShareModeE
 };
 declare_flags(ShareModeE)
 
-enum EncodingE
-{
-	EncodingUnknown = 0,
-	EncodingDefault,
-	EncodingAnsi,
-	EncodingGBK,
-	EncodingUtf16,
-	EncodingUtf16BE,
-	EncodingUtf32,
-	EncodingUtf32BE,
-	EncodingUtf8,
-};
-
 enum LineTagE
 {
 	LineTagNone,

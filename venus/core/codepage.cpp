@@ -38,7 +38,7 @@ bool CPUnicodeTo936(int_32 utf16, uint_8 & region, uint_8 & index)
 	return 0;
 }
 
-bool encoding_t::is_singlebyte() const
+bool encoding_t::singlebyte() const
 {
 	switch(codepage)
 	{
@@ -49,13 +49,31 @@ bool encoding_t::is_singlebyte() const
 	}
 }
 
-err_t encoding_t::convert(encoding_t src_encoding, const void * src, int_x src_length, void * dst, int_x dst_size, int_x * dst_length) const
+err_t encoding_t::encode(encoding_t src_encoding, const void * src, int_x src_length, void * dst, int_x dst_size, int_x * dst_length) const
 {
 	int_x length = 0;
 	err_t err = text_encode(src_encoding.codepage, src, src_length, codepage, dst, dst_size, length);
 	if(dst_length)
 		*dst_length = length;
 	return err;
+}
+
+int_x encoding_t::length(encoding_t src_encoding, const void * src, int_x src_length) const
+{
+	int_x dst_length = 0;
+	err_t err = text_encode(src_encoding.codepage, src, src_length, codepage, nullptr, 0, dst_length);
+	if(err)
+		return 0;
+	return dst_length;
+}
+
+namespace encodings
+{
+	encoding_t get_default()
+	{
+		int_x codepage = _getmbcp();
+		return encoding_t(codepage);
+	}
 }
 
 VENUS_END

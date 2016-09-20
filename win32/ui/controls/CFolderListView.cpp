@@ -34,7 +34,7 @@ void CFolderListView::SetPath(const char_16 * szPath)
 	{
 		const pathinfo_t & info = infos[cnt];
 		IImage * pImage = pShellBuffer->GetShellIcon(info.path);
-		textw name = info.get_name();
+		textw name = info.name();
 		FolderListViewRowT * pRow = new FolderListViewRowT();
 		pRow->path = info.path;
 		int_x iRow = AddRow(pRow);
@@ -46,7 +46,7 @@ void CFolderListView::SetPath(const char_16 * szPath)
 		buffer.format(L"%d/%02d/%02d %02d:%02d", dtCreate.year, dtCreate.month, dtCreate.day, dtCreate.hour, dtCreate.minute);
 		AddItem(iRow, buffer, nullptr);
 		AddItem(iRow, shfi.chbType, nullptr);
-		if(!info.folder)
+		if(!info.directory)
 			AddItem(iRow, buffer.format(L"%d KB", shfi.size / 1000), nullptr);
 		else
 			AddItem(iRow, L"", nullptr);
