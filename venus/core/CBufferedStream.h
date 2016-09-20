@@ -8,7 +8,7 @@ VENUS_BEG
 /* 输入缓冲流
 /************************************************************************/
 
-class CORE_API CBufferedInputStream : public IInputStream, public IBufferedStream
+class CORE_API CBufferedInputStream : public IInputStream, virtual public IBufferedStream
 {
 public :
 	CBufferedInputStream(IInputStream * pInputStream, int_x iSize);
@@ -46,7 +46,7 @@ protected:
 /* 输出缓冲流
 /************************************************************************/
 
-class CORE_API CBufferedOutputStream : public IOutputStream, public IBufferedStream
+class CORE_API CBufferedOutputStream : public IOutputStream, virtual public IBufferedStream
 {
 public :
 	CBufferedOutputStream(IOutputStream * pOutputStream, int_x iSize);
