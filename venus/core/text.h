@@ -50,12 +50,7 @@ public:
 		if(_size > 0)
 		{
 			if(_capability < _size + 1)
-			{
-				if(_size == _capability)
-					_capability = _size + 1;
-				else
-					_capability = fit_capability(_size);
-			}
+				_capability = fit_capability(_size);
 
 			m_buffer = new CharT[_capability];
 			m_buffer[_size] = 0;
@@ -318,12 +313,6 @@ public:
 	{
 		m_data = new textdata_t(_text, _length, -1);
 	}
-
-	explicit text_base(int_x _length, int_x _capability)
-	{
-		m_data = new textdata_t(_length, _capability);
-	}
-
 	explicit text_base(int_x _capability)
 	{
 		m_data = new textdata_t(_capability);
@@ -897,15 +886,6 @@ protected:
 typedef text_base<char_16> textw;
 typedef text_base<char_8> texta;
 
-namespace encodings
-{
-	CORE_API textw encocde(const char_8 * text, int_x length, encoding_t src_encoding, encoding_t dst_encoding = encodings::utf16);
-	CORE_API texta encocde(const char_16 * text, int_x length, encoding_t src_encoding, encoding_t dst_encoding = encodings::ansi);
-
-	CORE_API textw encocde(texta text, encoding_t src_encoding = encodings::ansi, encoding_t dst_encoding = encodings::utf16);
-	CORE_API texta encocde(textw text, encoding_t src_encoding = encodings::utf16, encoding_t dst_encoding = encodings::ansi);
-}
-
 #ifdef UNICODE
 typedef textw textx;
 #else
@@ -926,14 +906,6 @@ public:
 	{
 		buffer[0] = 0;
 	}
-
-	explicit chbuffer(int_x length)
-	{
-		if(length >= COUNT)
-			length = COUNT - 1;
-		buffer[length] = 0;
-	}
-
 	chbuffer(const CharT * text, int_x length = -1)
 	{
 		textcpy(buffer, COUNT, text, length);

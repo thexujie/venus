@@ -8,7 +8,7 @@ VENUS_BEG
 /* 输入缓冲流
 /************************************************************************/
 
-class CORE_API CBufferedInputStream : public IInputStream, virtual public IBufferedStream
+class CORE_API CBufferedInputStream : public IBufferedInputStream
 {
 public :
 	CBufferedInputStream(IInputStream * pInputStream, int_x iSize);
@@ -26,6 +26,10 @@ public :
 
 	void SetBufferSize(int_x iSize);
 	int_x GetBufferSize() const;
+
+	IInputStream * SetInputStream(IInputStream * pNewInputStream);
+	IInputStream * GetInputStream() const;
+
 	int_x GetBufferLength() const;
 	int_x GetBufferPosition() const;
 	int_x GetBufferRemain() const;
@@ -46,7 +50,7 @@ protected:
 /* 输出缓冲流
 /************************************************************************/
 
-class CORE_API CBufferedOutputStream : public IOutputStream, virtual public IBufferedStream
+class CORE_API CBufferedOutputStream : public IBufferedOutputStream
 {
 public :
 	CBufferedOutputStream(IOutputStream * pOutputStream, int_x iSize);
@@ -64,7 +68,11 @@ public :
 	int_x Seek(SeekE seek, int_x iSeek);
 
 	void SetBufferSize(int_x iSize);
-	int_x GetBufferSize() const;
+
+	IOutputStream * SetOutputStream(IOutputStream * pNewOutputStream);
+	IOutputStream * GetOutputStream() const;
+
+	int_x GetBufferLength() const;
 	int_x GetBufferPosition() const;
 	int_x GetBufferRemain() const;
 protected:

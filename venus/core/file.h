@@ -41,15 +41,15 @@ public:
 	void generate(const char_x * szFolder, const char_x * szFile, int_x iFolderLength = -1, int_x iFileLength = -1);
 	void refresh();
 
-	int_x driver(char_x * szDriver, int_x iSize) const;
-	int_x folder(char_x * szFolder, int_x iSize) const;
-	int_x name(char_x * szName, int_x iSize) const;
-	int_x extention(char_x * szExt, int_x iSize) const;
+	int_x get_driver(char_x * szDriver, int_x iSize) const;
+	int_x get_folder(char_x * szFolder, int_x iSize) const;
+	int_x get_name(char_x * szName, int_x iSize) const;
+	int_x get_ext(char_x * szExt, int_x iSize) const;
 
-	textw driver() const;
-	textw folder() const;
-	textw name() const;
-	textw extention() const;
+	textw get_driver() const;
+	textw get_folder() const;
+	textw get_name() const;
+	textw get_ext() const;
 
 	int_x get_paths(vector<pathinfo_t> & arrPaths, uint_32 uiAttrCare = 0, uint_32 uiAttr = 0, const char_x * szFilter = nullptr) const;
 	vector<pathinfo_t> get_paths(uint_32 uiAttrCare = 0, uint_32 uiAttr = 0, const char_x * szFilter = nullptr) const;
@@ -71,7 +71,7 @@ public:
 			//! unused
 			bool _unused1 : 1;
 			//！ 是否是一个文件夹。
-			bool directory : 1;
+			bool folder : 1;
 			//! 是否可存档。
 			bool archive : 1;
 			//! 是否是一个设备。
@@ -93,7 +93,7 @@ public:
 			//! 文件是否存在。
 			bool exists : 1;
 			//! 是否是驱动器。
-			bool disk : 1;
+			bool driver : 1;
 		};
 	};
 };
@@ -105,8 +105,7 @@ public:
 	fileinfo_t(const char_x * szFile);
 	fileinfo_t(const char_x * szDirectory, const char_x * szFile);
 	
-	int_x filename(char_x * szFileName, int_x iSize) const;
-	textx filename() const;
+	int_x get_filename(char_x * szFileName, int_x iSize) const;
 
 	bool create(bool bForce = false);
 	bool remove();

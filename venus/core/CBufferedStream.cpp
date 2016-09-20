@@ -139,6 +139,18 @@ int_x CBufferedInputStream::Seek(SeekE seek, int_x iSeek)
 	}
 }
 
+IInputStream * CBufferedInputStream::SetInputStream(IInputStream * pNewInputStream)
+{
+	IInputStream * pOldInputStream = m_pInputStream;
+	m_pInputStream = pNewInputStream;
+	return pOldInputStream;
+}
+
+IInputStream * CBufferedInputStream::GetInputStream() const
+{
+	return m_pInputStream;
+}
+
 void CBufferedInputStream::SetBufferSize(int_x iSize)
 {
 	if(m_pBuffer && m_bNeedDelete)
@@ -338,9 +350,16 @@ void CBufferedOutputStream::SetBufferSize(int_x iSize)
 	m_iPosition = 0;
 }
 
-int_x CBufferedOutputStream::GetBufferSize() const
+IOutputStream * CBufferedOutputStream::SetOutputStream(IOutputStream * pNewOutputStream)
 {
-	return m_iSize;
+	IOutputStream * pOldOutputStream = m_pOutputStream;
+	m_pOutputStream = pNewOutputStream;
+	return pOldOutputStream;
+}
+IOutputStream * CBufferedOutputStream::GetOutputStream() const
+{
+	ConfirmBufferedOutputStream();
+	return m_pOutputStream;
 }
 
 int_x CBufferedOutputStream::GetBufferPosition() const

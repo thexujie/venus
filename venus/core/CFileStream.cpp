@@ -83,7 +83,7 @@ static int FileShareFlagFromStreamMode(StreamModeE streamMode, OpenModeE openMod
 
 
 CFileStream::CFileStream(textw filePath, StreamModeE streamMode, OpenModeE openMode, ShareModeE shareMode)
-	:m_iFile(INVALID_FILE), m_streamMode(StreamModeNone), m_openMode(OpenModeOpen), m_shareMode(ShareModeAll)
+	:m_iFile(0), m_streamMode(StreamModeNone), m_openMode(OpenModeOpen), m_shareMode(ShareModeAll)
 {
 	Open(filePath, streamMode, openMode, shareMode);
 }
@@ -275,11 +275,10 @@ bool CFileStream::Open(textw filePath, StreamModeE streamMode, OpenModeE openMod
 	errno_t err = _wsopen_s(&m_iFile, filePath,
 		FileOpenFlagFromStreamMode(streamMode, openMode, shareMode),
 		FileShareFlagFromStreamMode(streamMode, openMode, shareMode),
-		_S_IREAD | _S_IWRITE);
+		0);
 	if(err)
 	{
 		log2(L"Can not open file \"%s\"", filePath);
-		m_iFile = INVALID_FILE;
 		m_streamMode = StreamModeNone;
 		m_openMode = OpenModeOpen;
 		m_shareMode = ShareModeNone;
@@ -300,11 +299,10 @@ bool CFileStream::Open(texta filePath, StreamModeE streamMode, OpenModeE openMod
 	errno_t err = _sopen_s(&m_iFile, filePath,
 		FileOpenFlagFromStreamMode(streamMode, openMode, shareMode),
 		FileShareFlagFromStreamMode(streamMode, openMode, shareMode),
-		_S_IREAD | _S_IWRITE);
+		0);
 	if(err)
 	{
 		log2(L"Can not open file \"%s\"", filePath);
-		m_iFile = INVALID_FILE;
 		m_streamMode = StreamModeNone;
 		m_openMode = OpenModeOpen;
 		m_shareMode = ShareModeNone;
