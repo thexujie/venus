@@ -17,9 +17,6 @@
     <ClCompile Include="core\function.cpp">
       <Filter>core\base\struct</Filter>
     </ClCompile>
-    <ClCompile Include="core\daytime.cpp">
-      <Filter>core\base</Filter>
-    </ClCompile>
     <ClCompile Include="core\color.cpp">
       <Filter>core\base</Filter>
     </ClCompile>
@@ -344,6 +341,9 @@
     <ClCompile Include="core\byte_buffer.cpp">
       <Filter>core\base</Filter>
     </ClCompile>
+    <ClCompile Include="core\datetime.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -382,9 +382,6 @@
       <Filter>core\base\struct</Filter>
     </ClInclude>
     <ClInclude Include="core\doc.h" />
-    <ClInclude Include="core\daytime.h">
-      <Filter>core\base</Filter>
-    </ClInclude>
     <ClInclude Include="core\color.h">
       <Filter>core\base</Filter>
     </ClInclude>
@@ -796,6 +793,9 @@
       <Filter>core\io</Filter>
     </ClInclude>
     <ClInclude Include="core\byte_buffer.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\datetime.h">
       <Filter>core\base</Filter>
     </ClInclude>
   </ItemGroup>

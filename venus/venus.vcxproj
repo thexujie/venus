@@ -78,8 +78,8 @@
     <ClCompile Include="core\math\xmm\xm\xmi_argb.cpp" />
     <ClCompile Include="core\platform_api_win32.cpp" />
     <ClCompile Include="core\support.cpp" />
+    <ClCompile Include="core\datetime.cpp" />
     <ClCompile Include="core\text.cpp" />
-    <ClCompile Include="core\daytime.cpp" />
     <ClCompile Include="core\tools\IData.cpp" />
     <ClCompile Include="core\tools\IMetaHelper.cpp" />
     <ClCompile Include="core\unicode.cpp" />
@@ -177,6 +177,7 @@
     <ClInclude Include="core\math\vec4.h" />
     <ClInclude Include="core\stl\stl.h" />
     <ClInclude Include="core\stl\type_traits.h" />
+    <ClInclude Include="core\datetime.h" />
     <ClInclude Include="core\tools\IData.h" />
     <ClInclude Include="core\tools\IMetaHelper.h" />
     <ClInclude Include="v2d\image\image_save.h" />
@@ -254,7 +255,6 @@
     <ClInclude Include="core\support.h" />
     <ClInclude Include="core\text.h" />
     <ClInclude Include="core\core_api.h" />
-    <ClInclude Include="core\daytime.h" />
     <ClInclude Include="core\unicode.h" />
     <ClInclude Include="core\xml.h" />
     <ClInclude Include="stdafx.h" />

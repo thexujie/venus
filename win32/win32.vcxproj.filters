@@ -36,12 +36,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>app</Filter>
-    </ClInclude>
-    <ClInclude Include="win32.h">
-      <Filter>app</Filter>
-    </ClInclude>
     <ClInclude Include="d2d\C2DDeviceD2D.h">
       <Filter>d2d</Filter>
     </ClInclude>
@@ -165,17 +159,10 @@
     <ClInclude Include="dxgi\DxgiInc.h">
       <Filter>dxgi</Filter>
     </ClInclude>
-    <ClInclude Include="gdip\GdipModule.h">
-      <Filter>gdip</Filter>
-    </ClInclude>
+    <ClInclude Include="win32.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>app</Filter>
-    </ClCompile>
-    <ClCompile Include="win32.cpp">
-      <Filter>app</Filter>
-    </ClCompile>
     <ClCompile Include="d2d\C2DDeviceD2D.cpp">
       <Filter>d2d</Filter>
     </ClCompile>
@@ -296,8 +283,7 @@
     <ClCompile Include="dxgi\DxgiInc.cpp">
       <Filter>dxgi</Filter>
     </ClCompile>
-    <ClCompile Include="gdip\GdipModule.cpp">
-      <Filter>gdip</Filter>
-    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="win32.cpp" />
   </ItemGroup>
 </Project>

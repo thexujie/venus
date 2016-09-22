@@ -54,7 +54,6 @@
     <ClInclude Include="gdip\C2DDeviceGdip.h" />
     <ClInclude Include="gdip\CPaintGdip.h" />
     <ClInclude Include="gdip\GdipInc.h" />
-    <ClInclude Include="gdip\GdipModule.h" />
     <ClInclude Include="gdi\C2DDeviceGdi.h" />
     <ClInclude Include="gdi\CImageGdi.h" />
     <ClInclude Include="gdi\CPaintGdi.h" />
@@ -101,7 +100,6 @@
     <ClCompile Include="gdip\C2DDeviceGdip.cpp" />
     <ClCompile Include="gdip\CPaintGdip.cpp" />
     <ClCompile Include="gdip\GdipInc.cpp" />
-    <ClCompile Include="gdip\GdipModule.cpp" />
     <ClCompile Include="gdi\C2DDeviceGdi.cpp" />
     <ClCompile Include="gdi\CImageGdi.cpp" />
     <ClCompile Include="gdi\CPaintGdi.cpp" />
