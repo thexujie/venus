@@ -19,7 +19,7 @@ CPaintGdip::~CPaintGdip()
 {
 	if(m_graphics)
 	{
-		Gdip::GdipDeleteGraphics(m_graphics);
+		GdipDeleteGraphics(m_graphics);
 		m_graphics = nullptr;
 	}
 	ResetTarget(nullptr);
@@ -39,14 +39,14 @@ void CPaintGdip::ResetTarget(I2DRTarget * pTarget)
 			CBmpBuffer * pBitmap = (CBmpBuffer *)pTarget;
 			m_hdc = pBitmap->GetBufferDC();
 			m_hBitmap = pBitmap->GetHBitmap();
-			m_status = Gdip::GdipCreateFromHDC(m_hdc, &m_graphics);
+			m_status = GdipCreateFromHDC(m_hdc, &m_graphics);
 			InitializeGdipGraphics(m_graphics);
 		}
 		else
 		{
 			if(m_hdc)
 			{
-				Gdip::GdipDeleteGraphics(m_graphics);
+				GdipDeleteGraphics(m_graphics);
 				m_graphics = nullptr;
 				m_hdc = NULL;
 				m_hBitmap = NULL;
@@ -72,7 +72,7 @@ bool CPaintGdip::BeginPaint()
 		HBITMAP hBitmap = pBitmap->GetHBitmap();
 		if(hdc != m_hdc || hBitmap != m_hBitmap)
 		{
-			m_status = Gdip::GdipCreateFromHDC(hdc, &m_graphics);
+			m_status = GdipCreateFromHDC(hdc, &m_graphics);
 			InitializeGdipGraphics(m_graphics);
 			m_hdc = hdc;
 			m_hBitmap = hBitmap;
@@ -95,7 +95,7 @@ bool CPaintGdip::BeginPaint()
 
 			if(hdc != m_hdc)
 			{
-				m_status = Gdip::GdipCreateFromHDC(hdc, &m_graphics);
+				m_status = GdipCreateFromHDC(hdc, &m_graphics);
 				InitializeGdipGraphics(m_graphics);
 				m_hdc = hdc;
 			}
@@ -115,14 +115,14 @@ void CPaintGdip::EndPaint()
 	const oid_t & oid = m_pTarget->GetOid();
 	if(oid == OID_CBmpBuffer)
 	{
-		Gdip::GdipFlush(m_graphics, FlushIntentionFlush);
+		GdipFlush(m_graphics, FlushIntentionFlush);
 	}
 	else if(oid == OID_CDxgiSurface)
 	{
 		CDxgiSurface * pDxgiSurface = (CDxgiSurface *)m_pTarget;
 		if(m_hdc)
 		{
-			Gdip::GdipDeleteGraphics(m_graphics);
+			GdipDeleteGraphics(m_graphics);
 			m_graphics = nullptr;
 			m_hdc = NULL;
 
@@ -215,7 +215,7 @@ void CPaintGdip::PushClip(int_x iX, int_x iY, int_x iWidth, int_x iHeight)
 			rcClip.set_empty();
 	}
 	m_clips.add(rcClip);
-	m_status = Gdip::GdipSetClipRectI(m_graphics, (int_32)rcClip.x, (int_32)rcClip.y, (int_32)rcClip.w, (int_32)rcClip.h, CombineModeReplace);
+	m_status = GdipSetClipRectI(m_graphics, (int_32)rcClip.x, (int_32)rcClip.y, (int_32)rcClip.w, (int_32)rcClip.h, CombineModeReplace);
 }
 
 void CPaintGdip::PushClip(const rectix & rect)
@@ -240,11 +240,11 @@ void CPaintGdip::PopClip()
 	//rcClip.Y += orign.Y;
 
 	if(m_clips.is_empty())
-		Gdip::GdipResetClip(m_graphics);
+		GdipResetClip(m_graphics);
 	else
 	{
 		rectix rcClip = m_clips.back();
-		Gdip::GdipSetClipRectI(m_graphics, (int_32)rcClip.x, (int_32)rcClip.y, (int_32)rcClip.w, (int_32)rcClip.h, CombineModeReplace);
+		GdipSetClipRectI(m_graphics, (int_32)rcClip.x, (int_32)rcClip.y, (int_32)rcClip.w, (int_32)rcClip.h, CombineModeReplace);
 	}
 }
 
@@ -286,7 +286,7 @@ void CPaintGdip::ResetImageColorMatrix()
 void CPaintGdip::Clear(uint_32 uiColor)
 {
 	AffineColor(uiColor);
-	Gdip::GdipGraphicsClear(m_graphics, uiColor);
+	GdipGraphicsClear(m_graphics, uiColor);
 }
 
 void CPaintGdip::Clear(rectix rcClear, uint_32 uiColor)
@@ -314,19 +314,19 @@ void CPaintGdip::DrawLine(float_32 fX1, float_32 fY1, float_32 fX2, float_32 fY2
 {
 	AffineXY(fX1, fY1);
 	AffineXY(fX2, fY2);
-	Gdip::GdipDrawLine(m_graphics, GetPen(pPen), fX1, fY1, fX2, fY2);
+	GdipDrawLine(m_graphics, GetPen(pPen), fX1, fY1, fX2, fY2);
 }
 
 void CPaintGdip::DrawRect(float_32 fX, float_32 fY, float_32 fWidth, float_32 fHeight, IPen * pPen)
 {
 	AffineXY(fX, fY);
-	Gdip::GdipDrawRectangle(m_graphics, GetPen(pPen), fX, fY, fWidth, fHeight);
+	GdipDrawRectangle(m_graphics, GetPen(pPen), fX, fY, fWidth, fHeight);
 }
 
 void CPaintGdip::FillRect(float_32 fX, float_32 fY, float_32 fWidth, float_32 fHeight, IBrush * pBrush)
 {
 	AffineXY(fX, fY);
-	Gdip::GdipFillRectangle(m_graphics, GetBrush(pBrush), fX, fY, fWidth, fHeight);
+	GdipFillRectangle(m_graphics, GetBrush(pBrush), fX, fY, fWidth, fHeight);
 }
 
 void CPaintGdip::DrawRoundRect(float_32 fX, float_32 fY, float_32 fWidth, float_32 fHeight, float_32 fConorW, float_32 fConorH, IPen * pPen)
@@ -347,13 +347,13 @@ void CPaintGdip::FillRoundRect(float_32 fX, float_32 fY, float_32 fWidth, float_
 void CPaintGdip::DrawCircle(float_32 fX, float_32 fY, float_32 fWidth, float_32 fHeight, IPen * pPen)
 {
 	AffineXY(fX, fY);
-	Gdip::GdipDrawEllipse(m_graphics, GetPen(pPen), fX, fY, fWidth, fHeight);
+	GdipDrawEllipse(m_graphics, GetPen(pPen), fX, fY, fWidth, fHeight);
 }
 
 void CPaintGdip::FillCircle(float_32 fX, float_32 fY, float_32 fWidth, float_32 fHeight, IBrush * pBrush)
 {
 	AffineXY(fX, fY);
-	Gdip::GdipFillEllipse(m_graphics, GetBrush(pBrush), fX, fY, fWidth, fHeight);
+	GdipFillEllipse(m_graphics, GetBrush(pBrush), fX, fY, fWidth, fHeight);
 }
 
 void CPaintGdip::FillTriangle(float_32 fX1, float_32 fY1, float_32 fX2, float_32 fY2, float_32 fX3, float_32 fY3, IBrush * pBrush)
@@ -368,25 +368,25 @@ void CPaintGdip::FillTriangle(float_32 fX1, float_32 fY1, float_32 fX2, float_32
 	points[2].X = fX3; points[2].Y = fY3;
 	points[3].X = fX1; points[3].Y = fY1;
 
-	Gdip::GdipFillPolygon(m_graphics, GetBrush(pBrush), points, 4, FillModeAlternate);
+	GdipFillPolygon(m_graphics, GetBrush(pBrush), points, 4, FillModeAlternate);
 }
 
 void CPaintGdip::DrawBezier3(float_32 fX1, float_32 fY1, float_32 fX2, float_32 fY2, float_32 fX3, float_32 fY3, IPen * pPen)
 {
 	float_32 fdX = (fX3 - fX1) * 0.5f;
 	float_32 fdY = (fY3 - fY1) * 0.5f;
-	Gdip::GdipDrawBezier(m_graphics, GetPen(pPen), fX1, fY1, fX2 - fdX, fY2 - fdY, fX2 + fdX, fY2 + fdY, fX3, fY3);
+	GdipDrawBezier(m_graphics, GetPen(pPen), fX1, fY1, fX2 - fdX, fY2 - fdY, fX2 + fdX, fY2 + fdY, fX3, fY3);
 }
 
 void CPaintGdip::DrawBezier4(float_32 fX1, float_32 fY1, float_32 fX2, float_32 fY2,
 	float_32 fX3, float_32 fY3, float_32 fX4, float_32 fY4, IPen * pPen)
 {
-	Gdip::GdipDrawBezier(m_graphics, GetPen(pPen), fX1, fY1, fX2, fY2, fX3, fY3, fX4, fY4);
+	GdipDrawBezier(m_graphics, GetPen(pPen), fX1, fY1, fX2, fY2, fX3, fY3, fX4, fY4);
 }
 
 void CPaintGdip::DrawArc(float_32 fX, float_32 fY, float_32 fWidth, float_32 fHeight, float_32 fStartAngle, float_32 fAngle, IPen * pPen)
 {
-	Gdip::GdipDrawArc(m_graphics, GetPen(pPen), fX, fY, fWidth, fHeight, fStartAngle, fAngle);
+	GdipDrawArc(m_graphics, GetPen(pPen), fX, fY, fWidth, fHeight, fStartAngle, fAngle);
 }
 
 void CPaintGdip::DrawString(const char_16 * szText, int_x iLength, const textformat_t & format, pointix point, IBrush * pBrush)
@@ -396,7 +396,7 @@ void CPaintGdip::DrawString(const char_16 * szText, int_x iLength, const textfor
 	Affine(point);
 	gpfont_t font = GetFont(format);
 	GpStringFormat * pFormat = GetFontFormat(format);
-	Gdip::GdipDrawString(m_graphics, szText, (int_32)iLength, font.font,
+	GdipDrawString(m_graphics, szText, (int_32)iLength, font.font,
 		&GpRectF((float_32)point.x, (float_32)(point.y + font.external_leading), 0.0f, 0.0f),
 		pFormat, GetBrush(pBrush));
 }
@@ -410,7 +410,7 @@ void CPaintGdip::DrawString(const char_16 * szText, int_x iLength, const textfor
 	GpFontFamily * pFamily = m_pService->GetFontFamily(format.font.name);
 	gpfont_t font = GetFont(format);
 	GpStringFormat * pFormat = GetFontFormat(format);
-	Gdip::GdipDrawString(m_graphics, szText, (int_32)iLength, font.font,
+	GdipDrawString(m_graphics, szText, (int_32)iLength, font.font,
 		&GpRectF((float_32)rect.x, (float_32)(rect.y + font.external_leading), (float_32)rect.w, (float_32)rect.h),
 		pFormat, GetBrush(pBrush));
 }
@@ -436,7 +436,7 @@ void CPaintGdip::DrawTextLayout(const ITextLayout * pTextLayout,
 void CPaintGdip::DrawImage(IImage * pImage, float_32 fX, float_32 fY)
 {
 	AffineXY(fX, fY);
-	Gdip::GdipDrawImage(m_graphics, GetImage(pImage), fX, fY);
+	GdipDrawImage(m_graphics, GetImage(pImage), fX, fY);
 }
 
 void CPaintGdip::DrawImage(IImage * pImage,
@@ -461,7 +461,7 @@ void CPaintGdip::DrawImage(IImage * pImage,
 		//	fSrcX, fSrcY, fSrcWidth, fSrcHeight,
 		//	UnitPixel,
 		//	NULL, NULL, NULL);
-		Gdip::GdipDrawImageRectRect(m_graphics, GetImage(pImage),
+		GdipDrawImageRectRect(m_graphics, GetImage(pImage),
 			fDstX, fDstY, fDstWidth, fDstHeight,
 			fSrcX, fSrcY, fSrcWidth, fSrcHeight,
 			UnitPixel,
@@ -511,7 +511,7 @@ void CPaintGdip::FillPolygon(const pointf32 * pPoints, int_x iCount, IBrush * pB
 		AffineXY(fX, fY);
 		m_polygonF.add(GpPointF(fX, fY));
 	}
-	m_status = Gdip::GdipFillPolygon(m_graphics, GetBrush(pBrush), m_polygonF, (int_32)iCount, FillModeAlternate);
+	m_status = GdipFillPolygon(m_graphics, GetBrush(pBrush), m_polygonF, (int_32)iCount, FillModeAlternate);
 }
 
 void CPaintGdip::FillPolygon(const pointix * pPoints, int_x iCount, IBrush * pBrush)
@@ -525,7 +525,7 @@ void CPaintGdip::FillPolygon(const pointix * pPoints, int_x iCount, IBrush * pBr
 		AffineXY(iX, iY);
 		m_polygonI.add(GpPoint((int_32)iX, (int_32)iY));
 	}
-	m_status = Gdip::GdipFillPolygonI(m_graphics, GetBrush(pBrush), m_polygonI, (int_32)iCount, FillModeAlternate);
+	m_status = GdipFillPolygonI(m_graphics, GetBrush(pBrush), m_polygonI, (int_32)iCount, FillModeAlternate);
 
 	//if(iCount > 1)
 	//{

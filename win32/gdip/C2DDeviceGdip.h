@@ -6,8 +6,6 @@
 
 VENUS_BEG
 
-const char_16 GDIP_MODULE_NAME[] = L"gdiplus.dll";
-
 struct GdipPenT
 {
 	uint_32 uiColor;
@@ -51,7 +49,7 @@ class GdipImageCacheT : public ObjectT<IImageCache>
 public:
 	GdipImageCacheT(Gdiplus::GpImage * _pImage) : pImage(_pImage) {}
 	~GdipImageCacheT() { ReleaseCache(); }
-	void ReleaseCache();
+	void ReleaseCache() { if(pImage) { Gdiplus::DllExports::GdipDisposeImage(pImage); pImage = nullptr; } }
 
 	Gdiplus::GpImage * pImage;
 };
@@ -79,10 +77,6 @@ public:
 	gpfont_t GetFont(const textformat_t & format);
 	Gdiplus::GpStringFormat * GetFontFormat(const textformat_t & format);
 	Gdiplus::GpImage * GetImage(IImage * pImage);
-
-protected:
-	CModule m_module;
-
 private:
 	ULONG_PTR m_ulToken;
 
@@ -97,6 +91,7 @@ private:
 	vector<GdipFontT> m_fonts;
 	vector<GdipFontFormatT> m_fontFormats;
 	vector<GdipImageCacheT *> m_images;
+	mutable HRESULT m_hResult;
 
 public:
 	static Gdiplus::PixelFormat PixelFormatFromColorMode(cmode_e eMode);

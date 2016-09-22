@@ -13,7 +13,7 @@ CControl::CControl()
 
 CControl::CControl(int_x iX, int_x iY, int_x iWidth, int_x iHeight)
 	: m_rect(iX, iY, iWidth, iHeight), m_fWeight(0.0f), m_eWidthMode(WHModeAbs), m_eHeightMode(WHModeAbs),
-	m_pParent(nullptr), m_iId(0), m_iZOrder(0), m_eBorderType(BorderTypeNone), m_eLayoutMode(LayoutModeAbsolute), m_iLayouting(0),
+	m_pParent(nullptr), m_iId(0), m_iZOrder(0), m_eBorderType(BorderTypeNone), m_eLayoutMode(LayoutModeAbsolute), m_bLayouted(false), m_iLayouting(1),
 	//m_minSize(0, 0), m_maxSize(CONTROL_MAX_W, CONTROL_MAX_H),
 	m_uiAutoRepaint(0), m_uiBaseAttr(0), m_uiMouseState(0), m_uiState(0),
 	m_uiBackColor(SysColorAuto), m_uiForeColor(Colors::Black),
@@ -673,6 +673,12 @@ void CControl::SetShown(bool bShown)
 
 void CControl::OnShow()
 {
+	if(m_iLayouting)
+	{
+		m_iLayouting = 0;
+		Layout();
+	}
+
 	if(m_bBuffered)
 		ConfirmBuffer(m_rect.w, m_rect.h);
 

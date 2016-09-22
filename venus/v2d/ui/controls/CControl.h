@@ -615,6 +615,7 @@ protected:
 	IControlVector m_children;
 	IControlVector m_DynamicChildren;
 	LayoutModeE m_eLayoutMode;
+	bool m_bLayouted;
 	int_x m_iLayouting;
 
 public:
