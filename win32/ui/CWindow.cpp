@@ -643,7 +643,7 @@ int_x CWindow::OnWmMouseClick(uint_32 uiMessage, uint_x uiParam, int_x iParam, M
 
 int_x CWindow::OnWmMouseDownL(uint_32 uiMessage, uint_x uiParam, int_x iParam)
 {
-	int_64 iTime = time_ms();
+	int_64 iTime = timing::now();
 	int_64 iPeroid = (int_64)::GetDoubleClickTime();
 	pointix point = MakePointFromInt(iParam);
 	bool bDoubleClick = false;

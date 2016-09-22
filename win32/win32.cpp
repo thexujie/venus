@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "win32.h"
 
+#include "gdi/C2DDeviceGdi.h"
+#include "gdip/C2DDeviceGdip.h"
+#include "d2d/C2DDeviceD2D.h"
+
 VENUS_BEG
 
 HINSTANCE Win32::GetCurrentInstance()
@@ -188,6 +192,21 @@ const char_16 * Win32::DebugFormatLastError()
 #else
 	return nullptr;
 #endif
+}
+
+I2DDevice * Win32::Create2DDevice(Device2DTypeE eType)
+{
+	switch(eType)
+	{
+	case Device2DTypeGdi:
+		return new C2DDeviceGdi();
+	case Device2DTypeGdip:
+		return new C2DDeviceGdip();
+	case Device2DTypeDirect2D:
+		return new C2DDeviceD2D();
+	default:
+		return new C2DDeviceGdip();
+	}
 }
 
 VENUS_END

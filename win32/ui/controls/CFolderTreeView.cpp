@@ -215,7 +215,7 @@ bool CFolderTreeView::BeforeExpand(TreeItemT * pItem)
 		return true;
 
 	FolderTreeItemT * pFolderItem = (FolderTreeItemT *)pItem;
-	int_64 iBeg = time_ms();
+	int_64 iBeg = timing::now();
 
 	BegUpdate();
 	Update();
@@ -241,7 +241,7 @@ bool CFolderTreeView::BeforeExpand(TreeItemT * pItem)
 	}
 	EndUpdate();
 
-	log1(L"共计用时 %d ms.", time_ms() - iBeg);
+	log1(L"共计用时 %d ms.", timing::now() - iBeg);
 	return true;
 }
 
@@ -277,7 +277,7 @@ void CFolderTreeView::_PaintImage(IPaint * pPaint, IImage * pImage, rectix rcIma
 textw CFolderTreeView::GetItemPath(const TreeItemT * pItem)
 {
 	const FolderTreeItemT * pfItem = (const FolderTreeItemT *)pItem;
-	return pfItem->Path;
+	return pfItem->Path.buffer;
 }
 
 VENUS_END

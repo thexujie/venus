@@ -94,7 +94,7 @@ HFONT C2DDeviceGdi::GetFont(const font_t & font)
 	}
 
 	LOGFONTW logFont = {};
-	GdiGetLogfont(m_hdc, font, logFont);
+	FontToLOGFONT(m_hdc, font, logFont);
 
 	HFONT hFont = CreateFontIndirectW(&logFont);
 	GdiFontT cache = {iHash, hFont};

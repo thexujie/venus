@@ -167,21 +167,7 @@ void CWin32App::KillTimer(function<int_x, int_x> fun, int_x iId)
 
 void CWin32App::Create2DDevice(Device2DTypeE eType)
 {
-	I2DDevice * pDevice = nullptr;
-	switch(eType)
-	{
-	case Device2DTypeGdi:
-		pDevice = new C2DDeviceGdi();
-		break;
-	case Device2DTypeGdip:
-		pDevice = new C2DDeviceGdip();
-		break;
-	case Device2DTypeDirect2D:
-		pDevice = new C2DDeviceD2D();
-		break;
-	default:
-		break;
-	}
+	I2DDevice * pDevice = Win32::Create2DDevice(eType);
 	SetService(OID_IDevice2D, pDevice);
 	SafeRelease(pDevice);
 }

@@ -53,19 +53,19 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 		}
 		break;
 	case 1200:
-		switch(src_codepage)
-		{
-		case CP_ACP:
-		case 936:
-		case CP_UTF8:
+		//switch(src_codepage)
+		//{
+		//case CP_ACP:
+		//case 936:
+		//case CP_UTF8:
 			length = MultiByteToWideChar((uint_32)src_codepage, 0, (LPCCH)src, (int_32)src_length, (LPWSTR)dst, (int_32)dst_size);
 			if(length < dst_size && dst)
 				*((LPWSTR)dst + length) = 0;
-			break;
-		default:
-			err = err_bad_format;
-			break;
-		}
+		//	break;
+		//default:
+		//	err = err_bad_format;
+		//	break;
+		//}
 		break;
 	default:
 		break;

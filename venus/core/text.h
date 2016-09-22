@@ -300,7 +300,7 @@ public:
 };
 
 
-template<typename CharT>
+template<typename CharT, int_x CodePage>
 class CORE_API text_base
 {
 public:
@@ -894,8 +894,8 @@ protected:
 	textdata_t * m_data;
 };
 
-typedef text_base<char_16> textw;
-typedef text_base<char_8> texta;
+typedef text_base<char_16, encodings::utf16.codepage> textw;
+typedef text_base<char_8, encodings::ansi.codepage> texta;
 
 namespace encodings
 {
@@ -918,7 +918,7 @@ typedef texta textx;
 * COUNT —— 字符数组的大小。
 * 如果要使用变长的字符数组，请使用 @ref CTextTmpl 。
 */
-template<typename CharT, int_x COUNT>
+template<typename CharT, int_x COUNT, int_x CodePage = 0>
 class CORE_API chbuffer
 {
 public:
@@ -1017,7 +1017,7 @@ public:
 
 	operator CharT * () { return buffer; }
 	operator const CharT * () const { return buffer; }
-	operator text_base<CharT>() const { return text_base<CharT>(buffer); }
+	operator text_base<CharT, CodePage>() const { return text_base<CharT>(buffer); }
 
 	chbuffer & format(const CharT * format, ...)
 	{

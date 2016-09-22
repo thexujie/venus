@@ -100,6 +100,8 @@ public:
 	static const char_16 * FormatWinError(uint_32 uiErrorCode = UI32_MAX);
 	static void DebugSetLastError(uint_32 uiErroeCode = 0);
 	static const char_16 * DebugFormatLastError();
+
+	static I2DDevice * Create2DDevice(Device2DTypeE eType);
 };
 
 
@@ -139,10 +141,6 @@ VENUS_END
 
 // paint
 #include "dxgi/CDxgiSurface.h"
-
-#include "gdi/C2DDeviceGdi.h"
-#include "gdip/C2DDeviceGdip.h"
-#include "d2d/C2DDeviceD2D.h"
 
 #include "CWin32App.h"
 

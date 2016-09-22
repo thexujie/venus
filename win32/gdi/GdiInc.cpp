@@ -3,7 +3,7 @@
 
 VENUS_BEG
 
-void GdiGetLogfont(HDC hdc, const font_t & font, LOGFONT & logFont)
+void FontToLOGFONT(HDC hdc, const font_t & font, LOGFONT & logFont)
 {
 	if(font.name[0])
 		textcpy(logFont.lfFaceName, LF_FACESIZE, font.name.buffer, -1);

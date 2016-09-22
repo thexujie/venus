@@ -41,9 +41,9 @@ public:
 		return *this;
 	}
 
-	operator fun_type() const
+	operator bool() const
 	{
-		return pfn;
+		return !!pfn;
 	}
 
 	RetT operator()(ArgsT... _Args) const

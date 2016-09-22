@@ -4,7 +4,7 @@
 VENUS_BEG
 
 C3DScene::C3DScene(I3DExplorer * pExplorer) :
-	m_pExplorer(pExplorer), m_pCamera(nullptr), m_iTimeStart(time_ms())
+	m_pExplorer(pExplorer), m_pCamera(nullptr), m_iTimeStart(timing::now())
 {
 	FakeAddRef(m_pExplorer);
 }
@@ -81,7 +81,7 @@ void C3DScene::SetCamera(I3DCamera * pCamera)
 
 int_x C3DScene::GetTime() const
 {
-	int_64 iTimeNow = time_ms();
+	int_64 iTimeNow = timing::now();
 	return (int_x)(iTimeNow - m_iTimeStart);
 }
 

@@ -174,12 +174,12 @@ public:
 	static int_64 GetSize(textw filePath);
 	static int_64 GetSize(texta filePath);
 
-	static daytime_t GetCreationTime(textw filePath);
-	static daytime_t GetCreationTime(texta filePath);
-	static daytime_t GetAccessTime(textw filePath);
-	static daytime_t GetAccessTime(texta filePath);
-	static daytime_t GetWriteTime(textw filePath);
-	static daytime_t GetWriteTime(texta filePath);
+	static date_t GetCreationTime(textw filePath);
+	static date_t GetCreationTime(texta filePath);
+	static date_t GetAccessTime(textw filePath);
+	static date_t GetAccessTime(texta filePath);
+	static date_t GetWriteTime(textw filePath);
+	static date_t GetWriteTime(texta filePath);
 };
 
 VENUS_END

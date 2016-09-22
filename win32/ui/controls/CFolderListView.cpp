@@ -42,7 +42,7 @@ void CFolderListView::SetPath(const char_16 * szPath)
 		AddItem(iRow, name, pImage);
 
 		SHFileInfoT shfi = pShellBuffer->GetInfo(info.path);
-		daytime_t dtCreate(shfi.tWrite / 10000);
+		date_t dtCreate(shfi.tWrite / 10000);
 		buffer.format(L"%d/%02d/%02d %02d:%02d", dtCreate.year, dtCreate.month, dtCreate.day, dtCreate.hour, dtCreate.minute);
 		AddItem(iRow, buffer, nullptr);
 		AddItem(iRow, shfi.chbType, nullptr);

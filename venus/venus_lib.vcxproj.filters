@@ -341,10 +341,7 @@
     <ClCompile Include="core\byte_buffer.cpp">
       <Filter>core\base</Filter>
     </ClCompile>
-    <ClCompile Include="core\system.cpp">
-      <Filter>core\base</Filter>
-    </ClCompile>
-    <ClCompile Include="core\daytime.cpp">
+    <ClCompile Include="core\datetime.cpp">
       <Filter>core\base</Filter>
     </ClCompile>
   </ItemGroup>
@@ -798,10 +795,7 @@
     <ClInclude Include="core\byte_buffer.h">
       <Filter>core\base</Filter>
     </ClInclude>
-    <ClInclude Include="core\system.h">
-      <Filter>core\base</Filter>
-    </ClInclude>
-    <ClInclude Include="core\daytime.h">
+    <ClInclude Include="core\datetime.h">
       <Filter>core\base</Filter>
     </ClInclude>
   </ItemGroup>

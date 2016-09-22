@@ -712,52 +712,52 @@ int_64 File::GetSize(texta filePath)
 	return state.st_size;
 }
 
-daytime_t File::GetCreationTime(textw filePath)
+date_t File::GetCreationTime(textw filePath)
 {
 	FILETIME ftime = {};
 	struct _stat64 state;
 	_wstat64(filePath, &state);
-	return daytime_t(state.st_ctime * 1000);
+	return date_t(state.st_ctime * 1000);
 }
 
-daytime_t File::GetCreationTime(texta filePath)
+date_t File::GetCreationTime(texta filePath)
 {
 	FILETIME ftime = {};
 	struct _stat64 state;
 	_stat64(filePath, &state);
-	return daytime_t(state.st_ctime * 1000);
+	return date_t(state.st_ctime * 1000);
 }
 
-daytime_t File::GetAccessTime(textw filePath)
+date_t File::GetAccessTime(textw filePath)
 {
 	FILETIME ftime = {};
 	struct _stat64 state;
 	_wstat64(filePath, &state);
-	return daytime_t(state.st_atime * 1000);
+	return date_t(state.st_atime * 1000);
 }
 
-daytime_t File::GetAccessTime(texta filePath)
+date_t File::GetAccessTime(texta filePath)
 {
 	FILETIME ftime = {};
 	struct _stat64 state;
 	_stat64(filePath, &state);
-	return daytime_t(state.st_atime * 1000);
+	return date_t(state.st_atime * 1000);
 }
 
-daytime_t File::GetWriteTime(textw filePath)
+date_t File::GetWriteTime(textw filePath)
 {
 	FILETIME ftime = {};
 	struct _stat64 state;
 	_wstat64(filePath, &state);
-	return daytime_t(state.st_mtime * 1000);
+	return date_t(state.st_mtime * 1000);
 }
 
-daytime_t File::GetWriteTime(texta filePath)
+date_t File::GetWriteTime(texta filePath)
 {
 	FILETIME ftime = {};
 	struct _stat64 state;
 	_stat64(filePath, &state);
-	return daytime_t(state.st_mtime * 1000);
+	return date_t(state.st_mtime * 1000);
 }
 
 

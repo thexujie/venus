@@ -54,7 +54,7 @@ namespace venus
 #include "unicode.h"
 #include "text.h"
 #include "color.h"
-#include "daytime.h"
+#include "datetime.h"
 
 #include "platform_api.h"
 
@@ -62,7 +62,6 @@ namespace venus
 
 #include "file.h"
 
-#include "system.h"
 
 #include "xml.h"
 #include "tools/IData.h"

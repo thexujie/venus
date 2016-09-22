@@ -4,6 +4,9 @@
 		<DisplayString Condition="m_this==0">{_global_}</DisplayString>
 		<DisplayString Condition="m_this!=0">{_class_}</DisplayString>
 	</Type>
+  <Type Name="venus::proc_ptr&lt;*&gt;">
+    <DisplayString>{pfn}</DisplayString>
+  </Type>
 	<Type Name="venus::xmt">
 		<DisplayString>{{{fx},{fy},{fz},{fw}}}</DisplayString>
 		<Expand>
@@ -89,7 +92,7 @@
 	<Type Name="venus::textformat_t">
 		<DisplayString>{{{font},{align},{wrap},{trimming},{direction}}}</DisplayString>
 	</Type>
-	<Type Name="venus::daytime_t">
+	<Type Name="venus::date_t">
 		<DisplayString>{{{year}/{month}/{day} {hour}:{minute}:{second}:{millisecond} 星期{(int)dayweek}}}</DisplayString>
 	</Type>
 	<Type Name="venus::xml_node">

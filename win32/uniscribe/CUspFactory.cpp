@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CUspFactory.h"
 #include "CTextLayoutUsp.h"
+#include "gdi/C2DDeviceGdi.h"
 
 VENUS_BEG
 
@@ -201,7 +202,7 @@ UspFontCacheT * CUspFactory::GetFontCache(const font_t & font)
 
 	HDC hdc = m_hdc;
 	LOGFONT logFont = {};
-	GdiGetLogfont(hdc, font, logFont);
+	FontToLOGFONT(hdc, font, logFont);
 	HFONT hFont = CreateFontIndirect(&logFont);
 	if(!hFont)
 		throw exp_bad_state();

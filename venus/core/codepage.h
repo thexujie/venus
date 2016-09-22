@@ -30,9 +30,9 @@ namespace encodings
 	constdata encoding_t gb2312 = encoding_t(936);
 
 #ifdef _UNICODE
-	constdata encoding_t system_encoding = utf16;
+	constdata encoding_t fallback = utf16;
 #else
-	constdata encoding_t system_encoding = ansi;
+	constdata encoding_t fallback = ansi;
 #endif
 
 	CORE_API encoding_t crt_encoding();
