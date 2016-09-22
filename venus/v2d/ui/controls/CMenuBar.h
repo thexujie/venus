@@ -9,21 +9,21 @@ class V2D_API CMenuBar : public CControl, public IPopupHost
 public:
 	CMenuBar();
 	~CMenuBar();
-	const oid_t & GetOid() const;
-	void GetMeta(IMetaHelper * pHelper);
+	const oid_t & GetOid() const override;
+	void GetMeta(IMetaHelper * pHelper) override;
 
-	void OnMouseMove(pointix point);
-	void OnMouseOut(pointix point);
+	void OnMouseMove(pointix point) override;
+	void OnMouseOut(pointix point) override;
 
-	void OnMouseDownL(pointix point);
-	void OnMouseDownR(pointix point);
+	void OnMouseDownL(pointix point) override;
+	void OnMouseDownR(pointix point) override;
 
 	void SetShowMenu(IMenu * pMenu);
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 	void SetHovingIndex(int_x iIndex);
-	void SetResult(int_x iId);
+	void SetResult(int_x iId) override;
 
-	sizeix GetPreferedSize() const;
+	sizeix GetPreferedSize() const override;
 	void UpdateMenu(int_x iIndex);
 	int_x TryShowMenu(int_x iIndex);
 private:

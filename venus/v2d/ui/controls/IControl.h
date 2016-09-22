@@ -96,7 +96,7 @@ class V2D_API IControl : public IObject
 public:
 	virtual ~IControl() {}
 
-	virtual const oid_t & GetOid() const = 0;
+	const oid_t & GetOid() const override = 0;
 	virtual void GetMeta(IMetaHelper * pHelper) = 0;
 
 	virtual void SetParent(IControl * pParent) = 0;
@@ -137,8 +137,13 @@ public:
 	virtual void SetHeight(int_x iHeight) = 0;
 
 	virtual pointix GetRelativePosition(IControl * pAncestor) const = 0;
-	virtual sizeix GetPreferedSize() const = 0;
+
+	// 默认大小
+	virtual sizeix GetDefaultSize() const = 0;
+	// 内容大小
 	virtual sizeix GetContentSize() const = 0;
+	// 期望大小，包括子控件延伸开来的
+	virtual sizeix GetPreferedSize() const = 0;
 
 	virtual int_x GetRight() const = 0;
 	virtual int_x GetBottom() const = 0;

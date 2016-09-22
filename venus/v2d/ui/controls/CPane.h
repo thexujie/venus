@@ -9,11 +9,11 @@ class V2D_API CPane : public CControl
 public:
 	CPane();
 	~CPane();
-	const oid_t & GetOid() const;
+	const oid_t & GetOid() const override;
 
-	pointix GetOffset() const;
-	rectix GetVisual() const;
-	HitTestE NcHitTest(pointix point) const;
+	pointix GetOffset() const override;
+	rectix GetVisual() const override;
+	HitTestE NcHitTest(pointix point) const override;
 
 	void SetCaptionVisible(bool bCaptionVisible);
 	bool IsShowCaptionVisible() const;
@@ -23,12 +23,12 @@ public:
 	void SetSelectedIndex(int_x iIndex);
 	void AddPanel(IControl * pPanel);
 
-	void PreOnNcMouseDown(pointix point, MouseButtonE eButton);
-	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void PreOnNcMouseDown(pointix point, MouseButtonE eButton) override;
+	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
-	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const;
-	void OnDebugMenu(int_x iBase, int_x iResult);
+	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
+	void OnDebugMenu(int_x iBase, int_x iResult) override;
 protected:
 	int_x m_iCaptionHeight;
 	bool m_bHideCaption;

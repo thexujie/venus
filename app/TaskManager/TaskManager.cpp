@@ -29,19 +29,7 @@ bool Test()
 	CoInitialize(nullptr);
 
 	CWin32App app;
-	I2DDevice * p2DDevice = nullptr;
-	switch(g_iDevice2DType)
-	{
-	case Device2DTypeGdi:
-		p2DDevice = new C2DDeviceGdi();
-		break;
-	case Device2DTypeGdip:
-		p2DDevice = new C2DDeviceGdip();
-		break;
-	default:
-		p2DDevice = new C2DDeviceD2D();
-		break;
-	}
+	I2DDevice * p2DDevice = Win32::Create2DDevice(Device2DTypeUnknown);
 	Set2DDevice(p2DDevice);
 	SafeRelease(p2DDevice);
 	g_iDevice2DType = Device2DTypeUnknown;

@@ -33,7 +33,7 @@ class V2D_API CFoldingView : public CControl
 public:
 	CFoldingView();
 	~CFoldingView();
-	const oid_t & GetOid() const;
+	const oid_t & GetOid() const override;
 
 	FoldingViewItemT * AddItem(const char_16 * szText, int_x iMinWidth = 0, IImage * pImage = nullptr, int_x iUserData = 0);
 	FoldingViewItemT * AddItem(FoldingViewItemT * pItem);
@@ -42,21 +42,21 @@ public:
 	void EndUpdate();
 	void Update();
 	void UpdateView();
-	void UpdateScroll();
+	void UpdateScroll() override;
 
-	pointix GetOffset() const;
+	pointix GetOffset() const override;
 
-	void OnScrollX(int_x iValue);
-	void OnScrollY(int_x iValue);
-	void OnMouseMove(pointix point);
-	void OnMouseDownL(pointix point);
-	void OnMouseUpL(pointix point);
-	void OnMouseClickL(pointix point);
-	void OnMouseOut(pointix point);
-	void OnVisualSizeChanged();
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
-	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const;
-	void OnDebugMenu(int_x iBase, int_x iResult);
+	void OnScrollX(int_x iValue) override;
+	void OnScrollY(int_x iValue) override;
+	void OnMouseMove(pointix point) override;
+	void OnMouseDownL(pointix point) override;
+	void OnMouseUpL(pointix point) override;
+	void OnMouseClickL(pointix point) override;
+	void OnMouseOut(pointix point) override;
+	void OnVisualSizeChanged() override;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
+	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
+	void OnDebugMenu(int_x iBase, int_x iResult) override;
 
 public:
 	void SetItemExpanded(int_x iIndex, bool bExpanded = true);

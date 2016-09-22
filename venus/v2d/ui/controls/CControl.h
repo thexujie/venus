@@ -21,396 +21,397 @@ public:
 	CControl(int_x iX, int_x iY, int_x iWidth, int_x iHeight);
 	~CControl();
 
-	const oid_t & GetOid() const;
-	void GetMeta(IMetaHelper * pHelper);
+	const oid_t & GetOid() const override;
+	void GetMeta(IMetaHelper * pHelper) override;
 
-	void SetParent(IControl * pParent);
+	void SetParent(IControl * pParent) override;
 
-	IControl * GetParent() const;
-	IControl * GetAncestor() const;
-	IForm * GetForm() const;
+	IControl * GetParent() const override;
+	IControl * GetAncestor() const override;
+	IForm * GetForm() const override;
 
-	IScroll * ToIScroll() const;
-	IForm * ToIForm() const;
+	IScroll * ToIScroll() const override;
+	IForm * ToIForm() const override;
 
 	// ----------------------- 几何信息
-	void SetWidthMode(WHModeE eMode);
-	WHModeE GetWidthMode() const;
-	void SetHeightMode(WHModeE eMode);
-	WHModeE GetHeightMode() const;
+	void SetWidthMode(WHModeE eMode) override;
+	WHModeE GetWidthMode() const override;
+	void SetHeightMode(WHModeE eMode) override;
+	WHModeE GetHeightMode() const override;
 
-	rectix GetRect() const;
-	void SetRect(const rectix & rect);
-	void SetRect(int_x iX, int_x iY, int_x iWidth, int_x iHeight);
+	rectix GetRect() const override;
+	void SetRect(const rectix & rect) override;
+	void SetRect(int_x iX, int_x iY, int_x iWidth, int_x iHeight) override;
 
-	void SetPosition(pointix position);
-	void SetPosition(int_x iX, int_x iY);
-	void SetSize(sizeix size);
-	void SetSize(int_x iWidth, int_x iHeight);
-	pointix GetPosition() const;
-	sizeix GetSize() const;
+	void SetPosition(pointix position) override;
+	void SetPosition(int_x iX, int_x iY) override;
+	void SetSize(sizeix size) override;
+	void SetSize(int_x iWidth, int_x iHeight) override;
+	pointix GetPosition() const override;
+	sizeix GetSize() const override;
 
-	void SetX(int_x iX);
-	void SetY(int_x iY);
-	void SetWidth(int_x iWidth);
-	void SetHeight(int_x iHeight);
+	void SetX(int_x iX) override;
+	void SetY(int_x iY) override;
+	void SetWidth(int_x iWidth) override;
+	void SetHeight(int_x iHeight) override;
 
-	pointix GetRelativePosition(IControl * pAncestor) const;
-	sizeix GetPreferedSize() const;
-	sizeix GetContentSize() const;
+	pointix GetRelativePosition(IControl * pAncestor) const override;
+	sizeix GetDefaultSize() const override;
+	sizeix GetContentSize() const override;
+	sizeix GetPreferedSize() const override;
 
-	int_x GetX() const;
-	int_x GetY() const;
-	int_x GetWidth() const;
-	int_x GetHeight() const;
+	int_x GetX() const override;
+	int_x GetY() const override;
+	int_x GetWidth() const override;
+	int_x GetHeight() const override;
 
-	int_x GetRight() const;
-	int_x GetBottom() const;
+	int_x GetRight() const override;
+	int_x GetBottom() const override;
 
-	void SetMargin(edgeix margin);
-	edgeix GetMargin() const;
-	void SetPadding(const edgeix & padding);
-	edgeix GetPadding() const;
+	void SetMargin(edgeix margin) override;
+	edgeix GetMargin() const override;
+	void SetPadding(const edgeix & padding) override;
+	edgeix GetPadding() const override;
 
-	void SetWeight(float_32 fWeight);
-	float_32 GetWeight() const;
+	void SetWeight(float_32 fWeight) override;
+	float_32 GetWeight() const override;
 
-	edgeix GetBorder() const;
+	edgeix GetBorder() const override;
 	// Visual 区域，去除边界后的可见区域矩形。(border.Left, border.Right, Width - border.Width, Height - border.Height)
-	rectix GetVisual() const;
+	rectix GetVisual() const override;
 	// Client 区域，客户区区域，这是去除边界、滚动条的区域。
-	rectix GetClient() const;
+	rectix GetClient() const override;
 	// Offset 大小，通常是指客户区子控件的整体偏移。
-	pointix GetOffset() const;
+	pointix GetOffset() const override;
 
-	void SetText(const char_16 * szText, int_x iLength = -1);
-	void SetText(textw text);
-	const textw & GetText() const;
+	void SetText(const char_16 * szText, int_x iLength = -1) override;
+	void SetText(textw text) override;
+	const textw & GetText() const override;
 
-	void SetName(const textw & name);
-	const textw & GetName() const;
+	void SetName(const textw & name) override;
+	const textw & GetName() const override;
 
-	void SetId(int_x iID);
-	int_x GetId() const;
+	void SetId(int_x iID) override;
+	int_x GetId() const override;
 
-	void SetZOrder(int_x iZOrder);
-	int_x GetZorder() const;
+	void SetZOrder(int_x iZOrder) override;
+	int_x GetZorder() const override;
 
-	void SetDynamic(bool bDynamic);
-	bool IsDynamic() const;
+	void SetDynamic(bool bDynamic) override;
+	bool IsDynamic() const override;
 
-	void SetEnable(bool bEnable);
-	bool IsEnabled() const;
-	bool IsAviliable() const;
+	void SetEnable(bool bEnable) override;
+	bool IsEnabled() const override;
+	bool IsAviliable() const override;
 
-	void SetVisible(bool bVisible);
-	bool IsVisible() const;
+	void SetVisible(bool bVisible) override;
+	bool IsVisible() const override;
 
-	bool IsShown() const;
-	bool IsHidden() const;
-	void SetShown(bool bShown);
+	bool IsShown() const override;
+	bool IsHidden() const override;
+	void SetShown(bool bShown) override;
 
-	void OnShow();
-	void OnHide();
+	void OnShow() override;
+	void OnHide() override;
 
-	void SetNcControl(bool bNcControl);
-	bool IsNcControl() const;
+	void SetNcControl(bool bNcControl) override;
+	bool IsNcControl() const override;
 
-	void OnAdded(IControl * pContainer);
-	void OnRemoved(IControl * pContainer);
+	void OnAdded(IControl * pContainer) override;
+	void OnRemoved(IControl * pContainer) override;
 
-	void Capture(bool bCapture);
-	void SetCaptured(bool bCaptured);
-	bool IsCaptured() const;
+	void Capture(bool bCapture) override;
+	void SetCaptured(bool bCaptured) override;
+	bool IsCaptured() const override;
 
-	void SetImeMode(ImeModeE eImeMode);
-	ImeModeE GetImeMode() const;
-	void UpdateIme();
-	bool GetImeInfo(ImeInfoT & imeInfo) const;
+	void SetImeMode(ImeModeE eImeMode) override;
+	ImeModeE GetImeMode() const override;
+	void UpdateIme() override;
+	bool GetImeInfo(ImeInfoT & imeInfo) const override;
 
-	bool ClipboardCheckData(ClipboardDataTypeE eDataType) const;
-	textw ClipboardGetText16() const;
-	void ClipboardSetText16(const char_16 * szText, int_x iLength = -1) const;
+	bool ClipboardCheckData(ClipboardDataTypeE eDataType) const override;
+	textw ClipboardGetText16() const override;
+	void ClipboardSetText16(const char_16 * szText, int_x iLength = -1) const override;
 
-	void SetAcceptDrop(bool bAcceptDrop);
-	bool IsAcceptDrop() const;
-	bool CanAcceptDrop() const;
+	void SetAcceptDrop(bool bAcceptDrop) override;
+	bool IsAcceptDrop() const override;
+	bool CanAcceptDrop() const override;
 
-	void SetFont(const font_t & font);
-	void SetFontName(const char_16 * szFontName);
-	void SetFontSize(int_x iFontSize);
-	void SetFontRenderLevel(FontRenderlevelE eRenderLevel);
+	void SetFont(const font_t & font) override;
+	void SetFontName(const char_16 * szFontName) override;
+	void SetFontSize(int_x iFontSize) override;
+	void SetFontRenderLevel(FontRenderlevelE eRenderLevel) override;
 	void SetFontFlag(FontFlagE eFontFlag, bool bSet);
-	const font_t & GetFont() const;
+	const font_t & GetFont() const override;
 
 	int_x GetFontSize() const;
 
-	void SetBackColor(uint_32 uiBackColor);
-	void SetForeColor(uint_32 uiForeColor);
-	uint_32 GetBackColor() const;
-	uint_32 GetForeColor() const;
+	void SetBackColor(uint_32 uiBackColor) override;
+	void SetForeColor(uint_32 uiForeColor) override;
+	uint_32 GetBackColor() const override;
+	uint_32 GetForeColor() const override;
 
 	// 控件光标。
-	void SetCursor(CursorE eCursor);
-	CursorE GetCursor() const;
-	void NcRequestCursor(pointix point, CursorE & eCursor) const;
-	void RequestCursor(pointix point, CursorE & eCursor) const;
+	void SetCursor(CursorE eCursor) override;
+	CursorE GetCursor() const override;
+	void NcRequestCursor(pointix point, CursorE & eCursor) const override;
+	void RequestCursor(pointix point, CursorE & eCursor) const override;
 
 	// 是否可以接收焦点。
-	void SetFocusAble(bool bFocusAble);
-	bool IsFocusAble() const;
+	void SetFocusAble(bool bFocusAble) override;
+	bool IsFocusAble() const override;
 	// 能否被选中。
-	void SetSelectAble(bool bSelectAble);
-	bool IsSelectAble() const;
+	void SetSelectAble(bool bSelectAble) override;
+	bool IsSelectAble() const override;
 
 	// 当前是否可以接收焦点。
-	bool CanSelect() const;
+	bool CanSelect() const override;
 	// 当前能否被选中。
-	bool CanFocus() const;
+	bool CanFocus() const override;
 
 	// 尝试让控件获得焦点。
-	bool Focus(bool bFocus);
+	bool Focus(bool bFocus) override;
 	// 控件是否已经获得了焦点。
-	void SetFocused(bool bFocused);
-	bool IsFocused() const;
+	void SetFocused(bool bFocused) override;
+	bool IsFocused() const override;
 
 	// 选择控件，尝试让控件获得焦点。
-	void Select(bool bSelect);
+	void Select(bool bSelect) override;
 	// 控件是否已经被选择了。
-	void SetSelected(bool bSelected);
-	bool IsSelected() const;
+	void SetSelected(bool bSelected) override;
+	bool IsSelected() const override;
 
 	// 选择Tab顺序中的下一个控件。
-	bool SelectNext(bool bWrap);
+	bool SelectNext(bool bWrap) override;
 	// 选择Tab顺序中的上一个控件。
-	bool SelectLast(bool bWrap);
+	bool SelectLast(bool bWrap) override;
 
-	void SetStatic(bool bStatic);
-	bool IsStatic() const;
-	void SetTransparent(bool bTransparent);
-	bool IsTransparent() const;
-	void SetClipChild(bool bClipChild);
-	bool IsClipChild() const;
+	void SetStatic(bool bStatic) override;
+	bool IsStatic() const override;
+	void SetTransparent(bool bTransparent) override;
+	bool IsTransparent() const override;
+	void SetClipChild(bool bClipChild) override;
+	bool IsClipChild() const override;
 
 	// 是否接受 Enter 和 Tab 字符信息(如果接受字符信息，Tab 不会选择上一个/下一个)。
-	void SetAcceptEnter(bool bAcceptEnter);
-	void SetAcceptTab(bool bAcceptTab);
-	bool IsAcceptEnter() const;
-	bool CanAcceptEnter() const;
-	bool IsAcceptTab() const;
-	bool CanAcceptTab() const;
-	void SetAcceptScroll(bool bAcceptScroll);
-	bool IsAcceptScroll() const;
-	bool CanAcceptScroll() const;
+	void SetAcceptEnter(bool bAcceptEnter) override;
+	void SetAcceptTab(bool bAcceptTab) override;
+	bool IsAcceptEnter() const override;
+	bool CanAcceptEnter() const override;
+	bool IsAcceptTab() const override;
+	bool CanAcceptTab() const override;
+	void SetAcceptScroll(bool bAcceptScroll) override;
+	bool IsAcceptScroll() const override;
+	bool CanAcceptScroll() const override;
 
-	err_t SetParam(const char_16 * szName, const char_16 * szValue);
+	err_t SetParam(const char_16 * szName, const char_16 * szValue) override;
 
 	// 控件的锚定规则(上下左右)。
-	void SetAnchor(AlignE eAnchor);
-	AlignE GetAnchor() const;
+	void SetAnchor(AlignE eAnchor) override;
+	AlignE GetAnchor() const override;
 	// 锚定参数。
-	void SetAnchorEdge(const edgeix & anchor);
-	const edgeix & GetAnchorEdge() const;
+	void SetAnchorEdge(const edgeix & anchor) override;
+	const edgeix & GetAnchorEdge() const override;
 	// 根据锚定参数，重置控件位置/大小。
-	void Anchor();
+	void Anchor() override;
 
 	// 初始化布局参数。
 	void InitLayout();
 
 	// ------------- 坐标转换
 	//! parent -> none client
-	pointix ToLocal(const pointix & point) const;
+	pointix ToLocal(const pointix & point) const override;
 	//! none client -> client
-	pointix ToClient(const pointix & point) const;
+	pointix ToClient(const pointix & point) const override;
 	//! client -> none client
-	pointix ToNoneClient(const pointix & point) const;
+	pointix ToNoneClient(const pointix & point) const override;
 	//! client -> parent client
 	pointix ClToParentCl(const pointix & point) const;
 	//! parent client -> client
 	pointix ParentClToCl(const pointix & point) const;
 
-	pointix ClientToScreen(const pointix & point) const;
-	pointix ToAncestor(const pointix & point) const;
+	pointix ClientToScreen(const pointix & point) const override;
+	pointix ToAncestor(const pointix & point) const override;
 
 	void CenterToParent();
-	void ShowTips(pointix point, const char_16 * szTips);
-	void HideTips();
-	void UpdateTips(pointix point);
+	void ShowTips(pointix point, const char_16 * szTips) override;
+	void HideTips() override;
+	void UpdateTips(pointix point) override;
 
-	int_x PopupMenu(pointix point, IMenu * pMenu);
-	int_x PopupControl(pointix point, IControl * pControl);
+	int_x PopupMenu(pointix point, IMenu * pMenu) override;
+	int_x PopupControl(pointix point, IControl * pControl) override;
 public:
-	void OnLoaded();
-	void OnVisibleChanged();
-	void OnEnableChanged();
-	void OnFocusedChanged();
-	void OnActiveChanged();
-	void OnSelectedChanged();
-	void OnCapturedChanged();
-	void OnTextChanged();
-	void OnFontChanged();
-	void OnForeColorChanged();
-	void OnBackColorChanged();
-	void OnPositionChanged();
-	void OnSizeChanged();
-	void OnVisualSizeChanged();
-	void OnCursorChanged();
+	void OnLoaded() override;
+	void OnVisibleChanged() override;
+	void OnEnableChanged() override;
+	void OnFocusedChanged() override;
+	void OnActiveChanged() override;
+	void OnSelectedChanged() override;
+	void OnCapturedChanged() override;
+	void OnTextChanged() override;
+	void OnFontChanged() override;
+	void OnForeColorChanged() override;
+	void OnBackColorChanged() override;
+	void OnPositionChanged() override;
+	void OnSizeChanged() override;
+	void OnVisualSizeChanged() override;
+	void OnCursorChanged() override;
 
-	void SetAutoRepaint(uint_32 uiAutoRepaint);
-	uint_32 GetAutoRepaint() const;
+	void SetAutoRepaint(uint_32 uiAutoRepaint) override;
+	uint_32 GetAutoRepaint() const override;
 
 	/**
 	 * @brief 重绘整个控件，更新控件所占用的视图区域(调用Update())。
 	 */
-	void Repaint();
+	void Repaint() override;
 	/**
 	 * @brief 重绘指定区域控件，更新所占用的视图区域(调用Update())。
 	 * @param rect 指定的区域。
 	 */
-	void Repaint(const rectix & rect);
+	void Repaint(const rectix & rect) override;
 	
 	/**
 	 * @brief 更新控件所占用的视图区域，Update 不要求控件本身重绘。
 	 */
-	void NcRepaint();
+	void NcRepaint() override;
 	/**
 	 * @brief 更新控件指定的视图区域，Update 不要求控件本身重绘。
 	 * @param rect 指定的矩形区域。
 	 */
-	void NcRepaint(const rectix & rect);
+	void NcRepaint(const rectix & rect) override;
 
-	void PreOnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme);
-	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
-	void PreOnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
-	void AftOnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void PreOnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) override;
+	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
+	void PreOnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
+	void AftOnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
-	void SetHotKey(KeyCodeE eHotKey);
-	KeyCodeE GetHotKey() const;
-	bool OnHotKey();
+	void SetHotKey(KeyCodeE eHotKey) override;
+	KeyCodeE GetHotKey() const override;
+	bool OnHotKey() override;
 
-	void SetPopuping(bool bPopuping);
-	bool IsPopuping() const;
+	void SetPopuping(bool bPopuping) override;
+	bool IsPopuping() const override;
 
-	void SetBorderType(BorderTypeE eBorderType);
-	BorderTypeE GetBorderType() const;
+	void SetBorderType(BorderTypeE eBorderType) override;
+	BorderTypeE GetBorderType() const override;
 
 	/**
 	 * @brief 使用控件坐标。   
 	 */
-	HitTestE NcHitTest(pointix point) const;
-	HitTestE HitTest(pointix point) const;
-	HitTestE HitTestDeep(pointix point) const;
+	HitTestE NcHitTest(pointix point) const override;
+	HitTestE HitTest(pointix point) const override;
+	HitTestE HitTestDeep(pointix point) const override;
 public:
-	void NcUpdateMouse(pointix point);
+	void NcUpdateMouse(pointix point) override;
 	// 鼠标交互
-	void PreOnNcMouseMove(pointix point);
-	void OnNcMouseMove(pointix point);
-	void PreOnMouseMove(pointix point);
-	void OnMouseMove(pointix point);
+	void PreOnNcMouseMove(pointix point) override;
+	void OnNcMouseMove(pointix point) override;
+	void PreOnMouseMove(pointix point) override;
+	void OnMouseMove(pointix point) override;
 
-	void PreOnNcMouseIn(pointix point);
-	void OnNcMouseIn(pointix point);
-	void PreOnMouseIn(pointix point);
-	void OnMouseIn(pointix point);
+	void PreOnNcMouseIn(pointix point) override;
+	void OnNcMouseIn(pointix point) override;
+	void PreOnMouseIn(pointix point) override;
+	void OnMouseIn(pointix point) override;
 
-	void PreOnNcMouseOut(pointix point);
-	void OnNcMouseOut(pointix point);
-	void PreOnMouseOut(pointix point);
-	void OnMouseOut(pointix point);
+	void PreOnNcMouseOut(pointix point) override;
+	void OnNcMouseOut(pointix point) override;
+	void PreOnMouseOut(pointix point) override;
+	void OnMouseOut(pointix point) override;
 
-	void PreOnNcMouseDown(pointix point, MouseButtonE eButton);
-	void OnNcMouseDown(pointix point, MouseButtonE eButton);
-	void PreOnMouseDown(pointix point, MouseButtonE eButton);
-	void OnMouseDown(pointix point, MouseButtonE eButton);
-	void OnMouseDownL(pointix point);
-	void OnMouseDownM(pointix point);
-	void OnMouseDownR(pointix point);
+	void PreOnNcMouseDown(pointix point, MouseButtonE eButton) override;
+	void OnNcMouseDown(pointix point, MouseButtonE eButton) override;
+	void PreOnMouseDown(pointix point, MouseButtonE eButton) override;
+	void OnMouseDown(pointix point, MouseButtonE eButton) override;
+	void OnMouseDownL(pointix point) override;
+	void OnMouseDownM(pointix point) override;
+	void OnMouseDownR(pointix point) override;
 
-	void PreOnNcMouseUp(pointix point, MouseButtonE eButton);
-	void OnNcMouseUp(pointix point, MouseButtonE eButton);
-	void PreOnMouseUp(pointix point, MouseButtonE eButton);
-	void OnMouseUp(pointix point, MouseButtonE eButton);
-	void OnMouseUpL(pointix point);
-	void OnMouseUpM(pointix point);
-	void OnMouseUpR(pointix point);
+	void PreOnNcMouseUp(pointix point, MouseButtonE eButton) override;
+	void OnNcMouseUp(pointix point, MouseButtonE eButton) override;
+	void PreOnMouseUp(pointix point, MouseButtonE eButton) override;
+	void OnMouseUp(pointix point, MouseButtonE eButton) override;
+	void OnMouseUpL(pointix point) override;
+	void OnMouseUpM(pointix point) override;
+	void OnMouseUpR(pointix point) override;
 
-	void PreOnNcMouseClick(pointix point, MouseButtonE eButton);
-	void OnNcMouseClick(pointix point, MouseButtonE eButton);
-	void PreOnMouseClick(pointix point, MouseButtonE eButton);
-	void OnMouseClickL(pointix point);
-	void OnMouseClickM(pointix point);
-	void OnMouseClickR(pointix point);
+	void PreOnNcMouseClick(pointix point, MouseButtonE eButton) override;
+	void OnNcMouseClick(pointix point, MouseButtonE eButton) override;
+	void PreOnMouseClick(pointix point, MouseButtonE eButton) override;
+	void OnMouseClickL(pointix point) override;
+	void OnMouseClickM(pointix point) override;
+	void OnMouseClickR(pointix point) override;
 
-	void PreOnNcMouseDBClick(pointix point, MouseButtonE eButton);
-	void OnNcMouseDBClick(pointix point, MouseButtonE eButton);
-	void PreOnMouseDBClick(pointix point, MouseButtonE eButton);
-	void OnMouseDBClick(pointix point, MouseButtonE eButton);
-	void OnMouseDBClickL(pointix point);
+	void PreOnNcMouseDBClick(pointix point, MouseButtonE eButton) override;
+	void OnNcMouseDBClick(pointix point, MouseButtonE eButton) override;
+	void PreOnMouseDBClick(pointix point, MouseButtonE eButton) override;
+	void OnMouseDBClick(pointix point, MouseButtonE eButton) override;
+	void OnMouseDBClickL(pointix point) override;
 
-	void PreOnNcMouseWheel(pointix point, int_x iWhell, AlignE eDirection);
-	void OnNcMouseWheel(pointix point, int_x iWhell, AlignE eDirection);
-	void PreOnMouseWheel(pointix point, int_x iWhell, AlignE eDirection);
-	void OnMouseWheel(pointix point, int_x iWhell, AlignE eDirection);
-	void OnMouseWheelX(pointix point, int_x iWhell);
-	void OnMouseWheelY(pointix point, int_x iWhell);
+	void PreOnNcMouseWheel(pointix point, int_x iWhell, AlignE eDirection) override;
+	void OnNcMouseWheel(pointix point, int_x iWhell, AlignE eDirection) override;
+	void PreOnMouseWheel(pointix point, int_x iWhell, AlignE eDirection) override;
+	void OnMouseWheel(pointix point, int_x iWhell, AlignE eDirection) override;
+	void OnMouseWheelX(pointix point, int_x iWhell) override;
+	void OnMouseWheelY(pointix point, int_x iWhell) override;
 
-	pointix GetMousePosition() const;
+	pointix GetMousePosition() const override;
 
-	bool IsMouseIn() const { return m_bMouseIn;}
-	bool IsMouseNcIn() const { return m_bMouseNcIn;}
-	bool IsMouseDownL() const { return m_bMouseDownL;}
-	bool IsMouseDownM() const { return m_bMouseDownM;}
-	bool IsMouseDownR() const { return m_bMouseDownR;}
-	bool IsAnyButtonDown() const 
+	bool IsMouseIn() const override { return m_bMouseIn;}
+	bool IsMouseNcIn() const override { return m_bMouseNcIn;}
+	bool IsMouseDownL() const override { return m_bMouseDownL;}
+	bool IsMouseDownM() const override { return m_bMouseDownM;}
+	bool IsMouseDownR() const override { return m_bMouseDownR;}
+	bool IsAnyButtonDown() const override
 	{ return m_bMouseDownL | m_bMouseDownM | m_bMouseDownR;}
-	bool IsAnyButtonNcDown() const 
+	bool IsAnyButtonNcDown() const override
 	{ return m_bMouseNcDownL | m_bMouseNcDownM | m_bMouseNcDownR;}
 
-	bool IsMouseDown(MouseButtonE eButton) const;
-	bool IsPreDragIn() const;
-	bool IsDragIn() const;
+	bool IsMouseDown(MouseButtonE eButton) const override;
+	bool IsPreDragIn() const override;
+	bool IsDragIn() const override;
 	// 键盘交互
-	void PreOnKeyDown(KeyCodeE eKeyCode);
-	void OnKeyDown(KeyCodeE eKeyCode);
+	void PreOnKeyDown(KeyCodeE eKeyCode) override;
+	void OnKeyDown(KeyCodeE eKeyCode) override;
 
-	void OnKeyRepeat(KeyCodeE eKeyCode);
+	void OnKeyRepeat(KeyCodeE eKeyCode) override;
 
-	void PreOnKeyUp(KeyCodeE eKeyCode);
-	void OnKeyUp(KeyCodeE eKeyCode);
+	void PreOnKeyUp(KeyCodeE eKeyCode) override;
+	void OnKeyUp(KeyCodeE eKeyCode) override;
 
-	void PreOnKeyInput(char_32 chInput);
-	void OnKeyInput(char_32 chInput);
+	void PreOnKeyInput(char_32 chInput) override;
+	void OnKeyInput(char_32 chInput) override;
 
-	bool IsKeyDown(KeyCodeE ekeyCode) const;
+	bool IsKeyDown(KeyCodeE ekeyCode) const override;
 
-	bool IsScrollXAble() const;
-	bool IsScrollYAble() const;
-	void SetAutoHideScrollBarX(bool bAutoHide);
-	void SetAutoHideScrollBarY(bool bAutoHide);
-	bool IsAutoHideScrollBarX() const;
-	bool IsAutoHideScrollBarY() const;
-	void SetScrollPosX(int_x iX);
-	void SetScrollPosY(int_x iY);
-	void SetScrollPos(int_x iX, int_x iY);
-	int_x GetScrollPosX() const;
-	int_x GetScrollPosY() const;
-	pointix GetScrollPos() const;
+	bool IsScrollXAble() const override;
+	bool IsScrollYAble() const override;
+	void SetAutoHideScrollBarX(bool bAutoHide) override;
+	void SetAutoHideScrollBarY(bool bAutoHide) override;
+	bool IsAutoHideScrollBarX() const override;
+	bool IsAutoHideScrollBarY() const override;
+	void SetScrollPosX(int_x iX) override;
+	void SetScrollPosY(int_x iY) override;
+	void SetScrollPos(int_x iX, int_x iY) override;
+	int_x GetScrollPosX() const override;
+	int_x GetScrollPosY() const override;
+	pointix GetScrollPos() const override;
 
 	void SetScrollBarX(IControl * pScrollBar);
 	void SetScrollBarY(IControl * pScrollBar);
-	IControl * GetScrollBarX() const;
-	IControl * GetScrollBarY() const;
-	void PreOnScroll(IControl * pScroll);
-	void OnScrollX(int_x iValue);
-	void OnScrollY(int_x iValue);
-	void UpdateScroll();
-	void SetScroll(intx2 i2Scroll);
-	void SetScroll(int_x icxScroll, int_x icyScroll);
+	IControl * GetScrollBarX() const override;
+	IControl * GetScrollBarY() const override;
+	void PreOnScroll(IControl * pScroll) override;
+	void OnScrollX(int_x iValue) override;
+	void OnScrollY(int_x iValue) override;
+	void UpdateScroll() override;
+	void SetScroll(intx2 i2Scroll) override;
+	void SetScroll(int_x icxScroll, int_x icyScroll) override;
 	intx2 GetScroll() const;
 	void _LayoutScrollBars(bool bScrollX, bool bScrollY);
 
-	void DoAttributeExchange(IAttributeServer * pServer, bool bPush);
+	void DoAttributeExchange(IAttributeServer * pServer, bool bPush) override;
 protected:
 	void ConfirmBuffer(int_x iWidth, int_x iHeight);
 protected:
@@ -619,69 +620,69 @@ protected:
 	int_x m_iLayouting;
 
 public:
-	IControlVector & GetChildren() { return m_children;}
-	const IControlVector & GetChildren() const { return m_children; }
+	IControlVector & GetChildren() override { return m_children;}
+	const IControlVector & GetChildren() const override { return m_children; }
 
 public:
-	void AddControl(IControl * pControl);
-	void RmvControl(IControl * pControl);
+	void AddControl(IControl * pControl) override;
+	void RmvControl(IControl * pControl) override;
 	void RmvAllControl();
 	bool HasControl(IControl * pControl) const;
 
 	//--------------------------------- 自动排版
-	void SetLayoutMode(LayoutModeE eType);
-	LayoutModeE GetLayoutMode() const;
+	void SetLayoutMode(LayoutModeE eType) override;
+	LayoutModeE GetLayoutMode() const override;
 
 	// 根据 child 的 widemode、heightmode、anchor 来确定控件的位置和（或）尺寸。
-	void BegLayout();
-	void EndLayout();
-	void Layout();
+	void BegLayout() override;
+	void EndLayout() override;
+	void Layout() override;
 	void _LayoutAbsolute();
 	void _LayoutHorizontal();
 	void _LayoutVertical();
 	void _LayoutTable();
 
-	IControl * NcFindChild(pointix point) const;
-	IControl * FindChild(pointix point) const;
-	IControl * FindChild(const char_16 * szName, int_x iDepth = 0) const;
+	IControl * NcFindChild(pointix point) const override;
+	IControl * FindChild(pointix point) const override;
+	IControl * FindChild(const char_16 * szName, int_x iDepth = 0) const override;
 	/**
 	 * @param point 本地坐标。
 	 */
-	void SetMouseControl(IControl * pControl, pointix point);
-	IControl * GetMouseControl() const ;
+	void SetMouseControl(IControl * pControl, pointix point) override;
+	IControl * GetMouseControl() const override;
 
-	void SetCaptureControl(IControl * pControl);
-	IControl * GetCaptureControl() const;
+	void SetCaptureControl(IControl * pControl) override;
+	IControl * GetCaptureControl() const override;
 
-	void SetSelectedControl(IControl * pControl);
-	IControl * GetSelectedControl() const;
-	IControl * GetFocusControl() const;
+	void SetSelectedControl(IControl * pControl) override;
+	IControl * GetSelectedControl() const override;
+	IControl * GetFocusControl() const override;
 
-	void OnChildGetFocus(IControl * pControl);
-	void OnChildLostFocus(IControl * pControl);
+	void OnChildGetFocus(IControl * pControl) override;
+	void OnChildLostFocus(IControl * pControl) override;
 
-	void SetMouseWheelMode(MouseWheelModeE eMouseWheelMode);
-	MouseWheelModeE GetMouseWheelMode() const;
+	void SetMouseWheelMode(MouseWheelModeE eMouseWheelMode) override;
+	MouseWheelModeE GetMouseWheelMode() const override;
 
-	void OnCheckGroup(int_x iGroup);
+	void OnCheckGroup(int_x iGroup) override;
 
-	DropResultE PreOnNcDragEnter(IData * pData, pointix point);
-	DropResultE PreOnNcDragMove(IData * pData, pointix point);
-	void PreOnNcDragLeave(IData * pData, pointix point);
-	DropResultE PreOnNcDragDrop(IData * pData, pointix point);
+	DropResultE PreOnNcDragEnter(IData * pData, pointix point) override;
+	DropResultE PreOnNcDragMove(IData * pData, pointix point) override;
+	void PreOnNcDragLeave(IData * pData, pointix point) override;
+	DropResultE PreOnNcDragDrop(IData * pData, pointix point) override;
 
-	DropResultE OnDragEnter(IData * pData, pointix point);
-	DropResultE OnDragMove(IData * pData, pointix point);
-	void OnDragLeave(IData * pData, pointix point);
-	DropResultE OnDragDrop(IData * pData, pointix point);
+	DropResultE OnDragEnter(IData * pData, pointix point) override;
+	DropResultE OnDragMove(IData * pData, pointix point) override;
+	void OnDragLeave(IData * pData, pointix point) override;
+	DropResultE OnDragDrop(IData * pData, pointix point) override;
 
-	bool SetDropControl(IControl * pControl);
-	IControl * GetDropControl() const;
+	bool SetDropControl(IControl * pControl) override;
+	IControl * GetDropControl() const override;
 	// debug
 public:
-	void OutputInfo(int_x iDepth) const;
-	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const;
-	void OnDebugMenu(int_x iBase, int_x iResult);
+	void OutputInfo(int_x iDepth) const override;
+	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
+	void OnDebugMenu(int_x iBase, int_x iResult) override;
 protected:
 	IControl * m_pMouseControl;
 	IControl * m_pSelectedControl;

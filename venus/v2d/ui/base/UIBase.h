@@ -567,15 +567,4 @@ public:
 	virtual int_x GetShortKey() const = 0;
 };
 
-class V2D_API formborder_t
-{
-public:
-	formborder_t() : caption(0) {}
-	formborder_t(edgeix _edge, int_x _caption) : edge(_edge), caption(_caption) {}
-	edgeix edge;
-	int_x caption;
-	bool is_empty() const { return edge.left <= 0 && edge.top <= 0 && 
-		edge.right <= 0 && edge.bottom <= 0 && caption <= 0; }
-};
-
 VENUS_END

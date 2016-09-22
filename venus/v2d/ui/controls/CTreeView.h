@@ -22,8 +22,8 @@ class V2D_API CTreeView : public CControl
 public:
 	CTreeView();
 	~CTreeView();
-	const oid_t & GetOid() const;
-	void GetMeta(IMetaHelper * pHelper);
+	const oid_t & GetOid() const override;
+	void GetMeta(IMetaHelper * pHelper) override;
 
 	/**增加/移除项*/
 	TreeItemT * AddItem(const char_16 * szText, TreeItemT * pParent = nullptr, IImage * pImage = nullptr, int_x iUserData = 0);
@@ -40,23 +40,23 @@ public:
 	/**查找项*/
 	TreeItemT * FindItem(pointix point) const;
 
-	void OnVisualSizeChanged();
-	void OnMouseMove(pointix point);
-	void OnMouseOut(pointix point);
-	void OnMouseDownL(pointix point);
-	void OnMouseDBClickL(pointix point);
-	void OnKeyDown(KeyCodeE eKeyCode);
-	void RequestCursor(pointix point, CursorE & eCursor) const;
+	void OnVisualSizeChanged() override;
+	void OnMouseMove(pointix point) override;
+	void OnMouseOut(pointix point) override;
+	void OnMouseDownL(pointix point) override;
+	void OnMouseDBClickL(pointix point) override;
+	void OnKeyDown(KeyCodeE eKeyCode) override;
+	void RequestCursor(pointix point, CursorE & eCursor) const override;
 
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 	void PaintItem(IPaint * pPaint, int_x iX, int_x iY, const TreeItemT * pItem) const;
 
-	void OnScrollX(int_x iValue);
-	void OnScrollY(int_x iValue);
-	void UpdateScroll();
+	void OnScrollX(int_x iValue) override;
+	void OnScrollY(int_x iValue) override;
+	void UpdateScroll() override;
 
-	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const;
-	void OnDebugMenu(int_x iBase, int_x iResult);
+	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
+	void OnDebugMenu(int_x iBase, int_x iResult) override;
 
 	void SetHovingItem(TreeItemT * pItem);
 	const TreeItemT * GetHovingItem() const;

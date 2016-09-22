@@ -10,7 +10,7 @@ public:
 	CScrollBar();
 	~CScrollBar();
 
-	IScroll * ToIScroll() const;
+	IScroll * ToIScroll() const override;
 public:
 	/**
 	 * @brief 设置最小值。
@@ -18,13 +18,13 @@ public:
 	 * @note 如果给定的最小值比当前值要大，会抛出 exp_illegal_argument 异常。
 	 *  这种情况下应该先修改 Value 再修改 MinValue，最好的方法是调用 @ref SetValues 函数。
 	 */
-	void SetMinValue(int_x iMin);
+	void SetMinValue(int_x iMin) override;
 	/**
 	 * @brief 查询最小值。
 	 * @return 返回最小值。
 	 */
-	int_x GetMinValue() const;
-	int_x GetRangeValue() const;
+	int_x GetMinValue() const override;
+	int_x GetRangeValue() const override;
 	
 	/**
 	 * @brief 设置最大值。
@@ -32,12 +32,12 @@ public:
 	 * @note 如果给定的最大值比当前值要小，会抛出 exp_illegal_argument 异常。
 	 *  这种情况下应该先修改 Value 再修改 MaxValue，最好的方法是调用 @ref SetValues 函数。
 	 */
-	void SetMaxValue(int_x iMax);
+	void SetMaxValue(int_x iMax) override;
 	/**
 	 * @brief 查询最大值。
 	 * @return 返回最大值。
 	 */
-	int_x GetMaxValue() const;
+	int_x GetMaxValue() const override;
 	
 	/**
 	 * @brief 设置当前值。
@@ -45,12 +45,12 @@ public:
 	 * @note 如果给定的值小于最小值，则将进度条设定为最小值；如果给定的值大于最大值，则将进度条设定为最大值。
 	 * 不会抛出异常。
 	 */
-	void SetValue(int_x iValue);
+	void SetValue(int_x iValue) override;
 	/**
 	 * @brief 查询当前值。
 	 * @return 返回当前值。
 	 */
-	int_x GetValue() const;
+	int_x GetValue() const override;
 
 	/**
 	 * @brief 设置最小值、最大值和当前值。给定的值必须是合法的，否则抛出 exp_illegal_argument 异常。
@@ -58,13 +58,13 @@ public:
 	 * @param iMax 最大值。
 	 * @param iValue 当前值。
 	 */
-	void SetRangeInfo(int_x iMin, int_x iMax, int_x iValue);
+	void SetRangeInfo(int_x iMin, int_x iMax, int_x iValue) override;
 
 	/**
 	 * @copybrief SetRangeInfo(float_32 fMin, float_32 fMax, float_32 fValue) 。
 	 * @param range 范围信息，最小值、最大值、当前值。
 	 */
-	void SetRangeInfo(const RangeInfoT & range);
+	void SetRangeInfo(const RangeInfoT & range) override;
 
 	/**
 	 * @brief 获取最小值、最大值和当前值。
@@ -72,7 +72,7 @@ public:
 	 * @param piMax 接收最大值的指针。
 	 * @param piValue 接收当前值的指针。
 	 */
-	void GetRangeInfo(int_x * piMin, int_x * piMax, int_x * piValue) const;
+	void GetRangeInfo(int_x * piMin, int_x * piMax, int_x * piValue) const override;
 
 	/**
 	 * @copybrief GetRangeInfo(float_32 * pfMin, float_32 * pfMax, float_32 * pfValue) 。
@@ -83,37 +83,37 @@ public:
 	 * @brief 获取当前比例(0 ~ 1.0f)。
 	 * @return 返回当前比例。取值范围是[0, 1.0f]。
 	 */
-	float_32 GetRate() const;
+	float_32 GetRate() const override;
 
-	void SetDirection(AxisE eDirection);
-	AxisE GetDirection() const;
-	void SetLineValue(int_x iLine);
-	int_x GetLineValue() const;
-	void SetPageValue(int_x iPage);
-	int_x GetPageValue() const;
-	void SetScrollInfo(int_x iMin, int_x iMax, int_x iValue, int_x iLine, int_x iPage);
-	void SetScrollInfo(const ScrollInfoT & scroll);
-	ScrollInfoT GetScrollInfo() const;
-	void LineUp();
-	void PageUp();
-	void LineDown();
-	void PageDown();
+	void SetDirection(AxisE eDirection) override;
+	AxisE GetDirection() const override;
+	void SetLineValue(int_x iLine) override;
+	int_x GetLineValue() const override;
+	void SetPageValue(int_x iPage) override;
+	int_x GetPageValue() const override;
+	void SetScrollInfo(int_x iMin, int_x iMax, int_x iValue, int_x iLine, int_x iPage) override;
+	void SetScrollInfo(const ScrollInfoT & scroll) override;
+	ScrollInfoT GetScrollInfo() const override;
+	void LineUp() override;
+	void PageUp() override;
+	void LineDown() override;
+	void PageDown() override;
 
-	void MinValueChanged();
-	void MaxValueChanged();
-	void ValueChanged();
-	void LineValueChanged();
-	void PageValueChanged();
+	void MinValueChanged() override;
+	void MaxValueChanged() override;
+	void ValueChanged() override;
+	void LineValueChanged() override;
+	void PageValueChanged() override;
 
-	void SetScrollTarget(IControl * pScrollTarget);
-	IControl * GetScrollTarget() const;
+	void SetScrollTarget(IControl * pScrollTarget) override;
+	IControl * GetScrollTarget() const override;
 public:
-	const oid_t & GetOid() const;
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
-	void OnMouseDownL(pointix point);
-	void OnMouseUpL(pointix point);
-	void OnMouseMove(pointix point);
-	void OnMouseOut(pointix point);
+	const oid_t & GetOid() const override;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
+	void OnMouseDownL(pointix point) override;
+	void OnMouseUpL(pointix point) override;
+	void OnMouseMove(pointix point) override;
+	void OnMouseOut(pointix point) override;
 protected:
 	ScrollPointE GetMouseScrollPoint(pointix point, int_x * piBarOff = nullptr) const;
 	void SetScrollPoint(ScrollPointE eScrollPoint);

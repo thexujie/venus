@@ -25,21 +25,21 @@ class V2D_API CTabControl : public CControl
 public:
 	CTabControl();
 	~CTabControl();
-	const oid_t & GetOid() const;
-	void GetMeta(IMetaHelper * pHelper);
+	const oid_t & GetOid() const override;
+	void GetMeta(IMetaHelper * pHelper) override;
 
-	rectix GetClient() const;
-	HitTestE NcHitTest(pointix point) const;
-	void OnNcMouseDown(pointix point, MouseButtonE eButton);
-	void OnNcMouseMove(pointix point);
-	void OnNcMouseOut(pointix point);
-	void OnSizeChanged();
+	rectix GetClient() const override;
+	HitTestE NcHitTest(pointix point) const override;
+	void OnNcMouseDown(pointix point, MouseButtonE eButton) override;
+	void OnNcMouseMove(pointix point) override;
+	void OnNcMouseOut(pointix point) override;
+	void OnSizeChanged() override;
 
 	int_x AddTab(const char_16 * szText);
 	void AddTabControl(int_x iIndex, IControl * pControl);
 	int_x GetTabCount() const;
-	void SetShown(bool bShown);
-	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void SetShown(bool bShown) override;
+	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
 	void SetSelectedIndex(int_x iIndex);
 	void SetHovingIndex(int_x iIndex);

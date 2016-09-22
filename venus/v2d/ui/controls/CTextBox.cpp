@@ -21,6 +21,7 @@ CTextBox::CTextBox() :m_chInputPre(0)
 	m_bAcceptEnter = true;
 	m_bFocusAble = true;
 	m_eCursor = CursorIBeam;
+	m_padding.set(3, 4, 3, 4);
 	m_margin.set(3, 3, 3, 3);
 
 	SetAutoHideScrollBarX(true);
@@ -91,6 +92,32 @@ void CTextBox::SetText(textw text)
 	}
 }
 
+bool CTextBox::GetImeInfo(ImeInfoT & imeInfo) const
+{
+	if(m_bReadOnly)
+		return false;
+
+	sizeix szClient = GetClient().size;
+	pointix sclText = GetScrollPos();
+	imeInfo.eImeMode = m_eImeMode;
+	tl_cluster_t cluster = TlGetCluster(m_iIndex);
+	imeInfo.rcCompose.set(cluster.tlrect.x - sclText.x, cluster.tlrect.y + cluster.tlrect.w - sclText.y, 1, cluster.tlrect.h);
+	imeInfo.rcCompose.w = szClient.w - imeInfo.rcCompose.x;
+	imeInfo.rcCompose.h = szClient.h - imeInfo.rcCompose.y;
+	if(imeInfo.rcCompose.y < 0)
+		imeInfo.rcCompose.y = 0;
+	else if(imeInfo.rcCompose.bottom() > szClient.h)
+		imeInfo.rcCompose.y = szClient.h - imeInfo.rcCompose.h;
+	else {}
+	imeInfo.font = m_font;
+	return true;
+}
+
+sizeix CTextBox::GetContentSize() const
+{
+	return maxof(Get2DDevice()->GetTextSize(m_text, m_text.length(), m_font) + m_padding.size(), sizeix(m_font.size / 2, m_font.size));
+}
+
 void CTextBox::OnShow()
 {
 	CControl::OnShow();
@@ -150,24 +177,6 @@ void CTextBox::OnEnableChanged()
 	ForceBlink(false);
 	Repaint();
 	CControl::OnEnableChanged();
-}
-
-void CTextBox::OnUpdate()
-{
-	if(m_bForceBlink)
-	{
-		if(!m_bBlinking)
-		{
-			m_bBlinking = true;
-			Repaint();
-		}
-		m_bForceBlink = false;
-	}
-	else
-	{
-		m_bBlinking = !m_bBlinking;
-		Repaint();
-	}
 }
 
 void CTextBox::OnKeyInput(char_32 chInput)
@@ -818,27 +827,6 @@ void CTextBox::ScrollToCaret()
 	else {}
 
 	SetScrollPos(sclText.x, sclText.y);
-}
-
-bool CTextBox::GetImeInfo(ImeInfoT & imeInfo) const
-{
-	if(m_bReadOnly)
-		return false;
-
-	sizeix szClient = GetClient().size;
-	pointix sclText = GetScrollPos();
-	imeInfo.eImeMode = m_eImeMode;
-	tl_cluster_t cluster = TlGetCluster(m_iIndex);
-	imeInfo.rcCompose.set(cluster.tlrect.x - sclText.x, cluster.tlrect.y + cluster.tlrect.w - sclText.y, 1, cluster.tlrect.h);
-	imeInfo.rcCompose.w = szClient.w - imeInfo.rcCompose.x;
-	imeInfo.rcCompose.h = szClient.h - imeInfo.rcCompose.y;
-	if(imeInfo.rcCompose.y < 0)
-		imeInfo.rcCompose.y = 0;
-	else if(imeInfo.rcCompose.bottom() > szClient.h)
-		imeInfo.rcCompose.y = szClient.h - imeInfo.rcCompose.h;
-	else {}
-	imeInfo.font = m_font;
-	return true;
 }
 
 rectix CTextBox::_GetCaretRect(int_x iIndex) const

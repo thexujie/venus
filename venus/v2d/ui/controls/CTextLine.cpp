@@ -273,9 +273,9 @@ void CTextLine::OnMouseMove(pointix point)
 	CControl::OnMouseMove(point);
 }
 
-sizeix CTextLine::GetPreferedSize() const
+sizeix CTextLine::GetContentSize() const
 {
-	return MeasureMenuString(m_text, m_text.length(), m_font) + m_padding.size();
+	return maxof(MeasureMenuString(m_text, m_text.length(), m_font) + m_padding.size(), sizeix(m_font.size / 2, m_font.size));
 }
 
 void CTextLine::SetIndex(int_x iIndex)

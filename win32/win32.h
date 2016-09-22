@@ -72,17 +72,17 @@ struct winrect_t : public RECT
 	int_x height() const { return bottom - top; }
 };
 
-const version_t winver_windows_new = {11, 0, 0, 0};
-const version_t winver_windows_10 = {10, 0, 0, 0};
-const version_t winver_windows_8_1 = {6, 3, 0, 0};
-const version_t winver_windows_8 = {6, 2, 0, 0};
-const version_t winver_windows_7 = {6, 1, 0, 0};
-const version_t winver_windows_vista = {6, 0, 0, 0};
-const version_t winver_windows_xp_x64 = {5, 2, 0, 0};
-const version_t winver_windows_xp_x86 = {5, 1, 0, 0};
-const version_t winver_windows_2000 = {5, 0, 0, 0};
-const version_t winver_windows_old = {4, 0, 0, 0};
-const version_t winver_windows_unknown = {0, 0, 0, 0};
+constdata version_t winver_windows_new = {11, 0, 0, 0};
+constdata version_t winver_windows_10 = {10, 0, 0, 0};
+constdata version_t winver_windows_8_1 = {6, 3, 0, 0};
+constdata version_t winver_windows_8 = {6, 2, 0, 0};
+constdata version_t winver_windows_7 = {6, 1, 0, 0};
+constdata version_t winver_windows_vista = {6, 0, 0, 0};
+constdata version_t winver_windows_xp_x64 = {5, 2, 0, 0};
+constdata version_t winver_windows_xp_x86 = {5, 1, 0, 0};
+constdata version_t winver_windows_2000 = {5, 0, 0, 0};
+constdata version_t winver_windows_old = {4, 0, 0, 0};
+constdata version_t winver_windows_unknown = {0, 0, 0, 0};
 
 class WIN32_API Win32
 {

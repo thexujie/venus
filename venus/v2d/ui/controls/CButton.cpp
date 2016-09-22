@@ -74,7 +74,7 @@ void CButton::OnTextChanged()
 	CControl::OnTextChanged();
 }
 
-sizeix CButton::GetPreferedSize() const
+sizeix CButton::GetContentSize() const
 {
 	sizeix size = MeasureMenuString(m_text, m_text.length(), m_font);
 	size += m_padding.size();

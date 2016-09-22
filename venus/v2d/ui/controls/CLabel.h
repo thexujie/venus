@@ -10,9 +10,9 @@ public:
 	CLabel();
 	~CLabel();
 
-	const oid_t & GetOid() const;
+	const oid_t & GetOid() const override;
 public: // CControl
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 };
 
 VENUS_END

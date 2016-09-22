@@ -13,10 +13,10 @@ public:
 	~CGroupBox();
 
 public:
-	const oid_t & GetOid() const;
+	const oid_t & GetOid() const override;
 
-	rectix GetClient() const;
-	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	rectix GetClient() const override;
+	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
 private:
 	int_x m_iTextLeft;

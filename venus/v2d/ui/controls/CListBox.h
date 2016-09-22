@@ -47,7 +47,7 @@ public:
 	CListBox();
 	~CListBox();
 
-	const oid_t & GetOid() const;
+	const oid_t & GetOid() const override;
 
 	int_x AddItem(const char_16 * szText, IImage * pImage = nullptr, int_x iId = -1);
 	void RemoveAll();
@@ -58,15 +58,15 @@ public:
 	void EndUpdate();
 	void Update();
 
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
-	sizeix GetPreferedSize() const;
-	void OnVisualSizeChanged();
-	void OnMouseMove(pointix point);
-	void OnMouseOut(pointix point);
-	void OnMouseDownL(pointix point);
-	void OnMouseClickL(pointix point);
-	void OnKeyDown(KeyCodeE eKeyCode);
+	sizeix GetPreferedSize() const override;
+	void OnVisualSizeChanged() override;
+	void OnMouseMove(pointix point) override;
+	void OnMouseOut(pointix point) override;
+	void OnMouseDownL(pointix point) override;
+	void OnMouseClickL(pointix point) override;
+	void OnKeyDown(KeyCodeE eKeyCode) override;
 
 	void SelectItem(int_x iIndex, bool bSelect = true, bool bMultiSelect = false);
 	void SelectItemNext(int_x iIndex);
@@ -93,13 +93,13 @@ public:
 	void SelectAll();
 	void SelectReverse();
 
-	void UpdateScroll();
+	void UpdateScroll() override;
 
 	int_x FindItem(pointix point) const;
 	const ListBoxItemT & GetItem(int_x iIndex) const;
 public:
-	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const;
-	void OnDebugMenu(int_x iBase, int_x iResult);
+	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
+	void OnDebugMenu(int_x iBase, int_x iResult) override;
 private:
 	vector<ListBoxItemT> m_items;
 	int_x m_iUpdating;

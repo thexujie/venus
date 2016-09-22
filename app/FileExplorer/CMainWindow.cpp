@@ -137,8 +137,8 @@ int_x CMainWindow::OnTreeItemSelected(IControl * pControl, TreeItemT * pItem)
 		for(int_x cnt = 0, len = files.size(); cnt != len; ++cnt)
 		{
 			const fileinfo_t & file = files[cnt];
-			file.get_name(szName, MAX_FILE_PATH);
-			file.get_ext(szExt, MAX_FILE_PATH);
+			file.name(szName, MAX_FILE_PATH);
+			file.extention(szExt, MAX_FILE_PATH);
 			IWin32ShellItemImage * pshlImage = pShellBuffer->GetShellIcon(szExt);
 			IImage * pImage = pshlImage ? pshlImage->GetSpecificImage(sizeix(16, 16), false) : nullptr;
 			m_listBox.AddItem(szName, pImage, false);

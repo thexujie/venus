@@ -188,7 +188,9 @@ void CControl::SetPosition(pointix position)
 {
 	if(position != m_rect.position)
 	{
+		NcRepaint();
 		m_rect.position = position;
+		NcRepaint();
 		OnPositionChanged();
 	}
 }
@@ -202,7 +204,9 @@ void CControl::SetSize(sizeix size)
 {
 	if(size != m_rect.size)
 	{
+		NcRepaint();
 		m_rect.size = size;
+		NcRepaint();
 		OnSizeChanged();
 	}
 }
@@ -261,12 +265,11 @@ pointix CControl::GetRelativePosition(IControl * pAncestor) const
 
 sizeix CControl::GetPreferedSize() const
 {
-	return sizeix(m_font.size, m_font.size);
-}
+	if(m_eWidthMode != WHModeAuto && m_eHeightMode != WHModeAuto)
+		return m_rect.size;
 
-sizeix CControl::GetContentSize() const
-{
-	rectix rcFull(pointix(), GetPreferedSize());
+	// full size of content and sub controls.
+	rectix rcFull(pointix(), GetContentSize());
 	switch(m_eLayoutMode)
 	{
 	case LayoutModeAbsolute:
@@ -303,13 +306,31 @@ sizeix CControl::GetContentSize() const
 			rectix rcChild(pChild->GetPosition(), pChild->GetContentSize());
 			rcChild.size += pChild->GetMargin().size();
 			rcFull.h += rcChild.h;
-			rcFull.w += maxof(rcFull.w, rcChild.w);
+			rcFull.w = maxof(rcFull.w, rcChild.w);
 		}
 		break;
 	default:
 		break;
 	}
-	return rcFull.size;
+
+	// we expect that the parent control fit my w/h when wmmode is auto or fill.
+	if(m_eWidthMode == WHModeAbs)
+		rcFull.size.w = m_rect.w;
+
+	if(m_eHeightMode == WHModeAbs)
+		rcFull.size.h = m_rect.h;
+
+	return rcFull.size + GetBorder().size();
+}
+
+sizeix CControl::GetDefaultSize() const
+{
+	return sizeix();
+}
+
+sizeix CControl::GetContentSize() const
+{
+	return GetDefaultSize();
 }
 
 int_x CControl::GetX() const
@@ -504,7 +525,8 @@ void CControl::SetVisible(bool bVisible)
 	if(bVisible == m_bInvisible)
 	{
 		m_bInvisible = !bVisible;
-		NcRepaint();
+		// in OnShow OnHide
+		//NcRepaint();
 		if(m_bInvisible && m_bShown)
 			SetShown(false);
 		else if(!m_bInvisible && !m_bShown && m_pParent && m_pParent->IsShown())
@@ -526,6 +548,8 @@ void CControl::OnLoaded()
 
 void CControl::OnVisibleChanged()
 {
+	if(m_pParent)
+		m_pParent->Layout();
 	VisibleChanged(this, !m_bInvisible);
 }
 
@@ -607,7 +631,6 @@ void CControl::OnPositionChanged()
 void CControl::OnSizeChanged()
 {
 	OnVisualSizeChanged();
-	NcRepaint();
 
 	if(m_bShown)
 		SizeChanged(this, m_rect.size);
@@ -653,9 +676,11 @@ void CControl::SetShown(bool bShown)
 						pControl->SetShown(true);
 				});
 			}
+			NcRepaint();
 		}
 		else
 		{
+			NcRepaint();
 			if(!m_bDisAutoShowChild)
 			{
 				for_each(m_children,
@@ -665,6 +690,7 @@ void CControl::SetShown(bool bShown)
 						pControl->SetShown(false);
 				});
 			}
+
 			m_bShown = false;
 			OnHide();
 		}
@@ -681,8 +707,6 @@ void CControl::OnShow()
 
 	if(m_bBuffered)
 		ConfirmBuffer(m_rect.w, m_rect.h);
-
-	NcRepaint();
 }
 
 void CControl::OnHide()
@@ -2153,22 +2177,16 @@ void CControl::OnMouseDown(pointix point, MouseButtonE eButton)
 
 void CControl::OnMouseDownL(pointix point)
 {
-	if(m_bRepaintMouseDownUpL)
-		NcRepaint();
 	MouseDownL(this, point);
 }
 
 void CControl::OnMouseDownM(pointix point)
 {
-	if(m_bRepaintMouseDownUpL)
-		NcRepaint();
 	MouseDownM(this, point);
 }
 
 void CControl::OnMouseDownR(pointix point)
 {
-	if(m_bRepaintMouseDownUpR)
-		NcRepaint();
 	MouseDownR(this, point);
 }
 
@@ -2242,22 +2260,16 @@ void CControl::OnMouseUp(pointix point, MouseButtonE eButton)
 
 void CControl::OnMouseUpL(pointix point)
 {
-	if(m_bRepaintMouseDownUpL)
-		NcRepaint();
 	MouseUpL(this, point);
 }
 
 void CControl::OnMouseUpM(pointix point)
 {
-	if(m_bRepaintMouseDownUpM)
-		NcRepaint();
 	MouseUpM(this, point);
 }
 
 void CControl::OnMouseUpR(pointix point)
 {
-	if(m_bRepaintMouseDownUpR)
-		NcRepaint();
 	MouseUpR(this, point);
 }
 
@@ -2880,6 +2892,7 @@ void CControl::_LayoutVertical()
 		return;
 
 	rectix rcVisual = GetVisual();
+
 	int_x iHeightFixed = 0;
 	float1 fWeight = 0.0f;
 	for(IControl * pChild : m_children)
@@ -2897,7 +2910,7 @@ void CControl::_LayoutVertical()
 		else
 		{
 			if(pChild->GetHeightMode() == WHModeAuto)
-				rect.h = pChild->GetContentSize().h;
+				rect.h = pChild->GetPreferedSize().h;
 			iHeightFixed += rect.h;
 		}
 
@@ -2921,7 +2934,7 @@ void CControl::_LayoutVertical()
 			rect.w = rcVisual.w - margin.width();
 			break;
 		case WHModeAuto:
-			rect.w = pChild->GetContentSize().w;
+			rect.w = pChild->GetPreferedSize().w;
 			break;
 		default:
 			break;
@@ -3281,9 +3294,6 @@ DropResultE CControl::OnDragEnter(IData * pData, pointix point)
 {
 	Assert(!m_bMouseDragIn);
 	m_bMouseDragIn = true;
-	if(m_bRepaintMouseDragInOut)
-		NcRepaint();
-
 	DropResultE eResult = DragRequestNone;
 	DragEnter(this, pData, &eResult);
 	return eResult;
@@ -3302,8 +3312,6 @@ void CControl::OnDragLeave(IData * pData, pointix point)
 	Assert(m_bMouseDragIn);
 	DragLeave(this, pData);
 	m_bMouseDragIn = false;
-	if(m_bRepaintMouseDragInOut)
-		NcRepaint();
 }
 
 DropResultE CControl::OnDragDrop(IData * pData, pointix point)
@@ -3342,14 +3350,10 @@ void CControl::PreOnScroll(IControl * pScroll)
 	if(pScroll == m_pScrollX)
 	{
 		OnScrollX(iValue);
-		if(m_bRepaintScrollX)
-			NcRepaint();
 	}
 	else if(pScroll == m_pScrollY)
 	{
 		OnScrollY(iValue);
-		if(m_bRepaintScrollY)
-			NcRepaint();
 	}
 	else {}
 }

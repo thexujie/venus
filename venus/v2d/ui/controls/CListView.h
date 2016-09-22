@@ -87,8 +87,8 @@ class V2D_API CListView : public CControl
 public:
 	CListView();
 	~CListView();
-	const oid_t & GetOid() const;
-	void GetMeta(IMetaHelper * pHelper);
+	const oid_t & GetOid() const override;
+	void GetMeta(IMetaHelper * pHelper) override;
 
 	int_x AddCol(const char_16 * szText, int_x iWidth = 0, AlignE eTextAlign = AlignLeftCenterY, int_x iUserData = 0);
 	int_x AddRow(int_x iUserData = 0);
@@ -186,25 +186,25 @@ public:
 	void Sort(bool (*pfnCmp)(const ListViewRowT * pLeftItem, const ListViewRowT * pRightItem));
 	void Sort(function<int_x, const ListViewRowT *, const ListViewRowT *> fun);
 
-	void UpdateScroll();
+	void UpdateScroll() override;
 	void EnsureRowVisible(int_x iRow);
 	bool GetItemAt(int_x iX, int_x iY, int_x & iRow, int_x & iCol, int_x & iColSizing);
 
 public:
-	void RequestCursor(pointix point, CursorE & eCursor) const;
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void RequestCursor(pointix point, CursorE & eCursor) const override;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
 public:
-	void OnVisualSizeChanged();
-	void OnMouseDownL(pointix point);
-	void OnMouseDownR(pointix point);
-	void OnMouseUpL(pointix point);
-	void OnMouseDBClickL(pointix point);
-	void OnMouseMove(pointix point);
-	void OnMouseOut(pointix point);
-	void OnKeyDown(KeyCodeE eKeyCode);
-	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const;
-	void OnDebugMenu(int_x iBase, int_x iResult);
+	void OnVisualSizeChanged() override;
+	void OnMouseDownL(pointix point) override;
+	void OnMouseDownR(pointix point) override;
+	void OnMouseUpL(pointix point) override;
+	void OnMouseDBClickL(pointix point) override;
+	void OnMouseMove(pointix point) override;
+	void OnMouseOut(pointix point) override;
+	void OnKeyDown(KeyCodeE eKeyCode) override;
+	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
+	void OnDebugMenu(int_x iBase, int_x iResult) override;
 protected:
 	void OnPaintDetails(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
 	void OnPaintTile(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;

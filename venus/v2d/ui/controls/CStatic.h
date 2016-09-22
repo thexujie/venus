@@ -9,15 +9,15 @@ class V2D_API CStatic : public CControl
 public:
 	CStatic();
 	~CStatic();
-	const oid_t & GetOid() const;
+	const oid_t & GetOid() const override;
 
 	void SetImage(IImage * pImage);
 	void SetTextAlign(AlignE eTextAlign);
 	void SetTextWrap(TextWrapE eTextWrap);
 public: // CControl
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
-	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const;
-	void OnDebugMenu(int_x iBase, int_x iResult);
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
+	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
+	void OnDebugMenu(int_x iBase, int_x iResult) override;
 
 private:
 	IImage * m_pImage;

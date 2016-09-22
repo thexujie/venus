@@ -13,13 +13,13 @@ public:
 
 	int_x AddItem(const char_16 * szText, IImage * pImage = nullptr, int_x iId = -1);
 	
-	void OnMouseMove(pointix point);
-	void OnMouseOut(pointix point);
-	void OnMouseDownL(pointix point);
+	void OnMouseMove(pointix point) override;
+	void OnMouseOut(pointix point) override;
+	void OnMouseDownL(pointix point) override;
 
-	HitTestE NcHitTest(pointix point) const;
-	void RequestCursor(pointix point, CursorE & eCursor) const;
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	HitTestE NcHitTest(pointix point) const override;
+	void RequestCursor(pointix point, CursorE & eCursor) const override;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
 	void SetButtonHoving(bool bHoving);
 	bool IsButtonHoving() const;
@@ -35,8 +35,8 @@ public:
 	void Select(int_x iIndex);
 	void SelectByText(const char_16 * szText);
 
-	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const;
-	void OnDebugMenu(int_x iBase, int_x iResult);
+	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
+	void OnDebugMenu(int_x iBase, int_x iResult) override;
 private:
 	int_x OnListBoxItemSelected(IControl * pListBox, ListBoxItemT * pItem);
 private:

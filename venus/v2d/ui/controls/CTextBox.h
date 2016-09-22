@@ -30,37 +30,40 @@ public:
 	~CTextBox();
 
 public:
-	const oid_t & GetOid() const;
-	void GetMeta(IMetaHelper * pHelper);
+	const oid_t & GetOid() const override;
+	void GetMeta(IMetaHelper * pHelper) override;
 
-	void SetText(const char_16 * szText, int_x iLength = -1);
-	void SetText(textw text);
+	void SetText(const char_16 * szText, int_x iLength = -1) override;
+	void SetText(textw text) override;
 
-	void OnShow();
-	void OnFontChanged();
-	void OnFocusedChanged();
-	void OnVisualSizeChanged();
-	void OnEnableChanged();
-	void OnUpdate();
+	bool GetImeInfo(ImeInfoT & imeInfo) const override;
 
-	void OnKeyInput(char_32 chInput);
-	void OnKeyDown(KeyCodeE eKeyCode);
-	void OnMouseDownL(pointix point);
-	void OnMouseUpL(pointix point);
-	void OnMouseDownR(pointix point);
-	void OnMouseUpR(pointix point);
-	void OnMouseMove(pointix point);
+	sizeix GetContentSize() const override;
 
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void OnShow() override;
+	void OnFontChanged() override;
+	void OnFocusedChanged() override;
+	void OnVisualSizeChanged() override;
+	void OnEnableChanged() override;
 
-	void OnScrollX(int_x iValue);
-	void OnScrollY(int_x iValue);
+	void OnKeyInput(char_32 chInput) override;
+	void OnKeyDown(KeyCodeE eKeyCode) override;
+	void OnMouseDownL(pointix point) override;
+	void OnMouseUpL(pointix point) override;
+	void OnMouseDownR(pointix point) override;
+	void OnMouseUpR(pointix point) override;
+	void OnMouseMove(pointix point) override;
+
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
+
+	void OnScrollX(int_x iValue) override;
+	void OnScrollY(int_x iValue) override;
 public:
-	doc_source_t GetDocSource() const;
-	textformat_t GetDefFormat() const;
+	doc_source_t GetDocSource() const override;
+	textformat_t GetDefFormat() const override;
 
 public:
-	void UpdateScroll();
+	void UpdateScroll() override;
 
 	void SetTextWrap(TextWrapE eWrapMode);
 	TextWrapE GetTextWrap() const;
@@ -111,11 +114,10 @@ public:
 
 protected:
 	void ScrollToCaret();
-	bool GetImeInfo(ImeInfoT & imeInfo) const;
 	rectix _GetCaretRect(int_x iIndex) const;
 public:
-	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const;
-	void OnDebugMenu(int_x iBase, int_x iResult);
+	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
+	void OnDebugMenu(int_x iBase, int_x iResult) override;
 private:
 	int_x m_iIndex;
 	int_x m_iLastIndex;

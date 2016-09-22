@@ -22,7 +22,7 @@ enum dayweek_e
 	dayweek_sunday
 };
 
-class timing
+class CORE_API timing
 {
 public:
 	timing() = delete;

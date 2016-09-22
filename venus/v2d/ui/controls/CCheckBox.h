@@ -9,20 +9,20 @@ class V2D_API CCheckBox : public CControl
 public:
 	CCheckBox();
 	~CCheckBox();
-	const oid_t & GetOid() const;
-	void GetMeta(IMetaHelper * pHelper);
+	const oid_t & GetOid() const override;
+	void GetMeta(IMetaHelper * pHelper) override;
 
 public:
-	void OnTextChanged();
-	void OnMouseClickL(pointix point);
-	sizeix GetPreferedSize() const;
+	void OnTextChanged() override;
+	void OnMouseClickL(pointix point) override;
+	sizeix GetPreferedSize() const override;
 public:
 	void SetChecked(bool bChecked);
 	bool IsChecked() const;
 	void CheckedChanged();
 
 public:
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
 protected:
 	bool m_bChecked;

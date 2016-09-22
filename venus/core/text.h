@@ -1017,7 +1017,6 @@ public:
 
 	operator CharT * () { return buffer; }
 	operator const CharT * () const { return buffer; }
-	operator text_base<CharT, CodePage>() const { return text_base<CharT>(buffer); }
 
 	chbuffer & format(const CharT * format, ...)
 	{

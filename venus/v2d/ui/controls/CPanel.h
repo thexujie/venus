@@ -11,7 +11,7 @@ class V2D_API CPanel : public CControl
 public:
 	CPanel();
 	~CPanel();
-	const oid_t & GetOid() const;
+	const oid_t & GetOid() const override;
 };
 
 VENUS_END

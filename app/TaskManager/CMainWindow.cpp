@@ -627,14 +627,14 @@ void CMainWindow::RefreshAutoStart()
 	for(int_x cnt = 0, len = arrFiles.size(); cnt != len; ++cnt)
 	{
 		const fileinfo_t & fileInfo = arrFiles[cnt];
-		fileInfo.get_ext(szBuffer, MAX_PATH);
+		fileInfo.extention(szBuffer, MAX_PATH);
 		if(fileInfo.exists && !fileInfo.system &&
 			textcmp(szBuffer, -1, _T("lnk"), 3) == 0)
 		{
 			int_x iRow = m_lstAutoStart.AddRow();
 			link.Load(fileInfo.path);
 
-			fileInfo.get_filename(szBuffer, MAX_PATH);
+			fileInfo.filename(szBuffer, MAX_PATH);
 			m_lstAutoStart.AddItem(iRow, szBuffer);
 			link.GetLinkFile(szBuffer, MAX_PATH);
 			m_lstAutoStart.AddItem(iRow, L"");

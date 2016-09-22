@@ -9,100 +9,102 @@ class V2D_API CForm : public CControl, public IForm
 public:
 	CForm();
 	~CForm();
-	const oid_t & GetOid() const;
-	void GetMeta(IMetaHelper * pHelper);
+	const oid_t & GetOid() const override;
+	void GetMeta(IMetaHelper * pHelper) override;
 
-	void SetParent(IControl * pParent);
+	void SetParent(IControl * pParent) override;
 
-	IForm * GetForm() const;
-	IForm * ToIForm() const;
+	IForm * GetForm() const override;
+	IForm * ToIForm() const override;
 
-	void SetPosition(pointix position);
-	void SetSize(sizeix size);
-	edgeix GetBorder() const;
-	rectix GetVisual() const;
+	void SetPosition(pointix position) override;
+	void SetSize(sizeix size) override;
+	edgeix GetBorder() const override;
+	rectix GetVisual() const override;
 
-	HitTestE NcHitTest(pointix point) const;
-	void SetText(const char_16 * szText, int_x iLength = -1);
-	void UpdateIme();
-	void Capture(bool bCapture);
-	void SetCaptureControl(IControl * pControl);
+	HitTestE NcHitTest(pointix point) const override;
+	void SetText(const char_16 * szText, int_x iLength = -1) override;
 
-	bool ClipboardCheckData(ClipboardDataTypeE eDataType) const;
-	textw ClipboardGetText16() const;
-	void ClipboardSetText16(const char_16 * szText, int_x iLength = -1) const;
+	sizeix GetPreferedSize() const override;
+	void UpdateIme() override;
+	void Capture(bool bCapture) override;
+	void SetCaptureControl(IControl * pControl) override;
+
+	bool ClipboardCheckData(ClipboardDataTypeE eDataType) const override;
+	textw ClipboardGetText16() const override;
+	void ClipboardSetText16(const char_16 * szText, int_x iLength = -1) const override;
 
 	void Active(bool bActive);
 	using CControl::NcRepaint;
-	void NcRepaint(const rectix & rect);
-	pointix GetMousePosition() const;
-	bool IsKeyDown(KeyCodeE ekeyCode) const;
-	pointix ClientToScreen(const pointix & point) const;
+	void NcRepaint(const rectix & rect) override;
+	pointix GetMousePosition() const override;
+	bool IsKeyDown(KeyCodeE ekeyCode) const override;
+	pointix ClientToScreen(const pointix & point) const override;
 
-	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
-	void OnNcMouseMove(pointix point);
-	void OnNcMouseOut(pointix point);
-	void OnNcMouseDown(pointix point, MouseButtonE eButton);
-	void OnNcMouseUp(pointix point, MouseButtonE eButton);
-	void OnNcMouseClick(pointix point, MouseButtonE eButton);
+	void OnNcMouseMove(pointix point) override;
+	void OnNcMouseOut(pointix point) override;
+	void OnNcMouseDown(pointix point, MouseButtonE eButton) override;
+	void OnNcMouseUp(pointix point, MouseButtonE eButton) override;
+	void OnNcMouseClick(pointix point, MouseButtonE eButton) override;
 
-	void OnSizeChanged();
+	void OnSizeChanged() override;
 
-	int_x PopupMenu(pointix point, IMenu * pMenu);
-	int_x PopupControl(pointix point, IControl * pControl);
+	int_x PopupMenu(pointix point, IMenu * pMenu) override;
+	int_x PopupControl(pointix point, IControl * pControl) override;
 
-	void OnActiveChanged();
+	void OnActiveChanged() override;
 
-	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const;
-	void OnDebugMenu(int_x iBase, int_x iResult);
+	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
+	void OnDebugMenu(int_x iBase, int_x iResult) override;
 public:
-	void SetOwner(IForm * pForm);
-	IForm * GetOwner() const;
+	void SetOwner(IForm * pForm) override;
+	IForm * GetOwner() const override;
 
-	void SetFormType(FormTypeE eHostType);
-	FormTypeE GetFormType() const;
-	void CreateHost();
-	void AttachHost(int_x iFormId);
-	IHost * GetHost() const;
+	void SetFormType(FormTypeE eHostType) override;
+	FormTypeE GetFormType() const override;
+	void CreateHost() override;
+	void AttachHost(int_x iFormId) override;
+	IHost * GetHost() const override;
 
-	void SetResizeBorder(edgeix border);
-	edgeix GetResizeBorder() const;
-	int_x GetFormId() const;
+	void SetResizeBorder(edgeix border) override;
+	edgeix GetResizeBorder() const override;
+	int_x GetFormId() const override;
 
-	void Show(ShowModeE eShow = ShowModeNormal, HostInitPosE eInitPos = HostInitPosDefault);
-	void Hide();
+	void Show(ShowModeE eShow = ShowModeNormal, HostInitPosE eInitPos = HostInitPosDefault) override;
+	void Hide() override;
 
-	ShowModeE GetShowMode() const;
-	bool IsMaxSize() const;
-	bool IsMinSize() const;
+	ShowModeE GetShowMode() const override;
+	bool IsMaxSize() const override;
+	bool IsMinSize() const override;
 
-	void OnRefresh(rectix rect);
-	void OnCreate();
-	void OnClose();
-	void OnDestroy();
-	void OnMaxSize();
-	void OnMinSize();
-	void OnRestore();
+	void OnRefresh(rectix rect) override;
+	void OnCreate() override;
+	void OnClose() override;
+	void OnDestroy() override;
+	void OnMaxSize() override;
+	void OnMinSize() override;
+	void OnRestore() override;
 
-	int_x RunDialog();
-	void EndRun(int_x iResult);
+	int_x RunDialog() override;
+	void EndRun(int_x iResult) override;
 
-	bool MouseActiving(pointix point) const;
-	bool IsActived() const;
+	bool MouseActiving(pointix point) const override;
+	bool IsActived() const override;
 
-	void NotifyPositionChanged(const pointix & position);
-	void NotifySizeChanged(const sizeix & size, ShowModeE eShowMode);
-	void NotifyShownChanged(bool bShown);
-	void NotifyFocusChanged(bool bFocus);
-	void NotifyActiveChanged(bool bActive);
-	void NotifyCaptureChanged(bool bCaptured);
-	void NotifyTextChanged(const char_16 * szText, int_x iLength = -1);
+	void NotifyPositionChanged(const pointix & position) override;
+	void NotifySizeChanged(const sizeix & size, ShowModeE eShowMode) override;
+	void NotifyShownChanged(bool bShown) override;
+	void NotifyFocusChanged(bool bFocus) override;
+	void NotifyActiveChanged(bool bActive) override;
+	void NotifyCaptureChanged(bool bCaptured) override;
+	void NotifyTextChanged(const char_16 * szText, int_x iLength = -1) override;
 
-	void SetMinSize(const sizeix & size);
-	void SetMaxSize(const sizeix & size);
-	const sizeix & GetMinSize() const;
-	const sizeix & GetMaxSize() const;
+	void SetMinSize(const sizeix & size) override;
+	void SetMaxSize(const sizeix & size) override;
+	const sizeix & GetMinSize() const override;
+	const sizeix & GetMaxSize() const override;
 
 	void SetCaptionHeight(int_x iCaptionHeight);
 	int_x GetCaptionHeight() const;

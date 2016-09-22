@@ -112,8 +112,8 @@ public:
 	int_x underline;
 	//! 删除线
 	int_x strikeout;
-	FontRenderlevelE renderlevel;
 	//! 字体渲染等级。
+	FontRenderlevelE renderlevel;
 };
 
 class V2D_API textformat_t

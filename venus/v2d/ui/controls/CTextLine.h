@@ -10,35 +10,35 @@ public:
 	CTextLine();
 	~CTextLine();
 public:
-	const oid_t & GetOid() const;
-	void GetMeta(IMetaHelper * pHelper);
+	const oid_t & GetOid() const override;
+	void GetMeta(IMetaHelper * pHelper) override;
 
-	bool CanFocus() const;
+	bool CanFocus() const override;
 
-	void SetText(const char_16 * szText, int_x iLength = -1);
-	void SetText(textw text);
+	void SetText(const char_16 * szText, int_x iLength = -1) override;
+	void SetText(textw text) override;
 
-	void OnFocusedChanged();
-	void OnVisualSizeChanged();
-	void OnEnableChanged();
-	void OnFontChanged();
+	void OnFocusedChanged() override;
+	void OnVisualSizeChanged() override;
+	void OnEnableChanged() override;
+	void OnFontChanged() override;
 
-	void OnKeyInput(char_32 chInput);
-	void OnKeyDown(KeyCodeE eKeyCode);
-	void OnMouseDownL(pointix point);
-	void OnMouseUpL(pointix point);
-	void OnMouseDownR(pointix point);
-	void OnMouseMove(pointix point);
+	void OnKeyInput(char_32 chInput) override;
+	void OnKeyDown(KeyCodeE eKeyCode) override;
+	void OnMouseDownL(pointix point) override;
+	void OnMouseUpL(pointix point) override;
+	void OnMouseDownR(pointix point) override;
+	void OnMouseMove(pointix point) override;
 
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
-	bool GetImeInfo(ImeInfoT & imeInfo) const;
+	bool GetImeInfo(ImeInfoT & imeInfo) const override;
 
 public:
-	doc_source_t GetDocSource() const;
-	textformat_t GetDefFormat() const;
+	doc_source_t GetDocSource() const override;
+	textformat_t GetDefFormat() const override;
 public:
-	sizeix GetPreferedSize() const;
+	sizeix GetContentSize() const override;
 
 	void SetIndex(int_x iIndex);
 	int_x GetIndex() const;
@@ -92,8 +92,8 @@ protected:
 	void ScrollToCaret();
 
 protected:
-	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const;
-	void OnDebugMenu(int_x iBase, int_x iResult);
+	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
+	void OnDebugMenu(int_x iBase, int_x iResult) override;
 
 	err_t TlLayout();
 	err_t TlClear();

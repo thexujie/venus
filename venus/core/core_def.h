@@ -438,7 +438,7 @@ struct version_t
 
 	version_t() : major(0), minor(0), revision(0), build(0){}
 
-	version_t(int_x _major, int_x _minor, int_x _revision, int_x _build)
+	constfun version_t(int_x _major, int_x _minor, int_x _revision, int_x _build)
 		:major(_major), minor(_minor), revision(_revision), build(_build)
 	{
 	}

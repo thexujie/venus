@@ -10,7 +10,7 @@ public:
 	CButton();
 	~CButton();
 
-	const oid_t & GetOid() const;
+	const oid_t & GetOid() const override;
 	
 	/**
 	* @brief …Ë÷√Õº±Í°£
@@ -39,19 +39,19 @@ public:
 	void SetDialogResult(DialogResultE eDialogResult);
 	DialogResultE GetDialogResult() const;
 public:
-	void OnTextChanged();
-	sizeix GetPreferedSize() const;
+	void OnTextChanged() override;
+	sizeix GetContentSize() const override;
 
 	/**
 	 * @copydoc CControl::OnPaint
 	 */
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
-	void OnKeyDown(KeyCodeE eKeyCode);
-	void OnKeyUp(KeyCodeE eKeyCode);
-	bool OnHotKey();
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
+	void OnKeyDown(KeyCodeE eKeyCode) override;
+	void OnKeyUp(KeyCodeE eKeyCode) override;
+	bool OnHotKey() override;
 
 public:
-	void OnMouseClickL(pointix point);
+	void OnMouseClickL(pointix point) override;
 protected:
 
 	void DrawIconOnly(IPaint * pPaint) const;

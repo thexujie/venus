@@ -5,10 +5,6 @@
 
 void Test()
 {
-	const char_8 text[] = "ABCD不是我，bcd挺好的";
-	char_16 dst[64];
-	err_t err = encodings::utf16.convert(encodings::ansi, text, textlen(text), dst, arraysize(dst), nullptr);
-
 	version_t ver = Win32::GetVersion();
 	if(ver > winver_windows_xp_x86)
 		ver.major = 1;

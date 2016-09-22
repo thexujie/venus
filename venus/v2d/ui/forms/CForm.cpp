@@ -9,7 +9,7 @@ CForm::CForm():
 m_pOwner(nullptr), m_pHost(nullptr), m_eFormType(FormTypeDefault),
 m_uiFormAttribute(0),
 m_pPopupMenu(nullptr), m_pPopupForm(nullptr),
-m_minSize(160, 30), m_bdResize(BORDER_SIZE_DEFAULT),
+m_minSize(FONT_DEF_SIZE, FONT_DEF_SIZE), m_bdResize(BORDER_SIZE_DEFAULT),
 m_iCaptionHeight(0), m_eCommand(FormCommandNone), m_eShowMode(ShowModeNormal)
 {
 	SetBackColor(SysColorForm);
@@ -63,15 +63,13 @@ void CForm::SetPosition(pointix position)
 
 void CForm::SetSize(sizeix size)
 {
-	sizeix newSize = size;
-
 	if(m_minSize.w < m_maxSize.w)
-		newSize.w = saturate(size.w, m_minSize.w, m_maxSize.w);
+		size.w = saturate(size.w, m_minSize.w, m_maxSize.w);
 
 	if(m_minSize.h < m_maxSize.h)
-		newSize.h = saturate(size.h, m_minSize.h, m_maxSize.h);
+		size.h = saturate(size.h, m_minSize.h, m_maxSize.h);
 
-	if(newSize != m_rect.size)
+	if(size != m_rect.size)
 	{
 		if(m_pHost)
 			m_pHost->SetSize(size);
@@ -154,6 +152,13 @@ void CForm::SetText(const char_16 * szText, int_x iLength)
 			CControl::SetText(szText, iLength);
 		NcRepaint();
 	}
+}
+
+sizeix CForm::GetPreferedSize() const
+{
+	sizeix size = CControl::GetPreferedSize();
+	size.h += m_iCaptionHeight;
+	return size;
 }
 
 void CForm::UpdateIme()
@@ -715,10 +720,12 @@ void CForm::NotifyPositionChanged(const pointix & position)
 
 void CForm::NotifySizeChanged(const sizeix & size, ShowModeE eShowMode)
 {
-	if(size != sizeix(m_rect.w, m_rect.h))
+	if(size != m_rect.size)
 	{
-		m_rect.w = size.w;
-		m_rect.h = size.h;
+		NcRepaint();
+		m_rect.size = size;
+		NcRepaint();
+
 		m_eShowMode = eShowMode == ShowModeRestore ? ShowModeNormal : eShowMode;
 		OnSizeChanged();
 		switch(eShowMode)

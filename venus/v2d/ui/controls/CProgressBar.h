@@ -9,7 +9,7 @@ class V2D_API CProgressBar : public CControl
 public:
 	CProgressBar();
 	~CProgressBar();
-	const oid_t & GetOid() const;
+	const oid_t & GetOid() const override;
 
 	void SetMaxValue(int_x iMaxValue);
 	void SetMinValue(int_x iMinValue);
@@ -17,7 +17,7 @@ public:
 	void SetRange(const RangeInfoT & range);
 	void SetRange(int_x iMinValue, int_x iMaxValue, int_x iValue);
 
-	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
+	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
 	void SetMarquee(int_x iMarqueePeriod = 100, int_x iMarqueeStep = 0);
 
