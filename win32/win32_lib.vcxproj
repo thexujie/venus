@@ -18,11 +18,6 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\venus\venus.vcxproj">
-      <Project>{327eadff-ed36-413c-89fe-d9dc08be57be}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{80D85A7F-7D89-4EB6-98DB-22446CABB924}</ProjectGuid>
   </PropertyGroup>
@@ -136,6 +131,11 @@
     <ClCompile Include="uniscribe\CUspFactory.cpp" />
     <ClCompile Include="uniscribe\UspInc.cpp" />
     <ClCompile Include="win32.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\venus\venus_lib.vcxproj">
+      <Project>{da9697a3-9771-4721-a1e5-58abd995dd7f}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
