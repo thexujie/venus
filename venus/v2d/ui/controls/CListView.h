@@ -203,6 +203,7 @@ public:
 	void OnMouseMove(pointix point) override;
 	void OnMouseOut(pointix point) override;
 	void OnKeyDown(KeyCodeE eKeyCode) override;
+	void OnScroll(intx2 scroll, intx2 offset) override;
 	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;
 	void OnDebugMenu(int_x iBase, int_x iResult) override;
 protected:

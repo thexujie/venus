@@ -602,9 +602,20 @@ void CMainWindow::RefreshAutoStart()
 		m_lstAutoStart.AddItem(iRow, szValue);
 	}
 
-	reg.Open(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"));
+	reg.Open(HKEY_CLASSES_ROOT, _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"));
 	iIndex = 0;
-	while(reg.DoValueIter(iIndex++, szName, 512))
+	while(reg.DoValueIter(iIndex++, szName, 512).ok())
+	{
+		int_x iRow = m_lstAutoStart.AddRow();
+		m_lstAutoStart.AddItem(iRow, szName);
+		m_lstAutoStart.AddItem(iRow, L"“—∆Ù”√");
+		reg.ReadValue(szName, szValue, 512);
+		m_lstAutoStart.AddItem(iRow, szValue);
+	}
+
+	reg.Open(HKEY_CURRENT_USER, _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"));
+	iIndex = 0;
+	while(reg.DoValueIter(iIndex++, szName, 512).ok())
 	{
 		int_x iRow = m_lstAutoStart.AddRow();
 		m_lstAutoStart.AddItem(iRow, szName);

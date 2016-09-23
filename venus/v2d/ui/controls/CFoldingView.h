@@ -46,13 +46,13 @@ public:
 
 	pointix GetOffset() const override;
 
-	void OnScrollX(int_x iValue) override;
-	void OnScrollY(int_x iValue) override;
 	void OnMouseMove(pointix point) override;
 	void OnMouseDownL(pointix point) override;
 	void OnMouseUpL(pointix point) override;
 	void OnMouseClickL(pointix point) override;
 	void OnMouseOut(pointix point) override;
+	void OnScroll(intx2 scroll, intx2 offset) override;
+
 	void OnVisualSizeChanged() override;
 	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;

@@ -59,9 +59,9 @@ bool CMapFile::MapView(CMapFileView & mapView, DWORD dwAccess/* = FILE_MAP_READ*
 {
 	if(m_hMapFile)
 	{
-		void * pView = MapViewOfFile(m_hMapFile, dwAccess, 0, 0, 0);
-		if(pView)
-			mapView.Attach((byte_t *)pView, m_iSize);
+		void * pFolderView = MapViewOfFile(m_hMapFile, dwAccess, 0, 0, 0);
+		if(pFolderView)
+			mapView.Attach((byte_t *)pFolderView, m_iSize);
 		return true;
 	}
 	else

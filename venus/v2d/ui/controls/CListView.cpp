@@ -1300,6 +1300,12 @@ void CListView::OnKeyDown(KeyCodeE eKeyCode)
 	}
 }
 
+void CListView::OnScroll(intx2 scroll, intx2 offset)
+{
+	Repaint();
+	CControl::OnScroll(scroll, offset);
+}
+
 void CListView::QueryDebugMenu(int_x & iBase, IMenu * pMenu) const
 {
 	CControl::QueryDebugMenu(iBase, pMenu);

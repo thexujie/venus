@@ -3342,30 +3342,25 @@ bool CControl::IsScrollYAble() const
 	return m_pScrollY && m_pScrollY->IsVisible() && m_pScrollY->IsEnabled();
 }
 
-void CControl::PreOnScroll(IControl * pScroll)
+void CControl::PreOnScroll(IControl * pScroll, int_x iOffset)
 {
 	Verify(pScroll);
 	int_x iValue = pScroll->ToIScroll()->GetValue();
 
 	if(pScroll == m_pScrollX)
 	{
-		OnScrollX(iValue);
+		OnScroll(GetScroll(), intx2(iOffset, 0));
 	}
 	else if(pScroll == m_pScrollY)
 	{
-		OnScrollY(iValue);
+		OnScroll(GetScroll(), intx2(0, iValue));
 	}
 	else {}
 }
 
-void CControl::OnScrollX(int_x iValue)
+void CControl::OnScroll(intx2 scroll, intx2 offset)
 {
-
-}
-
-void CControl::OnScrollY(int_x iValue)
-{
-
+	
 }
 
 void CControl::SetScrollPosX(int_x iX)

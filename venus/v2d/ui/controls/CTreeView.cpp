@@ -519,14 +519,10 @@ void CTreeView::RequestCursor(pointix point, CursorE & eCursor) const
 	CControl::RequestCursor(point, eCursor);
 }
 
-void CTreeView::OnScrollX(int_x iValue)
+void CTreeView::OnScroll(intx2 scroll, intx2 offset)
 {
 	Repaint();
-}
-
-void CTreeView::OnScrollY(int_x iValue)
-{
-	Repaint();
+	CControl::OnScroll(scroll, offset);
 }
 
 void CTreeView::UpdateScroll()

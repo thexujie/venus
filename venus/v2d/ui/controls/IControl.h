@@ -486,9 +486,8 @@ public:
 	virtual pointix GetScrollPos() const = 0;
 	virtual IControl * GetScrollBarX() const = 0;
 	virtual IControl * GetScrollBarY() const = 0;
-	virtual void PreOnScroll(IControl * pScroll) = 0;
-	virtual void OnScrollX(int_x iValue) = 0;
-	virtual void OnScrollY(int_x iValue) = 0;
+	virtual void PreOnScroll(IControl * pScroll, int_x iOffset) = 0;
+	virtual void OnScroll(intx2 scroll, intx2 offset) = 0;
 	virtual void UpdateScroll() = 0;
 	virtual void SetScroll(intx2 i2Scroll) = 0;
 	virtual void SetScroll(int_x icxScroll, int_x icyScroll) = 0;
@@ -624,7 +623,7 @@ public:
 
 	virtual void MinValueChanged() = 0;
 	virtual void MaxValueChanged() = 0;
-	virtual void ValueChanged() = 0;
+	virtual void ValueChanged(int_x iOffset) = 0;
 };
 
 class V2D_API IScroll : public IRange

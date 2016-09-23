@@ -90,8 +90,9 @@ void CScrollBar::SetValue(int_x iValue)
 
 	if(iValue != m_iValue)
 	{
+		int_x iOffset = iValue - m_iValue;
 		m_iValue = iValue;
-		ValueChanged();
+		ValueChanged(iOffset);
 	}
 }
 
@@ -111,6 +112,7 @@ void CScrollBar::SetRangeInfo(int_x iMin, int_x iMax, int_x iValue)
 
 	if(bMin || bMax || bVal)
 	{
+		int_x iOffset = iValue - m_iValue;
 		m_iMin = iMin;
 		m_iMax = iMax;
 		m_iValue = iValue;
@@ -119,7 +121,7 @@ void CScrollBar::SetRangeInfo(int_x iMin, int_x iMax, int_x iValue)
 		if(bMax)
 			MaxValueChanged();
 		if(bVal)
-			ValueChanged();
+			ValueChanged(iOffset);
 	}
 }
 
@@ -242,13 +244,13 @@ void CScrollBar::MaxValueChanged()
 	Repaint();
 }
 
-void CScrollBar::ValueChanged()
+void CScrollBar::ValueChanged(int_x iOffset)
 {
 	Repaint();
 	if(m_pScrollTarget)
-		m_pScrollTarget->PreOnScroll(this);
+		m_pScrollTarget->PreOnScroll(this, iOffset);
 
-	OnValueChanged(this, m_iValue);
+	OnValueChanged(this, m_iValue, iOffset);
 }
 
 void CScrollBar::LineValueChanged()

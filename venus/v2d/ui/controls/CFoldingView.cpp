@@ -176,18 +176,6 @@ pointix CFoldingView::GetOffset() const
 	return pointix();
 }
 
-void CFoldingView::OnScrollX(int_x iValue)
-{
-	UpdateView();
-	Repaint();
-}
-
-void CFoldingView::OnScrollY(int_x iValue)
-{
-	UpdateView();
-	Repaint();
-}
-
 void CFoldingView::OnMouseMove(pointix point)
 {
 	CControl::OnMouseMove(point);
@@ -223,6 +211,12 @@ void CFoldingView::OnMouseOut(pointix point)
 	if(m_iHovingTagIndex >= 0)
 		_SetHovingTagIndex(-1);
 	CControl::OnMouseOut(point);
+}
+
+void CFoldingView::OnScroll(intx2 scroll, intx2 offset)
+{
+	Repaint();
+	CControl::OnScroll(scroll, offset);
 }
 
 void CFoldingView::OnVisualSizeChanged()

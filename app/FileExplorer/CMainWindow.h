@@ -21,5 +21,5 @@ private:
 	CListBox m_listBox;
 	CTextLine m_textLine;
 	CTextBox m_textBox;
-	CFolderListView * pView;
+	CFolderListView * pFolderView;
 };

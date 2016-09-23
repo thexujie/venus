@@ -67,6 +67,7 @@ public:
 	void OnMouseDownL(pointix point) override;
 	void OnMouseClickL(pointix point) override;
 	void OnKeyDown(KeyCodeE eKeyCode) override;
+	void OnScroll(intx2 scroll, intx2 offset) override;
 
 	void SelectItem(int_x iIndex, bool bSelect = true, bool bMultiSelect = false);
 	void SelectItemNext(int_x iIndex);

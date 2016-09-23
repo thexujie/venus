@@ -51,8 +51,7 @@ public:
 	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 	void PaintItem(IPaint * pPaint, int_x iX, int_x iY, const TreeItemT * pItem) const;
 
-	void OnScrollX(int_x iValue) override;
-	void OnScrollY(int_x iValue) override;
+	void OnScroll(intx2 scroll, intx2 offset) override;
 	void UpdateScroll() override;
 
 	void QueryDebugMenu(int_x & iBase, IMenu * pMenu) const override;

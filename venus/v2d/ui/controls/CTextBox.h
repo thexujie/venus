@@ -53,11 +53,10 @@ public:
 	void OnMouseDownR(pointix point) override;
 	void OnMouseUpR(pointix point) override;
 	void OnMouseMove(pointix point) override;
+	void OnScroll(intx2 scroll, intx2 offset) override;
 
 	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 
-	void OnScrollX(int_x iValue) override;
-	void OnScrollY(int_x iValue) override;
 public:
 	doc_source_t GetDocSource() const override;
 	textformat_t GetDefFormat() const override;

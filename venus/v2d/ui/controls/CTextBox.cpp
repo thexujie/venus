@@ -395,6 +395,12 @@ void CTextBox::OnMouseMove(pointix point)
 	CControl::OnMouseMove(point);
 }
 
+void CTextBox::OnScroll(intx2 scroll, intx2 offset)
+{
+	Repaint();
+	CControl::OnScroll(scroll, offset);
+}
+
 void CTextBox::UpdateScroll()
 {
 	tl_metrics_t metrics = TlGetMetrics();
@@ -885,19 +891,6 @@ void CTextBox::OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * 
 			/*clrHlText*/Colors::Red);
 	}
 }
-
-void CTextBox::OnScrollX(int_x iValue)
-{
-	UpdateIme();
-	Repaint();
-}
-
-void CTextBox::OnScrollY(int_x iValue)
-{
-	UpdateIme();
-	Repaint();
-}
-
 
 doc_source_t CTextBox::GetDocSource() const
 {

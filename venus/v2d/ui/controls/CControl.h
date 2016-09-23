@@ -402,9 +402,8 @@ public:
 	void SetScrollBarY(IControl * pScrollBar);
 	IControl * GetScrollBarX() const override;
 	IControl * GetScrollBarY() const override;
-	void PreOnScroll(IControl * pScroll) override;
-	void OnScrollX(int_x iValue) override;
-	void OnScrollY(int_x iValue) override;
+	void PreOnScroll(IControl * pScroll, int_x iOffset) override;
+	void OnScroll(intx2 scroll, intx2 offset) override;
 	void UpdateScroll() override;
 	void SetScroll(intx2 i2Scroll) override;
 	void SetScroll(int_x icxScroll, int_x icyScroll) override;

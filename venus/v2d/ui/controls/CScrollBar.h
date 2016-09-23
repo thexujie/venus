@@ -101,7 +101,7 @@ public:
 
 	void MinValueChanged() override;
 	void MaxValueChanged() override;
-	void ValueChanged() override;
+	void ValueChanged(int_x iOffset) override;
 	void LineValueChanged() override;
 	void PageValueChanged() override;
 
@@ -146,7 +146,7 @@ protected:
 	//! 滚动条控制的可滚动对象。
 	IControl * m_pScrollTarget;
 public:
-	event<IControl *, int_x> OnValueChanged;
+	event<IControl *, int_x, int_x> OnValueChanged;
 };
 
 VENUS_END

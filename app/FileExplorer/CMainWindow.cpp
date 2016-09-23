@@ -5,96 +5,51 @@ CMainWindow::CMainWindow(int_x iWidth, int_x iHeight)
 {
 	SetBoxes(true, true, true);
 	SetRect(0, 0, iWidth, iHeight);
+
 	m_textLine.SetRect(10, 5, 780, 25);
 	m_treeView.SetRect(10, 40, 208, iHeight - 60);
 	m_listBox.SetRect(220, 40, 200, iHeight - 60);
 	m_textBox.SetRect(430, 40, 360, iHeight - 60);
 	//SetMouseWheelMode(MouseWheelModeFocus);
 	m_treeView.SetExpandMode(TreeExpandModeClick);
-	m_treeView.SetAnchor(AlignTopBottom);
-	m_listBox.SetAnchor(AlignTopBottom);
-	m_textLine.SetAnchor(AlignLeftRight);
 	m_listBox.SetImeMode(ImeModeOn);
 	//m_listBox.SetShowCheck(true);
-	AddControl(&m_treeView);
-	AddControl(&m_listBox);
-	AddControl(&m_textLine);
+
 	//AddChild(&m_textBox);
 
-	pView = new CFolderListView();
-	pView->SetDynamic(true);
-	pView->SetRect(430, 40, 360, iHeight - 60);
-	pView->SetPath(L"F:\\test");
-	pView->SetAnchor(AlignLTRB);
-	AddControl(pView);
+	pFolderView = new CFolderListView();
+	pFolderView->SetDynamic(true);
+	pFolderView->SetRect(430, 40, 360, iHeight - 60);
+	pFolderView->SetPath(L"F:\\test");
+
+	m_textLine.SetWidthMode(WHModeFill);
+	m_treeView.SetHeightMode(WHModeFill);
+	m_listBox.SetHeightMode(WHModeFill);
+	pFolderView->SetHeightMode(WHModeFill);
+
+	SetLayoutMode(LayoutModeVertical);
+	CControl * pControl = new CControl();
+	pControl->SetWidthMode(WHModeFill);
+	pControl->SetWeight(1);
+	pControl->SetDynamic(true);
+	pControl->SetLayoutMode(LayoutModeHorizontal);
+	pControl->AddControl(&m_treeView);
+	pControl->AddControl(&m_listBox);
+	pControl->AddControl(pFolderView);
+	pFolderView->SetWeight(1);
+
+	AddControl(&m_textLine);
+	AddControl(pControl);
+
 	//m_textBox.SetFontSize(30);
 	//AddChild(&m_ctlSize);
 
 	m_treeView.MouseDownR += bind(this, &CMainWindow::OnTreeMouseDownR);
 	m_treeView.SelectedItemChanged += bind(this, &CMainWindow::OnTreeItemSelected);
 	m_listBox.SelectedItemChanged += bind(this, &CMainWindow::OnListItemSelected);
-	pView->MouseDBClickL += bind(this, &CMainWindow::OnListDBClick);
+	pFolderView->MouseDBClickL += bind(this, &CMainWindow::OnListDBClick);
 	m_treeView.SetAttrFilter(FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN, 0);
-
-	m_textBox.SetAnchor(AlignLTRB);
-
 	m_textLine.Select(true);
-
-	m_textBox.SetText(L"一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十\n"
-					  L"ABCDEFGHIJ\n"
-					  L"一二三四五六七八九十\n"
-					  L"ABCDEFGHIJ\n"
-					  L"一二三四五六七八九十\n"
-					  L"ABCDEFGHIJ\n"
-					  L"一二三四五六七八九十\n"
-
-		L"Windows Server 2008 R2 或 Server 2008 with Service Pack 2 (SP2) 和 Platform Update for Windows Server 2008\n"
-					  L"m_treeView.Register(GuiTreeSelectedItemChanged, this, &CMainWindow::OnTreeItemSelected);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n"
-					  L"m_ctlSize.SetCursor(CursorSizeLR);\n"
-					  L"m_ctlSize.SetAnchor(AlignTopBottom);\n"
-					  L"m_textLine.Select(true);\n");
 }
 
 CMainWindow::~CMainWindow()
@@ -129,7 +84,7 @@ int_x CMainWindow::OnTreeItemSelected(IControl * pControl, TreeItemT * pItem)
 		chbufferw<MAX_FILE_PATH> szName;
 		char_x szExt[MAX_FILE_PATH] = {0};
 		szName = CFolderTreeView::GetItemPath(pItem);
-		pView->SetPath(szName);
+		pFolderView->SetPath(szName);
 
 		folderinfo_t dirInfo(szName);
 		vector<fileinfo_t> files = dirInfo.get_files(FILE_ATTRIBUTE_SYSTEM, 0);
@@ -156,7 +111,7 @@ int_x CMainWindow::OnListItemSelected(IControl * pControl, ListBoxItemT * pItem)
 
 int_x CMainWindow::OnListDBClick(IControl * pControl, pointix point)
 {
-	FolderListViewRowT * pRow = (FolderListViewRowT *)pView->GetRowSelected();
+	FolderListViewRowT * pRow = (FolderListViewRowT *)pFolderView->GetRowSelected();
 	if(!pRow)
 		return 0;
 

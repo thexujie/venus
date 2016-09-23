@@ -14,6 +14,7 @@ CListBox::CListBox()
 	m_bRepaintFocusedChanged = true;
 	m_bRepaintEnabledChanged = true;
 	m_eBorderType = BorderType2;
+	m_margin.set(3, 3, 3, 3);
 
 	m_bShowSelect = false;
 	m_bFullCheck = true;
@@ -283,6 +284,12 @@ void CListBox::OnKeyDown(KeyCodeE eKeyCode)
 		break;
 	}
 	return CControl::OnKeyDown(eKeyCode);
+}
+
+void CListBox::OnScroll(intx2 scroll, intx2 offset)
+{
+	Repaint();
+	CControl::OnScroll(scroll, offset);
 }
 
 void CListBox::SelectItem(int_x iIndex, bool bSelect, bool bMultiSelect)
