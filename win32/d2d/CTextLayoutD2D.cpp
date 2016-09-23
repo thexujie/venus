@@ -39,7 +39,7 @@ err_t CTextLayoutD2D::Layout(trange_t range, int_x iWidth, paragraph_tag_e tag)
 	doc_source_t source = m_pSource->GetDocSource();
 	textformat_t format = m_pSource->GetDefFormat();
 
-	if(range.index < 0 || range.index + range.length > source.length)
+	if(range.index < 0 || range.index + range.length > source.length || iWidth < 0)
 		return err_invalidarg;
 
 	IDWriteFactory * pFactory = m_pEngine->GetDWrite();
@@ -52,7 +52,7 @@ err_t CTextLayoutD2D::Layout(trange_t range, int_x iWidth, paragraph_tag_e tag)
 	{
 		winerr_t err = pFactory->CreateTextLayout(source.text + range.index, (uint_32)range.length, pFormat, (float_32)iWidth, F32_MAX, &m_pLayout);
 		if(err.failed())
-			return err_failed;
+			return err;
 	}
 
 	m_tag = tag;

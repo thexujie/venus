@@ -31,11 +31,6 @@ public:
 		return *this;
 	}
 
-	bool operator != (const edge_tmpl & edge) const
-	{
-		return left != edge.left || top != edge.top || right != edge.right || bottom != edge.bottom;
-	}
-
 	ValT width() const { return left + right; }
 	ValT height() const { return top + bottom; }
 	vec2<ValT> size() const { return vec2<ValT>(left + right, top + bottom); }
@@ -64,6 +59,19 @@ public:
 		left -= edge.left; top -= edge.top;
 		right -= edge.right; bottom -= edge.bottom;
 		return *this;
+	}
+
+	bool operator == (const edge_tmpl & another) const
+	{
+		return left == another.left &&
+			top == another.top &&
+			right == another.right &&
+			bottom == another.bottom;
+	}
+
+	bool operator != (const edge_tmpl & another) const
+	{
+		return !operator ==(another);
 	}
 
 	bool is_empty() const { return left <= 0 && top <= 0 && right <= 0 && bottom <= 0; }

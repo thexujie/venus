@@ -75,6 +75,42 @@ public:
 	font_t font;
 };
 
+class V2D_API anchor_t
+{
+public:
+	AlignE type;
+	
+	int_x left;
+	int_x top;
+	int_x right;
+	int_x bottom;
+
+	anchor_t():type(AlignNone), left(0), top(0), right(0), bottom(0)
+	{
+
+	}
+
+	anchor_t(AlignE _type, int_x _left, int_x _top, int_x _right, int_x _bottom) :
+	type(_type), left(_left), top(_top), right(_right), bottom(_bottom)
+	{
+
+	}
+
+	anchor_t(const anchor_t & another) = default;
+	anchor_t & operator = (const anchor_t & another) = default;
+	bool operator==(const anchor_t & another) const
+	{
+		return type == another.type && 
+			left == another.left &&
+			top == another.top &&
+			right == another.right &&
+			bottom == another.bottom;
+	}
+	bool operator!=(const anchor_t & another) const { return !operator==(another); }
+	int_x width() const { return maxof((int_x)0, right + left); }
+	int_x height() const { return maxof((int_x)0, bottom + top); }
+};
+
 class IControl;
 class IHost;
 class IForm;
@@ -292,10 +328,8 @@ public:
 	virtual textw ClipboardGetText16() const = 0;
 	virtual void ClipboardSetText16(const char_16 * szText, int_x iLength = -1) const = 0;
 	// 锚定父控件。
-	virtual void SetAnchor(AlignE eAnchor) = 0;
-	virtual AlignE GetAnchor() const = 0;
-	virtual void SetAnchorEdge(const edgeix & anchor) = 0;
-	virtual const edgeix & GetAnchorEdge() const = 0;
+	virtual void SetAnchor(anchor_t anchor) = 0;
+	virtual anchor_t GetAnchor() const = 0;
 	virtual void Anchor() = 0;
 
 	// ----------------------坐标转换。

@@ -207,11 +207,8 @@ public:
 	err_t SetParam(const char_16 * szName, const char_16 * szValue) override;
 
 	// 控件的锚定规则(上下左右)。
-	void SetAnchor(AlignE eAnchor) override;
-	AlignE GetAnchor() const override;
-	// 锚定参数。
-	void SetAnchorEdge(const edgeix & anchor) override;
-	const edgeix & GetAnchorEdge() const override;
+	void SetAnchor(anchor_t anchor) override;
+	anchor_t GetAnchor() const override;
 	// 根据锚定参数，重置控件位置/大小。
 	void Anchor() override;
 
@@ -435,8 +432,6 @@ protected:
 	edgeix m_padding;
 	//! 控件所具有的边框类型
 	BorderTypeE m_eBorderType;
-	//! 控件的锚定信息。
-	edgeix m_anchor;
 	//! 控件布局的权重
 	float_32 m_fWeight;
 
@@ -455,7 +450,7 @@ protected:
 	//! 鼠标悬停的光标。
 	CursorE m_eCursor;
 	//! 控件的绑定类型。
-	AlignE m_eAnchor;
+	anchor_t m_anchor;
 	//! 控件被选中时的输入法状态。
 	ImeModeE m_eImeMode;
 	union

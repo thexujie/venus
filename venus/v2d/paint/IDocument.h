@@ -151,6 +151,7 @@ struct tl_metrics_t
 class V2D_API IDocSource
 {
 public:
+	virtual ~IDocSource() {}
 	virtual doc_source_t GetDocSource() const = 0;
 	virtual textformat_t GetDefFormat() const = 0;
 };

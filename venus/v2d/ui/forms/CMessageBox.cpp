@@ -19,12 +19,10 @@ CMessageBox::CMessageBox()
 
 	m_btnOk.SetDialogResult(DialogResultOk);
 	m_btnOk.SetText(L"确定(&O)");
-	m_btnOk.SetAnchor(AlignRightBottom);
 	m_btnOk.SetHotKey(KeyCodeO);
 
 	m_btnCancel.SetDialogResult(DialogResultCancel);
 	m_btnCancel.SetText(L"取消(&C)");
-	m_btnCancel.SetAnchor(AlignRightBottom);
 	m_btnCancel.SetHotKey(KeyCodeC);
 
 	m_name.SetFontSize(18);
@@ -33,7 +31,6 @@ CMessageBox::CMessageBox()
 
 	m_detail.SetAutoHideScrollBarX(true);
 	m_detail.SetAutoHideScrollBarY(true);
-	m_detail.SetAnchor(AlignLTRB);
 	//m_detail.SetReadOnly(true);
 	m_detail.SetAcceptEnter(false);
 	m_detail.SetAcceptTab(false);

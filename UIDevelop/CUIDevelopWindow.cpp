@@ -12,7 +12,6 @@ CUIDevelopWindow::CUIDevelopWindow()
 	SetText(L"UIDevelopWindow");
 
 	m_txl.SetRect(10, 10, 400, 24);
-	m_txl.SetAnchor(AlignLR);
 
 	SetLayoutMode(LayoutModeVertical);
 

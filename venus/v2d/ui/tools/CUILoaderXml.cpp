@@ -50,24 +50,45 @@ static rectix to_rect(const textw & str)
 	return rect;
 };
 
-static AlignE to_anchor(const textw & str)
+static AlignE to_align(const textw & str)
 {
-	int_32 anchor = AlignNone;
+	int_32 type = AlignNone;
 	for(int_x cnt = 0; cnt < str.length(); ++cnt)
 	{
 		switch(str[cnt])
 		{
-		case L'l': anchor |= AlignLeft; break;
-		case L't': anchor |= AlignTop; break;
-		case L'r': anchor |= AlignRight; break;
-		case L'b': anchor |= AlignBottom; break;
-		case L'h': anchor |= AlignCenterX; break;
-		case L'v': anchor |= AlignCenterY; break;
+		case L'l': type |= AlignLeft; break;
+		case L't': type |= AlignTop; break;
+		case L'r': type |= AlignRight; break;
+		case L'b': type |= AlignBottom; break;
+		case L'h': type |= AlignCenterX; break;
+		case L'v': type |= AlignCenterY; break;
 		default:
 			break;
 		}
 	}
-	return (AlignE)anchor;
+	return (AlignE)type;
+};
+
+static anchor_t to_anchor(const textw & str)
+{
+	int_32 type = AlignNone;
+	for(int_x cnt = 0; cnt < str.length(); ++cnt)
+	{
+		switch(str[cnt])
+		{
+		case L'l': type |= AlignLeft; break;
+		case L't': type |= AlignTop; break;
+		case L'r': type |= AlignRight; break;
+		case L'b': type |= AlignBottom; break;
+		case L'h': type |= AlignCenterX; break;
+		case L'v': type |= AlignCenterY; break;
+		default:
+			break;
+		}
+	}
+	anchor_t anchor((AlignE)type, 0, 0, 0, 0);
+	return anchor;
 };
 
 static ImeModeE to_imemode(const textw & str)
@@ -416,7 +437,7 @@ err_t CUILoaderXml::ParseControl(const xml_node & node, IControl *& pControl, CM
 
 	xml_attr_parse_type(node, L"margin", to_edge, [&pControl](const edgeix & value) { pControl->SetMargin(value); });
 	xml_attr_parse_type(node, L"padding", to_edge, [&pControl](const edgeix & value) { pControl->SetPadding(value); });
-	xml_attr_parse_type(node, L"anchor", to_anchor, [&pControl](const AlignE & value) { pControl->SetAnchor(value); });
+	xml_attr_parse_type(node, L"anchor", to_anchor, [&pControl](const anchor_t & value) { pControl->SetAnchor(value); });
 
 	xml_attr_parse_type(node, L"widthmode", to_whmode, [&pControl](const WHModeE & value) { pControl->SetWidthMode(value); });
 	xml_attr_parse_type(node, L"heightmode", to_whmode, [&pControl](const WHModeE & value) { pControl->SetHeightMode(value); });
@@ -477,7 +498,7 @@ err_t CUILoaderXml::ParseForm(const xml_node & node, IControl *& pControl, CMeta
 err_t CUILoaderXml::ParseStatic(const xml_node & node, IControl *& pControl, CMetaHelper & meta, CLoaderDefines & defines)
 {
 	CStatic * pStatic = (CStatic *)pControl;
-	xml_attr_parse_type(node, L"textalign", to_anchor, [&pStatic](const AlignE & value) { pStatic->SetTextAlign(value); });
+	xml_attr_parse_type(node, L"textalign", to_align, [&pStatic](const AlignE & value) { pStatic->SetTextAlign(value); });
 	return ParseControl(node, pControl, meta, defines);
 }
 

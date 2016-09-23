@@ -544,7 +544,6 @@ void CTextLine::DoCaretHome()
 	{
 		TlSelect(0, 0);
 		TlSetIndex(iIndex);
-		TlSetIndex(iIndex);
 	}
 }
 
@@ -565,7 +564,6 @@ void CTextLine::DoCaretEnd()
 	else
 	{
 		TlSelect(0, 0);
-		TlSetIndex(iIndex);
 		TlSetIndex(iIndex);
 	}
 }

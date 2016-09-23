@@ -17,7 +17,7 @@ CControl::CControl(int_x iX, int_x iY, int_x iWidth, int_x iHeight)
 	//m_minSize(0, 0), m_maxSize(CONTROL_MAX_W, CONTROL_MAX_H),
 	m_uiAutoRepaint(0), m_uiBaseAttr(0), m_uiMouseState(0), m_uiState(0),
 	m_uiBackColor(SysColorAuto), m_uiForeColor(Colors::Black),
-	m_eCursor(CursorNormal), m_eAnchor(AlignNone),
+	m_eCursor(CursorNormal),
 	m_pMouseControl(nullptr), m_pSelectedControl(nullptr), m_pDropControl(nullptr),
 	m_pCaptureControl(nullptr), m_eMouseWheelMode(MouseWheelModeHoving),
 	m_pScrollX(nullptr), m_pScrollY(nullptr), m_eImeMode(ImeModeDisable)
@@ -141,10 +141,12 @@ float_32 CControl::GetWeight() const
 void CControl::SetWidthMode(WHModeE eMode)
 {
 	m_eWidthMode = eMode;
-	if((m_eWidthMode == WHModeFill || m_eWidthMode == WHModeAuto) && (m_eAnchor & AlignLR))
+	if((m_eWidthMode == WHModeFill || m_eWidthMode == WHModeAuto) && (m_anchor.type & AlignLR))
 	{
-		log0(L"CControl::SetWidthMode with WHModeFill or WHModeAuto, but m_eAnchor is AlignLR.");
-		SetAnchor(m_eAnchor & ~AlignLR);
+		log0(L"CControl::SetWidthMode with WHModeFill or WHModeAuto, but m_anchor is AlignLR.");
+		anchor_t anchor = m_anchor;
+		anchor.type = anchor.type & ~AlignLR;
+		SetAnchor(anchor);
 	}
 }
 
@@ -156,10 +158,12 @@ WHModeE CControl::GetWidthMode() const
 void CControl::SetHeightMode(WHModeE eMode)
 {
 	m_eHeightMode = eMode;
-	if((m_eHeightMode == WHModeFill || m_eHeightMode == WHModeAuto) && (m_eAnchor & AlignTB))
+	if((m_eHeightMode == WHModeFill || m_eHeightMode == WHModeAuto) && (m_anchor.type & AlignTB))
 	{
-		log0(L"CControl::SetHeightMode with WHModeFill or WHModeAuto, but m_eAnchor is AlignTB.");
-		SetAnchor(m_eAnchor & ~AlignLR);
+		log0(L"CControl::SetHeightMode with WHModeFill or WHModeAuto, but m_anchor is AlignTB.");
+		anchor_t anchor = m_anchor;
+		anchor.type = anchor.type & ~AlignTB;
+		SetAnchor(anchor);
 	}
 }
 
@@ -1386,17 +1390,17 @@ err_t CControl::SetParam(const char_16 * szName, const char_16 * szValue)
 	return err_no_impl;
 }
 
-void CControl::SetAnchor(AlignE eAnchor)
+void CControl::SetAnchor(anchor_t anchor)
 {
-	if(eAnchor != m_eAnchor)
+	if(anchor != m_anchor)
 	{
-		m_eAnchor = eAnchor;
-		if((eAnchor & AlignLR) && (m_eWidthMode == WHModeFill || m_eWidthMode == WHModeAuto))
+		m_anchor = anchor;
+		if((m_anchor.type & AlignLR) && (m_eWidthMode == WHModeFill || m_eWidthMode == WHModeAuto))
 		{
 			log0(L"CControl::SetAnchor with AlignLR, but m_eWidthMode is WHModeFill or WHModeAuto.");
 			SetWidthMode(WHModeAbs);
 		}
-		if((eAnchor & AlignTB) && (m_eHeightMode == WHModeFill || m_eHeightMode == WHModeAuto))
+		if((m_anchor.type & AlignTB) && (m_eHeightMode == WHModeFill || m_eHeightMode == WHModeAuto))
 		{
 			log0(L"CControl::SetAnchor with AlignTB, but m_eHeightMode is WHModeFill or WHModeAuto.");
 			SetHeightMode(WHModeAbs);
@@ -1406,32 +1410,22 @@ void CControl::SetAnchor(AlignE eAnchor)
 	}
 }
 
-AlignE CControl::GetAnchor() const
-{
-	return m_eAnchor;
-}
-
-void CControl::SetAnchorEdge(const edgeix & anchor)
-{
-	m_anchor = anchor;
-}
-
-const edgeix & CControl::GetAnchorEdge() const
+anchor_t CControl::GetAnchor() const
 {
 	return m_anchor;
 }
 
 void CControl::Anchor()
 {
-	if(m_pParent && m_eAnchor)
+	if(m_pParent && m_anchor.type)
 	{
 		pointix position = m_rect.position;
 		sizeix size = m_rect.size;
 		if(m_eWidthMode == WHModeAbs)
 		{
-			if(m_eAnchor & AlignRight)
+			if(m_anchor.type & AlignRight)
 			{
-				if(m_eAnchor & AlignLeft)
+				if(m_anchor.type & AlignLeft)
 					size.w = m_pParent->GetWidth() - (m_anchor.left + m_anchor.right);
 				else
 					position.x = m_pParent->GetWidth() - m_anchor.right - size.w;
@@ -1442,9 +1436,9 @@ void CControl::Anchor()
 
 		if(m_eHeightMode == WHModeAbs)
 		{
-			if(m_eAnchor & AlignBottom)
+			if(m_anchor.type & AlignBottom)
 			{
-				if(m_eAnchor & AlignTop)
+				if(m_anchor.type & AlignTop)
 					size.h = m_pParent->GetHeight() - (m_anchor.top + m_anchor.bottom);
 				else
 					position.y = m_pParent->GetHeight() - m_anchor.bottom - size.h;
@@ -1471,12 +1465,10 @@ void CControl::InitLayout()
 	if(m_pParent)
 	{
 		rectix rcClient = m_pParent->GetClient();
-		edgeix anchor;
-		anchor.left = m_rect.x;
-		anchor.top = m_rect.y;
-		anchor.right = rcClient.w - m_rect.right();
-		anchor.bottom = rcClient.h - m_rect.bottom();
-		SetAnchorEdge(anchor);
+		m_anchor.left = m_rect.x;
+		m_anchor.top = m_rect.y;
+		m_anchor.right = rcClient.w - m_rect.right();
+		m_anchor.bottom = rcClient.h - m_rect.bottom();
 	}
 }
 
@@ -2616,12 +2608,10 @@ void CControl::AddControl(IControl * pControl)
 	// anchor edge
 	rectix rcClient = GetClient();
 	rectix rcChild = pControl->GetRect();
-	edgeix anchor;
-	anchor.left = rcChild.x;
-	anchor.top = rcChild.y;
-	anchor.right = rcClient.w - rcChild.right();
-	anchor.bottom = rcClient.h - rcChild.bottom();
-	pControl->SetAnchorEdge(anchor);
+	m_anchor.left = rcChild.x;
+	m_anchor.top = rcChild.y;
+	m_anchor.right = rcClient.w - rcChild.right();
+	m_anchor.bottom = rcClient.h - rcChild.bottom();
 
 	Layout();
 }
@@ -2744,13 +2734,13 @@ void CControl::_LayoutAbsolute()
 		switch(pChild->GetWidthMode())
 		{
 		case WHModeAbs:
-			switch(pChild->GetAnchor() & AlignLeftRight)
+			switch(pChild->GetAnchor().type & AlignLeftRight)
 			{
 			case AlignLeftRight:
-				rcChild.w = rcClient.w - pChild->GetAnchorEdge().width();
+				rcChild.w = rcClient.w - pChild->GetAnchor().width();
 				break;
 			case AlignRight:
-				rcChild.x = rcClient.w - pChild->GetAnchorEdge().right - pChild->GetWidth();
+				rcChild.x = rcClient.w - pChild->GetAnchor().right - pChild->GetWidth();
 				break;
 			default:
 				break;
@@ -2770,13 +2760,13 @@ void CControl::_LayoutAbsolute()
 		switch(pChild->GetHeightMode())
 		{
 		case WHModeAbs:
-			switch(pChild->GetAnchor() & AlignTopBottom)
+			switch(pChild->GetAnchor().type & AlignTopBottom)
 			{
 			case AlignTopBottom:
-				rcChild.h = rcClient.h - pChild->GetAnchorEdge().height();
+				rcChild.h = rcClient.h - pChild->GetAnchor().height();
 				break;
 			case AlignBottom:
-				rcChild.y = rcClient.h - pChild->GetAnchorEdge().bottom - pChild->GetHeight();
+				rcChild.y = rcClient.h - pChild->GetAnchor().bottom - pChild->GetHeight();
 				break;
 			default:
 				break;
@@ -2827,13 +2817,13 @@ void CControl::_LayoutHorizontal()
 		switch(pChild->GetHeightMode())
 		{
 		case WHModeAbs:
-			switch(pChild->GetAnchor() & AlignTopBottom)
+			switch(pChild->GetAnchor().type & AlignTopBottom)
 			{
 			case AlignTopBottom:
-				rect.h = rcVisual.h - pChild->GetAnchorEdge().height();
+				rect.h = rcVisual.h - pChild->GetAnchor().height();
 				break;
 			case AlignBottom:
-				rect.y = rcVisual.h - pChild->GetAnchorEdge().bottom - pChild->GetHeight();
+				rect.y = rcVisual.h - pChild->GetAnchor().bottom - pChild->GetHeight();
 				break;
 			default:
 				break;
@@ -2917,13 +2907,13 @@ void CControl::_LayoutVertical()
 		switch(pChild->GetWidthMode())
 		{
 		case WHModeAbs:
-			switch(pChild->GetAnchor() & AlignLeftRight)
+			switch(pChild->GetAnchor().type & AlignLeftRight)
 			{
 			case AlignLeftRight:
-				rect.w = rcVisual.w - pChild->GetAnchorEdge().width();
+				rect.w = rcVisual.w - pChild->GetAnchor().width();
 				break;
 			case AlignRight:
-				rect.x = rcVisual.w - pChild->GetAnchorEdge().right - pChild->GetWidth();
+				rect.x = rcVisual.w - pChild->GetAnchor().right - pChild->GetWidth();
 				break;
 			default:
 				break;

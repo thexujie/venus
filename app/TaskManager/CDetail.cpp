@@ -54,13 +54,6 @@ CDetailWindow::CDetailWindow(int_x iWidth, int_x iHeight)
 	m_txlPath.SelectedChanged += bind(this, &CDetailWindow::OnTextLineSelectedChanged);
 	m_txlCmd.SelectedChanged += bind(this, &CDetailWindow::OnTextLineSelectedChanged);
 	m_txlParent.SelectedChanged += bind(this, &CDetailWindow::OnTextLineSelectedChanged);
-
-	m_grpBase.SetAnchor(AlignLeftRight);
-	m_txlName.SetAnchor(AlignLeftRight);
-	m_txlPath.SetAnchor(AlignLeftRight);
-	m_txlCmd.SetAnchor(AlignLeftRight);
-	m_txlParent.SetAnchor(AlignLeftRight);
-	m_txbDetail.SetAnchor(AlignLTRB);
 }
 
 void CDetailWindow::SetProcessId(uint_32 uiId)

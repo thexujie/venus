@@ -951,7 +951,7 @@ void CTextBox::OnDebugMenu(int_x iBase, int_x iResult)
 //--------------------------------------------------------------------------------------------------
 err_t CTextBox::TlLayout()
 {
-	int_x iWidth = GetClient().w - 1;
+	int_x iWidth = maxof(GetClient().w - 1, (int_x)1);
 	for(int_x cnt = 0, len = m_paras.size(); cnt < len; ++cnt)
 		SafeRelease(m_paras[cnt].pLayout);
 	m_paras.clear();
@@ -992,7 +992,10 @@ err_t CTextBox::TlLayout()
 			const doc_paragraph_t & docpara = paragraphs[ipara];
 			ITextLayout * pLayout = Get2DDevice()->CreateTextLayout();
 			pLayout->Initialize(this);
-			pLayout->Layout({docpara.trange.index, docpara.trange.length - GetParagraphTagLength(docpara.tag)}, iWidth, docpara.tag);
+			err_t err = pLayout->Layout({docpara.trange.index, docpara.trange.length - GetParagraphTagLength(docpara.tag)}, iWidth, docpara.tag);
+			if(err)
+				return err;
+
 			tl_metrics_t metric = pLayout->GetMetrics();
 
 			txb_paragraph_t & para = m_paras.add();
