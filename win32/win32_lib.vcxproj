@@ -24,7 +24,7 @@
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{97483EE8-2FDD-454C-B382-A1328C27AB3B}</ProjectGuid>
+    <ProjectGuid>{80D85A7F-7D89-4EB6-98DB-22446CABB924}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Condition="Exists('$(SolutionDir)\$(SolutionName).cpp.default.props')" Project="$(SolutionDir)\$(SolutionName).cpp.default.props" />
