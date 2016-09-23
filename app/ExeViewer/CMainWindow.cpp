@@ -106,19 +106,8 @@ int_x CMainWindow::OnTextBoxShowMenu(IControl * pControl, pointix point)
 	return 1;
 }
 
-#include "CDockFloatForm.h"
 int_x CMainWindow::OnPaneMouseDown(IControl * pControl, pointix point)
 {
-	CPane * pPane = (CPane *)FindChild(L"paneTest");
-	if(pPane)
-	{
-		SafeAddRef(pPane);
-		pPane->GetParent()->RmvControl(pPane);
-		CDockFloatForm * pFloatForm = new CDockFloatForm(pPane);
-		pFloatForm->SetOwner(this);
-		pFloatForm->Show(ShowModeNormal, HostInitPosCenterScreen);
-		pPane->MouseDownL.disconnect(bind(this, &CMainWindow::OnPaneMouseDown));
-	}
 	return 0;
 }
 

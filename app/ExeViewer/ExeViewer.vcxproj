@@ -51,7 +51,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseInc.h" />
-    <ClInclude Include="CDockFloatForm.h" />
     <ClInclude Include="CMainWindow.h" />
     <ClInclude Include="CMapFile.h" />
     <ClInclude Include="resource.h" />
@@ -59,7 +58,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CDockFloatForm.cpp" />
     <ClCompile Include="CMainWindow.cpp" />
     <ClCompile Include="CMapFile.cpp" />
     <ClCompile Include="stdafx.cpp">

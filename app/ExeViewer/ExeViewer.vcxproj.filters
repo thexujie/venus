@@ -13,9 +13,6 @@
     <ClCompile Include="CMainWindow.cpp">
       <Filter>main</Filter>
     </ClCompile>
-    <ClCompile Include="CDockFloatForm.cpp">
-      <Filter>main</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseInc.h">
@@ -35,9 +32,6 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>res</Filter>
-    </ClInclude>
-    <ClInclude Include="CDockFloatForm.h">
-      <Filter>main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
