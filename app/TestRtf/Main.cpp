@@ -54,7 +54,7 @@ int iBaseY = 0;
 void OnCreate(HWND hWnd)
 {
 	CRtfParser rtf;
-	CFileStream sfs(RTF_FILE);
+	CFileStream sfs(RTF_FILE, StreamModeRead);
 	int_x iSize = sfs.GetFileSize();
 	texta text(iSize + 1);
 	text.resize(iSize);

@@ -5,7 +5,7 @@ VENUS_BEG
 
 namespace encodings
 {
-	textw encocde(const char_8 * text, int_x length, encoding_t src_encoding, encoding_t dst_encoding)
+	textw encode(const char_8 * text, int_x length, encoding_t src_encoding, encoding_t dst_encoding)
 	{
 		if(length < 0)
 			length = textlen(text);
@@ -16,7 +16,7 @@ namespace encodings
 		return result;
 	}
 
-	texta encocde(const char_16 * text, int_x length, encoding_t src_encoding, encoding_t dst_encoding)
+	texta encode(const char_16 * text, int_x length, encoding_t src_encoding, encoding_t dst_encoding)
 	{
 		if(length < 0)
 			length = textlen(text);
@@ -27,7 +27,7 @@ namespace encodings
 		return result;
 	}
 
-	textw encocde(texta text, encoding_t src_encoding, encoding_t dst_encoding)
+	textw encode(texta text, encoding_t src_encoding, encoding_t dst_encoding)
 	{
 		int_x length = dst_encoding.length(src_encoding, text.buffer(), text.length());
 		textw result(length, length);
@@ -35,7 +35,7 @@ namespace encodings
 		return result;
 	}
 
-	texta encocde(textw text, encoding_t src_encoding, encoding_t dst_encoding)
+	texta encode(textw text, encoding_t src_encoding, encoding_t dst_encoding)
 	{
 		int_x length = dst_encoding.length(src_encoding, text.buffer(), text.length());
 		texta result(length, length);

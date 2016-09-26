@@ -899,11 +899,11 @@ typedef text_base<char_8, encodings::ansi.codepage> texta;
 
 namespace encodings
 {
-	CORE_API textw encocde(const char_8 * text, int_x length, encoding_t src_encoding, encoding_t dst_encoding = encodings::utf16);
-	CORE_API texta encocde(const char_16 * text, int_x length, encoding_t src_encoding, encoding_t dst_encoding = encodings::ansi);
+	CORE_API textw encode(const char_8 * text, int_x length, encoding_t src_encoding, encoding_t dst_encoding = encodings::utf16);
+	CORE_API texta encode(const char_16 * text, int_x length, encoding_t src_encoding, encoding_t dst_encoding = encodings::ansi);
 
-	CORE_API textw encocde(texta text, encoding_t src_encoding = encodings::ansi, encoding_t dst_encoding = encodings::utf16);
-	CORE_API texta encocde(textw text, encoding_t src_encoding = encodings::utf16, encoding_t dst_encoding = encodings::ansi);
+	CORE_API textw encode(texta text, encoding_t src_encoding = encodings::ansi, encoding_t dst_encoding = encodings::utf16);
+	CORE_API texta encode(textw text, encoding_t src_encoding = encodings::utf16, encoding_t dst_encoding = encodings::ansi);
 }
 
 #ifdef UNICODE

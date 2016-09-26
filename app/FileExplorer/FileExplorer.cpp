@@ -1,17 +1,13 @@
 #include "stdafx.h"
 #include "BaseInc.h"
-//int WINAPI _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 #include "CMainWindow.h"
 
-#include <memory>
-#include <locale.h>
 int Main()
 {
-	setlocale(0, nullptr);
 	CWin32App app;
 	app.Create2DDevice(Device2DTypeGdip);
-	//app.Create2DDevice(Device2DTypeDirect2D);
-
+	
+	auto pfn = CreateThread;
 	CMainWindow wndMain;
 	wndMain.Show(ShowModeNormal, HostInitPosCenterScreen);
 	return (int)GetApp()->Run(0, AppRunLoop);

@@ -409,7 +409,7 @@ int_x CRtfParser::LoadFont(const char_8 *& pText, const char_8 * pEnd)
 		}
 	}
 #ifdef _UNICODE
-	font.m_name = tounicodetextex(name, name.length(), m_mapLocale[font.m_iCharSet]);
+	font.m_name = encodings::encode(name, encoding_t(font.m_iCharSet));
 #else
 	font.m_name = name;
 #endif
@@ -472,7 +472,7 @@ void CRtfParser::ConvertText()
 {
 	if(m_text.is_valid())
 	{
-		textw tw = tounicodetextex(m_text, m_text.length(), m_mapLocale[m_rtFormat.rtFont.CharSet]);
+		textw tw = encodings::encode(m_text, encoding_t(m_rtFormat.rtFont.CharSet));
 		m_textw += tw;
 		m_text.clear();
 	}
@@ -526,19 +526,8 @@ void CRtfParser::SkipTrunk(const char_8 *& pText, const char_8 * pEnd)
 
 void CRtfParser::InitialLocale()
 {
-	m_mapLocale[0] = _tcreate_locale(LC_ALL, LOCAL_T("English_United States.1252"));
-	m_mapLocale[1] = _tcreate_locale(LC_ALL, LOCAL_T(""));
-	m_mapLocale[134] = _tcreate_locale(LC_ALL, LOCAL_T("Chinese-Simplified_China.936"));
-	m_mapLocale[136] = _tcreate_locale(LC_ALL, LOCAL_T("Chinese-Traditional_China.950"));
-#if MSVS >= MSVS_2012 
-	m_mapLocale[222] = _tcreate_locale(LC_ALL, LOCAL_T("Thai_Thailand.874"));
-#else
-	m_mapLocale[222] = _tcreate_locale(LC_ALL, LOCAL_T("English_United States.874"));
-#endif
 }
 
 void CRtfParser::UnInitialLocale()
 {
-	for(int_x cnt = 0, len = m_mapLocale.size(); cnt != len; ++cnt)
-		_free_locale(m_mapLocale.at(cnt).value);
 }

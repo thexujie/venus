@@ -483,7 +483,7 @@ void CTextWriter::Write(const char_16 * pText, int_x iLength)
 
 	if(m_encoding.singlebyte())
 	{
-		texta text = encodings::encocde(pText, iLength, encodings::utf16, m_encoding);
+		texta text = encodings::encode(pText, iLength, encodings::utf16, m_encoding);
 		m_pOutputStream->Write(text.buffer(), text.length());
 	}
 	else if(m_encoding == encodings::utf16)
@@ -501,7 +501,7 @@ void CTextWriter::Write(const textw & text)
 
 	if(m_encoding.singlebyte())
 	{
-		texta dst_text = encodings::encocde(text, encodings::utf16, m_encoding);
+		texta dst_text = encodings::encode(text, encodings::utf16, m_encoding);
 		m_pOutputStream->Write(dst_text.buffer(), dst_text.length());
 	}
 	else if(m_encoding == encodings::utf16)
@@ -526,7 +526,7 @@ void CTextWriter::Write(const char_8 * pText, int_x iLength)
 	}
 	else
 	{
-		textw dst_text = encodings::encocde(pText, iLength, encodings::ansi, m_encoding);
+		textw dst_text = encodings::encode(pText, iLength, encodings::ansi, m_encoding);
 		m_pOutputStream->Write(dst_text.buffer(), dst_text.length() * 2);
 	}
 }
@@ -542,7 +542,7 @@ void CTextWriter::Write(const texta & text)
 	}
 	else
 	{
-		textw dst_text = encodings::encocde(text, encodings::ansi, m_encoding);
+		textw dst_text = encodings::encode(text, encodings::ansi, m_encoding);
 		m_pOutputStream->Write(dst_text.buffer(), dst_text.length() * 2);
 	}
 }

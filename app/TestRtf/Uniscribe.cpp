@@ -21,7 +21,7 @@ CScriptParagraph::CScriptParagraph(const RichTextFormatT & defRtFormat)
 
 void CScriptParagraph::AddRichText(const char_8 * szText, int_x iLength)
 {
-	textw text = tounicodetext(szText, iLength);
+	textw text = encodings::encode(szText, iLength);
 	AddRichText(text.buffer(), text.length());
 }
 
@@ -61,7 +61,7 @@ void CScriptParagraph::AddRichText(const char_16 * szText, int_x iLength)
 
 void CScriptParagraph::AddRichText(const char_8 * szText, int_x iLength, const RichTextFormatT & rtFormat)
 {
-	textw text = tounicodetext(szText, iLength);
+	textw text = encodings::encode(szText, iLength);
 	AddRichText(text.buffer(), text.length(), rtFormat);
 }
 
