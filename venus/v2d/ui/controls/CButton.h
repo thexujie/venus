@@ -40,7 +40,7 @@ public:
 	DialogResultE GetDialogResult() const;
 public:
 	void OnTextChanged() override;
-	sizeix GetContentSize() const override;
+	sizeix GetPreferedSize() const override;
 
 	/**
 	 * @copydoc CControl::OnPaint
