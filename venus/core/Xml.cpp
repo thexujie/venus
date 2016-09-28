@@ -254,7 +254,7 @@ err_t xml_doc::read_BOM(char_16 *& szXml, const char_16 * szEnd)
 
 err_t xml_doc::read_node(xml_node & node, char_16 *& szXml, const char_16 * szEnd)
 {
-	Assert(szXml[0] == L'<');
+	verify(szXml[0] == L'<');
 
 	// </>
 	if(szEnd - szXml < 3)

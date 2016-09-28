@@ -5,7 +5,7 @@
 VENUS_BEG
 
 CORE_API void make_fun(int_x & m_this, int_x & m_func, const void * p_fun);
-CORE_API void make_fun(int_x & m_this, int_x & m_func, const void * p_this, const void * p_fun, int_x size);
+CORE_API void make_fun(int_x & m_this, int_x & m_func, const void * p_this, const void * p_fun, int_x size, int_x base_offset);
 
 class CORE_API function_base
 {
@@ -39,9 +39,9 @@ public:
 		make_fun(m_this, m_func, p_fun);
 	}
 
-	void make(const void * p_this, const void * p_fun, int_x size)
+	void make(const void * p_this, const void * p_fun, int_x size, int_x base_offset)
 	{
-		make_fun(m_this, m_func, p_this, p_fun, size);
+		make_fun(m_this, m_func, p_this, p_fun, size, base_offset);
 	}
 
 	template<typename ...Args>
@@ -86,7 +86,7 @@ public:
 			}
 			else
 			{
-				Assert(false);
+				verify(false);
 				return;
 			}
 		}
@@ -164,17 +164,13 @@ public:
 		make(p_fun);
 	}
 
-	template<typename ClassT, typename ClassFarT>
-	function(const ClassT * p_this, RetT(ClassFarT::* p_fun)(Args...))
+	template<typename ClassT, typename BaseT>
+	function(const ClassT * p_this, RetT(BaseT::* p_fun)(Args...))
 	{
-#ifdef _CPPRTTI
-		// DO NOT use dynamic_cast, the cast will be excuted by operator() or call().
-		//const ClassFarT * p_far = static_cast<const ClassFarT *>(p_this);
+		//const BaseT * p_far = static_cast<const BaseT *>(p_this);
 		//make((void *)p_far, (void *)&p_fun, sizeof(p_fun));
-		make((void *)(ClassFarT *)p_this, (void *)&p_fun, sizeof(p_fun));
-#else
-		make((void *)(ClassFarT *)p_this, (void *)&p_fun, sizeof(p_fun));
-#endif
+		int_x base_offset = (byte_t *)(BaseT *)p_this - (byte_t *)p_this;
+		make((void *)p_this, (void *)&p_fun, sizeof(p_fun), base_offset);
 	}
 
 	function & operator = (const function & another)
@@ -208,9 +204,9 @@ public:
 #endif
 	}
 
-	void make(const void * p_this, const void * p_fun, int_x size)
+	void make(const void * p_this, const void * p_fun, int_x size, int_x base_offset)
 	{
-		make_fun(m_this, m_func, p_this, p_fun, size);
+		make_fun(m_this, m_func, p_this, p_fun, size, base_offset);
 #ifdef _DEBUG
 		_class_ = *(fun_class_t *)&m_func;
 #endif
@@ -257,7 +253,7 @@ public:
 			}
 			else
 			{
-				Assert(false);
+				verify(false);
 				return RetT();
 			}
 		}
@@ -283,8 +279,8 @@ function<RetT, Args...> bind(int_x(*p_fun)(Args...))
 	return function<RetT, Args...>(p_fun);
 }
 
-template<typename RetT, typename ClassT, typename ClassFarT, typename ...Args>
-function<RetT, Args...> bind(const ClassT * p_this, RetT(ClassFarT::* p_fun)(Args...))
+template<typename RetT, typename ClassT, typename BaseT, typename ...Args>
+function<RetT, Args...> bind(const ClassT * p_this, RetT(BaseT::* p_fun)(Args...))
 {
 	return function<RetT, Args...>(p_this, p_fun);
 }
@@ -326,14 +322,14 @@ public:
 		return 0;
 	}
 
-	template<typename ClassT, typename ClassFarT>
-	void connect(ClassT * p_this, int_x(ClassFarT::* p_fun)(Args...))
+	template<typename ClassT, typename BaseT>
+	void connect(ClassT * p_this, int_x(BaseT::* p_fun)(Args...))
 	{
 		connect(function<int_x, Args...>(p_this, p_fun));
 	}
 
-	template<typename ClassT, typename ClassFarT>
-	void disconnect(ClassT * p_this, int_x(ClassFarT::* p_fun)(Args...))
+	template<typename ClassT, typename BaseT>
+	void disconnect(ClassT * p_this, int_x(BaseT::* p_fun)(Args...))
 	{
 		disconnect(function<int_x, Args...>(p_this, p_fun));
 	}

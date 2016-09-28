@@ -12,7 +12,7 @@ m_hBitmap(NULL)
 
 CImageGdi::~CImageGdi()
 {
-	Assert(!m_iRef);
+	verify(!m_iRef);
 	m_size.set(0, 0);
 	::DeleteObject(m_hBitmap);
 }

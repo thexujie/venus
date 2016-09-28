@@ -38,7 +38,7 @@ CORE_API void breakpoint();
 
 /*!@brief 断言，如果失败，会触发一个调试断点。非Debug版该函数不起任何作用。*/
 template<typename ValT>
-void Assert(const ValT & val)
+void verify(const ValT & val)
 {
 #ifdef _DEBUG
 	if(val == 0)
@@ -47,7 +47,7 @@ void Assert(const ValT & val)
 }
 /*!@brief 断言，如果失败，会触发一个调试断点。非Debug版该函数也会起作用。*/
 template<typename ValT>
-void Verify(const ValT & val)
+void ensure(const ValT & val)
 {
 	if(val == 0)
 		breakpoint();
@@ -1474,7 +1474,7 @@ int_x textcat(CharT * dst, int_x size, const CharT * src, int_x length = -1)
 			}
 		}
 		if(!found_null)
-			Assert(false);
+			verify(false);
 #endif
 		int_x dst_length = textlen(dst, size);
 		return textcpy(dst + dst_length, size - dst_length, src, length);

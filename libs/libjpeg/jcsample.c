@@ -494,7 +494,7 @@ jinit_downsampler (j_compress_ptr cinfo)
   if (cinfo->CCIR601_sampling)
     ERREXIT(cinfo, JERR_CCIR601_NOTIMPL);
 
-  /* Verify we can handle the sampling factors, and set up method pointers */
+  /* ensure we can handle the sampling factors, and set up method pointers */
   for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
        ci++, compptr++) {
     /* Compute size of an "output group" for DCT scaling.  This many samples

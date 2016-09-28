@@ -309,7 +309,7 @@ void CPaintD2D::DrawLine(float_32 fX1, float_32 fY1, float_32 fX2, float_32 fY2,
 	if(!m_pRenderTarget)
 		return;
 
-	Assert(pPen);
+	verify(pPen);
 	AffineXY(fX1, fY1);
 	AffineXY(fX2, fY2);
 	D2D_POINT_2F point1 = {fX1, fY1};
@@ -326,7 +326,7 @@ void CPaintD2D::DrawRect(float_32 fX, float_32 fY, float_32 fWidth, float_32 fHe
 	if(!m_pRenderTarget)
 		return;
 
-	Assert(pPen);
+	verify(pPen);
 	AffineXY(fX, fY);
 	D2D_RECT_F d2dRect = {fX, fY, fX + fWidth, fY + fHeight};
 	Direct2Affine(d2dRect);

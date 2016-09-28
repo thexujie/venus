@@ -473,7 +473,7 @@ err_t C3DEffect::SetVariable(eff_paramid_t id, const void * data, int_x size)
 
 			if(offset + size > ecb.size)
 			{
-				Assert(false);
+				verify(false);
 				return err_invalidarg;
 			}
 

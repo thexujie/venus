@@ -763,7 +763,7 @@ void CControl::OnAdded(IControl * pContainer)
 
 void CControl::OnRemoved(IControl * pContainer)
 {
-	Assert(m_pParent && (m_pParent == pContainer));
+	verify(m_pParent && (m_pParent == pContainer));
 	m_pParent = nullptr;
 }
 
@@ -1112,7 +1112,7 @@ void CControl::Select(bool bSelect)
 			else if(m_pParent->GetSelectedControl() == this)
 				m_pParent->SetSelectedControl(nullptr);
 			else
-				Assert(false);
+				verify(false);
 		}
 	}
 }
@@ -1749,12 +1749,12 @@ void CControl::OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme 
 			break;
 		}
 	}
-	Assert(m_bShown);
+	verify(m_bShown);
 }
 
 void CControl::PreOnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const
 {
-	Assert(m_bShown);
+	verify(m_bShown);
 
 	if(m_bBuffered)
 		OnPaint(pPaint, rcClip, pTheme);
@@ -1769,7 +1769,7 @@ void CControl::AftOnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme
 
 void CControl::OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const
 {
-	Assert(m_bShown);
+	verify(m_bShown);
 }
 
 void CControl::SetHotKey(KeyCodeE eHotKey)
@@ -1998,7 +1998,7 @@ void CControl::OnMouseMove(pointix point)
 
 void CControl::PreOnNcMouseIn(pointix point)
 {
-	Assert(!m_bMouseNcIn);
+	verify(!m_bMouseNcIn);
 	//Warnf(L"CControl::PreOnNcMouseIn %s\n", GetOid().name);
 	m_bMouseNcIn = true;
 	OnNcMouseIn(point);
@@ -2013,7 +2013,7 @@ void CControl::OnNcMouseIn(pointix point)
 
 void CControl::PreOnMouseIn(pointix point)
 {
-	Assert(!m_bMouseIn);
+	verify(!m_bMouseIn);
 
 	if(m_bPopuping && !m_bPupupResponse)
 		return;
@@ -2034,8 +2034,8 @@ void CControl::OnMouseIn(pointix point)
 
 void CControl::PreOnNcMouseOut(pointix point)
 {
-	Assert(m_bMouseNcIn);
-	Assert(!m_bCaptured);
+	verify(m_bMouseNcIn);
+	verify(!m_bCaptured);
 
 	NcUpdateMouse(pointix(IX_MAX, IX_MAX));
 	pointix ptClient = ToClient(point);
@@ -2059,7 +2059,7 @@ void CControl::PreOnMouseOut(pointix point)
 	if(m_bRepaintMousePreInOut)
 		NcRepaint();
 
-	Assert(m_bMouseIn);
+	verify(m_bMouseIn);
 	m_bMouseIn = false;
 	OnMouseOut(point);
 }
@@ -2162,7 +2162,7 @@ void CControl::OnMouseDown(pointix point, MouseButtonE eButton)
 		OnMouseDownR(point);
 		break;
 	default:
-		Assert(false);
+		verify(false);
 		break;
 	}
 }
@@ -2300,7 +2300,7 @@ void CControl::PreOnMouseClick(pointix point, MouseButtonE eButton)
 			OnMouseClickR(point);
 			break;
 		default:
-			Assert(false);
+			verify(false);
 			break;
 		}
 	}
@@ -2354,7 +2354,7 @@ void CControl::OnMouseDBClick(pointix point, MouseButtonE eButton)
 		OnMouseDBClickL(point);
 		break;
 	default:
-		Assert(false);
+		verify(false);
 		break;
 	}
 }
@@ -2420,7 +2420,7 @@ void CControl::OnMouseWheel(pointix point, int_x iWhell, AlignE eDirection)
 		OnMouseWheelY(point, iWhell);
 		break;
 	default:
-		Assert(false);
+		verify(false);
 		break;
 	}
 }
@@ -2579,7 +2579,7 @@ void CControl::ConfirmBuffer(int_x iWidth, int_x iHeight)
 
 void CControl::AddControl(IControl * pControl)
 {
-	Verify(pControl);
+	ensure(pControl);
 	if(pControl->GetParent())
 		throw exp_bad_state(); // - 控件已经在某一个容器中了。
 
@@ -2618,7 +2618,7 @@ void CControl::AddControl(IControl * pControl)
 
 void CControl::RmvControl(IControl * pControl)
 {
-	Verify(pControl);
+	ensure(pControl);
 	if(pControl->GetParent() != this)
 		throw exp_illegal_operation();
 
@@ -3016,7 +3016,7 @@ void CControl::SetMouseControl(IControl * pControl, pointix point)
 {
 	if(m_pCaptureControl)
 	{
-		Assert(false);
+		verify(false);
 		return;
 	}
 
@@ -3076,7 +3076,7 @@ void CControl::SetSelectedControl(IControl * pControl)
 	{
 		if(m_pSelectedControl)
 		{
-			Assert(m_pSelectedControl->CanSelect());
+			verify(m_pSelectedControl->CanSelect());
 			m_pSelectedControl->SetSelectedControl(nullptr);
 			m_pSelectedControl->SetSelected(false);
 		}
@@ -3150,13 +3150,13 @@ IForm * CControl::ToIForm() const
 
 void CControl::OnCheckGroup(int_x iGroup)
 {
-	Verify(iGroup > 0);
+	ensure(iGroup > 0);
 }
 
 DropResultE CControl::PreOnNcDragEnter(IData * pData, pointix point)
 {
 	log0(L"PreOnNcDragEnter[%s].", GetOid().name);
-	Assert(!m_bMousePreDragIn);
+	verify(!m_bMousePreDragIn);
 	m_bMousePreDragIn = true;
 
 	bool bMouseIn = NcHitTest(point) == HitTestClient;
@@ -3179,7 +3179,7 @@ DropResultE CControl::PreOnNcDragEnter(IData * pData, pointix point)
 DropResultE CControl::PreOnNcDragMove(IData * pData, pointix point)
 {
 	DropResultE eRequest = DragRequestNone;
-	Assert(m_bMousePreDragIn);
+	verify(m_bMousePreDragIn);
 	bool bMouseIn = NcHitTest(point) == HitTestClient;
 
 	pointix ptClient = ToClient(point);
@@ -3254,7 +3254,7 @@ DropResultE CControl::PreOnNcDragMove(IData * pData, pointix point)
 
 void CControl::PreOnNcDragLeave(IData * pData, pointix point)
 {
-	Assert(m_bMousePreDragIn);
+	verify(m_bMousePreDragIn);
 	m_bMousePreDragIn = false;
 
 	pointix ptClient = ToClient(point);
@@ -3270,7 +3270,7 @@ void CControl::PreOnNcDragLeave(IData * pData, pointix point)
 
 DropResultE CControl::PreOnNcDragDrop(IData * pData, pointix point)
 {
-	Assert(m_bMousePreDragIn);
+	verify(m_bMousePreDragIn);
 	pointix ptClient = ToClient(point);
 	if(m_pDropControl)
 		m_pDropControl->PreOnNcDragDrop(pData, m_pDropControl->ToLocal(ptClient));
@@ -3282,7 +3282,7 @@ DropResultE CControl::PreOnNcDragDrop(IData * pData, pointix point)
 
 DropResultE CControl::OnDragEnter(IData * pData, pointix point)
 {
-	Assert(!m_bMouseDragIn);
+	verify(!m_bMouseDragIn);
 	m_bMouseDragIn = true;
 	DropResultE eResult = DragRequestNone;
 	DragEnter(this, pData, &eResult);
@@ -3291,7 +3291,7 @@ DropResultE CControl::OnDragEnter(IData * pData, pointix point)
 
 DropResultE CControl::OnDragMove(IData * pData, pointix point)
 {
-	Assert(m_bMouseDragIn);
+	verify(m_bMouseDragIn);
 	DropResultE eResult = DragRequestNone;
 	DragMove(this, pData, &eResult);
 	return eResult;
@@ -3299,14 +3299,14 @@ DropResultE CControl::OnDragMove(IData * pData, pointix point)
 
 void CControl::OnDragLeave(IData * pData, pointix point)
 {
-	Assert(m_bMouseDragIn);
+	verify(m_bMouseDragIn);
 	DragLeave(this, pData);
 	m_bMouseDragIn = false;
 }
 
 DropResultE CControl::OnDragDrop(IData * pData, pointix point)
 {
-	Assert(m_bMouseDragIn);
+	verify(m_bMouseDragIn);
 	DragDrop(this, pData);
 	return DragRequestNone;
 }
@@ -3334,7 +3334,7 @@ bool CControl::IsScrollYAble() const
 
 void CControl::PreOnScroll(IControl * pScroll, int_x iOffset)
 {
-	Verify(pScroll);
+	ensure(pScroll);
 	int_x iValue = pScroll->ToIScroll()->GetValue();
 
 	if(pScroll == m_pScrollX)

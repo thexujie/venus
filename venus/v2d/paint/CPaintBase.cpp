@@ -558,7 +558,7 @@ void CPaintBase::DrawImageGrid1x3(IImage * pImage, const rectf32 & rcDst, const 
 
 void CPaintBase::DrawImageGridH3V3(IImage * pImage, const rectf32 & rcDst, const rectf32 & rcSrc)
 {
-	Verify(pImage);
+	ensure(pImage);
 	rectf32 rcGrid = rcSrc;
 	rcGrid.w /= 3;
 	rcGrid.h /= 3;
@@ -569,26 +569,26 @@ void CPaintBase::DrawImageGridH3V3(IImage * pImage, const rectf32 & rcDst, const
 
 void CPaintBase::DrawImageGridH3H(IImage * pImage, const rectf32 & rcDst, const rectf32 & rcSrc)
 {
-	Verify(pImage);
+	ensure(pImage);
 	float_32 fGrid = rcSrc.w / 3;
 	DrawImageGrid3x1(pImage, rcDst, rcSrc, fGrid, fGrid);
 }
 
 void CPaintBase::DrawImageGridH3LR(IImage * pImage, const rectf32 & rcDst, const rectf32 & rcSrc)
 {
-	Verify(pImage);
+	ensure(pImage);
 	float_32 fGrid = rcSrc.w / 3;
 	DrawImageGrid3x1LREx(pImage, rcDst, rcSrc, fGrid, fGrid, (rcDst.w - fGrid) * 0.5f);
 }
 void CPaintBase::DrawImageGridV3V(IImage * pImage, const rectf32 & rcDst, const rectf32 & rcSrc)
 {
-	Verify(pImage);
+	ensure(pImage);
 	DrawImageGrid1x3(pImage, rcDst, rcSrc, rcSrc.h / 3, rcSrc.h / 3);
 }
 
 void CPaintBase::DrawImageTileRepeat(IImage * pImage, const rectf32 & rcDst, const rectf32 & rcSrc)
 {
-	Verify(pImage);
+	ensure(pImage);
 	rectf32 dst(rcDst), src(rcSrc);
 	float_32 fOffX = 0, fOffY = 0, fWidth = 0, fHeight = 0;
 	while(true)
@@ -628,7 +628,7 @@ void CPaintBase::DrawImageTileRepeat(IImage * pImage, const rectf32 & rcDst, con
 }
 void CPaintBase::DrawImageTileMirror(IImage * pImage, const rectf32 & rcDst, const rectf32 & rcSrc)
 {
-	Verify(pImage);
+	ensure(pImage);
 	bool bMirrorH = false, bMirrorV = false;
 	rectf32 dst(rcDst), src(rcSrc);
 	float_32 fOffX = 0, fOffY = 0;
@@ -687,7 +687,7 @@ void CPaintBase::DrawImageTileMirror(IImage * pImage, const rectf32 & rcDst, con
 
 void CPaintBase::DrawImageMirrorH(IImage * pImage, const rectf32 & rcDst, const rectf32 & rcSrc)
 {
-	Verify(pImage);
+	ensure(pImage);
 	matrix3f matrix(-1, 0, 0, 1, rcDst.x * 2 + rcDst.w, 0);
 	SetTransform(matrix);
 	rectf32 dst = rcDst;
@@ -698,7 +698,7 @@ void CPaintBase::DrawImageMirrorH(IImage * pImage, const rectf32 & rcDst, const 
 
 void CPaintBase::DrawImageMirrorV(IImage * pImage, const rectf32 & rcDst, const rectf32 & rcSrc)
 {
-	Verify(pImage);
+	ensure(pImage);
 	matrix3f matrix(1, 0, 0, -1, 0, rcDst.y * 2 + rcDst.h);
 	SetTransform(matrix);
 	rectf32 dst = rcDst;
@@ -708,7 +708,7 @@ void CPaintBase::DrawImageMirrorV(IImage * pImage, const rectf32 & rcDst, const 
 }
 void CPaintBase::DrawImageMirrorHV(IImage * pImage, const rectf32 & rcDst, const rectf32 & rcSrc)
 {
-	Verify(pImage);
+	ensure(pImage);
 	matrix3f matrix(-1, 0, 0, -1, rcDst.x * 2 + rcDst.w, rcDst.y * 2 + rcDst.h);
 	SetTransform(matrix);
 	rectf32 dst = rcDst;
@@ -720,7 +720,7 @@ void CPaintBase::DrawImageMirrorHV(IImage * pImage, const rectf32 & rcDst, const
 void CPaintBase::DrawImageRotate(IImage * pImage, float_32 fX, float_32 fY, float_32 fRotation,
 	float_32 fOrignX/* = 0*/, float_32 fOrignY/* = 0*/)
 {
-	Verify(pImage);
+	ensure(pImage);
 	matrix3f matrix;
 	matrix.RotateAt(fRotation, fX + fOrignX, fY + fOrignY);
 	SetTransform(matrix);

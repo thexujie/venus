@@ -26,7 +26,7 @@ CFileVersion::CFileVersion(const char_16 * szFile)
 	if(m_uiBlockSize)
 	{
 		m_pBlock = new byte_t[m_uiBlockSize];
-		Assert(m_pBlock);
+		verify(m_pBlock);
 		if(!GetFileVersionInfoW(szFile, 0, (DWORD)m_uiBlockSize, (VOID *)m_pBlock))
 		{
 			SafeDelete(m_pBlock);

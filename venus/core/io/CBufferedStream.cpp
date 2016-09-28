@@ -358,7 +358,7 @@ int_x CBufferedOutputStream::GetBufferRemain() const
 
 void CBufferedOutputStream::ConfirmBufferedOutputStream() const
 {
-	Verify(m_pOutputStream);
+	ensure(m_pOutputStream);
 }
 
 void CBufferedOutputStream::FlushBufferToThat()

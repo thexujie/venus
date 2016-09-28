@@ -310,7 +310,7 @@ jinit_upsampler (j_decompress_ptr cinfo)
   if (cinfo->CCIR601_sampling)	/* this isn't supported */
     ERREXIT(cinfo, JERR_CCIR601_NOTIMPL);
 
-  /* Verify we can handle the sampling factors, select per-component methods,
+  /* ensure we can handle the sampling factors, select per-component methods,
    * and create storage as needed.
    */
   for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;

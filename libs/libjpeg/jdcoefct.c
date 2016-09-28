@@ -428,7 +428,7 @@ smoothing_ok (j_decompress_ptr cinfo)
     /* All components' quantization values must already be latched. */
     if ((qtable = compptr->quant_table) == NULL)
       return FALSE;
-    /* Verify DC & first 5 AC quantizers are nonzero to avoid zero-divide. */
+    /* ensure DC & first 5 AC quantizers are nonzero to avoid zero-divide. */
     if (qtable->quantval[0] == 0 ||
 	qtable->quantval[Q01_POS] == 0 ||
 	qtable->quantval[Q10_POS] == 0 ||

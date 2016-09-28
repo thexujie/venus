@@ -566,7 +566,7 @@ int_x CWindow::OnWmMouseDown(uint_32 uiMessage, uint_x uiParam, int_x iParam, Mo
 		++m_iCaptureRef;
 		break;
 	default:
-		Assert(false);
+		verify(false);
 		break;
 	}
 
@@ -604,7 +604,7 @@ int_x CWindow::OnWmMouseUp(uint_32 uiMessage, uint_x uiParam, int_x iParam, Mous
 		--m_iCaptureRef;
 		break;
 	default:
-		Assert(false);
+		verify(false);
 		break;
 	}
 

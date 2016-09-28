@@ -169,7 +169,7 @@ forward_DCT_float (j_compress_ptr cinfo, jpeg_component_info * compptr,
 
 /*
  * Initialize for a processing pass.
- * Verify that all referenced Q-tables are present, and set up
+ * ensure that all referenced Q-tables are present, and set up
  * the divisor table for each one.
  * In the current implementation, DCT of all components is done during
  * the first pass, even if only some components will be output in the

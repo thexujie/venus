@@ -272,7 +272,7 @@ err_t CUILoaderXml::Parse(const xml_node & node, IControl *& pControl, CMetaHelp
 		else
 		{
 			pControl = pInfo->CreateFun();
-			Assert(pControl);
+			verify(pControl);
 			if(pControl)
 				pControl->SetDynamic(true);
 		}

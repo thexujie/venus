@@ -158,7 +158,7 @@ void CScriptParagraph::Generate(CScriptEngine * pEngine)
 			int_32 iItemCount = 0;
 			arrItems.resize(iRichLength + 1);
 			hr = ScriptItemize(pRichText, (int_32)iRichLength, (int_32)(iRichLength + 1), /*&sc, &ss, */NULL, NULL, arrItems, &iItemCount);
-			Assert(hr == S_OK);
+			verify(hr == S_OK);
 
 			arrItems.resize(iItemCount + 1);
 
@@ -188,21 +188,21 @@ void CScriptParagraph::Generate(CScriptEngine * pEngine)
 				switch(hr)
 				{
 				case E_OUTOFMEMORY:
-					Assert(false);
+					verify(false);
 					Win32::FormatWinError();
 					break;
 				case E_PENDING:
-					Assert(false);
+					verify(false);
 					Win32::FormatWinError();
 					break;
 				case USP_E_SCRIPT_NOT_IN_FONT:
 					Win32::FormatWinError();
-					Assert(false);
+					verify(false);
 					break;
 				case S_OK:
 					break;
 				default:
-					Assert(false);
+					verify(false);
 					break;
 				}
 
@@ -222,11 +222,11 @@ void CScriptParagraph::Generate(CScriptEngine * pEngine)
 								 m_offsets + iGlyph,
 								 &abc);
 
-				Assert(hr == S_OK);
+				verify(hr == S_OK);
 
 				logAttrs.resize(iLength);
 				hr = ScriptBreak(pText, (int_32)iLength, &si.a, logAttrs);
-				Assert(hr == S_OK);
+				verify(hr == S_OK);
 
 				UsCharT uc(si.iCharPos, si.iCharPos, 0, iGlyph, iGlyph, 0);
 				int_x iClust = 0, iTextIndex = 0;

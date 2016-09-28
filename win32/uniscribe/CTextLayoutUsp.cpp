@@ -204,7 +204,7 @@ err_t CTextLayoutUsp::Layout(trange_t range, int_x iWidth, paragraph_tag_e tag)
 		// 获取换行点。
 		text_attrs.resize(length);
 		err = m_pFactory->Break(text + run.trange.index, run.trange.length, &item.a, text_attrs);
-		Assert(err == S_OK);
+		verify(err == S_OK);
 
 
 		//------------------------------------------------------------------------------------------

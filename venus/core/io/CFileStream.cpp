@@ -144,7 +144,7 @@ int_x CFileStream::Seek(SeekE seek, int_x iSeek/* = 0*/)
 	case SeekTell:
 		break;
 	default:
-		Assert(0);
+		verify(0);
 		break;
 	}
 	return (int_x)_tell(m_iFile);

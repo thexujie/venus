@@ -1287,7 +1287,7 @@ tl_cluster_t CTextBox::TlFindCluster(int_x iIndex) const
 		}
 		else
 		{
-			Assert(iIndex == para.crange.index && para.crange.length == 1);
+			verify(iIndex == para.crange.index && para.crange.length == 1);
 			tl_cluster_t cluster = {};
 			cluster.tlrect.h = m_font.size;
 
@@ -1332,7 +1332,7 @@ tl_cluster_t CTextBox::TlGetCluster(int_x iIndex) const
 			}
 			else
 			{
-				Assert(iIndex == para.crange.index && para.crange.length == 1);
+				verify(iIndex == para.crange.index && para.crange.length == 1);
 				tl_cluster_t cluster = {};
 				cluster.tlrect.h = m_font.size;
 

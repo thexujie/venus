@@ -66,7 +66,7 @@ err_t C3DScene::Update(int_x iPeriod)
 
 err_t C3DScene::Render(I3DRenderEngine * pRenderEngine)
 {
-	Verify(m_pCamera);
+	ensure(m_pCamera);
 	for(int_x cnt = 0, len = m_nodes.size(); cnt < len; ++cnt)
 		pRenderEngine->AddObject(m_nodes[cnt]);
 	return err_ok;

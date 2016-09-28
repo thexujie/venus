@@ -24,29 +24,6 @@ void Test()
 	GetApp()->Run(wnd.GetFormId(), AppRunDialog);
 }
 
-int f_sub(int a, int b)
-{
-	return a - b;
-}
-int f_add(int a, int b)
-{
-	_asm
-	{
-		mov eax, 1
-		mov eax, 2
-		mov eax, 3
-		mov eax, 4
-		mov eax, 5
-		mov eax, 6
-		mov eax, 7
-		mov eax, 8
-		mov eax, 11
-		mov ebx, 2
-		mov ecx, 3
-	}
-	return a + b;
-}
-
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nShowCmd)
 {
 #ifdef _DEBUG

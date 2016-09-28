@@ -61,12 +61,12 @@ encoding_t CTextReader::GetEncoding() const
 
 void CTextReader::_Ready() const
 {
-	Verify(m_pInputStream);
+	ensure(m_pInputStream);
 }
 
 int_32 CTextReader::ReadChar()
 {
-	Verify(m_pInputStream);
+	ensure(m_pInputStream);
 
 	if(m_encoding == encodings::unknown)
 	{

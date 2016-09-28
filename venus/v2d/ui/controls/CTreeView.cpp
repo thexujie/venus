@@ -57,7 +57,7 @@ TreeItemT * CTreeView::AddItem(TreeItemT * pItem)
 {
 	if(pItem->Parent)
 	{
-		Assert(HasItem(pItem->Parent));
+		verify(HasItem(pItem->Parent));
 		pItem->Parent->Items.add(object_ptr<TreeItemT>(pItem));
 	}
 	else
@@ -70,7 +70,7 @@ TreeItemT * CTreeView::AddItem(TreeItemT * pItem)
 
 void CTreeView::Remove(TreeItemT * pItem)
 {
-	Assert(HasItem(pItem));
+	verify(HasItem(pItem));
 	TreeItemT * pParent = pItem->Parent;
 	if(pParent)
 		pParent->Items.remove(object_ref(pItem));
@@ -339,7 +339,7 @@ void CTreeView::_InvalidAllItems(TreeItemT * pItem, bool bContent)
 
 void CTreeView::_UpdateItem(TreeItemT * pItem)
 {
-	Assert(HasItem(pItem));
+	verify(HasItem(pItem));
 	if(m_iUpdating)
 		return;
 
@@ -833,7 +833,7 @@ TreeItemT * CTreeView::HelperGetNextItem(TreeItemT * pItem)
 			TreeItemT * pParent = pItem->Parent;
 			while(pParent)
 			{
-				Assert(pParent->Items.is_valid());
+				verify(pParent->Items.is_valid());
 				for(int_x cnt = 0, len = pParent->Items.size() - 1;
 				cnt < len; ++cnt)
 				{

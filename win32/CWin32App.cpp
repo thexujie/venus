@@ -429,7 +429,7 @@ int_x CWin32App::RunPopup(int_x iFormId)
 					Window::HandleMSG(msg);
 					break;
 				default:
-					Assert(false);
+					verify(false);
 					break;
 				}
 			}

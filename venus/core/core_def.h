@@ -415,7 +415,7 @@ public:
 	int_x AddRef() override { return ++m_iRef; }
 	int_x Release() override
 	{
-		Assert(m_iRef);
+		verify(m_iRef);
 		int_x iRef = --m_iRef;
 		if(!m_iRef)
 			delete this;

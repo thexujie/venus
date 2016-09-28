@@ -260,7 +260,7 @@ void ZLIB_INTERNAL zcfree (voidpf opaque, voidpf ptr)
         return;
     }
     ptr = opaque; /* just to make some compilers happy */
-    Assert(0, "zcfree: ptr not found");
+    verify(0, "zcfree: ptr not found");
 }
 
 #endif /* __TURBOC__ */

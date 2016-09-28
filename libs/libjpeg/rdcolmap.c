@@ -89,7 +89,7 @@ read_gif_map (j_decompress_ptr cinfo, FILE * infile)
       ERREXIT(cinfo, JERR_BAD_CMAP_FILE);
   }
 
-  /* Verify GIF Header */
+  /* ensure GIF Header */
   if (header[1] != 'I' || header[2] != 'F')
     ERREXIT(cinfo, JERR_BAD_CMAP_FILE);
 

@@ -9,7 +9,7 @@ public:
 	int_x addref() { return ++m_ref; }
 	int_x release()
 	{
-		Assert(m_ref);
+		verify(m_ref);
 		int_x iRef = --m_ref;
 		if(!m_ref)
 			delete this;
@@ -89,7 +89,7 @@ public:
 				_capability = fit_capability(_length);
 
 			m_buffer = new CharT[_capability];
-			Verify(m_buffer);
+			ensure(m_buffer);
 			m_size = _length;
 			m_capability = _capability;
 			textcpy(m_buffer, m_capability, _text, _length);
@@ -224,7 +224,7 @@ public:
 		if(iSize > m_capability)
 		{
 			CharT * pNewBuffer = new CharT[iSize];
-			Verify(pNewBuffer);
+			ensure(pNewBuffer);
 			buffcpy(pNewBuffer, iSize, m_buffer, iIndex);
 			pNewBuffer[iIndex] = ch;
 			textcpy(pNewBuffer + iIndex + 1, iSize - iIndex - 1, m_buffer + iIndex, m_size - iIndex);
@@ -283,7 +283,7 @@ public:
 			++rate;
 			_capability <<= rate;
 		}
-		Assert(_capability >= _size);
+		verify(_capability >= _size);
 		return _capability;
 	}
 
@@ -855,7 +855,7 @@ public:
 		int_x _capability = textdata_t::fit_capability(length_new);
 		reallocate(_capability);
 		int_x count2 = textrplstr(buffer(), length_old, capability(), src, src_length, dst, dst_length, caps);
-		Assert(count == count2);
+		verify(count == count2);
 		resize(length_new);
 		return count;
 	}

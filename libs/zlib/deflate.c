@@ -944,7 +944,7 @@ int ZEXPORT deflate (strm, flush)
             }
         }
     }
-    Assert(strm->avail_out > 0, "bug2");
+    verify(strm->avail_out > 0, "bug2");
 
     if (flush != Z_FINISH) return Z_OK;
     if (s->wrap <= 0) return Z_STREAM_END;
@@ -1179,7 +1179,7 @@ local uInt longest_match(s, cur_match)
     /* The code is optimized for HASH_BITS >= 8 and MAX_MATCH-2 multiple of 16.
      * It is easy to get rid of this optimization if necessary.
      */
-    Assert(s->hash_bits >= 8 && MAX_MATCH == 258, "Code too clever");
+    verify(s->hash_bits >= 8 && MAX_MATCH == 258, "Code too clever");
 
     /* Do not waste too much time if we already have a good match: */
     if (s->prev_length >= s->good_match) {
@@ -1190,10 +1190,10 @@ local uInt longest_match(s, cur_match)
      */
     if ((uInt)nice_match > s->lookahead) nice_match = s->lookahead;
 
-    Assert((ulg)s->strstart <= s->window_size-MIN_LOOKAHEAD, "need lookahead");
+    verify((ulg)s->strstart <= s->window_size-MIN_LOOKAHEAD, "need lookahead");
 
     do {
-        Assert(cur_match < s->strstart, "no future");
+        verify(cur_match < s->strstart, "no future");
         match = s->window + cur_match;
 
         /* Skip to next match if the match length cannot increase
@@ -1220,7 +1220,7 @@ local uInt longest_match(s, cur_match)
          * necessary to put more guard bytes at the end of the window, or
          * to check more often for insufficient lookahead.
          */
-        Assert(scan[2] == match[2], "scan[2]?");
+        verify(scan[2] == match[2], "scan[2]?");
         scan++, match++;
         do {
         } while (*(ushf*)(scan+=2) == *(ushf*)(match+=2) &&
@@ -1231,7 +1231,7 @@ local uInt longest_match(s, cur_match)
         /* The funny "do {}" generates better code on most compilers */
 
         /* Here, scan <= window+strstart+257 */
-        Assert(scan <= s->window+(unsigned)(s->window_size-1), "wild scan");
+        verify(scan <= s->window+(unsigned)(s->window_size-1), "wild scan");
         if (*scan == *match) scan++;
 
         len = (MAX_MATCH - 1) - (int)(strend-scan);
@@ -1251,7 +1251,7 @@ local uInt longest_match(s, cur_match)
          * the hash keys are equal and that HASH_BITS >= 8.
          */
         scan += 2, match++;
-        Assert(*scan == *match, "match[2]?");
+        verify(*scan == *match, "match[2]?");
 
         /* We check for insufficient lookahead only every 8th comparison;
          * the 256th check will be made at strstart+258.
@@ -1263,7 +1263,7 @@ local uInt longest_match(s, cur_match)
                  *++scan == *++match && *++scan == *++match &&
                  scan < strend);
 
-        Assert(scan <= s->window+(unsigned)(s->window_size-1), "wild scan");
+        verify(scan <= s->window+(unsigned)(s->window_size-1), "wild scan");
 
         len = MAX_MATCH - (int)(strend - scan);
         scan = strend - MAX_MATCH;
@@ -1306,11 +1306,11 @@ local uInt longest_match(s, cur_match)
     /* The code is optimized for HASH_BITS >= 8 and MAX_MATCH-2 multiple of 16.
      * It is easy to get rid of this optimization if necessary.
      */
-    Assert(s->hash_bits >= 8 && MAX_MATCH == 258, "Code too clever");
+    verify(s->hash_bits >= 8 && MAX_MATCH == 258, "Code too clever");
 
-    Assert((ulg)s->strstart <= s->window_size-MIN_LOOKAHEAD, "need lookahead");
+    verify((ulg)s->strstart <= s->window_size-MIN_LOOKAHEAD, "need lookahead");
 
-    Assert(cur_match < s->strstart, "no future");
+    verify(cur_match < s->strstart, "no future");
 
     match = s->window + cur_match;
 
@@ -1325,7 +1325,7 @@ local uInt longest_match(s, cur_match)
      * the hash keys are equal and that HASH_BITS >= 8.
      */
     scan += 2, match += 2;
-    Assert(*scan == *match, "match[2]?");
+    verify(*scan == *match, "match[2]?");
 
     /* We check for insufficient lookahead only every 8th comparison;
      * the 256th check will be made at strstart+258.
@@ -1337,7 +1337,7 @@ local uInt longest_match(s, cur_match)
              *++scan == *++match && *++scan == *++match &&
              scan < strend);
 
-    Assert(scan <= s->window+(unsigned)(s->window_size-1), "wild scan");
+    verify(scan <= s->window+(unsigned)(s->window_size-1), "wild scan");
 
     len = MAX_MATCH - (int)(strend - scan);
 
@@ -1395,7 +1395,7 @@ local void fill_window(s)
     unsigned more;    /* Amount of free space at the end of the window. */
     uInt wsize = s->w_size;
 
-    Assert(s->lookahead < MIN_LOOKAHEAD, "already enough lookahead");
+    verify(s->lookahead < MIN_LOOKAHEAD, "already enough lookahead");
 
     do {
         more = (unsigned)(s->window_size -(ulg)s->lookahead -(ulg)s->strstart);
@@ -1462,7 +1462,7 @@ local void fill_window(s)
          * Otherwise, window_size == 2*WSIZE so more >= 2.
          * If there was sliding, more >= WSIZE. So in all cases, more >= 2.
          */
-        Assert(more >= 2, "more < 2");
+        verify(more >= 2, "more < 2");
 
         n = read_buf(s->strm, s->window + s->strstart + s->lookahead, more);
         s->lookahead += n;
@@ -1527,7 +1527,7 @@ local void fill_window(s)
         }
     }
 
-    Assert((ulg)s->strstart <= s->window_size - MIN_LOOKAHEAD,
+    verify((ulg)s->strstart <= s->window_size - MIN_LOOKAHEAD,
            "not enough room for search");
 }
 
@@ -1580,7 +1580,7 @@ local block_state deflate_stored(s, flush)
         /* Fill the window as much as possible: */
         if (s->lookahead <= 1) {
 
-            Assert(s->strstart < s->w_size+MAX_DIST(s) ||
+            verify(s->strstart < s->w_size+MAX_DIST(s) ||
                    s->block_start >= (long)s->w_size, "slide too late");
 
             fill_window(s);
@@ -1588,7 +1588,7 @@ local block_state deflate_stored(s, flush)
 
             if (s->lookahead == 0) break; /* flush the current block */
         }
-        Assert(s->block_start >= 0L, "block gone");
+        verify(s->block_start >= 0L, "block gone");
 
         s->strstart += s->lookahead;
         s->lookahead = 0;
@@ -1836,7 +1836,7 @@ local block_state deflate_slow(s, flush)
             s->lookahead--;
         }
     }
-    Assert (flush != Z_NO_FLUSH, "no flush?");
+    verify (flush != Z_NO_FLUSH, "no flush?");
     if (s->match_available) {
         Tracevv((stderr,"%c", s->window[s->strstart-1]));
         _tr_tally_lit(s, s->window[s->strstart-1], bflush);
@@ -1896,7 +1896,7 @@ local block_state deflate_rle(s, flush)
                 if (s->match_length > s->lookahead)
                     s->match_length = s->lookahead;
             }
-            Assert(scan <= s->window+(uInt)(s->window_size-1), "wild scan");
+            verify(scan <= s->window+(uInt)(s->window_size-1), "wild scan");
         }
 
         /* Emit match if have run of MIN_MATCH or longer, else emit literal */

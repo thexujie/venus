@@ -318,7 +318,7 @@ DialogResultE CButton::GetDialogResult() const
 
 void CButton::DrawButtonIcon(IPaint * pPaint, int_x iX, int_x iY) const
 {
-	Verify(m_pIcon);
+	ensure(m_pIcon);
 	if(IsAviliable())
 		pPaint->DrawImage(m_pIcon, iX, iY);
 	else

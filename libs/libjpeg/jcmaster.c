@@ -308,7 +308,7 @@ initial_setup (j_compress_ptr cinfo)
 
 LOCAL(void)
 validate_script (j_compress_ptr cinfo)
-/* Verify that the scan script in cinfo->scan_info[] is valid; also
+/* ensure that the scan script in cinfo->scan_info[] is valid; also
  * determine whether it uses progressive JPEG, and set cinfo->progressive_mode.
  */
 {
