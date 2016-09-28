@@ -74,7 +74,7 @@ void CButton::OnTextChanged()
 	CControl::OnTextChanged();
 }
 
-sizeix CButton::GetContentSize() const
+sizeix CButton::GetPreferedSize() const
 {
 	sizeix size = MeasureMenuString(m_text, m_text.length(), m_font);
 	size += m_padding.size();
@@ -275,8 +275,6 @@ void CButton::OnKeyUp(KeyCodeE eKeyCode)
 			if(pForm)
 				GetApp()->EndRun(pForm->GetFormId(), m_eDialogResult);
 		}
-		else
-			OnMouseClickL(GetMousePosition());
 	default:
 		break;
 	}
@@ -320,7 +318,7 @@ DialogResultE CButton::GetDialogResult() const
 
 void CButton::DrawButtonIcon(IPaint * pPaint, int_x iX, int_x iY) const
 {
-	ensure(m_pIcon);
+	Verify(m_pIcon);
 	if(IsAviliable())
 		pPaint->DrawImage(m_pIcon, iX, iY);
 	else
