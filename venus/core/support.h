@@ -27,7 +27,7 @@ public:
 	virtual err_t Initialize() = 0;
 	virtual void UnInitialize() = 0;
 
-	virtual IObject * CreateObject(const oid_t & oid, void * pParam = 0) = 0;
+	virtual IObject * CreateObject(const oid_t & oid, void * pParam = nullptr) = 0;
 	virtual bool RegisterObject(const oid_t & oid, function<IObject *, void *> fnCreate, bool bReplace) = 0;
 	virtual bool UnregisterObject(const oid_t & oid) = 0;
 

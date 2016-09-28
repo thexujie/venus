@@ -16,9 +16,9 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 		switch(src_codepage)
 		{
 		case 1200:
-			length = WideCharToMultiByte(936, 0, (LPCWCH)src, (int_32)src_length, (LPSTR)dst, (int_32)dst_size, NULL, NULL);
+			length = WideCharToMultiByte(936, 0, static_cast<LPCWCH>(src), static_cast<int_32>(src_length), static_cast<LPSTR>(dst), static_cast<int_32>(dst_size), nullptr, nullptr);
 			if(length < dst_size && dst)
-				*((LPSTR)dst + length) = 0;
+				*(static_cast<LPSTR>(dst) + length) = 0;
 			break;
 		default:
 			err = err_bad_format;
@@ -29,9 +29,9 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 		switch(src_codepage)
 		{
 		case 1200:
-			length = WideCharToMultiByte(CP_ACP, 0, (LPCWCH)src, (int_32)src_length, (LPSTR)dst, (int_32)dst_size, NULL, NULL);
+			length = WideCharToMultiByte(CP_ACP, 0, static_cast<LPCWCH>(src), static_cast<int_32>(src_length), static_cast<LPSTR>(dst), static_cast<int_32>(dst_size), nullptr, nullptr);
 			if(length < dst_size && dst)
-				*((LPSTR)dst + length) = 0;
+				*(static_cast<LPSTR>(dst) + length) = 0;
 			break;
 		default:
 			err = err_bad_format;
@@ -43,9 +43,9 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 		switch(src_codepage)
 		{
 		case 1200:
-			length = WideCharToMultiByte(CP_UTF8, 0, (LPCWCH)src, (int_32)src_length, (LPSTR)dst, (int_32)dst_size, NULL, NULL);
+			length = WideCharToMultiByte(CP_UTF8, 0, static_cast<LPCWCH>(src), static_cast<int_32>(src_length), static_cast<LPSTR>(dst), static_cast<int_32>(dst_size), nullptr, nullptr);
 			if(length < dst_size && dst)
-				*((LPSTR)dst + length) = 0;
+				*(static_cast<LPSTR>(dst) + length) = 0;
 			break;
 		default:
 			err = err_bad_format;
@@ -58,9 +58,9 @@ CORE_API err_t text_encode(int_x src_codepage, const void * src, int_x src_lengt
 		//case CP_ACP:
 		//case 936:
 		//case CP_UTF8:
-			length = MultiByteToWideChar((uint_32)src_codepage, 0, (LPCCH)src, (int_32)src_length, (LPWSTR)dst, (int_32)dst_size);
+			length = MultiByteToWideChar(static_cast<uint_32>(src_codepage), 0, static_cast<LPCCH>(src), static_cast<int_32>(src_length), static_cast<LPWSTR>(dst), static_cast<int_32>(dst_size));
 			if(length < dst_size && dst)
-				*((LPWSTR)dst + length) = 0;
+				*(static_cast<LPWSTR>(dst) + length) = 0;
 		//	break;
 		//default:
 		//	err = err_bad_format;

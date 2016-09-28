@@ -144,7 +144,7 @@ void CBufferedInputStream::SetBufferSize(int_x iSize)
 	if(m_pBuffer && m_bNeedDelete)
 	{
 		delete[] m_pBuffer;
-		m_pBuffer = 0;
+		m_pBuffer = nullptr;
 	}
 	m_pBuffer = new byte_t[iSize];
 	m_iSize = iSize;
@@ -258,7 +258,7 @@ void CBufferedOutputStream::Write(byte_t bVal)
 void CBufferedOutputStream::Write(const void * pBytes, int_x iLength)
 {
 	ConfirmBufferedOutputStream();
-	const byte_t * pTemp = (const byte_t *)pBytes;
+	const byte_t * pTemp = static_cast<const byte_t *>(pBytes);
 	while(m_iPosition + iLength > m_iSize)
 	{
 		int_x iTemp = m_iSize - m_iPosition;
@@ -331,7 +331,7 @@ void CBufferedOutputStream::SetBufferSize(int_x iSize)
 	if(m_pBuffer && m_bNeedDelete)
 	{
 		delete[] m_pBuffer;
-		m_pBuffer = 0;
+		m_pBuffer = nullptr;
 	}
 	m_pBuffer = new byte_t[iSize];
 	m_iSize = iSize;

@@ -52,7 +52,7 @@ public:
 };
 
 
-class DerivedT : public BaseT, public Base2T
+class DerivedT : virtual public BaseT, virtual public Base2T
 {
 public:
 	virtual int fun(int a, int b)
@@ -92,22 +92,6 @@ public:
 
 bool Test()
 {
-	DerivedT dr;
-	Derived2T dr2;
-	int res = 0;
-	auto pfn = &DerivedT::fun;
-	(dr.*pfn)(12, 13);
-
-	auto pf2n = &Derived2T::fun;
-	(dr2.*pf2n)(12, 13);
-	res = bind(&dr, &DerivedT::fun)(12, 13);
-	res = bind(&dr, &DerivedT::fun2)(12, 13);
-	res = bind(&dr, &DerivedT::fun3)(12, 13);
-	res = bind(&dr, &BaseT::fun)(12, 13);
-	res = bind(&dr, &BaseT::fun2)(12, 13);
-	res = bind(&dr, &DerivedT::fun4)(12, 13);
-	verify(1);
-
 	CoInitialize(nullptr);
 
 	CWin32App app;

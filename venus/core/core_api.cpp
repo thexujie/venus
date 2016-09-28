@@ -7,6 +7,8 @@
 
 VENUS_BEG
 
+#if __cplusplus
+#endif
 void breakpoint()
 {
 	//_asm int 3

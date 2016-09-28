@@ -25,7 +25,7 @@ void log(int_x iLevel, const char_16 * szFormat, ...)
 	IStdOut * pStdOut = GetStdOut();
 	if(pStdOut)
 	{
-		va_list pArgs = NULL;
+		va_list pArgs = nullptr;
 		va_start(pArgs, szFormat);
 		pStdOut->out(iLevel, szFormat, pArgs);
 		va_end(pArgs);
@@ -42,7 +42,7 @@ void log(int_x iLevel, const char_8 * szFormat, ...)
 	IStdOut * pStdOut = GetStdOut();
 	if(pStdOut)
 	{
-		va_list pArgs = NULL;
+		va_list pArgs = nullptr;
 		va_start(pArgs, szFormat);
 		pStdOut->out(iLevel, szFormat, pArgs);
 		va_end(pArgs);
@@ -50,43 +50,42 @@ void log(int_x iLevel, const char_8 * szFormat, ...)
 	else {}
 }
 
+#ifdef _DEBUG
 void log0(const char_16 * szFormat, ...)
 {
-#ifdef _DEBUG
 	IStdOut * pStdOut = GetStdOut();
 
 	if(pStdOut)
 	{
-		va_list pArgs = NULL;
+		va_list pArgs = nullptr;
 		va_start(pArgs, szFormat);
 		pStdOut->out(0, szFormat, pArgs);
 		va_end(pArgs);
 	}
 	else {}
-#endif // _DEBUG
 }
 
 void log0(const char_8 * szFormat, ...)
 {
-#ifdef _DEBUG
 	IStdOut * pStdOut = GetStdOut();
 	if(pStdOut)
 	{
-		va_list pArgs = NULL;
+		va_list pArgs = nullptr;
 		va_start(pArgs, szFormat);
 		pStdOut->out(0, szFormat, pArgs);
 		va_end(pArgs);
 	}
 	else {}
-#endif // _DEBUG
 }
+
+#endif // _DEBUG
 
 void log1(const char_16 * szFormat, ...)
 {
 	IStdOut * pStdOut = GetStdOut();
 	if(pStdOut)
 	{
-		va_list pArgs = NULL;
+		va_list pArgs = nullptr;
 		va_start(pArgs, szFormat);
 		pStdOut->out(1, szFormat, pArgs);
 		va_end(pArgs);
@@ -99,7 +98,7 @@ void log1(const char_8 * szFormat, ...)
 	IStdOut * pStdOut = GetStdOut();
 	if(pStdOut)
 	{
-		va_list pArgs = NULL;
+		va_list pArgs = nullptr;
 		va_start(pArgs, szFormat);
 		pStdOut->out(1, szFormat, pArgs);
 		va_end(pArgs);
@@ -111,7 +110,7 @@ void log2(const char_16 * szFormat, ...)
 	IStdOut * pStdOut = GetStdOut();
 	if(pStdOut)
 	{
-		va_list pArgs = NULL;
+		va_list pArgs = nullptr;
 		va_start(pArgs, szFormat);
 		pStdOut->out(2, szFormat, pArgs);
 		va_end(pArgs);
@@ -124,7 +123,7 @@ void log2(const char_8 * szFormat, ...)
 	IStdOut * pStdOut = GetStdOut();
 	if(pStdOut)
 	{
-		va_list pArgs = NULL;
+		va_list pArgs = nullptr;
 		va_start(pArgs, szFormat);
 		pStdOut->out(2, szFormat, pArgs);
 		va_end(pArgs);

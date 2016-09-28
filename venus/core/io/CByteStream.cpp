@@ -5,7 +5,7 @@ VENUS_BEG
 
 CByteStream::CByteStream()
 {
-	m_pBuffer = 0;
+	m_pBuffer = nullptr;
 	m_iSize = 0;
 	m_iLength = 0;
 	m_bAutoDelete = false;

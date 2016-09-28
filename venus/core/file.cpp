@@ -516,7 +516,7 @@ vector<fileinfo_t> folderinfo_t::get_files(uint_32 uiAttrCare, uint_32 uiAttr, c
 
 bool folderinfo_t::create()
 {
-	if(::CreateDirectory(path, NULL) != FALSE)
+	if(::CreateDirectory(path, nullptr) != FALSE)
 	{
 		refresh();
 		return true;

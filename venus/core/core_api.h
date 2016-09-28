@@ -11,8 +11,13 @@ VENUS_BEG
 
 CORE_API void log(int_x iLevel, const char_16 * format, ...);
 CORE_API void log(int_x iLevel, const char_8 * format, ...);
+#ifdef _DEBUG
 CORE_API void log0(const char_16 * format, ...);
 CORE_API void log0(const char_8 * format, ...);
+#else
+CORE_API void log0(const char_16 * format, ...){ }
+CORE_API void log0(const char_8 * format, ...){ }
+#endif
 CORE_API void log1(const char_16 * format, ...);
 CORE_API void log1(const char_8 * format, ...);
 CORE_API void log2(const char_16 * format, ...);
@@ -886,7 +891,7 @@ void arraysortinsertex(EleT * arr, int_x length, CmpFuncT pfnCmp)
 	else if(count > 2)
 	{
 		EleT ele;
-		EleT * insert = 0;
+		EleT * insert = nullptr;
 		for(EleT * curr = arr + 1; curr != end; ++curr)
 		{
 			ele = *curr;
