@@ -275,6 +275,8 @@ void CButton::OnKeyUp(KeyCodeE eKeyCode)
 			if(pForm)
 				GetApp()->EndRun(pForm->GetFormId(), m_eDialogResult);
 		}
+		else
+			OnMouseClickL(GetMousePosition());
 	default:
 		break;
 	}
