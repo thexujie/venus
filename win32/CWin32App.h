@@ -12,14 +12,14 @@ public:
 	void UnInitialize();
 
 	IObject * CreateObject(const oid_t & oid, void * pParam);
-	bool RegisterObject(const oid_t & oid, function<IObject *, void *> fnCreate, bool bReplace);
+	bool RegisterObject(const oid_t & oid, function<IObject *(void *)> fnCreate, bool bReplace);
 	bool UnregisterObject(const oid_t & oid);
 
 	void SetService(const oid_t & oid, IService * pService);
 	IService * GetService(const oid_t & oid) const;
 
-	void SetTimer(function<int_x, int_x> fun, int_x iPeriod, int_x iId = 0);
-	void KillTimer(function<int_x, int_x> fun, int_x iId = 0);
+	void SetTimer(function<int_x(int_x)> fun, int_x iPeriod, int_x iId = 0);
+	void KillTimer(function<int_x(int_x)> fun, int_x iId = 0);
 
 	void Create2DDevice(Device2DTypeE eType);
 
@@ -43,7 +43,7 @@ private:
 
 	struct TimerT
 	{
-		function<int_x, int_x> fun;
+		function<int_x(int_x)> fun;
 		//! 间隔
 		int_x iPeriod;
 		//! Id，当 fun 和 iPeriod 都相同时，可以用于区分
@@ -62,7 +62,7 @@ private:
 	struct ObjectInfoT
 	{
 		oid_t oid;
-		function<IObject *, void *> fnCreate;
+		function<IObject *(void *)> fnCreate;
 	};
 	vector<ObjectInfoT> m_objectInfos;
 

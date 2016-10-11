@@ -367,7 +367,7 @@ struct eff_param_float4x4xX_t
 	int_x offset;
 	// size in bytes.
 	int_x size;
-	function<err_t, shader_e, int_x, int_x, const float4x4 *> fun_set;
+	function<err_t(shader_e, int_x, int_x, const float4x4 *)> fun_set;
 #ifdef _DEBUG
 	chbuffera<EFFECT_MAX_IDEITIFIER> name;
 #endif

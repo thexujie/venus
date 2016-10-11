@@ -28,14 +28,14 @@ public:
 	virtual void UnInitialize() = 0;
 
 	virtual IObject * CreateObject(const oid_t & oid, void * pParam = nullptr) = 0;
-	virtual bool RegisterObject(const oid_t & oid, function<IObject *, void *> fnCreate, bool bReplace) = 0;
+	virtual bool RegisterObject(const oid_t & oid, function<IObject *(void *)> fnCreate, bool bReplace) = 0;
 	virtual bool UnregisterObject(const oid_t & oid) = 0;
 
 	virtual void SetService(const oid_t & oid, IService * pService) = 0;
 	virtual IService * GetService(const oid_t & oid) const = 0;
 
-	virtual void SetTimer(function<int_x, int_x> fun, int_x iPeriod, int_x iId = 0) = 0;
-	virtual void KillTimer(function<int_x, int_x> fun, int_x iId = 0) = 0;
+	virtual void SetTimer(function<int_x(int_x)> fun, int_x iPeriod, int_x iId = 0) = 0;
+	virtual void KillTimer(function<int_x(int_x)> fun, int_x iId = 0) = 0;
 
 	virtual int_x OnRun() = 0;
 	virtual int_x Run(int_x iFormId, AppRunE eAppRun) = 0;

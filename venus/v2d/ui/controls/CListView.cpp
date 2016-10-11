@@ -824,7 +824,7 @@ void CListView::Sort(bool(*pfnCmp)(const ListViewRowT * pLeftItem, const ListVie
 	Repaint();
 }
 
-void CListView::Sort(function<int_x, const ListViewRowT *, const ListViewRowT *> fun)
+void CListView::Sort(function<int_x(const ListViewRowT *, const ListViewRowT *)> fun)
 {
 	int_x iRowSelected = -1;
 	m_rows.sort(fun, ListViewItemSwap);

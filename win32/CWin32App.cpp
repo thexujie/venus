@@ -43,7 +43,7 @@ IObject * CWin32App::CreateObject(const oid_t & oid, void * pParam)
 	return nullptr;
 }
 
-bool CWin32App::RegisterObject(const oid_t & oid, function<IObject *, void *> fnCreate, bool bReplace)
+bool CWin32App::RegisterObject(const oid_t & oid, function<IObject *(void *)> fnCreate, bool bReplace)
 {
 	for(int_x cnt = 0, size = m_objectInfos.size(); cnt < size; ++cnt)
 	{
@@ -143,7 +143,7 @@ static void __stdcall UpdateViewTimerFunc(HWND hWnd, UINT/* = uiMessage*/, UINT_
 		pThis->OnTimerProc();
 }
 
-void CWin32App::SetTimer(function<int_x, int_x> fun, int_x iPeriod, int_x iId)
+void CWin32App::SetTimer(function<int_x(int_x)> fun, int_x iPeriod, int_x iId)
 {
 	if(!m_iTimerId)
 		m_iTimerId = (int_x)::SetTimer(NULL, 0, 100, UpdateViewTimerFunc);
@@ -155,7 +155,7 @@ void CWin32App::SetTimer(function<int_x, int_x> fun, int_x iPeriod, int_x iId)
 	m_timers.add(timer);
 }
 
-void CWin32App::KillTimer(function<int_x, int_x> fun, int_x iId)
+void CWin32App::KillTimer(function<int_x(int_x)> fun, int_x iId)
 {
 	TimerT timer = {fun, 0, iId, 0};
 	if(m_timers.remove(timer) && m_timers.is_empty() && m_iTimerId)

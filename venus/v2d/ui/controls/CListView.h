@@ -184,7 +184,7 @@ public:
 	bool IsShowFrameY() const;
 
 	void Sort(bool (*pfnCmp)(const ListViewRowT * pLeftItem, const ListViewRowT * pRightItem));
-	void Sort(function<int_x, const ListViewRowT *, const ListViewRowT *> fun);
+	void Sort(function<int_x(const ListViewRowT *, const ListViewRowT *)> fun);
 
 	void UpdateScroll() override;
 	void EnsureRowVisible(int_x iRow);

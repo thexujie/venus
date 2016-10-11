@@ -104,6 +104,8 @@ protected:
 };
 
 
+template<typename T>
+class CORE_API function{ };
 /**
  *
  * class Base
@@ -126,7 +128,7 @@ protected:
  * 这四个 function 是相同的，都是调用了重载版的 Get.
  */
 template<typename RetT, typename ...Args>
-class CORE_API function : public function_base
+class CORE_API function<RetT(Args...)> : public function_base
 {
 public:
 	typedef RetT (*fun_global_t)(Args...);
@@ -274,15 +276,15 @@ public:
 };
 
 template<typename RetT, typename ...Args>
-function<RetT, Args...> bind(int_x(*p_fun)(Args...))
+function<RetT(Args...)> bind(int_x(*p_fun)(Args...))
 {
-	return function<RetT, Args...>(p_fun);
+	return function<RetT(Args...)>(p_fun);
 }
 
 template<typename RetT, typename ClassT, typename BaseT, typename ...Args>
-function<RetT, Args...> bind(const ClassT * p_this, RetT(BaseT::* p_fun)(Args...))
+function<RetT(Args...)> bind(const ClassT * p_this, RetT(BaseT::* p_fun)(Args...))
 {
-	return function<RetT, Args...>(p_this, p_fun);
+	return function<RetT(Args...)>(p_this, p_fun);
 }
 
 class CORE_API event_base
@@ -300,7 +302,7 @@ template<typename ...Args>
 class CORE_API event : public event_base
 {
 public:
-	typedef function<int_x, Args...> function_type;
+	typedef function<int_x(Args...)> function_type;
 
 	event() {}
 	~event() {}
