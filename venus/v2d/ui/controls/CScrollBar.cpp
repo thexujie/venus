@@ -3,9 +3,9 @@
 
 VENUS_BEG
 
-CScrollBar::CScrollBar()
-	: m_iMin(0), m_iMax(0), m_iValue(0), m_iLine(0), m_iPage(0), 
-	m_eScrollPoint(ScrollPointInvalid), m_bDraging(false), m_eDirection(AxisX),
+CScrollBar::CScrollBar() :
+	m_eDirection(AxisX), m_iMin(0), m_iMax(0), m_iValue(0), m_iLine(0),
+	m_iPage(0), m_eScrollPoint(ScrollPointInvalid), m_bDraging(false), m_iDragOff(0),
 	m_pScrollTarget(nullptr)
 {
 	m_bRepaintMouseDownUpL = true;
@@ -299,18 +299,23 @@ void CScrollBar::OnMouseDownL(pointix point)
 	{
 	case ScrollPointBar:
 		Capture(true);
+		Repaint();
 		break;
 	case ScrollPointLineUp:
 		LineUp();
+		Repaint();
 		break;
 	case ScrollPointPageUp:
 		PageUp();
+		Repaint();
 		break;
 	case ScrollPointPageDown:
 		PageDown();
+		Repaint();
 		break;
 	case ScrollPointLineDown:
 		LineDown();
+		Repaint();
 		break;
 	default:
 		break;
@@ -320,6 +325,7 @@ void CScrollBar::OnMouseDownL(pointix point)
 void CScrollBar::OnMouseUpL(pointix point)
 {
 	Capture(false);
+	Repaint();
 	m_bDraging = false;
 	SetScrollPoint(GetMouseScrollPoint(point));
 	CControl::OnMouseUpL(point);

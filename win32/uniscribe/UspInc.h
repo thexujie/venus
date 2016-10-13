@@ -81,6 +81,9 @@ struct usp_font_t
 	SCRIPT_CACHE * cache;
 	HFONT hfont;
 	int_x font_size;
+#ifdef _DEBUG
+	font_t font;
+#endif
 };
 
 class WIN32_API usp_run_t

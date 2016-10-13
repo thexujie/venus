@@ -769,19 +769,19 @@ winerr_t CTextLayoutUsp::Draw(HDC hdc, int_x iX, int_x iY, uint_32 color, const 
 		if(cluster_beg.run == cluster_end.run)
 		{
 			const usp_run_t & run = m_runs[cluster_beg.run];
-			DrawRun(hdc, iX, iY, rect, cluster_beg.run, line.crange.index, line.crange.index + line.crange.length);
+			DrawRun(hdc, iX, iY, line.tlrect.h, rect, cluster_beg.run, line.crange.index, line.crange.index + line.crange.length);
 		}
 		else
 		{
 			const usp_run_t & run_beg = m_runs[cluster_beg.run];
-			DrawRun(hdc, iX, iY, rect, cluster_beg.run, line.crange.index, run_beg.crange.index + run_beg.crange.length);
+			DrawRun(hdc, iX, iY, line.tlrect.h, rect, cluster_beg.run, line.crange.index, run_beg.crange.index + run_beg.crange.length);
 			for(int_x iRun = cluster_beg.run + 1; iRun < cluster_end.run; ++iRun)
 			{
 				const usp_run_t & run = m_runs[iRun];
-				DrawRun(hdc, iX, iY, rect, iRun, run.crange.index, run.crange.index + run.crange.length);
+				DrawRun(hdc, iX, iY, line.tlrect.h, rect, iRun, run.crange.index, run.crange.index + run.crange.length);
 			}
 			const usp_run_t & run_end = m_runs[cluster_end.run];
-			DrawRun(hdc, iX, iY, rect, cluster_end.run, run_end.crange.index, line.crange.index + line.crange.length);
+			DrawRun(hdc, iX, iY, line.tlrect.h, rect, cluster_end.run, run_end.crange.index, line.crange.index + line.crange.length);
 		}
 		iY += line.tlrect.h;
 	}
@@ -791,7 +791,7 @@ winerr_t CTextLayoutUsp::Draw(HDC hdc, int_x iX, int_x iY, uint_32 color, const 
 	return S_OK;
 }
 
-winerr_t CTextLayoutUsp::DrawRun(HDC hdc, int_x iX, int_x iY, const RECT & rect,
+winerr_t CTextLayoutUsp::DrawRun(HDC hdc, int_x iX, int_x iY, int_x iLineH, const RECT & rect,
 	int_x iRun, int_x icluster_beg, int_x icluster_end) const
 {
 	if(icluster_beg >= icluster_end)
@@ -799,15 +799,17 @@ winerr_t CTextLayoutUsp::DrawRun(HDC hdc, int_x iX, int_x iY, const RECT & rect,
 
 	const usp_run_t & run = m_runs[iRun];
 	HGDIOBJ hFontOld = ::SelectObject(hdc, run.font.hfont);
-	TEXTMETRICW tm;
-	::GetTextMetricsW(hdc, &tm);
+	//TEXTMETRICW tm;
+	//::GetTextMetricsW(hdc, &tm);
+
+	//iY += (iLineH - tm.tmHeight) / 2;
 
 	const usp_cluster_t & cluster_beg = m_clusters[icluster_beg];
 	const usp_cluster_t & cluster_end = m_clusters[icluster_end - 1];
 	int_x iglyph = cluster_beg.grange.index;
 	int_x nglyph = cluster_end.grange.index + cluster_end.grange.length - cluster_beg.grange.index;
 	iX += cluster_beg.tlrect.x;
-	iY += tm.tmExternalLeading;
+	//iY += tm.tmExternalLeading;
 	HRESULT hResult = m_pFactory->TextOutScp(hdc, run.font.cache, iX, iY, ETO_CLIPPED, &rect,
 		&run.analysis,
 		m_glyphs + iglyph, nglyph,

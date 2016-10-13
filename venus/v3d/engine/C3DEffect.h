@@ -32,8 +32,8 @@ public:
 protected:
 
 	void _ParseShaders(const xml_node & node_shader, passstate_t & state);
-	void _ParseStates(linear_map<textw, textw> & states, passstate_t & state);
-	void _ParseSampler(linear_map<textw, textw> & states, sampler_state_t & state);
+	void _ParseStates(dictionary<textw, textw> & states, passstate_t & state);
+	void _ParseSampler(dictionary<textw, textw> & states, sampler_state_t & state);
 
 public:
 	struct effect_cbuffer_t

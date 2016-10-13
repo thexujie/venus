@@ -41,7 +41,7 @@ public:
 	tl_metrics_t GetMetrics() const;
 public:
 	winerr_t Draw(HDC hdc, int_x iX, int_x iY, uint_32 color, const rectix & rect) const;
-	winerr_t DrawRun(HDC hdc, int_x iX, int_x iY, const RECT & rect,
+	winerr_t DrawRun(HDC hdc, int_x iX, int_x iY, int_x iLineH, const RECT & rect,
 					   int_x iRun, int_x iCluster, int_x iClusterLength) const;
 
 private:

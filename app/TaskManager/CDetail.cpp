@@ -49,6 +49,7 @@ CDetailWindow::CDetailWindow(int_x iWidth, int_x iHeight)
 
 	AddControl(&m_grpBase);
 	AddControl(&m_txbDetail);
+	m_txbDetail.SetFontSize(20);
 
 	m_txlName.SelectedChanged += bind(this, &CDetailWindow::OnTextLineSelectedChanged);
 	m_txlPath.SelectedChanged += bind(this, &CDetailWindow::OnTextLineSelectedChanged);

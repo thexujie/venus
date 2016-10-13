@@ -16,6 +16,7 @@ void FontToLOGFONT(HDC hdc, const font_t & font, LOGFONT & logFont)
 	int iDpiY = GetDeviceCaps(hdc, LOGPIXELSY);
 	logFont.lfWidth = 0;
 	logFont.lfHeight = (int_32)(-font.size * 72 / iDpiY);
+	//logFont.lfHeight = (int_32)font.size;
 	logFont.lfWeight = (int_32)font.weight;
 
 	logFont.lfItalic = (uint_8)font.italic;

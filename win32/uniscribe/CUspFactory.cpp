@@ -41,6 +41,9 @@ usp_font_t CUspFactory::GetFont(const font_t & font)
 	if(pFontCache)
 	{
 		usp_font_t uspFont = {pFontCache->cache, pFontCache->hFont, font.size};
+#ifdef _DEBUG
+		uspFont.font = font;
+#endif
 		return uspFont;
 	}
 	else

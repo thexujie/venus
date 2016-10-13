@@ -43,8 +43,8 @@ namespace venus
 #include "vector.h"
 #include "pair.h"
 #include "list.h"
-#include "linear_map.h"
-#include "hash_map.h"
+#include "dictionary.h"
+#include "hashtable.h"
 #include "byte_buffer.h"
 #include "object_ptr.h"
 

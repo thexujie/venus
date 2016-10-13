@@ -68,7 +68,7 @@ err_t C3DEffect::Load(const I3DFile * pFile)
 
 	m_name = doc[L"name"];
 
-	linear_map<textw, textw> state_nodes;
+	dictionary<textw, textw> state_nodes;
 	vector<const xml_node *> pass_nodes;
 	vector<const xml_node *> sampler_nodes;
 	passstate_t state_base = {};
@@ -498,7 +498,7 @@ err_t C3DEffect::SetVariable(const char_16 * name, const void * data, int_x size
 }
 
 template<typename LamdaT>
-static void effect_parse_state(linear_map<textw, textw> & states, const char_16 * szName, LamdaT lamda)
+static void effect_parse_state(dictionary<textw, textw> & states, const char_16 * szName, LamdaT lamda)
 {
 	textw value;
 	if(states.get_value(szName, value))
@@ -525,7 +525,7 @@ void C3DEffect::_ParseShaders(const xml_node & node_shader, passstate_t & state)
 	if(attr_cs.is_valid()) state.main[shader_cs] = attr_cs.value;
 }
 
-void C3DEffect::_ParseStates(linear_map<textw, textw> & states, passstate_t & state)
+void C3DEffect::_ParseStates(dictionary<textw, textw> & states, passstate_t & state)
 {
 	// rasterrize state
 	effect_parse_state(states, L"cullmode", [&state](const textw & text) { V3d::Parse(state.cullmode, text); });
@@ -576,7 +576,7 @@ void C3DEffect::_ParseStates(linear_map<textw, textw> & states, passstate_t & st
 	effect_parse_state(states, L"blend_sample_mask", [&state](const textw & text) { state.blend_sample_mask = text.toui32(0); });
 }
 
-void C3DEffect::_ParseSampler(linear_map<textw, textw> & states, sampler_state_t & state)
+void C3DEffect::_ParseSampler(dictionary<textw, textw> & states, sampler_state_t & state)
 {
 	effect_parse_state(states, L"filtermode", [&state](const textw & text) { V3d::Parse(state.filtermode, text); });
 	effect_parse_state(states, L"address_u", [&state](const textw & text) { V3d::Parse(state.addressmode_u, text); });

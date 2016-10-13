@@ -35,13 +35,6 @@ struct doc_source_t
 	const char_16 * text;
 };
 
-// range
-struct tlrange_t
-{
-	int_x index;
-	int_x length;
-};
-
 // text range
 struct trange_t
 {

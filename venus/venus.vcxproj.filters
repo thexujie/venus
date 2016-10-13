@@ -372,9 +372,6 @@
     <ClInclude Include="core\function.h">
       <Filter>core\base\struct</Filter>
     </ClInclude>
-    <ClInclude Include="core\hash_map.h">
-      <Filter>core\base\struct</Filter>
-    </ClInclude>
     <ClInclude Include="core\list.h">
       <Filter>core\base\struct</Filter>
     </ClInclude>
@@ -762,9 +759,6 @@
     <ClInclude Include="v3d\engine\C3DEffect.h">
       <Filter>v3d\engine</Filter>
     </ClInclude>
-    <ClInclude Include="core\linear_map.h">
-      <Filter>core\base\struct</Filter>
-    </ClInclude>
     <ClInclude Include="core\math\vec3.h">
       <Filter>core\math</Filter>
     </ClInclude>
@@ -797,6 +791,12 @@
     </ClInclude>
     <ClInclude Include="core\datetime.h">
       <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\dictionary.h">
+      <Filter>core\base\struct</Filter>
+    </ClInclude>
+    <ClInclude Include="core\hashtable.h">
+      <Filter>core\base\struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

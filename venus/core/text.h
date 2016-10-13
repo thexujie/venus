@@ -524,46 +524,46 @@ public:
 		return texttobool<CharT>(m_data->buffer(), m_data->size());
 	}
 
-	int_32 toi32(int_32 defval = 0, int_x iBase = 0) const
+	int_32 toi32(int_32 defval = 0, int_x radix = 0) const
 	{
 		if(!length())
 			return defval;
-		return texttoi<CharT, int_32>(m_data->buffer(), m_data->size(), iBase);
+		return texttoi<CharT, int_32>(m_data->buffer(), m_data->size(), radix);
 	}
 
-	int_64 toi64(int_64 defval = 0, int_x iBase = 0) const
+	int_64 toi64(int_64 defval = 0, int_x radix = 0) const
 	{
 		if(!length())
 			return defval;
-		return texttoi<CharT, int_64>(m_data->buffer(), m_data->size(), iBase);
+		return texttoi<CharT, int_64>(m_data->buffer(), m_data->size(), radix);
 	}
 
-	int_x toix(int_x defval = 0, int_x iBase = 0) const
+	int_x toix(int_x defval = 0, int_x radix = 0) const
 	{
 		if(!length())
 			return defval;
-		return texttoi<CharT, int_x>(m_data->buffer(), m_data->size(), iBase);
+		return texttoi<CharT, int_x>(m_data->buffer(), m_data->size(), radix);
 	}
 
-	uint_32 toui32(uint_32 defval = 0, int_x scale = 0) const
+	uint_32 toui32(uint_32 defval = 0, int_x radix = 0) const
 	{
 		if(!length())
 			return defval;
-		return texttoi<CharT, uint_32>(m_data->buffer(), m_data->size(), scale);
+		return texttoi<CharT, uint_32>(m_data->buffer(), m_data->size(), radix);
 	}
 
-	uint_64 toui64(uint_64 defval = 0, int_x iBase = 0) const
+	uint_64 toui64(uint_64 defval = 0, int_x radix = 0) const
 	{
 		if(!length())
 			return defval;
-		return texttoi<CharT, uint_64>(m_data->buffer(), m_data->size(), iBase);
+		return texttoi<CharT, uint_64>(m_data->buffer(), m_data->size(), radix);
 	}
 
-	uint_x touix(uint_x defval = 0, int_x iBase = 0) const
+	uint_x touix(uint_x defval = 0, int_x radix = 0) const
 	{
 		if(!length())
 			return defval;
-		return texttoi<CharT, uint_x>(m_data->buffer(), m_data->size(), iBase);
+		return texttoi<CharT, uint_x>(m_data->buffer(), m_data->size(), radix);
 	}
 
 	float_32 tof32(float_32 defval = 0.0f) const

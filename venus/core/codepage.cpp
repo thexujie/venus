@@ -40,6 +40,17 @@ namespace encodings
 		int_x codepage = _getmbcp();
 		return encoding_t(codepage);
 	}
+
+	encoding_t from_charset(int_x charset)
+	{
+		switch(charset)
+		{
+		case 134:
+			return gb2312;
+		default:
+			return crt_encoding();
+		}
+	}
 }
 
 VENUS_END

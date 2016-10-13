@@ -234,9 +234,9 @@
     <ClInclude Include="core\doc.h" />
     <ClInclude Include="core\file.h" />
     <ClInclude Include="core\function.h" />
-    <ClInclude Include="core\hash_map.h" />
+    <ClInclude Include="core\hashtable.h" />
     <ClInclude Include="core\list.h" />
-    <ClInclude Include="core\linear_map.h" />
+    <ClInclude Include="core\dictionary.h" />
     <ClInclude Include="core\math.h" />
     <ClInclude Include="core\math\xmm\float2.h" />
     <ClInclude Include="core\math\xmm\float3.h" />

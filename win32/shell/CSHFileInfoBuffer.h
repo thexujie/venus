@@ -22,7 +22,7 @@ public:
 	SHFileInfoT GetInfo(const char_x * szFile);
 
 private:
-	linear_map<int_x, IWin32ShellItemImage *> m_images;
+	dictionary<int_x, IWin32ShellItemImage *> m_images;
 	void * m_pbctx;
 	void * m_pbctx_folder;
 };

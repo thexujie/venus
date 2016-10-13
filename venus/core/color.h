@@ -64,7 +64,7 @@ private:
 class Colors
 {
 public:
-	enum
+	enum : uint_32
 	{
 		//! ×Ô¶¯ÑÕÉ«
 		Auto = 0x00000000,

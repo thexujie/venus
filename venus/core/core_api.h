@@ -2069,7 +2069,7 @@ bool texttobool(const CharT * szText, int_x iLength = -1)
 
 /// 将文本转换为整数
 template<typename CharT, typename IntT>
-IntT texttoi(const CharT * text, int_x length, int_x scale = 0)
+IntT texttoi(const CharT * text, int_x length, int_x radix = 0)
 {
 	if(length < 0)
 		length = textlen(text);
@@ -2091,35 +2091,35 @@ IntT texttoi(const CharT * text, int_x length, int_x scale = 0)
 		return 0;
 
 	const CharT * curr = text;
-	if(scale <= 0)
+	if(radix <= 0)
 	{
 		if(curr[0] == '0' && length >= 2)
 		{
 			if(curr[1] == 'b' || curr[1] == 'B' || curr[1] == '0')
 			{
-				scale = 2;
+				radix = 2;
 				curr += 2;
 			}
 			else if(curr[1] == 'x' || curr[1] == 'X')
 			{
-				scale = 16;
+				radix = 16;
 				curr += 2;
 			}
 			else if(curr[1] == 'h' || curr[1] == 'H')
 			{
-				scale = 8;
+				radix = 8;
 				curr += 2;
 			}
 			else if(curr[1] == 'd' || curr[1] == 'D')
 			{
-				scale = 10;
+				radix = 10;
 				curr += 2;
 			}
 			else
-				scale = 10;
+				radix = 10;
 		}
 		else
-			scale = 10;
+			radix = 10;
 	}
 
 	IntT integer = 0;
@@ -2141,35 +2141,35 @@ IntT texttoi(const CharT * text, int_x length, int_x scale = 0)
 		else
 			break;
 
-		if(number >= (IntT)scale)
+		if(number >= (IntT)radix)
 			break;
 
-		integer = integer * (IntT)scale + number;
+		integer = integer * (IntT)radix + number;
 	}
 	return integer * sign;
 }
 
 template<typename CharT>
-int_x texttoix(const CharT * text, int_x length, int_x scale = 0)
+int_x texttoix(const CharT * text, int_x length, int_x radix = 0)
 {
-	return texttoi<CharT, int_x>(text, length, scale);
+	return texttoi<CharT, int_x>(text, length, radix);
 }
 
 template<typename CharT>
-int_32 texttoi32(const CharT * text, int_x length, int_x scale = 0)
+int_32 texttoi32(const CharT * text, int_x length, int_x radix = 0)
 {
-	return texttoi<CharT, int_32>(text, length, scale);
+	return texttoi<CharT, int_32>(text, length, radix);
 }
 
 template<typename CharT>
-int_64 texttoi64(const CharT * text, int_x length, int_x scale = 0)
+int_64 texttoi64(const CharT * text, int_x length, int_x radix = 0)
 {
-	return texttoi<CharT, int_64>(text, length, scale);
+	return texttoi<CharT, int_64>(text, length, radix);
 }
 
 /// 将文本转换为整数
 template<typename CharT, typename IntT>
-int_x texttoiarr(const CharT * text, int_x length, IntT * arr, int_x count, CharT split = ',', int_x scale = 0)
+int_x texttoiarr(const CharT * text, int_x length, IntT * arr, int_x count, CharT split = ',', int_x radix = 0)
 {
 	if(!text || !length || !arr || count <= 0)
 		return 0;
@@ -2191,7 +2191,7 @@ int_x texttoiarr(const CharT * text, int_x length, IntT * arr, int_x count, Char
 				break;
 		}
 
-		arr[index++] = texttoi<CharT, IntT>(beg, count, scale);
+		arr[index++] = texttoi<CharT, IntT>(beg, count, radix);
 		beg += count + 1;
 	}
 	return index;
@@ -2336,13 +2336,13 @@ int_x texttofarr(const CharT * text, int_x length, FloatT * arr, int_x count, Ch
 
 /// 将整数转换为文本
 template<typename CharT, typename IntT>
-int_x textfromi(CharT * text, int_x size, IntT value, int_x scale = 0, bool caps = false)
+int_x textfromi(CharT * text, int_x size, IntT value, int_x radix = 0, bool caps = false)
 {
-	if(scale <= 0)
-		scale = 10;
+	if(radix <= 0)
+		radix = 10;
 
 	// 进制不合法
-	if(scale < 2 || scale > 35)
+	if(radix < 2 || radix > 35)
 	{
 		if(text && size)
 			text[0] = 0;
@@ -2361,7 +2361,7 @@ int_x textfromi(CharT * text, int_x size, IntT value, int_x scale = 0, bool caps
 	do
 	{
 		++length;
-		temp /= scale;
+		temp /= radix;
 	}
 	while(temp);
 
@@ -2385,8 +2385,8 @@ int_x textfromi(CharT * text, int_x size, IntT value, int_x scale = 0, bool caps
 	IntT number = 0;
 	do
 	{
-		number = value % scale;
-		value /= scale;
+		number = value % radix;
+		value /= radix;
 
 		if(text)
 		{
@@ -2402,9 +2402,9 @@ int_x textfromi(CharT * text, int_x size, IntT value, int_x scale = 0, bool caps
 }
 
 template<typename CharT>
-int_x textfromix(CharT * text, int_x size, int_x value, int_x scale = 0, bool caps = false)
+int_x textfromix(CharT * text, int_x size, int_x value, int_x radix = 0, bool caps = false)
 {
-	return textfromi(text, size, value, scale, caps);
+	return textfromi(text, size, value, radix, caps);
 }
 
 /// 判断两个文本是否相等

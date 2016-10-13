@@ -36,6 +36,7 @@ namespace encodings
 #endif
 
 	CORE_API encoding_t crt_encoding();
+	CORE_API encoding_t from_charset(int_x charset);
 }
 
 VENUS_END
