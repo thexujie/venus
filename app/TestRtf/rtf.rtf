@@ -1,0 +1,195 @@
+{\rtf1\fbidis\ansi\ansicpg936\deff0\nouicompat\deflang1033\deflangfe2052{\fonttbl{\f0\fnil\fcharset0 NSimSun;}{\f1\fnil\fcharset134 NSimSun;}{\f2\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}
+{\colortbl ;\red128\green128\blue128;\red0\green0\blue0;\red163\green21\blue21;\red0\green0\blue255;\red43\green145\blue175;\red47\green79\blue79;\red0\green128\blue0;\red0\green128\blue128;\red111\green0\blue138;\red255\green0\blue0;}
+{\*\generator Riched20 10.0.14393}{\*\mmathPr\mnaryLim0\mdispDef1\mwrapIndent1440 }\viewkind4\uc1 
+\pard\ltrpar\sa200\sl276\slmult1\cf1\f0\fs19\lang2052 #include\cf2  \cf3 "stdafx.h"\cf2\par
+\cf1 #include\cf2  \cf3 "document.h"\cf2\par
+\par
+\cf4 static\cf2  \cf4 bool\cf2  HasMissingGlyphs(\cf4 const\cf2  \cf5 uint_16\cf2  * \cf1 pGlyphs\cf2 , \cf5 int_x\cf2  \cf1 iLength\cf2 , \cf4 const\cf2  \cf5 SCRIPT_FONTPROPERTIES\cf2  & \cf1 sfp\cf2 )\par
+\{\par
+\tab\cf5 uint_16\cf2  wDefault = \cf1 sfp\cf2 .wgDefault;\par
+\tab\cf5 uint_16\cf2  wInvalid = \cf1 sfp\cf2 .wgInvalid;\par
+\tab\cf5 uint_16\cf2  wBlank = \cf1 sfp\cf2 .wgBlank;\par
+\tab\cf5 uint_16\cf2  wGlyph = 0;\par
+\tab\cf4 for\cf2 (\cf5 int_x\cf2  cnt = 0; cnt < \cf1 iLength\cf2 ; ++cnt)\par
+\tab\{\par
+\tab\tab wGlyph = \cf1 pGlyphs\cf2 [cnt];\par
+\tab\tab\cf4 if\cf2 (wGlyph == wDefault ||\par
+\tab\tab\tab (wGlyph == wInvalid && wInvalid != wBlank))\par
+\tab\tab\tab\cf4 return\cf2  \cf4 true\cf2 ;\par
+\tab\}\par
+\tab\cf4 return\cf2  \cf4 false\cf2 ;\par
+\}\par
+\par
+\cf5 Document\cf2 ::Document()\par
+\{\par
+\tab\par
+\}\par
+\par
+\cf5 Document\cf2 ::~Document()\par
+\{\par
+\tab\par
+\}\par
+\par
+\cf4 const\cf2  \cf5 doc_font_t\cf2  DOC_FONT_EMPTY = \{ 0, 0, 0 \};\par
+\par
+\cf5 doc_font_t\cf2  \cf5 DocTextObject\cf2 ::GetFontFallBack(\cf4 const\cf2  \cf5 font_t\cf2  & \cf1 font\cf2 , \cf5 int_x\cf2  \cf1 iLanguage\cf2 , \cf4 const\cf2  \cf5 char_16\cf2  * \cf1 text\cf2  = \cf4 nullptr\cf2 , \cf5 int_x\cf2  \cf1 length\cf2  = 0)\par
+\{\par
+\tab\cf5 char_32\cf2  ch;\par
+\tab\cf5 int_x\cf2  len = utf16_to_unicode(\cf1 text\cf2 , \cf1 length\cf2 , ch);\par
+\tab\cf4 if\cf2 (len <= 0)\par
+\tab\tab\cf4 return\cf2  DOC_FONT_EMPTY;\par
+\par
+\tab\cf5 font_t\cf2  fontfb = \cf1 font\cf2 ;\par
+\tab\cf4 const\cf2   \cf5 unicodeplane_t\cf2  & plane = unicodeplane_find(\cf1 text\cf2 , len);\par
+\tab\cf4 switch\cf2 (plane.plane)\par
+\tab\{\par
+\tab\cf4 case\cf2  \cf6 unicodeplane_arabic\cf2 : \cf7 // lang 26\cf2\par
+\tab\tab fontfb.name \cf8 =\cf2  \cf3 L"Times New Roman"\cf2 ;\par
+\tab\tab\cf4 return\cf2  GetFont(fontfb);\par
+\par
+\tab\cf4 case\cf2  \cf6 unicodeplane_sinhala\cf2 : \cf7 // lang 31\cf2\par
+\tab\tab fontfb.name \cf8 =\cf2  \cf3 L"Tahoma"\cf2 ;\par
+\tab\tab\cf4 return\cf2  GetFont(fontfb);\par
+\par
+\tab\cf4 case\cf2  \cf6 unicodeplane_hangul_syllables\cf2 : \cf7 // lang 19\cf2\par
+\tab\tab fontfb.name \cf8 =\cf2  \cf3 L"Malgun Gothic"\cf2 ;\par
+\tab\tab\cf4 return\cf2  GetFont(fontfb);\par
+\par
+\tab\cf4 case\cf2  \cf6 unicodeplane_cjk_unified_ideographs_ext_b\cf2 : \cf7 // lang 12\cf2\par
+\tab\tab fontfb.name \cf8 =\cf2  \cf3 L"SimSun-ExtB"\cf2 ;\par
+\tab\tab\cf4 return\cf2  GetFont(fontfb);\par
+\par
+\tab\cf4 default\cf2 :\par
+\tab\tab\cf4 return\cf2  DOC_FONT_EMPTY;\par
+\tab\}\par
+\}\par
+\par
+\cf4 void\cf2  \cf5 DocTextObject\cf2 ::Layout(\cf5 rectix\cf2  \cf1 rect\cf2 )\par
+\{\par
+\tab\cf7 // font fallback\cf2\par
+\tab\cf4 enum\cf2  \cf5 fallback_e\cf2\par
+\tab\{\par
+\tab\tab\cf7 // \f1\'b5\'c8\'b4\'fd\'d7\'d6\'cc\'e5\'bb\'d8\'cd\'cb\cf2\par
+\tab\tab\cf6 fallback_waiting\cf2  = 0,\par
+\tab\tab\cf7 // \'d2\'d1\'bc\'ec\'b2\'e2\'b5\'bd\'d3\'d0\'ce\'de\'b7\'a8\'cf\'d4\'ca\'be\'b5\'c4\'d7\'d6\'b7\'fb.\cf2\par
+\tab\tab\cf6 fallback_prepare\cf2 ,\par
+\tab\tab\cf7 // \'d5\'fd\'d4\'da\'ca\'b9\'d3\'c3\'ba\'f3\'b1\'b8\'d7\'d6\'cc\'e5\'bd\'f8\'d0\'d0 shape\cf2\par
+\tab\tab\cf6 fallback_falling\cf2 ,\par
+\tab\tab\cf7 // \'ce\'de\'b7\'a8\'bb\'d8\'cd\'cb\'b5\'bd\'c8\'ce\'ba\'ce\'d2\'bb\'b8\'f6\'bf\'c9\'d3\'c3\'b5\'c4\'d7\'d6\'cc\'e5\'a3\'ac\'ca\'b9\'d3\'c3\'c4\'ac\'c8\'cf\'d7\'d6\'cc\'e5\'b5\'c4 missing char.\cf2\par
+\tab\tab\cf6 fallback_missing\cf2 ,\par
+\tab\tab\cf7 // \'d3\'c3 missing char \'b4\'fa\'cc\'e6\'c1\'cb\cf2\par
+\tab\tab\cf6 fallback_abandon\cf2 ,\par
+\tab\};\par
+\par
+\tab\cf5 HDC\cf2  hdcScreen = GetDC(\cf9 NULL\cf2 );\par
+\tab\cf5 HDC\cf2  hdc = CreateCompatibleDC(hdcScreen);\par
+\tab ReleaseDC(\cf9 NULL\cf2 , hdcScreen);\par
+\par
+\tab\cf5 doc_font_t\cf2  font = GetFont(0);\par
+\tab\cf5 HGDIOBJ\cf2  hOldFont = ::SelectObject(hdc, font.hfont);\par
+\tab\cf5 winerr_t\cf2  err;\par
+\par
+\tab\cf5 vector\cf2 <\cf5 uint_16\cf2 > text_clusters;\par
+\tab\cf5 vector\cf2 <\cf5 SCRIPT_VISATTR\cf2 > glyph_attrs;\par
+\tab\cf5 SCRIPT_FONTPROPERTIES\cf2  fprop = \{ \cf4 sizeof\cf2 (\cf5 SCRIPT_FONTPROPERTIES\cf2 ) \};\par
+\par
+\tab\cf4 for\cf2 (\cf5 int_x\cf2  irtf = 0; irtf < rtf_items.size(); ++irtf)\par
+\tab\{\par
+\tab\tab\cf4 const\cf2  \cf5 rtfitem_t\cf2  & rtfitem = rtf_items\cf8 [\cf2 irtf\cf8 ]\cf2 ;\par
+\tab\tab\cf7 /*const*/\cf2  \cf5 scpitem_t\cf2  & scpitem = scp_items\cf8 [\cf2 rtfitem.iitem\cf8 ]\cf2 ;\par
+\par
+\tab\tab\cf5 int_x\cf2  nglyph_max = rtfitem.trange.length * 3 / 2 + 16;\par
+\tab\tab\cf5 int_32\cf2  nglyph = 0;\par
+\tab\tab\cf5 uint_16\cf2  nclusters = 0;\par
+\par
+\tab\tab text_clusters.resize(rtfitem.trange.length);\par
+\tab\tab m_glyphs.resize(nglyph_max);\par
+\par
+\tab\tab\cf5 fallback_e\cf2  fallback = \cf6 fallback_waiting\cf2 ;\par
+\tab\tab\cf4 while\cf2 (\cf4 true\cf2 )\par
+\tab\tab\{\par
+\tab\tab\tab\cf7 // \'bb\'f1\'c8\'a1 glyph \'d0\'c5\'cf\'a2\'a3\'ac\'b0\'fc\'c0\'a8 glyph id\'a1\'a2text cluster\'a1\'a2glyph attr.\cf2\par
+\tab\tab\tab err \cf8 =\cf2  ScriptShape(hdc,\par
+\tab\tab\tab\tab font.cache, m_text.buffer() + rtfitem.trange.index, rtfitem.trange.length, nglyph_max, &(scpitem.sa), &nclusters, text_clusters, \cf4 nullptr\cf2 , &nglyph);\par
+\par
+\tab\tab\tab\cf4 if\cf2 (err == \cf9 E_PENDING\cf2 )\par
+\tab\tab\tab\tab err \cf8 =\cf2  \cf9 S_OK\cf2 ; \cf7 // cache \'b3\'f6\'b4\'ed\'a3\'ac\'b2\'bb\'b9\'dc\'c1\'cb.\cf2\par
+\tab\tab\tab\cf4 else\cf2  \cf4 if\cf2 (err == \cf9 E_OUTOFMEMORY\cf2 )\par
+\tab\tab\tab\tab ;\par
+\tab\tab\tab\cf4 else\cf2  \cf4 if\cf2 (err == \cf9 USP_E_SCRIPT_NOT_IN_FONT\cf2 )\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab\cf4 if\cf2 (fallback == \cf6 fallback_abandon\cf2 )\par
+\tab\tab\tab\tab\tab err \cf8 =\cf2  \cf9 S_OK\cf2 ; \cf7 // \'ca\'b5\'d4\'da\'b2\'bb\'d0\'d0\'c1\'cb\'a3\'ac\'c1\'ac missing char \'b6\'bc\'c3\'bb\'d3\'d0...\cf2\par
+\tab\tab\tab\tab\cf4 else\cf2\par
+\tab\tab\tab\tab\tab fallback = \cf6 fallback_prepare\cf2 ;\par
+\tab\tab\tab\}\par
+\tab\tab\tab\cf4 else\cf2  \cf4 if\cf2 (err == \cf9 S_OK\cf2 )\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab\cf4 if\cf2 (fallback == \cf6 fallback_waiting\cf2  || fallback == \cf6 fallback_falling\cf2 )\par
+\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab\tab ScriptGetFontProperties(hdc, font.cache, &fprop);\par
+\tab\tab\tab\tab\tab\cf4 if\cf2 (HasMissingGlyphs(m_glyphs, nglyph, fprop))\par
+\tab\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab\tab\tab\cf4 if\cf2 (fallback == \cf6 fallback_waiting\cf2 )\par
+\tab\tab\tab\tab\tab\tab\tab fallback = \cf6 fallback_prepare\cf2 ;\par
+\tab\tab\tab\tab\tab\tab\cf4 else\cf2\par
+\tab\tab\tab\tab\tab\tab\tab fallback = \cf6 fallback_missing\cf2 ;\par
+\tab\tab\tab\tab\tab\tab err \cf8 =\cf2  \cf9 USP_E_SCRIPT_NOT_IN_FONT\cf2 ;\par
+\tab\tab\tab\tab\tab\}\par
+\tab\tab\tab\tab\tab\cf4 else\cf2\par
+\tab\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab\tab\}\par
+\tab\tab\tab\tab\}\par
+\tab\tab\tab\}\par
+\tab\tab\tab\cf4 else\cf2\par
+\tab\tab\tab\tab err \cf8 =\cf2  \cf9 S_OK\cf2 ; \cf7 // \'ce\'de\'b7\'a8\'b4\'a6\'c0\'ed\'b5\'c4\'c7\'e9\'bf\'f6\cf2\par
+\par
+\tab\tab\tab\cf4 if\cf2 (err.succeeded())\par
+\tab\tab\tab\tab\cf4 break\cf2 ;\par
+\par
+\tab\tab\tab\cf7 // \'d0\'e8\'d2\'aa\'b2\'e9\'d5\'d2\'ba\'f3\'b1\'b8\'d7\'d6\'cc\'e5\cf2\par
+\tab\tab\tab\cf4 if\cf2 (fallback == \cf6 fallback_prepare\cf2 )\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab\cf5 doc_font_t\cf2  fontfb = GetFontFallBack(font.font, scpitem.sa.eScript, m_text + rtfitem.trange.index, rtfitem.trange.length);\par
+\tab\tab\tab\tab\cf4 if\cf2 (fontfb.hfont)\par
+\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab\tab\cf7 // \'b2\'e9\'d5\'d2\'b5\'bd\'c1\'cb\'ba\'f3\'b1\'b8\'d7\'d6\'cc\'e5\'a3\'ac\'bd\'ab\'b3\'a2\'ca\'d4\'ca\'b9\'d3\'c3\'ba\'f3\'b1\'b8\'d7\'d6\'cc\'e5\'bd\'f8\'d0\'d0 shape.\cf2\par
+\tab\tab\tab\tab\tab ::SelectObject(hdc, fontfb.hfont);\par
+\tab\tab\tab\tab\tab font \cf8 =\cf2  fontfb;\par
+\tab\tab\tab\tab\tab fallback = \cf6 fallback_falling\cf2 ;\par
+\tab\tab\tab\tab\}\par
+\tab\tab\tab\tab\cf4 else\cf2\par
+\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab\tab\cf7 // \'c3\'bb\'d3\'d0\'d5\'d2\'b5\'bd\'ba\'f3\'b1\'b8\'d7\'d6\'cc\'e5\'a3\'ac\'d3\'c3\'c4\'ac\'c8\'cf\'d7\'d6\'cc\'e5\'b5\'c4 missing char.\cf2\par
+\tab\tab\tab\tab\tab fallback = \cf6 fallback_missing\cf2 ;\par
+\tab\tab\tab\tab\}\par
+\tab\tab\tab\}\par
+\tab\tab\tab\cf4 else\cf2  \{\}\par
+\par
+\tab\tab\tab\cf4 if\cf2 (fallback == \cf6 fallback_missing\cf2 )\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab font = GetFont(\cf10 format\cf2 .font);\par
+\tab\tab\tab\tab\cf10 m_pFactory\cf2 ->SetFont(font);\par
+\tab\tab\tab\tab\cf10 item\cf2 .a.eScript = \cf9 SCRIPT_UNDEFINED\cf2 ;\par
+\tab\tab\tab\tab fallback = \cf6 fallback_abandon\cf2 ;\par
+\tab\tab\tab\}\par
+\tab\tab\tab\cf4 else\cf2  \{\}\par
+\par
+\tab\tab\}\par
+\tab\tab\cf10 run\cf2 .font = font;\par
+\par
+\tab\tab glyph_attrs.resize(nglyph);\par
+\tab\tab m_glyphs.resize(\cf10 goffset\cf2  + nglyph);\par
+\par
+\tab\tab\cf7 // \'bb\'f1\'c8\'a1 advances \'ba\'cd offsets.\cf2\par
+\tab\tab m_advances.resize(\cf10 goffset\cf2  + nglyph);\par
+\tab\tab m_offsets.resize(\cf10 goffset\cf2  + nglyph);\par
+\tab\tab\cf5 ABC\cf2  abc = \{\};\par
+\tab\tab err = \cf10 m_pFactory\cf2 ->Place(font.cache, &\cf10 item\cf2 .a,\par
+\tab\tab\tab m_glyphs + \cf10 goffset\cf2 , glyph_attrs, m_advances + \cf10 goffset\cf2 , m_offsets + \cf10 goffset\cf2 , nglyph,\par
+\tab\tab\tab &abc);\par
+\tab\}\par
+\}\par
+\cf0\f2\fs22\par
+}
+ 

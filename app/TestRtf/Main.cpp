@@ -5,7 +5,8 @@
 #include "CRtf.h"
 
 const char_x APP_NAME[] = _T("TestRtf");
-const char_x RTF_FILE[] = _T("../bin/rtf.rtf");
+const char_x RTF_FILE[] = _T("rtf.rtf");
+#include "document.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uiMessage, WPARAM wParam, LPARAM lParam);
 void Main()
@@ -50,9 +51,42 @@ void Main()
 CScriptEngine engine;
 CScriptDocument doc;
 int iBaseY = 0;
+DocTextObject dto;
 
 void OnCreate(HWND hWnd)
 {
+	::CreateCaret(hWnd, NULL, 1, 22);
+	::SetCaretPos(10, 10);
+	::ShowCaret(hWnd);
+	//dto.SetText(L"𪚥𪚥ยิ้ยิ้ABCتىلى");
+	dto.SetText(L"𪚥𪚥𪚥ยิ้ยิ้تىلىABCہاں");
+	dto.SetFont({ 1, 1 }, font_t(L"宋体"));
+	dto.SetColor({ 0, 1 }, Colors::Red);
+	dto.SetColor({ 1, 1 }, Colors::Green);
+	dto.SetColor({ 2, 1 }, Colors::Blue);
+	dto.SetColor({ 3, 1 }, Colors::Red);
+	dto.SetColor({ 4, 1 }, Colors::Green);
+	dto.SetColor({ 5, 1 }, Colors::Red);
+	dto.SetColor({ 6, 1 }, Colors::Green);
+	dto.SetColor({ 7, 1 }, Colors::Blue);
+	dto.SetColor({ 8, 1 }, Colors::Purple);
+
+	dto.SetFont({ 9, 2 }, font_t(L"宋体", 48));
+
+	//dto.SetColor({ 7, 1 }, Colors::Blue);
+	//dto.SetColor({ 8, 1 }, Colors::Green);
+	//dto.SetColor({ 9, 1 }, Colors::Red);
+	//dto.SetColor({ 10, 1 }, Colors::Purple);
+	//dto.SetText(L"𪚥ยิ้ยิ้𪚥");
+	//dto.SetText(L"𪚥𪚥𪚥");
+	//dto.SetText(L"ษาไทยรอยยิ้มนักสู้ กเสียก่อน한국어조선말ئۇيغۇر تىلى𪚥𪚥𪚥𪚥𪚥");
+	//dto.SetFont({ 0, 2 }, font_t(L"微软雅黑"));
+	//dto.SetColor({ 1, 1 }, Colors::Red);
+	dto.Slicing();
+
+	rectix rect(0, 0, 50, 5000);
+	dto.Layout(rect);
+
 	CRtfParser rtf;
 	CFileStream sfs(RTF_FILE, StreamModeRead);
 	int_x iSize = sfs.GetFileSize();
@@ -108,7 +142,10 @@ void OnPaint(HWND hWnd)
 
 	doc.Draw(&engine, hdc2, 0, rect.y - iBaseY, rect.w, rect.h);
 
-	BitBlt(hdc, 0, 0, rc.right, rc.bottom, hdc2, 0, 0, SRCCOPY);
+	//BitBlt(hdc, 0, 0, rc.right, rc.bottom, hdc2, 0, 0, SRCCOPY);
+
+	dto.Draw(hdc, 10, 10);
+	
 
 	DeleteObject(hBitmap);
 	DeleteDC(hdc2);

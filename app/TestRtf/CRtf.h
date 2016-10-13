@@ -69,5 +69,5 @@ public:
 
 	vector<RtfFontT> m_fonts;
 	vector<uint_32> m_colors;
-	linear_map<int_x, _locale_t> m_mapLocale;
+	dictionary<int_x, _locale_t> m_mapLocale;
 };

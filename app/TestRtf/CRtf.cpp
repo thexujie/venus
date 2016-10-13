@@ -409,7 +409,7 @@ int_x CRtfParser::LoadFont(const char_8 *& pText, const char_8 * pEnd)
 		}
 	}
 #ifdef _UNICODE
-	font.m_name = encodings::encode(name, encoding_t(font.m_iCharSet));
+	font.m_name = encodings::encode(name, encodings::from_charset(font.m_iCharSet));
 #else
 	font.m_name = name;
 #endif
@@ -472,7 +472,7 @@ void CRtfParser::ConvertText()
 {
 	if(m_text.is_valid())
 	{
-		textw tw = encodings::encode(m_text, encoding_t(m_rtFormat.rtFont.CharSet));
+		textw tw = encodings::encode(m_text, encodings::from_charset(m_rtFormat.rtFont.CharSet));
 		m_textw += tw;
 		m_text.clear();
 	}
