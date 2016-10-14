@@ -342,6 +342,8 @@ void DocTextObject::Shape()
 void DocTextObject::Layout(rectix rect)
 {
 	rtfitems.clear();
+	lines.clear();
+	lines.add();
 
 	int_x iline = 0;
 	int_x xoffset = 0;
