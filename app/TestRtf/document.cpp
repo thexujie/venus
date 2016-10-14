@@ -367,7 +367,6 @@ void DocTextObject::Layout(rectix rect)
 			++line.crange.length;
 			line.advance += cluster.advance;
 		}
-
 		//while(icluster < icluster_end)
 		//{
 		//	rtfitem_t & rtfitem = rtfitems.add();
