@@ -366,7 +366,6 @@ void DocTextObject::Layout(rectix rect)
 			line_t & line = lines.back();
 			++line.crange.length;
 			line.advance += cluster.advance;
-
 		}
 
 		//while(icluster < icluster_end)
