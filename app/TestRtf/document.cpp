@@ -345,7 +345,6 @@ void DocTextObject::Layout(rectix rect)
 	lines.clear();
 	lines.add();
 
-	int_x iline = 0;
 	int_x xoffset = 0;
 	for(int_x irun = 0; irun < runitems.size(); ++irun)
 	{
@@ -358,7 +357,9 @@ void DocTextObject::Layout(rectix rect)
 		for(int cnt = icluster; cnt < icluster_end; ++cnt)
 		{
 			const cluster_t & cluster = clusters[icluster];
-			if(lines.back().crange.length && lines.back().advance + cluster.advance > rect.w)
+			line_t & old_line = lines.back();
+
+			if(old_line.crange.length && old_line.advance + cluster.advance > rect.w)
 			{
 				line_t & new_line = lines.add();
 				new_line.line = lines.size() - 1;
