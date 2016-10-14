@@ -338,8 +338,13 @@ void DocTextObject::Shape()
 	}
 }
 
+
 void DocTextObject::Layout(rectix rect)
 {
+	rtfitems.clear();
+
+	int_x iline = 0;
+	int_x xoffset = 0;
 	for(int_x irun = 0; irun < runitems.size(); ++irun)
 	{
 		runitem_t & runitem = runitems[irun];
@@ -348,37 +353,73 @@ void DocTextObject::Layout(rectix rect)
 		int_x icluster = runitem.crange.index;
 		int_x icluster_end = runitem.crange.index + runitem.crange.length;
 
-		while(icluster < icluster_end)
+		for(int cnt = icluster; cnt < icluster_end; ++cnt)
 		{
-			rtfitem_t & rtfitem = rtfitems.add();
-			rtfitem.sa = runitem.sa;
-			rtfitem.rtf.font = runitem.font;
-			rtfitem.rtf.color = 0;
-			rtfitem.trange = {};
-			rtfitem.crange = {0, 1};
-
-			++runitem.rrange.length;
-
-			for(; icluster < icluster_end; ++icluster)
+			const cluster_t & cluster = clusters[icluster];
+			if(lines.back().crange.length && lines.back().advance + cluster.advance > rect.w)
 			{
-				const cluster_t & cluster = clusters[icluster];
-				// first cluster
-				if(!rtfitem.crange.length)
-				{
-					rtfitem.rtf.color = cluster.rtf.color;
-					rtfitem.trange = cluster.trange;
-					rtfitem.crange = { icluster, 1 };
-				}
-				else
-				{
-					if(cluster.rtf.color != rtfitem.rtf.color)
-						break;
-
-					rtfitem.trange.length += cluster.trange.length;
-					++rtfitem.crange.length;
-				}
+				line_t & new_line = lines.add();
+				new_line.line = lines.size() - 1;
+				new_line.crange = { cnt, 0 };
 			}
+
+			line_t & line = lines.back();
+			++line.crange.length;
+			line.advance += cluster.advance;
+
 		}
+
+		//while(icluster < icluster_end)
+		//{
+		//	rtfitem_t & rtfitem = rtfitems.add();
+		//	++runitem.rrange.length;
+
+		//	rtfitem.line = iline;
+		//	rtfitem.sa = runitem.sa;
+		//	rtfitem.rtf.font = runitem.font;
+		//	rtfitem.rtf.color = 0;
+		//	rtfitem.trange = {};
+		//	rtfitem.crange = {};
+
+		//	for(; icluster < icluster_end; ++icluster)
+		//	{
+		//		const cluster_t & cluster = clusters[icluster];
+		//		// first cluster
+		//		if(!rtfitem.crange.length)
+		//		{
+		//			rtfitem.rtf.color = cluster.rtf.color;
+		//			rtfitem.trange = cluster.trange;
+		//			rtfitem.crange = { icluster, 1 };
+
+		//			xoffset += cluster.advance;
+
+		//			if(xoffset > rect.w)
+		//			{
+		//				xoffset = 0;
+		//				++icluster;
+		//				++iline;
+		//				break;
+		//			}
+		//		}
+		//		else
+		//		{
+		//			if(xoffset + cluster.advance> rect.w)
+		//			{
+		//				xoffset = 0;
+		//				++iline;
+		//				break;
+		//			}
+
+		//			if(cluster.rtf.color != rtfitem.rtf.color)
+		//				break;
+
+		//			xoffset += cluster.advance;
+
+		//			rtfitem.trange.length += cluster.trange.length;
+		//			++rtfitem.crange.length;
+		//		}
+		//	}
+		//}
 	}
 
 	// advance width
@@ -463,13 +504,21 @@ void DocTextObject::Draw(HDC hdc, int x, int y)
 	::SetBkMode(hdc, TRANSPARENT);
 	HGDIOBJ hOldFont = NULL;
 	HGDIOBJ hOldPen = NULL;
+	int_x iline = -1;
+	int_x ix = x;
 	for(int_x cnt = 0; cnt < rtfitems.size(); ++cnt)
 	{
 		const rtfitem_t & rtfitem = rtfitems[cnt];
 		if(!rtfitem.crange.length)
 			continue;
 
-		RECT rect = { x, y, 1000, 1000 };
+		if(rtfitem.line != iline)
+		{
+			iline = rtfitem.line;
+			ix = x;
+		}
+
+		RECT rect = { ix, y + rtfitem.line * 30, 1000, 1000 };
 
 		doc_font_t font = GetFont(rtfitem.rtf.font);
 		if(!hOldFont)
@@ -486,10 +535,10 @@ void DocTextObject::Draw(HDC hdc, int x, int y)
 
 		int_x gindex = cbeg.grange.index;
 		int_x gcount = cend.grange.index + cend.grange.length - cbeg.grange.index;
-		HRESULT hResult = ScriptTextOut(hdc, font.cache, x, y, ETO_CLIPPED, &rect, &rtfitem.sa, nullptr, 0, glyphs + gindex, gcount,
+		HRESULT hResult = ScriptTextOut(hdc, font.cache, ix, y + rtfitem.line * 30, ETO_CLIPPED, &rect, &rtfitem.sa, nullptr, 0, glyphs + gindex, gcount,
 			advances + gindex, nullptr, offsets + gindex);
 
-		x += rtfitem.advance;
+		ix += rtfitem.advance;
 	}
 
 	if(hOldFont)

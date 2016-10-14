@@ -194,8 +194,9 @@ public:
 
 	doc_font_t GetFontFallBack(const font_t & font, int_x iLanguage, const char_16 * text = nullptr, int_x length = 0);
 
-	void SetText(textw text);
 
+	void SetText(textw text);
+	int_x GetClusterCount() const { return clusters.size(); }
 	// generate scripts and clusters(by ScriptBreak).
 	void Break();
 	// generate runs for different font(name¡¢size¡¢bold¡¢italic...)
@@ -232,6 +233,7 @@ protected:
 
 	struct rtfitem_t
 	{
+		int_x line;
 		SCRIPT_ANALYSIS sa;
 		rtf_t rtf;
 		trange_t trange;
@@ -269,13 +271,16 @@ protected:
 		textw _debug_text;
 	};
 
-	struct rtfline_t
+	struct line_t
 	{
+		int_x line;
 		rrange_t rrange;
 		crange_t crange;
 
 		int_x advance;
 		textw _debug_text;
+
+		void additem(rtfitem_t item){}
 	};
 
 	vector<doc_font_t> caches;
@@ -286,7 +291,7 @@ protected:
 	vector<scpitem_t> scpitems;
 	vector<runitem_t> runitems;
 	vector<rtfitem_t> rtfitems;
-	vector<rtfline_t> rtflines;
+	vector<line_t> lines;
 
 	vector<font_t> fonts;
 	vector<uint_32> colors;

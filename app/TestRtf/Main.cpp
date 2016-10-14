@@ -6,6 +6,7 @@
 
 const char_x APP_NAME[] = _T("TestRtf");
 const char_x RTF_FILE[] = _T("rtf.rtf");
+
 #include "document.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uiMessage, WPARAM wParam, LPARAM lParam);
@@ -59,44 +60,36 @@ void OnCreate(HWND hWnd)
 	::SetCaretPos(10, 10);
 	::ShowCaret(hWnd);
 	//dto.SetText(L"𪚥𪚥ยิ้ยิ้ABCتىلى");
-	dto.SetText(L"𪚥𪚥𪚥ยิ้ยิ้تىلىABCہاں");
+	//dto.SetText(L"𪚥𪚥𪚥ยิ้ยิ้تىلىABCہاں");
+	uint_32 colors[] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Purple, Colors::Thistle };
+	//char_16 chs[] = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ一二三四五六七八九十";
+	char_16 chs[] = L"一二三四五六七八九十ABCDEFGHIJJJJJJJJ";
+	textw text;
+	for(int_x cnt = 0; cnt < 100; ++cnt)
+	{
+		text.append(chs[cnt % (arraysize(chs) - 1)]);
+	}
+
+	dto.SetText(text);
 	dto.Break();
+	for(int_x cnt = 0; cnt < dto.GetClusterCount(); ++cnt)
+	{
+		dto.SetColor({ cnt, 1 }, colors[cnt % arraysize(colors)]);
+	}
 
-	dto.SetFont({ 1, 1 }, font_t(L"宋体"));
-	dto.SetColor({ 0, 1 }, Colors::Red);
-	dto.SetColor({ 1, 1 }, Colors::Green);
-	dto.SetColor({ 2, 1 }, Colors::Blue);
-	dto.SetColor({ 3, 1 }, Colors::Red);
-	dto.SetColor({ 4, 1 }, Colors::Green);
-	dto.SetColor({ 5, 1 }, Colors::Red);
-	dto.SetColor({ 6, 1 }, Colors::Green);
-	dto.SetColor({ 7, 1 }, Colors::Blue);
-	dto.SetColor({ 8, 1 }, Colors::Purple);
 
-	dto.SetFont({ 9, 2 }, font_t(L"宋体", 48));
-
-	//dto.SetColor({ 7, 1 }, Colors::Blue);
-	//dto.SetColor({ 8, 1 }, Colors::Green);
-	//dto.SetColor({ 9, 1 }, Colors::Red);
-	//dto.SetColor({ 10, 1 }, Colors::Purple);
-	//dto.SetText(L"𪚥ยิ้ยิ้𪚥");
-	//dto.SetText(L"𪚥𪚥𪚥");
 	//dto.SetText(L"ษาไทยรอยยิ้มนักสู้ กเสียก่อน한국어조선말ئۇيغۇر تىلى𪚥𪚥𪚥𪚥𪚥");
-	//dto.SetFont({ 0, 2 }, font_t(L"微软雅黑"));
-	//dto.SetColor({ 1, 1 }, Colors::Red);
 	dto.Slice();
 	dto.Shape();
 
-	dto.Layout({ 0, 0, 50, 5000 });
-
-	CRtfParser rtf;
-	CFileStream sfs(RTF_FILE, StreamModeRead);
-	int_x iSize = sfs.GetFileSize();
-	texta text(iSize + 1);
-	text.resize(iSize);
-	sfs.Read((byte_t *)text.buffer(), iSize);
-	rtf.LoadRtf(&doc, text, text + text.length());
-	doc.Generate(&engine);
+	//CRtfParser rtf;
+	//CFileStream sfs(RTF_FILE, StreamModeRead);
+	//int_x iSize = sfs.GetFileSize();
+	//texta text(iSize + 1);
+	//text.resize(iSize);
+	//sfs.Read((byte_t *)text.buffer(), iSize);
+	//rtf.LoadRtf(&doc, text, text + text.length());
+	//doc.Generate(&engine);
 }
 
 void OnDestroy(HWND hWnd)
@@ -111,6 +104,8 @@ void OnSize(HWND hWnd)
 	RECT rc;
 	GetClientRect(hWnd, &rc);
 	doc.GenerateLine(&engine, rc.right);
+
+	dto.Layout({0, 0, rc.right, rc.bottom});
 
 	SCROLLINFO si = {};
 	si.cbSize = sizeof(si);
@@ -142,12 +137,10 @@ void OnPaint(HWND hWnd)
 	recti32 rect(0, 0, rc.right, rc.bottom);
 	Rectangle(hdc2, rect.x, rect.y, rect.right(), rect.bottom());
 
-	doc.Draw(&engine, hdc2, 0, rect.y - iBaseY, rect.w, rect.h);
+	//doc.Draw(&engine, hdc2, 0, rect.y - iBaseY, rect.w, rect.h);
+	dto.Draw(hdc2, 0, 0);
 
-	//BitBlt(hdc, 0, 0, rc.right, rc.bottom, hdc2, 0, 0, SRCCOPY);
-
-	dto.Draw(hdc, 10, 10);
-	
+	BitBlt(hdc, 0, 0, rc.right, rc.bottom, hdc2, 0, 0, SRCCOPY);
 
 	DeleteObject(hBitmap);
 	DeleteDC(hdc2);
