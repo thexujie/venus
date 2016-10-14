@@ -60,6 +60,8 @@ void OnCreate(HWND hWnd)
 	::ShowCaret(hWnd);
 	//dto.SetText(L"𪚥𪚥ยิ้ยิ้ABCتىلى");
 	dto.SetText(L"𪚥𪚥𪚥ยิ้ยิ้تىلىABCہاں");
+	dto.Break();
+
 	dto.SetFont({ 1, 1 }, font_t(L"宋体"));
 	dto.SetColor({ 0, 1 }, Colors::Red);
 	dto.SetColor({ 1, 1 }, Colors::Green);
@@ -82,10 +84,10 @@ void OnCreate(HWND hWnd)
 	//dto.SetText(L"ษาไทยรอยยิ้มนักสู้ กเสียก่อน한국어조선말ئۇيغۇر تىلى𪚥𪚥𪚥𪚥𪚥");
 	//dto.SetFont({ 0, 2 }, font_t(L"微软雅黑"));
 	//dto.SetColor({ 1, 1 }, Colors::Red);
-	dto.Slicing();
+	dto.Slice();
+	dto.Shape();
 
-	rectix rect(0, 0, 50, 5000);
-	dto.Layout(rect);
+	dto.Layout({ 0, 0, 50, 5000 });
 
 	CRtfParser rtf;
 	CFileStream sfs(RTF_FILE, StreamModeRead);

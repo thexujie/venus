@@ -107,67 +107,7 @@ public:
 		DeleteDC(m_hdc);
 	}
 
-	virtual void SetText(textw text)
-	{
-		m_text = text;
-
-		vector<SCRIPT_ITEM> items(text.length() + 1, text.length() + 1);
-		int_32 nrun = 0;
-		ScriptItemize(text, text.length(), text.length() + 1, nullptr, nullptr, items, &nrun);
-
-		scpitems.reallocate(nrun, nrun);
-
-		int_x cluster_num = 0;
-		for(int_x iitem = 0; iitem < nrun; ++iitem)
-		{
-			scpitem_t & sitem = scpitems[iitem];
-			SCRIPT_ITEM & item = items[iitem];
-			SCRIPT_ITEM & item_next = items[iitem + 1];
-			sitem.sa = item.a;
-			sitem.trange = { item.iCharPos, item_next.iCharPos - item.iCharPos };
-			sitem.crange = { cluster_num, 0 };
-
-			vector<SCRIPT_LOGATTR> tattrs(sitem.trange.length, sitem.trange.length);
-
-			ScriptBreak(text + sitem.trange.index, sitem.trange.length, &sitem.sa, tattrs);
-			for(int_x itext = 0; itext < tattrs.size(); ++itext)
-			{
-				cluster_t & cluster = clusters.add();
-				++cluster_num;
-
-				cluster.item = iitem;
-				cluster.trange = { sitem.trange.index + itext, 1 };
-				cluster.rtf = { 0, 0 };
-
-				const SCRIPT_LOGATTR & attr_first = tattrs[itext];
-				if(attr_first.fSoftBreak)
-					cluster.softbreak = true;
-				if(attr_first.fWhiteSpace)
-					cluster.whitespace = true;
-
-				// check the next char.
-				while(itext < tattrs.size() - 1)
-				{
-					const SCRIPT_LOGATTR & attr = tattrs[itext + 1];
-
-					if(attr.fCharStop || attr.fInvalid)
-						break;
-
-					if(attr.fSoftBreak)
-						cluster.softbreak = true;
-					if(attr.fWhiteSpace)
-						cluster.whitespace = true;
-
-					++cluster.trange.length;
-					++itext;
-				}
-			}
-
-			sitem.crange.length = cluster_num - sitem.crange.index;
-		}
-	}
-
-	virtual int_x IndexFont(font_t font)
+	int_x IndexFont(font_t font)
 	{
 		int_x ifont = -1;
 		for(int_x cnt = 0; cnt < fonts.size(); ++cnt)
@@ -187,7 +127,7 @@ public:
 		return ifont;
 	}
 
-	virtual void SetFont(crange_t range, font_t font)
+	void SetFont(crange_t range, font_t font)
 	{
 		int_x ifont = IndexFont(font);
 
@@ -197,7 +137,7 @@ public:
 		}
 	}
 
-	virtual void SetColor(crange_t range, uint_32 color)
+	void SetColor(crange_t range, uint_32 color)
 	{
 		int_x icolor = -1;
 		for(int_x cnt = 0; cnt < colors.size(); ++cnt)
@@ -220,46 +160,6 @@ public:
 			clusters[range.index + cnt].rtf.color = icolor;
 		}
 	}
-
-	void Slicing()
-	{
-		for(int_x iitem = 0; iitem < scpitems.size(); ++iitem)
-		{
-			const scpitem_t & scpitem = scpitems[iitem];
-			int_x icluster = scpitem.crange.index;
-			int_x icluster_end = scpitem.crange.index + scpitem.crange.length;
-			while(icluster < icluster_end)
-			{
-				runitem_t & runitem = runitems.add();
-				runitem.sa = scpitem.sa;
-				runitem.trange = {};
-				runitem.crange = {};
-				runitem.rrange = {};
-
-				for( ;icluster < icluster_end; ++icluster)
-				{
-					const cluster_t & cluster = clusters[icluster];
-					// first cluster
-					if(!runitem.crange.length)
-					{
-						runitem.font = cluster.rtf.font;
-						runitem.trange = cluster.trange;
-						runitem.crange = {icluster, 1};
-					}
-					else
-					{
-						if(cluster.rtf.font != runitem.font)
-							break;
-
-						runitem.trange.length += cluster.trange.length;
-						++runitem.crange.length;
-					}
-				}
-			}
-		}
-	}
-
-	void Layout(rectix rect);
 
 	doc_font_t GetFont(int_x ifont)
 	{
@@ -294,6 +194,18 @@ public:
 
 	doc_font_t GetFontFallBack(const font_t & font, int_x iLanguage, const char_16 * text = nullptr, int_x length = 0);
 
+	void SetText(textw text);
+
+	// generate scripts and clusters(by ScriptBreak).
+	void Break();
+	// generate runs for different font(name¡¢size¡¢bold¡¢italic...)
+	void Slice();
+	// generate glyphs for each run, and calculate widths of all clusters and runs.
+	void Shape();
+
+	// layout all clusters
+	void Layout(rectix rect);
+
 	void Draw(HDC hdc, int x, int y);
 
 protected:
@@ -315,6 +227,7 @@ protected:
 		crange_t crange;
 		rrange_t rrange;
 		textw _debug_text;
+		int_x advance;
 	};
 
 	struct rtfitem_t
@@ -325,6 +238,11 @@ protected:
 		crange_t crange;
 		int_x advance;
 		textw _debug_text;
+	};
+
+	struct docline_t
+	{
+		rrange_t rrange;
 	};
 
 	struct cluster_t
@@ -351,6 +269,15 @@ protected:
 		textw _debug_text;
 	};
 
+	struct rtfline_t
+	{
+		rrange_t rrange;
+		crange_t crange;
+
+		int_x advance;
+		textw _debug_text;
+	};
+
 	vector<doc_font_t> caches;
 
 	textw m_text;
@@ -359,6 +286,7 @@ protected:
 	vector<scpitem_t> scpitems;
 	vector<runitem_t> runitems;
 	vector<rtfitem_t> rtfitems;
+	vector<rtfline_t> rtflines;
 
 	vector<font_t> fonts;
 	vector<uint_32> colors;

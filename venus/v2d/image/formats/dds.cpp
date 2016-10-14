@@ -454,17 +454,14 @@ void dds_get_pitch(cmode_e cmode, img_ix width, img_ix height, img_ix * row, img
 		break;
 	case cmode_bc1:
 		bits = sizeof(dds_texel_bc1_t);
-		_col = (_col + 3) / 4;
 		_col = (_row + 3) / 4;
 		break;
 	case cmode_bc2:
 		bits = sizeof(dds_texel_bc2_t);
-		_col = (_col + 3) / 4;
 		_col = (_row + 3) / 4;
 		break;
 	case cmode_bc3:
 		bits = sizeof(dds_texel_bc3_t);
-		_col = (_col + 3) / 4;
 		_col = (_row + 3) / 4;
 		break;
 	default:
