@@ -399,12 +399,28 @@ void DocTextObject::Shape()
 	}
 }
 
-void DocTextObject::Layout(int_x start_x, rectix rect, bool breakword)
+void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 {
 	rtfitems.clear();
 	rtflines.clear();
 
 	int_x iadvance = start_x;
+	if(iadvance && clusters.is_valid())
+	{
+		const rtfcluster_t & cluster = clusters[0];
+		if(iadvance + cluster.advance > rect.w)
+		{
+			rtfline_t & rtfline_empty = rtflines.add();
+			rtfline_empty.line = rtflines.size() - 1;
+			rtfline_empty.offset = start_x;
+
+			iadvance = 0;
+		}
+	}
+
+	rtfline_t & rtfline_first = rtflines.add();
+	rtfline_first.line = rtflines.size() - 1;
+	rtfline_first.offset = iadvance;
 
 	for(int_x irun = 0; irun < runitems.size(); ++irun)
 	{
@@ -421,54 +437,33 @@ void DocTextObject::Layout(int_x start_x, rectix rect, bool breakword)
 			if(cluster.softbreak || cluster.whitespace)
 				icluster_break = icluster;
 
-			// first line.
-			if(rtflines.is_empty())
-			{
-				//if(start_x > 0)
-				//{
-				//	rtfline_t & rtfline_empty = rtflines.add();
-				//	rtfline_empty.line = rtflines.size() - 1;
-				//	rtfline_empty.offset = start_x;
-				//	rtfline_empty.crange.index = icluster;
-				//}
+			rtfline_t & rtfline_last = rtflines.back();
 
-				rtfline_t & rtfline_new = rtflines.add();
-				rtfline_new.line = rtflines.size() - 1;
-				rtfline_new.offset = start_x;
-				rtfline_new.crange.index = icluster;
-				icluster_break = -1;
-				iadvance = start_x;
+			// there must be at least one cluster.
+			if(!rtfline_last.crange.length)
+			{
+				//...
 			}
-			else
+			else if(iadvance + cluster.advance > rect.w)
 			{
-				rtfline_t & rtfline_last = rtflines.back();
-
-				// there must be at least one cluster.
-				if(!rtfline_last.crange.length)
+				if(wrapmode == wrapmode_char || icluster_break < 0)
 				{
-					//...
+					rtfline_t & rtfline_new = rtflines.add();
+					rtfline_new.line = rtflines.size() - 1;
+					rtfline_new.crange.index = icluster;
+					icluster_break = -1;
+					iadvance = 0;
 				}
-				else if(iadvance + cluster.advance > rect.w)
+				else
 				{
-					if(breakword || icluster_break < 0)
-					{
-						rtfline_t & rtfline_new = rtflines.add();
-						rtfline_new.line = rtflines.size() - 1;
-						rtfline_new.crange.index = icluster;
-						icluster_break = -1;
-						iadvance = 0;
-					}
-					else
-					{
-						rtfline_last.crange.length = icluster_break - rtfline_last.crange.index;
-						iclt = icluster_break - runitem.crange.index;
+					rtfline_last.crange.length = icluster_break - rtfline_last.crange.index;
+					iclt = icluster_break - runitem.crange.index;
 
-						rtfline_t & rtfline_new = rtflines.add();
-						rtfline_new.line = rtflines.size() - 1;
-						rtfline_new.crange = { icluster_break, 0 };
-						icluster_break = -1;
-						iadvance = 0;
-					}
+					rtfline_t & rtfline_new = rtflines.add();
+					rtfline_new.line = rtflines.size() - 1;
+					rtfline_new.crange = { icluster_break, 0 };
+					icluster_break = -1;
+					iadvance = 0;
 				}
 			}
 
@@ -645,4 +640,22 @@ void DocTextObject::Draw(HDC hdc, int_x x, int_x y, rectix rect)
 
 	if(hOldFont)
 		::SelectObject(hdc, hOldFont);
+}
+
+void DocTextObject::Destroy()
+{
+	tclusters.destroy();
+	offsets.destroy();
+	advances.destroy();
+	gattrs.destroy();
+	glyphs.destroy();
+	colors.destroy();
+	fonts.destroy();
+	rtflines.destroy();
+	rtfitems.destroy();
+	runitems.destroy();
+	scpitems.destroy();
+	clusters.destroy();
+	m_text.destroy();
+	caches.destroy();
 }

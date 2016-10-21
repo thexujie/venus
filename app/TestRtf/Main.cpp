@@ -109,6 +109,8 @@ void OnDestroy(HWND hWnd)
 {
 	doc.Destroy();
 	engine.Destroy();
+	dto.Destroy();
+
 	PostQuitMessage(0);
 }
 
@@ -121,7 +123,7 @@ void OnSize(HWND hWnd)
 	GetClientRect(hWnd, &rc);
 	doc.GenerateLine(&engine, rc.right);
 
-	dto.Layout(layoutStart, { 0, 0, rc.right - frameSize * 2, rc.bottom }, false);
+	dto.Layout(layoutStart, { 0, 0, rc.right - frameSize * 2, rc.bottom }, wrapmode_char);
 
 	SCROLLINFO si = {};
 	si.cbSize = sizeof(si);

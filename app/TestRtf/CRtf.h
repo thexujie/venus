@@ -27,7 +27,7 @@ public:
 	{
 		m_iIndex = -1;
 		m_iCharSet = 0;
-		m_name.clear();
+		m_name.destroy();
 	}
 };
 

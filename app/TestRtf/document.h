@@ -2,6 +2,13 @@
 
 #include "BaseInc.h"
 
+enum wrapmode_e
+{
+	wrapmode_none,
+	wrapmode_char,
+	wrapmode_word,
+};
+
 class DocObject
 {
 public:
@@ -229,9 +236,11 @@ public:
 	void Shape();
 
 	// layout all clusters
-	void Layout(int_x start, rectix rect, bool breakword);
+	void Layout(int_x start, rectix rect, wrapmode_e wrapmode);
 
 	void Draw(HDC hdc, int_x, int_x y, rectix rect);
+
+	void Destroy();
 
 protected:
 	HDC m_hdc;

@@ -496,7 +496,17 @@ public:
 				m_data->remove(_index, _length);
 		}
 	}
+
 	void clear()
+	{
+		if(m_data)
+		{
+			m_data->release();
+			m_data = nullptr;
+		}
+	}
+
+	void destroy()
 	{
 		if(m_data)
 		{

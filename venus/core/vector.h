@@ -71,12 +71,7 @@ public:
 
 	~vector()
 	{
-		for(int_x cnt = 0; cnt < m_size; ++cnt)
-			EleAllocator::Destruct(m_buffer + cnt);
-		EleAllocator::Free(m_buffer);
-		m_buffer = 0;
-		m_size = 0;
-		m_capability = 0;
+		destroy();
 	}
 
 	void fill(const EleT & ele)
@@ -324,6 +319,16 @@ public:
 		for(int_x cnt = 0; cnt < m_size; ++cnt)
 			EleAllocator::Destruct(m_buffer + cnt);
 		m_size = 0;
+	}
+
+	void destroy()
+	{
+		for(int_x cnt = 0; cnt < m_size; ++cnt)
+			EleAllocator::Destruct(m_buffer + cnt);
+		EleAllocator::Free(m_buffer);
+		m_buffer = 0;
+		m_size = 0;
+		m_capability = 0;
 	}
 
 	template<typename CalcT>
