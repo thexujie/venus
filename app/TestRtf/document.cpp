@@ -17,19 +17,30 @@ static bool HasMissingGlyphs(const uint_16 * pGlyphs, int_x iLength, const SCRIP
 	return false;
 }
 
-Document::Document()
-{
-}
+const doc_font_t DOC_FONT_EMPTY = { nullptr, nullptr, 0 };
 
-Document::~Document()
+DocTextObject::DocTextObject()
 {
-}
+	font_t & font = fonts.add();
+	font.name = Win32::GetDefaultFontName();
+	font.size = 20;
+	colors.add(Colors::Black);
 
-const doc_font_t DOC_FONT_EMPTY = { 0, 0, 0 };
+	HDC hdcScreen = GetDC(NULL);
+	m_hdc = CreateCompatibleDC(hdcScreen);
+	ReleaseDC(NULL, hdcScreen);
+}
 
 doc_font_t DocTextObject::GetFontFallBack(const font_t & font, int_x iLanguage, const char_16 * text, int_x length)
 {
 	char_32 ch;
+	// skip spaces
+	while(length > 0 && *text == ' ')
+	{
+		++text;
+		--length;
+	}
+
 	int_x len = utf16_to_unicode(text, length, ch);
 	if(len <= 0)
 		return DOC_FONT_EMPTY;
@@ -38,6 +49,9 @@ doc_font_t DocTextObject::GetFontFallBack(const font_t & font, int_x iLanguage, 
 	const unicodeplane_t & plane = unicodeplane_find(text, len);
 	switch(plane.plane)
 	{
+	case unicodeplane_hebrew:
+		fontfb.name = L"Courier New";
+		return GetFont(fontfb);
 	case unicodeplane_arabic: // lang 26
 		fontfb.name = L"Times New Roman";
 		return GetFont(fontfb);
@@ -66,32 +80,40 @@ void DocTextObject::SetText(textw text)
 
 void DocTextObject::Break()
 {
+	SCRIPT_DIGITSUBSTITUTE sds = { 0 };
+	ScriptRecordDigitSubstitution(LOCALE_USER_DEFAULT, &sds);
+	SCRIPT_CONTROL sc = { 0 };
+	SCRIPT_STATE ss = { 0 };
+	ScriptApplyDigitSubstitution(&sds, &sc, &ss);
+
 	vector<SCRIPT_ITEM> items(m_text.length() + 1, m_text.length() + 1);
 	int_32 nrun = 0;
-	ScriptItemize(m_text, m_text.length(), m_text.length() + 1, nullptr, nullptr, items, &nrun);
+	ScriptItemize(m_text, m_text.length(), m_text.length() + 1, &sc, &ss, items, &nrun);
 
 	scpitems.reallocate(nrun, nrun);
 
 	int_x cluster_num = 0;
-	for(int_x iitem = 0; iitem < nrun; ++iitem)
+	for(int_x irun = 0; irun < nrun; ++irun)
 	{
-		scpitem_t & sitem = scpitems[iitem];
-		SCRIPT_ITEM & item = items[iitem];
-		SCRIPT_ITEM & item_next = items[iitem + 1];
-		sitem.sa = item.a;
-		sitem.trange = { item.iCharPos, item_next.iCharPos - item.iCharPos };
-		sitem.crange = { cluster_num, 0 };
+		scpitem_t & scpitem = scpitems[irun];
+		SCRIPT_ITEM & sitem = items[irun];
+		SCRIPT_ITEM & item_next = items[irun + 1];
+		scpitem.sa = sitem.a;
+		scpitem.trange = { sitem.iCharPos, item_next.iCharPos - sitem.iCharPos };
+		scpitem.crange = { cluster_num, 0 };
 
-		vector<SCRIPT_LOGATTR> tattrs(sitem.trange.length, sitem.trange.length);
+		vector<SCRIPT_LOGATTR> tattrs(scpitem.trange.length, scpitem.trange.length);
 
-		ScriptBreak(m_text + sitem.trange.index, sitem.trange.length, &sitem.sa, tattrs);
+		ScriptBreak(m_text + scpitem.trange.index, scpitem.trange.length, &scpitem.sa, tattrs);
+
 		for(int_x itext = 0; itext < tattrs.size(); ++itext)
 		{
-			cluster_t & cluster = clusters.add();
+			rtfcluster_t & cluster = clusters.add();
 			++cluster_num;
 
-			cluster.item = iitem;
-			cluster.trange = { sitem.trange.index + itext, 1 };
+			cluster.run = irun;
+			cluster.scp = 0;
+			cluster.trange = { scpitem.trange.index + itext, 1 };
 			cluster.rtf = { 0, 0 };
 
 			const SCRIPT_LOGATTR & attr_first = tattrs[itext];
@@ -118,28 +140,36 @@ void DocTextObject::Break()
 			}
 		}
 
-		sitem.crange.length = cluster_num - sitem.crange.index;
+		scpitem.crange.length = cluster_num - scpitem.crange.index;
+	}
+
+	for(int_x icluster = 0; icluster < clusters.size(); ++icluster)
+	{
+		rtfcluster_t & cluster = clusters[icluster];
+		cluster._debug_text = m_text.sub_text(cluster.trange.index, cluster.trange.index + cluster.trange.length);
 	}
 }
 
 void DocTextObject::Slice()
 {
-	for(int_x iitem = 0; iitem < scpitems.size(); ++iitem)
+	for(int_x iscp = 0; iscp < scpitems.size(); ++iscp)
 	{
-		const scpitem_t & scpitem = scpitems[iitem];
+		const scpitem_t & scpitem = scpitems[iscp];
 		int_x icluster = scpitem.crange.index;
 		int_x icluster_end = scpitem.crange.index + scpitem.crange.length;
 		while(icluster < icluster_end)
 		{
 			runitem_t & runitem = runitems.add();
 			runitem.sa = scpitem.sa;
+			runitem.scp = iscp;
 			runitem.trange = {};
 			runitem.crange = {};
 			runitem.rrange = {};
 
 			for(; icluster < icluster_end; ++icluster)
 			{
-				const cluster_t & cluster = clusters[icluster];
+				rtfcluster_t & cluster = clusters[icluster];
+				cluster.scp = iscp;
 				// first cluster
 				if(!runitem.crange.length)
 				{
@@ -157,6 +187,12 @@ void DocTextObject::Slice()
 				}
 			}
 		}
+	}
+
+	for(int_x run = 0; run < runitems.size(); ++run)
+	{
+		runitem_t & runitem = runitems[run];
+		runitem._debug_text = m_text.sub_text(runitem.trange.index, runitem.trange.index + runitem.trange.length);
 	}
 }
 
@@ -184,9 +220,10 @@ void DocTextObject::Shape()
 	SCRIPT_FONTPROPERTIES fprop = { sizeof(SCRIPT_FONTPROPERTIES) };
 
 	int_32 goffset = 0;
-	for(int_x irtf = 0; irtf < runitems.size(); ++irtf)
+	for(int_x irun = 0; irun < runitems.size(); ++irun)
 	{
-		runitem_t & runitem = runitems[irtf];
+		runitem_t & runitem = runitems[irun];
+		//runitem.sa.fRTL = 1;
 
 		tclusters.resize(runitem.trange.index + runitem.trange.length);
 
@@ -211,8 +248,14 @@ void DocTextObject::Shape()
 				tclusters + runitem.trange.index, gattrs + goffset, &gcount);
 
 			if(err == E_PENDING)
-				err = S_OK; // cache 出错，不管了.
-			else if(err == E_OUTOFMEMORY);
+			{
+				// 仅当没有 SelectObject(m_hdc, font.hfont) 时出现，这是不可能的。
+				err = S_OK;
+			}
+			else if(err == E_OUTOFMEMORY)
+			{
+				throw exp_out_of_memory();
+			}
 			else if(err == USP_E_SCRIPT_NOT_IN_FONT)
 			{
 				if(fallback == fallback_abandon)
@@ -271,7 +314,7 @@ void DocTextObject::Shape()
 				font = GetFont(runitem.font);
 				::SelectObject(m_hdc, font.hfont);
 				ifont_new = runitem.font;
-				//item.a.eScript = SCRIPT_UNDEFINED;
+				runitem.sa.eScript = SCRIPT_UNDEFINED;
 				fallback = fallback_abandon;
 			}
 			else
@@ -296,215 +339,263 @@ void DocTextObject::Shape()
 		ABC abc = {};
 		err = ScriptPlace(m_hdc, font.cache, glyphs + goffset, gcount, gattrs + goffset, &runitem.sa, advances + goffset, offsets + goffset, &abc);
 
+		runitem.grange = { goffset, gcount };
 		goffset += gcount;
 		//runitem.advance = abc.abcA + abc.abcB + abc.abcC;
 	}
 
 	SelectObject(m_hdc, hOldFont);
 
-	for(int_x iglyph = 0, icluster = 0; iglyph < gattrs.size(); ++iglyph, ++icluster)
+	for(int_x irun = 0; irun < runitems.size(); ++irun)
 	{
-		cluster_t & cluster = clusters[icluster];
-		cluster.grange.index = iglyph;
-		cluster.grange.length = 1;
+		runitem_t & runitem = runitems[irun];
 
-		while(iglyph < gattrs.size() - 1)
+		int_x iglyph_beg = runitem.grange.index;
+		int_x iglyph_end = runitem.grange.index + runitem.grange.length;
+		int_x iglyph_off = 1;
+		if(runitem.sa.fRTL)
 		{
-			SCRIPT_VISATTR & attr = gattrs[iglyph + 1];
-			if(attr.fClusterStart)
-				break;
+			iglyph_beg = runitem.grange.index + runitem.grange.length - 1;
+			iglyph_end = runitem.grange.index - 1;
+			iglyph_off = -1;
+		}
 
-			++iglyph;
-			++cluster.grange.length;
+		for(int_x iglyph = iglyph_beg, icluster = 0; iglyph != iglyph_end; iglyph += iglyph_off, ++icluster)
+		{
+			rtfcluster_t & cluster = clusters[icluster + runitem.crange.index];
+
+			// 可能是 fallback 下来的，跟 scp 中不一致。
+			cluster.rtf.font = runitem.font;
+			cluster.grange.index = iglyph;
+			cluster.grange.length = 1;
+
+			while(iglyph < gattrs.size() - 1)
+			{
+				SCRIPT_VISATTR & attr = gattrs[iglyph + 1];
+				if(attr.fClusterStart)
+					break;
+
+				iglyph += iglyph_off;
+				++cluster.grange.length;
+			}
 		}
 	}
 
 	for(int_x iclt = 0; iclt < clusters.size(); ++iclt)
 	{
-		cluster_t & cluster = clusters[iclt];
-		cluster._debug_text = m_text.sub_text(cluster.trange.index, cluster.trange.index + cluster.trange.length);
+		rtfcluster_t & cluster = clusters[iclt];
 		for(int_x iglyph = 0; iglyph < cluster.grange.length; ++iglyph)
 			cluster.advance += advances[cluster.grange.index + iglyph];
 	}
 
-	for(int_x irun = 0; irun < runitems.size(); ++irun)
+	for(int_x run = 0; run < runitems.size(); ++run)
 	{
-		runitem_t & runitem = runitems[irun];
+		runitem_t & runitem = runitems[run];
 		for(int_x iclt = 0; iclt < runitem.crange.length; ++iclt)
 		{
-			cluster_t & cluster = clusters[iclt];
+			rtfcluster_t & cluster = clusters[iclt];
 			runitem.advance += cluster.advance;
 		}
 	}
 }
 
-
-void DocTextObject::Layout(rectix rect)
+void DocTextObject::Layout(int_x start_x, rectix rect, bool breakword)
 {
 	rtfitems.clear();
-	lines.clear();
-	lines.add();
+	rtflines.clear();
 
-	int_x xoffset = 0;
+	int_x iadvance = start_x;
+
 	for(int_x irun = 0; irun < runitems.size(); ++irun)
 	{
 		runitem_t & runitem = runitems[irun];
-		runitem.rrange = { rtfitems.size(), 0 };
 
-		int_x icluster = runitem.crange.index;
-		int_x icluster_end = runitem.crange.index + runitem.crange.length;
+		int_x icluster_break = -1;
+		if(irun > 0)
+			icluster_break = runitem.crange.index;
 
-		for(int cnt = icluster; cnt < icluster_end; ++cnt)
+		for(int iclt = 0; iclt < runitem.crange.length; ++iclt)
 		{
-			const cluster_t & cluster = clusters[icluster];
-			line_t & old_line = lines.back();
+			int_x icluster = runitem.crange.index + iclt;
+			const rtfcluster_t & cluster = clusters[icluster];
+			if(cluster.softbreak || cluster.whitespace)
+				icluster_break = icluster;
 
-			if(old_line.crange.length && old_line.advance + cluster.advance > rect.w)
+			// first line.
+			if(rtflines.is_empty())
 			{
-				line_t & new_line = lines.add();
-				new_line.line = lines.size() - 1;
-				new_line.crange = { cnt, 0 };
+				//if(start_x > 0)
+				//{
+				//	rtfline_t & rtfline_empty = rtflines.add();
+				//	rtfline_empty.line = rtflines.size() - 1;
+				//	rtfline_empty.offset = start_x;
+				//	rtfline_empty.crange.index = icluster;
+				//}
+
+				rtfline_t & rtfline_new = rtflines.add();
+				rtfline_new.line = rtflines.size() - 1;
+				rtfline_new.offset = start_x;
+				rtfline_new.crange.index = icluster;
+				icluster_break = -1;
+				iadvance = start_x;
+			}
+			else
+			{
+				rtfline_t & rtfline_last = rtflines.back();
+
+				// there must be at least one cluster.
+				if(!rtfline_last.crange.length)
+				{
+					//...
+				}
+				else if(iadvance + cluster.advance > rect.w)
+				{
+					if(breakword || icluster_break < 0)
+					{
+						rtfline_t & rtfline_new = rtflines.add();
+						rtfline_new.line = rtflines.size() - 1;
+						rtfline_new.crange.index = icluster;
+						icluster_break = -1;
+						iadvance = 0;
+					}
+					else
+					{
+						rtfline_last.crange.length = icluster_break - rtfline_last.crange.index;
+						iclt = icluster_break - runitem.crange.index;
+
+						rtfline_t & rtfline_new = rtflines.add();
+						rtfline_new.line = rtflines.size() - 1;
+						rtfline_new.crange = { icluster_break, 0 };
+						icluster_break = -1;
+						iadvance = 0;
+					}
+				}
 			}
 
-			line_t & line = lines.back();
-			++line.crange.length;
-			line.advance += cluster.advance;
+			rtfline_t & rtfline = rtflines.back();
+			rtfline.crange.length += 1;
+			iadvance += clusters[icluster].advance;
 		}
-		//while(icluster < icluster_end)
-		//{
-		//	rtfitem_t & rtfitem = rtfitems.add();
-		//	++runitem.rrange.length;
+	}
 
-		//	rtfitem.line = iline;
-		//	rtfitem.sa = runitem.sa;
-		//	rtfitem.rtf.font = runitem.font;
-		//	rtfitem.rtf.color = 0;
-		//	rtfitem.trange = {};
-		//	rtfitem.crange = {};
+	for(int_x iline = 0; iline < rtflines.size(); ++iline)
+	{
+		rtfline_t & line = rtflines[iline];
+		if(line.crange.length < 0)
+		{
+			line.crange.index = line.crange.index + line.crange.length + 1;
+			line.crange.length = -line.crange.length;
+		}
+	}
 
-		//	for(; icluster < icluster_end; ++icluster)
-		//	{
-		//		const cluster_t & cluster = clusters[icluster];
-		//		// first cluster
-		//		if(!rtfitem.crange.length)
-		//		{
-		//			rtfitem.rtf.color = cluster.rtf.color;
-		//			rtfitem.trange = cluster.trange;
-		//			rtfitem.crange = { icluster, 1 };
+	for(int_x iline = 0; iline < rtflines.size(); ++iline)
+	{
+		rtfline_t & line = rtflines[iline];
+		line.rrange.index = rtfitems.size();
 
-		//			xoffset += cluster.advance;
+		if(line.crange.length < 0)
+		{
+			line.crange.index = line.crange.index + line.crange.length;
+			line.crange.length = -line.crange.length;
+		}
 
-		//			if(xoffset > rect.w)
-		//			{
-		//				xoffset = 0;
-		//				++icluster;
-		//				++iline;
-		//				break;
-		//			}
-		//		}
-		//		else
-		//		{
-		//			if(xoffset + cluster.advance> rect.w)
-		//			{
-		//				xoffset = 0;
-		//				++iline;
-		//				break;
-		//			}
+		for(int_x icluster = line.crange.index; 
+			icluster < line.crange.index + line.crange.length;
+				++icluster)
+		{
+			const rtfcluster_t & cluster = clusters[icluster];
+			line.advance += cluster.advance;
+			if(!line.trange.length)
+				line.trange = cluster.trange;
+			else
+				line.trange.length += cluster.trange.length;
 
-		//			if(cluster.rtf.color != rtfitem.rtf.color)
-		//				break;
+			const runitem_t & runitem = runitems[cluster.run];
+			if(!line.rrange.length)
+			{
+				rtfitem_t & rtfitem_new = rtfitems.add();
+				++line.rrange.length;
+				rtfitem_new.run = cluster.run;
+				rtfitem_new.scp = cluster.scp;
+				rtfitem_new.line = iline;
+				rtfitem_new.rtf.font = runitem.font;
+				rtfitem_new.rtf.color = cluster.rtf.color;
 
-		//			xoffset += cluster.advance;
+				rtfitem_new.crange.index = icluster;
+				rtfitem_new.trange.index = cluster.trange.index;
+			}
+			else
+			{
+				rtfitem_t & rtfitem_last = rtfitems.back();
+				if(rtfitem_last.rtf != cluster.rtf || rtfitem_last.run != cluster.run)
+				{
+					rtfitem_t & rtfitem_new = rtfitems.add();
+					++line.rrange.length;
+					rtfitem_new.run = cluster.run;
+					rtfitem_new.scp = cluster.scp;
+					rtfitem_new.line = iline;
+					rtfitem_new.rtf.font = runitem.font;
+					rtfitem_new.rtf.color = cluster.rtf.color;
 
-		//			rtfitem.trange.length += cluster.trange.length;
-		//			++rtfitem.crange.length;
-		//		}
-		//	}
-		//}
+					rtfitem_new.crange.index = icluster;
+					rtfitem_new.trange.index = cluster.trange.index;
+				}
+			}
+
+			rtfitem_t & rtfitem = rtfitems.back();
+			rtfitem.trange.length += cluster.trange.length;
+			rtfitem.crange.length += 1;
+		}
+
+		line._debug_text = m_text.sub_text(line.trange.index, line.trange.index + line.trange.length);
 	}
 
 	// advance width
 	for(int_x irtf = 0; irtf < rtfitems.size(); ++irtf)
 	{
 		rtfitem_t & rtfitem = rtfitems[irtf];
+		rtfitem._debug_text = m_text.sub_text(rtfitem.trange.index, rtfitem.trange.index + rtfitem.trange.length);
 		for(int_x icluster = 0; icluster < rtfitem.crange.length; ++icluster)
 		{
-			cluster_t & cluster = clusters[rtfitem.crange.index + icluster];
+			rtfcluster_t & cluster = clusters[rtfitem.crange.index + icluster];
 			rtfitem.advance += cluster.advance;
+		}
+	}
+
+	for(int_x iline = 0; iline < rtflines.size(); ++iline)
+	{
+		rtfline_t & rtfline = rtflines[iline];
+
+		vector<uint_8> eles(rtfline.rrange.length);
+		vector<int_32> orders(rtfline.rrange.length);
+		vector<int_32> orders2(rtfline.rrange.length);
+
+		for(int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
+		{
+			eles[irtf] = runitems[rtfitems[rtfline.rrange.index + irtf].run].sa.s.uBidiLevel;
+		}
+		ScriptLayout(rtfline.rrange.length, eles, orders, orders2);
+
+		int_x offset = rtfline.offset;
+		for(int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
+		{
+			rtfitem_t & rtfitem = rtfitems[rtfline.rrange.index + orders[irtf]];
+			rtfitem.offset = offset;
+			offset += rtfitem.advance;
 		}
 	}
 
 	for(int_x iscp = 0; iscp < scpitems.size(); ++iscp)
 	{
-		scpitem_t & item = scpitems[iscp];
-		item._debug_text = m_text.sub_text(item.trange.index, item.trange.index + item.trange.length);
-	}
-
-	for(int_x irun = 0; irun < runitems.size(); ++irun)
-	{
-		runitem_t & item = runitems[irun];
-		item._debug_text = m_text.sub_text(item.trange.index, item.trange.index + item.trange.length);
-	}
-
-	for(int_x irtf = 0; irtf < rtfitems.size(); ++irtf)
-	{
-		rtfitem_t & item = rtfitems[irtf];
-		item._debug_text = m_text.sub_text(item.trange.index, item.trange.index + item.trange.length);
+		scpitem_t & run = scpitems[iscp];
+		run._debug_text = m_text.sub_text(run.trange.index, run.trange.index + run.trange.length);
 	}
 }
 
-void MakeLOGFONT(HDC hdc, const font_t & font, LOGFONT & logFont)
-{
-	if(font.name[0])
-		textcpy(logFont.lfFaceName, LF_FACESIZE, font.name.buffer, -1);
-	else
-	{
-		chbufferw<MAX_FONTNAME> defFontName = Win32::GetDefaultFontName();
-		textcpy(logFont.lfFaceName, LF_FACESIZE, defFontName.buffer, -1);
-	}
-
-	int iDpiY = GetDeviceCaps(hdc, LOGPIXELSY);
-	logFont.lfWidth = 0;
-	logFont.lfHeight = (int_32)(-font.size * 72 / iDpiY);
-	//logFont.lfHeight = (int_32)font.size;
-	logFont.lfWeight = (int_32)font.weight;
-
-	logFont.lfItalic = (uint_8)font.italic;
-	logFont.lfUnderline = (uint_8)font.underline;
-	logFont.lfStrikeOut = (uint_8)font.strikeout;
-	//logFont.lfCharSet = (uint_8)(font.charset);
-	logFont.lfCharSet = DEFAULT_CHARSET;
-	logFont.lfOutPrecision = OUT_DEFAULT_PRECIS;
-	logFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
-	switch(font.renderlevel)
-	{
-	case FontRenderLevelSystem:
-		logFont.lfQuality = DEFAULT_QUALITY;
-		break;
-	case FontRenderLevelGray:
-		logFont.lfQuality = DRAFT_QUALITY;
-		break;
-	case FontRenderLevelAntiGray:
-		logFont.lfQuality = ANTIALIASED_QUALITY;
-		break;
-	case FontRenderLevelClearTypeGrid:
-		logFont.lfQuality = CLEARTYPE_QUALITY;
-		break;
-	default:
-		logFont.lfQuality = DEFAULT_QUALITY;
-		break;
-	}
-	logFont.lfPitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
-}
-
-
-dictionary<uint_32, HPEN> pens;
-
-void DocTextObject::Draw(HDC hdc, int x, int y)
+void DocTextObject::Draw(HDC hdc, int_x x, int_x y, rectix rect)
 {
 	::SetBkMode(hdc, TRANSPARENT);
-	HGDIOBJ hOldFont = NULL;
-	HGDIOBJ hOldPen = NULL;
+	HGDIOBJ hOldFont = nullptr;
 	int_x iline = -1;
 	int_x ix = x;
 	for(int_x cnt = 0; cnt < rtfitems.size(); ++cnt)
@@ -512,14 +603,14 @@ void DocTextObject::Draw(HDC hdc, int x, int y)
 		const rtfitem_t & rtfitem = rtfitems[cnt];
 		if(!rtfitem.crange.length)
 			continue;
+		const runitem_t & rtfrun = runitems[rtfitem.run];
 
 		if(rtfitem.line != iline)
 		{
 			iline = rtfitem.line;
-			ix = x;
 		}
 
-		RECT rect = { ix, y + rtfitem.line * 30, 1000, 1000 };
+		RECT rc = { rect.x, rect.y, rect.right(), rect.bottom() };
 
 		doc_font_t font = GetFont(rtfitem.rtf.font);
 		if(!hOldFont)
@@ -531,12 +622,22 @@ void DocTextObject::Draw(HDC hdc, int x, int y)
 		color = ((color >> 16) & 0xFF) | (color & 0xFF00) | ((color << 16) & 0xFF0000);
 		::SetTextColor(hdc, color);
 
-		const cluster_t & cbeg = clusters[rtfitem.crange.index];
-		const cluster_t & cend = clusters[rtfitem.crange.index + rtfitem.crange.length - 1];
+		const rtfcluster_t & cbeg = clusters[rtfitem.crange.index];
+		const rtfcluster_t & cend = clusters[rtfitem.crange.index + rtfitem.crange.length - 1];
 
-		int_x gindex = cbeg.grange.index;
-		int_x gcount = cend.grange.index + cend.grange.length - cbeg.grange.index;
-		HRESULT hResult = ScriptTextOut(hdc, font.cache, ix, y + rtfitem.line * 30, ETO_CLIPPED, &rect, &rtfitem.sa, nullptr, 0, glyphs + gindex, gcount,
+		int_x gindex = 0, gcount = 0;
+		if(cbeg.grange.index < cend.grange.index)
+		{
+			gindex = cbeg.grange.index;
+			gcount = cend.grange.index + cend.grange.length - cbeg.grange.index;
+		}
+		else
+		{
+			gindex = cend.grange.index;
+			gcount = cbeg.grange.index + cbeg.grange.length - cend.grange.index;
+		}
+
+		HRESULT hResult = ScriptTextOut(hdc, font.cache, x + rtfitem.offset, y + rtfitem.line * font.font.size, ETO_CLIPPED, &rc, &rtfrun.sa, nullptr, 0, glyphs + gindex, gcount,
 			advances + gindex, nullptr, offsets + gindex);
 
 		ix += rtfitem.advance;

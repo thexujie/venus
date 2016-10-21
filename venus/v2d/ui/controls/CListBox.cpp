@@ -96,13 +96,13 @@ void CListBox::Update()
 	iWidthExt += m_iItemSpace;
 	for(int_x cnt = 0, len = m_items.size(); cnt < len; ++cnt)
 	{
-		ListBoxItemT & item = m_items[cnt];
-		if(item.ContentSize.is_empty())
+		ListBoxItemT & run = m_items[cnt];
+		if(run.ContentSize.is_empty())
 		{
-			textsize_t tSize = pService->GetTextSize(item.Text, item.Text.length(), m_font);
-			item.ContentSize.set(tSize.w, tSize.h);
+			textsize_t tSize = pService->GetTextSize(run.Text, run.Text.length(), m_font);
+			run.ContentSize.set(tSize.w, tSize.h);
 		}
-		item.Size.set(item.ContentSize.w + iWidthExt, item.ContentSize.h + m_iLineSpace * 2);
+		run.Size.set(run.ContentSize.w + iWidthExt, run.ContentSize.h + m_iLineSpace * 2);
 	}
 	UpdateScroll();
 	Repaint();
@@ -130,8 +130,8 @@ void CListBox::OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * 
 	int_x iY = -GetScrollPosY(), iItemH = 0;
 	for(int_x cnt = 0, size = m_items.size(); cnt < size; ++cnt, iY += iItemH)
 	{
-		const ListBoxItemT & item = m_items[cnt];
-		//iItemH = item.Size.h;
+		const ListBoxItemT & run = m_items[cnt];
+		//iItemH = run.Size.h;
 		iItemH = m_font.size + m_iLineSpace * 2;
 
 		if(iY >= szClient.h)
@@ -144,10 +144,10 @@ void CListBox::OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * 
 		if(cnt == m_iHovingIndex)
 		{
 			pPaint->FillRect(0, iY, szClient.w, iItemH, SysColorBackHoving);
-			if(item.Selected)
+			if(run.Selected)
 				pPaint->DrawRect(0, iY, szClient.w - 1, iItemH - 1, SysColorFrameHoving);
 		}
-		else if(item.Selected)
+		else if(run.Selected)
 		{
 			pPaint->FillRect(0, iY, szClient.w, iItemH, IsFocused() ? SysColorBackSelected : SysColorBackDisable);
 			//if(cnt >0 && m_items[cnt - 1].Selected && cnt - 1 != m_iHovingIndex)
@@ -184,13 +184,13 @@ void CListBox::OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * 
 			}
 
 			PaintCheck(pPaint, rectix(iCheckX, iItemY, m_iIconSize, m_iIconSize).expand(-1),
-				clrBack, clrFrame, m_uiForeColor, item.Selected);
+				clrBack, clrFrame, m_uiForeColor, run.Selected);
 		}
 
-		if(item.Image && !m_bHideImage)
-			pPaint->DrawImage(item.Image, iIconX, iItemY);
+		if(run.Image && !m_bHideImage)
+			pPaint->DrawImage(run.Image, iIconX, iItemY);
 
-		pPaint->DrawString(item.Text, m_font, pointix(iContentX, iItemY), IsAviliable() ? m_uiForeColor : SysColorForeDisable);
+		pPaint->DrawString(run.Text, m_font, pointix(iContentX, iItemY), IsAviliable() ? m_uiForeColor : SysColorForeDisable);
 	}
 }
 
@@ -199,10 +199,10 @@ sizeix CListBox::GetPreferedSize() const
 	int_x iWidth = m_font.size, iHeight = 0;
 	for(int_x cnt = 0, len = m_items.size(); cnt < len; ++cnt)
 	{
-		const ListBoxItemT & item = m_items[cnt];
-		if(item.Size.w > iWidth)
-			iWidth = item.Size.w;
-		iHeight += item.Size.h;
+		const ListBoxItemT & run = m_items[cnt];
+		if(run.Size.w > iWidth)
+			iWidth = run.Size.w;
+		iHeight += run.Size.h;
 	}
 	return sizeix(iWidth, iHeight) + GetBorder().size();
 }
@@ -425,8 +425,8 @@ void CListBox::SelectItemByText(const char_16 * szText)
 	int_x iIndex = 0;
 	for(int_x cnt = 0, len = m_items.size(); cnt < len; ++cnt)
 	{
-		const ListBoxItemT & item = m_items[cnt];
-		if(item.Text == szText)
+		const ListBoxItemT & run = m_items[cnt];
+		if(run.Text == szText)
 		{
 			iIndex = cnt;
 			break;
@@ -542,11 +542,11 @@ void CListBox::SelectReverse()
 
 	for(int_x cnt = 0, len = m_items.size(); cnt < len; ++cnt)
 	{
-		ListBoxItemT & item = m_items[cnt];
-		if(ItemSelecting(this, &item) == 0)
+		ListBoxItemT & run = m_items[cnt];
+		if(ItemSelecting(this, &run) == 0)
 		{
-			item.SetSelected(!item.Selected);
-			ItemSelected(this, &item);
+			run.SetSelected(!run.Selected);
+			ItemSelected(this, &run);
 		}
 	}
 
@@ -559,10 +559,10 @@ void CListBox::UpdateScroll()
 	int_x iWidth = 0, iHeight = 0;
 	for(int_x cnt = 0, len = m_items.size(); cnt < len; ++cnt)
 	{
-		const ListBoxItemT & item = m_items[cnt];
-		iHeight += item.Size.h;
-		if(item.Size.w > iWidth)
-			iWidth = item.Size.w;
+		const ListBoxItemT & run = m_items[cnt];
+		iHeight += run.Size.h;
+		if(run.Size.w > iWidth)
+			iWidth = run.Size.w;
 	}
 	SetScroll(iWidth, iHeight);
 }
@@ -573,8 +573,8 @@ int_x CListBox::FindItem(pointix point) const
 	int_x iTop = 0, iBottom = 0, iHeight = 0, iIndex = -1;
 	for(int_x cnt = 0, len = m_items.size(); cnt < len; ++cnt, iTop = iBottom)
 	{
-		const ListBoxItemT & item = m_items[cnt];
-		iBottom = iTop + item.Size.h;
+		const ListBoxItemT & run = m_items[cnt];
+		iBottom = iTop + run.Size.h;
 		if(iTop <= point.y && point.y < iBottom)
 			return cnt;
 	}

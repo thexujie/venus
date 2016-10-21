@@ -93,6 +93,8 @@ public:
 	static HINSTANCE GetCurrentInstance();
 	static void Quit(int_x iReturn);
 	static version_t GetVersion();
+
+	static font_t GetDefaultFont();
 	static chbufferw<MAX_FONTNAME> GetDefaultFontName();
 	static void GetSysColors(uint_32 * colors, int_x iCount);
 
@@ -102,6 +104,9 @@ public:
 	static const char_16 * DebugFormatLastError();
 
 	static I2DDevice * Create2DDevice(Device2DTypeE eType);
+
+	static font_t MappingFont(const LOGFONTW & logfont);
+	static LOGFONTW MappingFont(const font_t & logfont);
 };
 
 

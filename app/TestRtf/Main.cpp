@@ -56,27 +56,40 @@ DocTextObject dto;
 
 void OnCreate(HWND hWnd)
 {
-	::CreateCaret(hWnd, NULL, 1, 22);
-	::SetCaretPos(10, 10);
-	::ShowCaret(hWnd);
+	//::CreateCaret(hWnd, NULL, 1, 22);
+	//::SetCaretPos(10, 10);
+	//::ShowCaret(hWnd);
+
 	//dto.SetText(L"𪚥𪚥ยิ้ยิ้ABCتىلى");
 	//dto.SetText(L"𪚥𪚥𪚥ยิ้ยิ้تىلىABCہاں");
-	uint_32 colors[] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Purple, Colors::Thistle };
+	uint_32 colors[] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Purple };
 	//char_16 chs[] = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ一二三四五六七八九十";
-	char_16 chs[] = L"一二三四五六七八九十ABCDEFGHIJJJJJJJJ";
+	char_16 chs[] = L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้אאאא 1234 דדד לל شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
+	//char_16 chs[] = L"一二三四五六七八九十ABCDEFGHI";
+	//char_16 chs[] = L"abcd efg להגדיל את המונה על ידי אחד";
 	textw text;
-	for(int_x cnt = 0; cnt < 100; ++cnt)
+	for(int_x cnt = 0; cnt < 1000 * 2; ++cnt)
 	{
 		text.append(chs[cnt % (arraysize(chs) - 1)]);
 	}
 
+	//text = L"تىلى تىلى تىلى تىلى تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ تەتقىق قىلدى";
+	//text = L"abc def ghi jkl mno pqr stu vwx yz";
+	//text = L"abcdefghijklmnopqrstuvwxyz";
+	//text = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	//text = L"ABCD许许多多";
+	//text = L"you say אאאא דדד לל   just come on.";
+	//text = L"you say אאאא דדד לל אאאא דדד לל 一二三四just come on.";
+	//text = L"אאאא 1234 דדד לל";
+	//text = L"تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
+	//text = L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
 	dto.SetText(text);
 	dto.Break();
-	for(int_x cnt = 0; cnt < dto.GetClusterCount(); ++cnt)
+	int_x step = 3;
+	for(int_x cnt = 0; cnt < (dto.GetClusterCount() / step) * step; cnt += step)
 	{
-		dto.SetColor({ cnt, 1 }, colors[cnt % arraysize(colors)]);
+		dto.SetColor({ cnt, step }, colors[cnt % arraysize(colors)]);
 	}
-
 
 	//dto.SetText(L"ษาไทยรอยยิ้มนักสู้ กเสียก่อน한국어조선말ئۇيغۇر تىلى𪚥𪚥𪚥𪚥𪚥");
 	dto.Slice();
@@ -99,13 +112,16 @@ void OnDestroy(HWND hWnd)
 	PostQuitMessage(0);
 }
 
+int_x frameSize = 60;
+int_x layoutStart = 100;
+
 void OnSize(HWND hWnd)
 {
 	RECT rc;
 	GetClientRect(hWnd, &rc);
 	doc.GenerateLine(&engine, rc.right);
 
-	dto.Layout({0, 0, rc.right, rc.bottom});
+	dto.Layout(layoutStart, { 0, 0, rc.right - frameSize * 2, rc.bottom }, false);
 
 	SCROLLINFO si = {};
 	si.cbSize = sizeof(si);
@@ -136,9 +152,20 @@ void OnPaint(HWND hWnd)
 	
 	recti32 rect(0, 0, rc.right, rc.bottom);
 	Rectangle(hdc2, rect.x, rect.y, rect.right(), rect.bottom());
+	MoveToEx(hdc2, frameSize, frameSize, nullptr);
+	LineTo(hdc2, frameSize, rect.bottom() - frameSize);
+
+	MoveToEx(hdc2, rect.right() - frameSize, frameSize, nullptr);
+	LineTo(hdc2, rect.right() - frameSize, rect.bottom() - frameSize);
+
+	MoveToEx(hdc2, frameSize, frameSize, nullptr);
+	LineTo(hdc2, rect.right() - frameSize, frameSize);
+
+	MoveToEx(hdc2, frameSize, rect.bottom() - frameSize, nullptr);
+	LineTo(hdc2, rect.right() - frameSize, rect.bottom() - frameSize);
 
 	//doc.Draw(&engine, hdc2, 0, rect.y - iBaseY, rect.w, rect.h);
-	dto.Draw(hdc2, 0, 0);
+	dto.Draw(hdc2, frameSize, frameSize, { frameSize, frameSize, rc.right - frameSize * 2, rc.bottom - frameSize * 2});
 
 	BitBlt(hdc, 0, 0, rc.right, rc.bottom, hdc2, 0, 0, SRCCOPY);
 

@@ -758,7 +758,7 @@ save_marker (j_decompress_ptr cinfo)
 	limit = marker->length_limit_APPn[cinfo->unread_marker - (int) M_APP0];
       if ((unsigned int) length < limit)
 	limit = (unsigned int) length;
-      /* allocate and initialize the marker item */
+      /* allocate and initialize the marker run */
       cur_marker = (jpeg_saved_marker_ptr)
 	(*cinfo->mem->alloc_large) ((j_common_ptr) cinfo, JPOOL_IMAGE,
 				    SIZEOF(struct jpeg_marker_struct) + limit);

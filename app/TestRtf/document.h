@@ -2,21 +2,6 @@
 
 #include "BaseInc.h"
 
-
-void MakeLOGFONT(HDC hdc, const font_t & font, LOGFONT & logFont);
-
-class DocLine
-{
-};
-
-class IDocFactory
-{
-public:
-	virtual ~IDocFactory()
-	{
-	}
-};
-
 class DocObject
 {
 public:
@@ -29,32 +14,17 @@ public:
 	}
 };
 
-struct urange_t
-{
-	int_x icolor;
-	int_x length;
-};
-
-class DocFont
-{
-};
-
-struct textrtf_t
-{
-	trange_t trange;
-	grange_t grange;
-	crange_t crange;
-	SCRIPT_ANALYSIS analysis;
-
-	SCRIPT_CACHE * cache;
-	HFONT hfont;
-
-	font_t font;
-	uint_32 color;
-};
-
 #include <usp10.h>
 #pragma comment(lib, "usp10.lib")
+
+struct rtf_t
+{
+	int_x font;
+	int_x color;
+
+	bool operator ==(const rtf_t & another) const { return font == another.font && color == another.color; }
+	bool operator !=(const rtf_t & another) const { return !operator==(another); }
+};
 
 struct doc_font_t
 {
@@ -78,29 +48,85 @@ struct rrange_t
 	int_x length;
 };
 
-struct rtf_t
+struct runitem_t
 {
+	SCRIPT_ANALYSIS sa;
+	int_x scp;
 	int_x font;
-	int_x color;
+	trange_t trange;
+	crange_t crange;
+	grange_t grange;
+	rrange_t rrange;
+	int_x advance;
+	textw _debug_text;
+};
 
-	bool operator ==(const rtf_t & another) const { return font == another.font && color == another.color; }
-	bool operator !=(const rtf_t & another) const { return !operator==(another); }
+struct scpitem_t
+{
+	SCRIPT_ANALYSIS sa;
+	trange_t trange;
+	crange_t crange;
+	textw _debug_text;
+};
+
+struct rtfitem_t
+{
+	int_x run;
+	int_x scp;
+	int_x line;
+	rtf_t rtf;
+
+	trange_t trange;
+	crange_t crange;
+	int_x advance;
+	int_x offset;
+
+	textw _debug_text;
+};
+
+struct rtfcluster_t
+{
+	int_x run;
+	int_x scp;
+	trange_t trange;
+	grange_t grange;
+	int_x advance;
+
+	rtf_t rtf;
+
+	bool whitespace : 1;
+	//! 该字符后是否是建议的换行位置.
+	bool softbreak : 1;
+	//! 是否是段落标记
+	bool paragraphtag : 1;
+	//! 是否是连字符
+	bool softhyphen : 1;
+	//! 是否是从右到左的阅读顺序
+	bool right2left : 1;
+	//! 是否是行标记
+	bool linetag : 1;
+
+	textw _debug_text;
+};
+
+struct rtfline_t
+{
+	int_x line;
+	rrange_t rrange;
+	crange_t crange;
+	trange_t trange;
+
+	int_x offset;
+	int_x advance;
+	textw _debug_text;
+
+	void additem(rtfitem_t run) {}
 };
 
 class DocTextObject : public DocObject
 {
 public:
-	DocTextObject()
-	{
-		font_t & font = fonts.add();
-		font.name = L"微软雅黑";
-		font.size = 32;
-		colors.add(Colors::Black);
-
-		HDC hdcScreen = GetDC(NULL);
-		m_hdc = CreateCompatibleDC(hdcScreen);
-		ReleaseDC(NULL, hdcScreen);
-	}
+	DocTextObject();
 
 	virtual ~DocTextObject()
 	{
@@ -177,9 +203,8 @@ public:
 		}
 
 		HDC hdc = m_hdc;
-		LOGFONT logFont = {};
-		MakeLOGFONT(hdc, font, logFont);
-		HFONT hFont = CreateFontIndirect(&logFont);
+		LOGFONTW logFont = Win32::MappingFont(font);
+		HFONT hFont = CreateFontIndirectW(&logFont);
 		if(!hFont)
 			throw exp_bad_state();
 
@@ -194,7 +219,6 @@ public:
 
 	doc_font_t GetFontFallBack(const font_t & font, int_x iLanguage, const char_16 * text = nullptr, int_x length = 0);
 
-
 	void SetText(textw text);
 	int_x GetClusterCount() const { return clusters.size(); }
 	// generate scripts and clusters(by ScriptBreak).
@@ -205,100 +229,29 @@ public:
 	void Shape();
 
 	// layout all clusters
-	void Layout(rectix rect);
+	void Layout(int_x start, rectix rect, bool breakword);
 
-	void Draw(HDC hdc, int x, int y);
+	void Draw(HDC hdc, int_x, int_x y, rectix rect);
 
 protected:
 	HDC m_hdc;
 
-	struct scpitem_t
-	{
-		SCRIPT_ANALYSIS sa;
-		trange_t trange;
-		crange_t crange;
-		textw _debug_text;
-	};
-
-	struct runitem_t
-	{
-		SCRIPT_ANALYSIS sa;
-		int_x font;
-		trange_t trange;
-		crange_t crange;
-		rrange_t rrange;
-		textw _debug_text;
-		int_x advance;
-	};
-
-	struct rtfitem_t
-	{
-		int_x line;
-		SCRIPT_ANALYSIS sa;
-		rtf_t rtf;
-		trange_t trange;
-		crange_t crange;
-		int_x advance;
-		textw _debug_text;
-	};
-
-	struct docline_t
-	{
-		rrange_t rrange;
-	};
-
-	struct cluster_t
-	{
-		int_x item;
-		trange_t trange;
-		grange_t grange;
-		int_x advance;
-
-		rtf_t rtf;
-
-		bool whitespace : 1;
-		//! 该字符后是否是建议的换行位置.
-		bool softbreak : 1;
-		//! 是否是段落标记
-		bool paragraphtag : 1;
-		//! 是否是连字符
-		bool softhyphen : 1;
-		//! 是否是从右到左的阅读顺序
-		bool right2left : 1;
-		//! 是否是行标记
-		bool linetag : 1;
-
-		textw _debug_text;
-	};
-
-	struct line_t
-	{
-		int_x line;
-		rrange_t rrange;
-		crange_t crange;
-
-		int_x advance;
-		textw _debug_text;
-
-		void additem(rtfitem_t item){}
-	};
-
 	vector<doc_font_t> caches;
 
 	textw m_text;
-	vector<cluster_t> clusters;
+
+	vector<rtfcluster_t> clusters;
 
 	vector<scpitem_t> scpitems;
 	vector<runitem_t> runitems;
 	vector<rtfitem_t> rtfitems;
-	vector<line_t> lines;
+	vector<rtfline_t> rtflines;
 
 	vector<font_t> fonts;
 	vector<uint_32> colors;
 
-
 	vector<uint_16> glyphs;
-	// attribute
+	// attribute, just for Shape()
 	vector<SCRIPT_VISATTR> gattrs;
 	// advance
 	vector<int_32> advances;
@@ -306,32 +259,4 @@ protected:
 	vector<GOFFSET> offsets;
 
 	vector<uint_16> tclusters;
-
-	// scp cluster
-	vector<scp_cluster_t> m_scpclusters;
-	// cluster
-	vector<usp_cluster_t> m_clusters;
-	// line
-	vector<tl_line_t> m_lines;
-
-
-	
-};
-
-class Paragraph
-{
-protected:
-
-	vector<DocLine> lines;
-	vector<DocObject *> objects;
-};
-
-class Document
-{
-public:
-	Document();
-	~Document();
-
-protected:
-	vector<Paragraph> paragraphs;
 };

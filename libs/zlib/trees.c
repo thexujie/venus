@@ -535,9 +535,9 @@ local void gen_bitlen(s, desc)
         bits = max_length-1;
         while (s->bl_count[bits] == 0) bits--;
         s->bl_count[bits]--;      /* move one leaf down the tree */
-        s->bl_count[bits+1] += 2; /* move one overflow item as its brother */
+        s->bl_count[bits+1] += 2; /* move one overflow run as its brother */
         s->bl_count[max_length]--;
-        /* The brother of the overflow item also moves one step up,
+        /* The brother of the overflow run also moves one step up,
          * but this does not affect bl_count[max_length]
          */
         overflow -= 2;

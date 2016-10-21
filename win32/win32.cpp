@@ -85,6 +85,14 @@ version_t Win32::GetVersion()
 #endif
 }
 
+font_t Win32::GetDefaultFont()
+{
+	NONCLIENTMETRICS metrics;
+	metrics.cbSize = sizeof(NONCLIENTMETRICS);
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, metrics.cbSize, &metrics, 0);
+	return MappingFont(metrics.lfMessageFont);
+}
+
 chbufferw<MAX_FONTNAME> Win32::GetDefaultFontName()
 {
 	NONCLIENTMETRICS metrics;
@@ -207,6 +215,85 @@ I2DDevice * Win32::Create2DDevice(Device2DTypeE eType)
 	default:
 		return new C2DDeviceGdip();
 	}
+}
+
+
+font_t Win32::MappingFont(const LOGFONTW & logfont)
+{
+	font_t font;
+	textcpy(font.name.buffer, arraysize(font.name.buffer), logfont.lfFaceName, LF_FACESIZE);
+	
+	font.size = logfont.lfWeight;
+	font.weight = logfont.lfWeight;
+	font.italic = !!logfont.lfItalic;
+	font.underline = !!logfont.lfUnderline;
+	font.strikeout = !!logfont.lfStrikeOut;
+
+	switch(logfont.lfQuality)
+	{
+	case DEFAULT_QUALITY:
+		font.renderlevel = FontRenderLevelSystem;
+		break;
+	case DRAFT_QUALITY:
+		font.renderlevel = FontRenderLevelGray;
+		break;
+	case ANTIALIASED_QUALITY:
+		font.renderlevel = FontRenderLevelAntiGray;
+		break;
+	case CLEARTYPE_QUALITY:
+		font.renderlevel = FontRenderLevelClearTypeGrid;
+		break;
+	default:
+		font.renderlevel = FontRenderLevelSystem;
+		break;
+	}
+	return font;
+}
+
+LOGFONTW Win32::MappingFont(const font_t & font)
+{
+	LOGFONTW logfont = {};
+	if(font.name[0])
+		textcpy(logfont.lfFaceName, LF_FACESIZE, font.name.buffer, -1);
+	else
+	{
+		chbufferw<MAX_FONTNAME> defFontName = GetDefaultFontName();
+		textcpy(logfont.lfFaceName, LF_FACESIZE, defFontName.buffer, -1);
+	}
+
+	//int iDpiY = GetDeviceCaps(hdc, LOGPIXELSY);
+	logfont.lfWidth = 0;
+	//logFont.lfHeight = (int_32)(-font.size * 72 / iDpiY);
+	logfont.lfHeight = -static_cast<int_32>(font.size);
+	logfont.lfWeight = static_cast<int_32>(font.weight);
+
+	logfont.lfItalic = static_cast<uint_8>(font.italic);
+	logfont.lfUnderline = static_cast<uint_8>(font.underline);
+	logfont.lfStrikeOut = static_cast<uint_8>(font.strikeout);
+	//logFont.lfCharSet = static_cast<uint_8>(font.charset);
+	logfont.lfCharSet = DEFAULT_CHARSET;
+	logfont.lfOutPrecision = OUT_DEFAULT_PRECIS;
+	logfont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
+	switch(font.renderlevel)
+	{
+	case FontRenderLevelSystem:
+		logfont.lfQuality = DEFAULT_QUALITY;
+		break;
+	case FontRenderLevelGray:
+		logfont.lfQuality = DRAFT_QUALITY;
+		break;
+	case FontRenderLevelAntiGray:
+		logfont.lfQuality = ANTIALIASED_QUALITY;
+		break;
+	case FontRenderLevelClearTypeGrid:
+		logfont.lfQuality = CLEARTYPE_QUALITY;
+		break;
+	default:
+		logfont.lfQuality = DEFAULT_QUALITY;
+		break;
+	}
+	logfont.lfPitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
+	return logfont;
 }
 
 VENUS_END

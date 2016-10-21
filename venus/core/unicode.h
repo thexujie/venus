@@ -13,6 +13,7 @@ enum unicodeplane_e
 	unicodeplane_invalid = -1,
 	unicodeplane_control = 0,
 
+	unicodeplane_hebrew = 13,
 	unicodeplane_arabic = 14,
 	unicodeplane_oriya = 26,
 	unicodeplane_sinhala = 32,

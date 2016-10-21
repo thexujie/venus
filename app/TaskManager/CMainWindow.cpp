@@ -379,7 +379,7 @@ void CMainWindow::RefreshDetail()
 {
 	m_lstDetail.RemoveAllRows();
 
-	ListViewItemT item;
+	ListViewItemT run;
 
 	textw text(L"TheText");
 

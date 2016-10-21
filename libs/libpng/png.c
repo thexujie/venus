@@ -451,7 +451,7 @@ int num)
 		return;
 
 #ifdef PNG_TEXT_SUPPORTED
-	/* Free text item num or (if num == -1) all text items */
+	/* Free text run num or (if num == -1) all text items */
 	if((mask & PNG_FREE_TEXT) & info_ptr->free_me)
 	{
 		if(num != -1)

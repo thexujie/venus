@@ -233,7 +233,7 @@ void CTreeView::PaintItem(IPaint * pPaint, int_x iX, int_x iY, const TreeItemT *
 
 	int_x iBottom = 0;
 
-	// item ±³¾°É«
+	// run ±³¾°É«
 	if(iY + iItemH >= 0)
 	{
 		if(pItem->HighLighted)

@@ -618,7 +618,7 @@ err_t CUILoaderXml::ParseScrollView(const xml_node & node, IControl *& pControl,
 		{
 			defines.load(child0);
 		}
-		else if(child0.name == L"item")
+		else if(child0.name == L"run")
 		{
 			textw title = child0[L"title"];
 			int_x minwidth = 0;
@@ -860,7 +860,7 @@ IMenu * CUILoaderXml::ParseMenu(const xml_node & node, CLoaderDefines & defines)
 	for(int_x cnt = 0; cnt < node.children.size(); ++cnt)
 	{
 		const xml_node & child = node.children[cnt];
-		if(child.name.equal(L"item", 4, false))
+		if(child.name.equal(L"run", 4, false))
 		{
 			IMenu * pSubMenu = nullptr;
 			textw submenuname = child[L"submenu"].value;

@@ -7,6 +7,25 @@
   <Type Name="venus::proc_ptr&lt;*&gt;">
     <DisplayString>{pfn}</DisplayString>
   </Type>
+  <Type Name="rrange_t">
+    <DisplayString>{{{index}, {length}}}</DisplayString>
+  </Type>
+  <Type Name="scpitem_t">
+    <DisplayString>t({trange.index}, {trange.length}), c({crange.index}, {crange.length}), {_debug_text}</DisplayString>
+  </Type>
+  <Type Name="runitem_t">
+    <DisplayString>t({trange.index}, {trange.length}), c({crange.index}, {crange.length}), {_debug_text}</DisplayString>
+  </Type>
+  <Type Name="rtfline_t">
+    <DisplayString>t({trange.index}, {trange.length}), c({crange.index}, {crange.length}), r({rrange.index}, {rrange.length}), {_debug_text}</DisplayString>
+  </Type>
+  <Type Name="rtfcluster_t">
+    <DisplayString>t({trange.index}, {trange.length}), g({grange.index}, {grange.length}), advance:{advance}, break&lt;{softbreak}&gt;, space&lt;{whitespace}&gt;, {_debug_text}</DisplayString>
+  </Type>
+  <Type Name="rtfitem_t">
+    <DisplayString>c({crange.index}, {crange.length}), t({trange.index}, {trange.length}), line:{line}, offset:{offset}, advance:{advance}, {_debug_text}</DisplayString>
+  </Type>
+  
 	<Type Name="venus::xmt">
 		<DisplayString>{{{fx},{fy},{fz},{fw}}}</DisplayString>
 		<Expand>
