@@ -12,6 +12,9 @@ const char_x RTF_FILE[] = _T("rtf.rtf");
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uiMessage, WPARAM wParam, LPARAM lParam);
 void Main()
 {
+	HMODULE hModule = LoadLibraryA("E:\\games\\majiang\\server\\Debug_Win32_v140\\GamePrivateService.dll");
+	Win32::DebugFormatLastError();
+
 	fileinfo_t fileInfo(RTF_FILE);
 	if(!fileInfo.exists)
 	{
