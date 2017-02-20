@@ -181,7 +181,7 @@ TreeItemT * CTreeView::FindItem(pointix point) const
 			break;
 
 		iTop = iBottom;
-		if(pFind->Expanded && pFind->Items.is_valid())
+		if(pFind->Expanded && pFind->Items.valid())
 		{
 			for(int_x cnt = 0, size = pFind->Items.size(); cnt < size; ++cnt)
 			{
@@ -233,7 +233,7 @@ void CTreeView::PaintItem(IPaint * pPaint, int_x iX, int_x iY, const TreeItemT *
 
 	int_x iBottom = 0;
 
-	// run 背景色
+	// item 背景色
 	if(iY + iItemH >= 0)
 	{
 		if(pItem->HighLighted)
@@ -303,7 +303,7 @@ void CTreeView::PaintItem(IPaint * pPaint, int_x iX, int_x iY, const TreeItemT *
 	}
 
 	// 绘制子项
-	if(pItem->Expanded && pItem->Items.is_valid())
+	if(pItem->Expanded && pItem->Items.valid())
 	{
 		for(int_x cnt = 0, len = pItem->Items.size(); cnt < len; ++cnt, iChildY = iBottom)
 		{
@@ -371,7 +371,7 @@ void CTreeView::_UpdateItem(TreeItemT * pItem)
 		int_x iWidth = pItem->ItemWidth;
 		int_x iHeight = pItem->ItemHeight;
 
-		if(pItem->Expanded && pItem->Items.is_valid())
+		if(pItem->Expanded && pItem->Items.valid())
 		{
 			for(int_x cnt = 0, len = pItem->Items.size(); cnt < len; ++cnt)
 			{
@@ -498,7 +498,7 @@ void CTreeView::OnKeyDown(KeyCodeE eKeyCode)
 		{
 			if(m_pSelectedItem->Expanded)
 			{
-				if(m_pSelectedItem->Items.is_valid())
+				if(m_pSelectedItem->Items.valid())
 					SelectItem(m_pSelectedItem->Items[0]);
 			}
 			else
@@ -522,7 +522,6 @@ void CTreeView::RequestCursor(pointix point, CursorE & eCursor) const
 void CTreeView::OnScroll(intx2 scroll, intx2 offset)
 {
 	Repaint();
-	CControl::OnScroll(scroll, offset);
 }
 
 void CTreeView::UpdateScroll()
@@ -826,14 +825,14 @@ TreeItemT * CTreeView::HelperGetNextItem(TreeItemT * pItem)
 		return nullptr;
 	else
 	{
-		if(pItem->Expanded && pItem->Items.is_valid())
+		if(pItem->Expanded && pItem->Items.valid())
 			return pItem->Items[0];
 		else if(pItem->Parent)
 		{
 			TreeItemT * pParent = pItem->Parent;
 			while(pParent)
 			{
-				verify(pParent->Items.is_valid());
+				verify(pParent->Items.valid());
 				for(int_x cnt = 0, len = pParent->Items.size() - 1;
 				cnt < len; ++cnt)
 				{
@@ -857,7 +856,7 @@ TreeItemT * CTreeView::HelperGetPrevItem(TreeItemT * pItem)
 
 	TreeItemT * pParent = pItem->Parent;
 	TreeItemT * pPrev = nullptr;
-	if(!pParent || !pParent->Items.is_valid())
+	if(!pParent || !pParent->Items.valid())
 		return nullptr;
 	else if(!pItem)
 		pPrev = pParent->Items[pParent->Items.size() - 1];
@@ -879,7 +878,7 @@ TreeItemT * CTreeView::HelperGetPrevItem(TreeItemT * pItem)
 
 	if(pPrev)
 	{
-		while(pPrev->Items.is_valid() && pPrev->Expanded)
+		while(pPrev->Items.valid() && pPrev->Expanded)
 			pPrev = pPrev->Items[pPrev->Items.size() - 1];
 	}
 	else

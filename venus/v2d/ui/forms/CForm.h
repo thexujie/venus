@@ -39,7 +39,7 @@ public:
 	void NcRepaint(const rectix & rect) override;
 	pointix GetMousePosition() const override;
 	bool IsKeyDown(KeyCodeE ekeyCode) const override;
-	pointix ClientToScreen(const pointix & point) const override;
+	pointix ToScreen(const pointix & point) const override;
 
 	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 

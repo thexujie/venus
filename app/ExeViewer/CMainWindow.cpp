@@ -72,7 +72,7 @@ int_x CMainWindow::OnTextBoxShowMenu(IControl * pControl, pointix point)
 	menu.AddSplit();
 	menu.AddItem(7, L"自动换行", m_txbInfo.GetTextWrap() != TextWrapNone);
 	menu.AddItem(8, L"只读", m_txbInfo.IsReadOnly());
-	switch(m_txbInfo.PopupMenu(point, &menu))
+	switch(m_txbInfo.PopupMenu(ToNoneCl(point), &menu))
 	{
 	case 1:
 		m_txbInfo.DoCut();

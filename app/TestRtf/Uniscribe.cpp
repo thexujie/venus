@@ -33,7 +33,7 @@ void CScriptParagraph::AddRichText(const char_16 * szText, int_x iLength)
 	if(!iLength)
 		return;
 
-	if(m_texts.is_empty())
+	if(m_texts.empty())
 	{
 		ScriptRichTextT & srt = m_texts.add();
 		srt.iBeg = 0;
@@ -73,7 +73,7 @@ void CScriptParagraph::AddRichText(const char_16 * szText, int_x iLength, const 
 	if(!iLength)
 		return;
 
-	if(m_texts.is_empty())
+	if(m_texts.empty())
 	{
 		ScriptRichTextT & srt = m_texts.add();
 		srt.iBeg = 0;
@@ -302,7 +302,7 @@ void CScriptParagraph::GenerateLine(CScriptEngine * pEngine, int_x iWidth)
 	m_lines.clear();
 	iHeight = 0;
 
-	if(m_chars.is_empty())
+	if(m_chars.empty())
 	{
 		const RichTextFormatT & rtFormat = m_formats[0];
 		ScriptFontT & sFont = pEngine->GetScriptFont(rtFormat.rtFont);

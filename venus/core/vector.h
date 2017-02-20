@@ -71,7 +71,12 @@ public:
 
 	~vector()
 	{
-		destroy();
+		for(int_x cnt = 0; cnt < m_size; ++cnt)
+			EleAllocator::Destruct(m_buffer + cnt);
+		EleAllocator::Free(m_buffer);
+		m_buffer = 0;
+		m_size = 0;
+		m_capability = 0;
 	}
 
 	void fill(const EleT & ele)
@@ -100,7 +105,7 @@ public:
 
 	void join(const vector & another)
 	{
-		if(another.is_empty())
+		if(another.empty())
 			return;
 
 		int_x size = m_size + another.m_size;
@@ -114,7 +119,7 @@ public:
 
 	void join(vector && another)
 	{
-		if(another.is_empty())
+		if(another.empty())
 			return;
 
 		int_x size = m_size + another.m_size;
@@ -321,16 +326,6 @@ public:
 		m_size = 0;
 	}
 
-	void destroy()
-	{
-		for(int_x cnt = 0; cnt < m_size; ++cnt)
-			EleAllocator::Destruct(m_buffer + cnt);
-		EleAllocator::Free(m_buffer);
-		m_buffer = 0;
-		m_size = 0;
-		m_capability = 0;
-	}
-
 	template<typename CalcT>
 	int_x remove_by(CalcT pCalc)
 	{
@@ -378,11 +373,11 @@ public:
 		}
 	}
 
-	bool is_empty() const
+	bool empty() const
 	{
 		return m_size == 0;
 	}
-	bool is_valid() const
+	bool valid() const
 	{
 		return m_size > 0;
 	}

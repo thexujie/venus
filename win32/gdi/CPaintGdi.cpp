@@ -174,14 +174,14 @@ void CPaintGdi::PushOrign(int_x iX, int_x iY)
 void CPaintGdi::PushOrign(const pointix & point)
 {
 	pointix temp = point;
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 		temp += m_origns.back();
 	m_origns.add(temp);
 }
 
 pointix CPaintGdi::GetOrign() const
 {
-	if(m_origns.is_empty())
+	if(m_origns.empty())
 		return pointix();
 	else
 		return m_origns.back();
@@ -195,7 +195,7 @@ void CPaintGdi::PopOrign()
 void CPaintGdi::PushClip(int_x iX, int_x iY, int_x iWidth, int_x iHeight)
 {
 	rectix rcClip(iX, iY, iWidth, iHeight);
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 	{
 		const pointix & orign = m_origns.back();
 		rcClip.x += orign.x;
@@ -224,7 +224,7 @@ void CPaintGdi::PushClip(const rectix & rect)
 
 rectix CPaintGdi::GetClip() const
 {
-	if(m_clips.is_empty())
+	if(m_clips.empty())
 		return rectix();
 	else
 		return m_clips.back();
@@ -234,7 +234,7 @@ void CPaintGdi::PopClip()
 {
 	m_clips.pop();
 
-	if(m_clips.is_empty())
+	if(m_clips.empty())
 		::SelectClipRgn(m_hdc, NULL);
 	else
 	{
@@ -751,7 +751,7 @@ void CPaintGdi::AffineColor(uint_32 & color)
 
 void CPaintGdi::AffineX(int_x & iX)
 {
-	if(!m_origns.is_valid())
+	if(!m_origns.valid())
 		return;
 
 	const pointix & orign = m_origns.back();
@@ -760,7 +760,7 @@ void CPaintGdi::AffineX(int_x & iX)
 
 void CPaintGdi::AffineY(int_x & iY)
 {
-	if(!m_origns.is_valid())
+	if(!m_origns.valid())
 		return;
 
 	const pointix & orign = m_origns.back();
@@ -768,7 +768,7 @@ void CPaintGdi::AffineY(int_x & iY)
 }
 void CPaintGdi::AffineXY(int_x & iX, int_x & iY)
 {
-	if(!m_origns.is_valid())
+	if(!m_origns.valid())
 		return;
 
 	const pointix & orign = m_origns.back();
@@ -778,7 +778,7 @@ void CPaintGdi::AffineXY(int_x & iX, int_x & iY)
 
 void CPaintGdi::AffineXY(float_32 & fX, float_32 & fY)
 {
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 	{
 		const pointix & orign = m_origns.back();
 		fX += (float_32)orign.x;
@@ -788,7 +788,7 @@ void CPaintGdi::AffineXY(float_32 & fX, float_32 & fY)
 
 void CPaintGdi::Affine(pointix & point)
 {
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 	{
 		const pointix & orign = m_origns.back();
 		point += orign;
@@ -797,7 +797,7 @@ void CPaintGdi::Affine(pointix & point)
 
 int_x CPaintGdi::GetAffineX() const
 {
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 		return m_origns.back().x;
 	else
 		return 0;
@@ -805,7 +805,7 @@ int_x CPaintGdi::GetAffineX() const
 
 int_x CPaintGdi::GetAffineY() const
 {
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 		return m_origns.back().y;
 	else
 		return 0;

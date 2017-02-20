@@ -101,6 +101,9 @@ void DocTextObject::Break()
 		scpitem.sa = sitem.a;
 		scpitem.trange = { sitem.iCharPos, item_next.iCharPos - sitem.iCharPos };
 		scpitem.crange = { cluster_num, 0 };
+#ifdef _DEBUG
+		scpitem._debug_text = m_text.sub_text(sitem.iCharPos, item_next.iCharPos - sitem.iCharPos);
+#endif
 
 		vector<SCRIPT_LOGATTR> tattrs(scpitem.trange.length, scpitem.trange.length);
 
@@ -405,7 +408,7 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 	rtflines.clear();
 
 	int_x iadvance = start_x;
-	if(iadvance && clusters.is_valid())
+	if(iadvance && clusters.valid())
 	{
 		const rtfcluster_t & cluster = clusters[0];
 		if(iadvance + cluster.advance > rect.w)

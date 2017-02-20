@@ -77,7 +77,7 @@ CMonitorManager::~CMonitorManager()
 
 IMonitor * CMonitorManager::GetMonitorFromWindowId(int_x iWindowId) const
 {
-	if(m_monitors.is_empty())
+	if(m_monitors.empty())
 		return nullptr;
 
 	if(!iWindowId)
@@ -95,7 +95,7 @@ IMonitor * CMonitorManager::GetMonitorFromWindowId(int_x iWindowId) const
 
 IMonitor * CMonitorManager::GetMonitor(int_x iIndex) const
 {
-	if(m_monitors.is_empty())
+	if(m_monitors.empty())
 		return nullptr;
 
 	if(iIndex < 0 || iIndex >= m_monitors.size())
@@ -105,7 +105,7 @@ IMonitor * CMonitorManager::GetMonitor(int_x iIndex) const
 
 IMonitor * CMonitorManager::GetMonitor(int_x iX, int_x iY) const
 {
-	if(m_monitors.is_empty())
+	if(m_monitors.empty())
 		return nullptr;
 
 	POINT point = {(int)iX, (int)iY};

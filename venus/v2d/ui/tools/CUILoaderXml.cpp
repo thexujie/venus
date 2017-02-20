@@ -52,42 +52,41 @@ static rectix to_rect(const textw & str)
 
 static AlignE to_align(const textw & str)
 {
-	int_32 type = AlignNone;
+	AlignE align = AlignNone;
 	for(int_x cnt = 0; cnt < str.length(); ++cnt)
 	{
 		switch(str[cnt])
 		{
-		case L'l': type |= AlignLeft; break;
-		case L't': type |= AlignTop; break;
-		case L'r': type |= AlignRight; break;
-		case L'b': type |= AlignBottom; break;
-		case L'h': type |= AlignCenterX; break;
-		case L'v': type |= AlignCenterY; break;
+		case L'l': align = AlignLeft; break;
+		case L't': align = AlignTop; break;
+		case L'r': align = AlignRight; break;
+		case L'b': align = AlignBottom; break;
+		case L'h': align = AlignCenterX; break;
+		case L'v': align = AlignCenterY; break;
 		default:
 			break;
 		}
 	}
-	return (AlignE)type;
+	return align;
 };
 
 static anchor_t to_anchor(const textw & str)
 {
-	int_32 type = AlignNone;
+	anchor_t anchor;
 	for(int_x cnt = 0; cnt < str.length(); ++cnt)
 	{
 		switch(str[cnt])
 		{
-		case L'l': type |= AlignLeft; break;
-		case L't': type |= AlignTop; break;
-		case L'r': type |= AlignRight; break;
-		case L'b': type |= AlignBottom; break;
-		case L'h': type |= AlignCenterX; break;
-		case L'v': type |= AlignCenterY; break;
+		case L'l': anchor.type |= AlignLeft; break;
+		case L't': anchor.type |= AlignTop; break;
+		case L'r': anchor.type |= AlignRight; break;
+		case L'b': anchor.type |= AlignBottom; break;
+		case L'h': anchor.type |= AlignCenterX; break;
+		case L'v': anchor.type |= AlignCenterY; break;
 		default:
 			break;
 		}
 	}
-	anchor_t anchor((AlignE)type, 0, 0, 0, 0);
 	return anchor;
 };
 
@@ -585,7 +584,7 @@ err_t CUILoaderXml::ParseListView(const xml_node & node, IControl *& pControl, C
 				else {}
 			}
 		}
-		if(cols.is_valid())
+		if(cols.valid())
 		{
 			cols.sort(
 				[&](const col_i & left, const col_i & right) { return left.interest > right.interest; }
@@ -618,14 +617,14 @@ err_t CUILoaderXml::ParseScrollView(const xml_node & node, IControl *& pControl,
 		{
 			defines.load(child0);
 		}
-		else if(child0.name == L"run")
+		else if(child0.name == L"item")
 		{
 			textw title = child0[L"title"];
 			int_x minwidth = 0;
 			if(child0.has_attribute(L"minwidth"))
 				minwidth = child0[L"minwidth"].value.toix();
 
-			if(child0.children.is_empty())
+			if(child0.children.empty())
 			{
 				IFoldingViewItem * psvi = pScrollView->AddItem(title, minwidth, nullptr, 0);
 			}
@@ -860,7 +859,7 @@ IMenu * CUILoaderXml::ParseMenu(const xml_node & node, CLoaderDefines & defines)
 	for(int_x cnt = 0; cnt < node.children.size(); ++cnt)
 	{
 		const xml_node & child = node.children[cnt];
-		if(child.name.equal(L"run", 4, false))
+		if(child.name.equal(L"item", 4, false))
 		{
 			IMenu * pSubMenu = nullptr;
 			textw submenuname = child[L"submenu"].value;
@@ -910,7 +909,7 @@ void CUILoaderXml::ParseDockNode(IDockNode *& pDockNode, const xml_node & node, 
 	xml_attr_parse_intx(node, L"fixedsize", [&pDockNode](int_x value) { pDockNode->DockNodeSetFixedSize(value); });
 	xml_attr_parse_f32(node, L"weight", [&pDockNode](float_32 value) { pDockNode->DockNodeSetWeight(value); });
 
-	if(node.children.is_empty())
+	if(node.children.empty())
 		return;
 
 	for(int_x cnt = 0, size = node.children.size(); cnt < size; ++cnt)

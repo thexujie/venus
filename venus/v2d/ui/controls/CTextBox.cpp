@@ -21,7 +21,6 @@ CTextBox::CTextBox() :m_chInputPre(0)
 	m_bAcceptEnter = true;
 	m_bFocusAble = true;
 	m_eCursor = CursorIBeam;
-	m_padding.set(3, 4, 3, 4);
 	m_margin.set(3, 3, 3, 3);
 
 	SetAutoHideScrollBarX(true);
@@ -90,32 +89,6 @@ void CTextBox::SetText(textw text)
 		SetIndex(m_text.length());
 		OnTextChanged();
 	}
-}
-
-bool CTextBox::GetImeInfo(ImeInfoT & imeInfo) const
-{
-	if(m_bReadOnly)
-		return false;
-
-	sizeix szClient = GetClient().size;
-	pointix sclText = GetScrollPos();
-	imeInfo.eImeMode = m_eImeMode;
-	tl_cluster_t cluster = TlGetCluster(m_iIndex);
-	imeInfo.rcCompose.set(cluster.tlrect.x - sclText.x, cluster.tlrect.y + cluster.tlrect.w - sclText.y, 1, cluster.tlrect.h);
-	imeInfo.rcCompose.w = szClient.w - imeInfo.rcCompose.x;
-	imeInfo.rcCompose.h = szClient.h - imeInfo.rcCompose.y;
-	if(imeInfo.rcCompose.y < 0)
-		imeInfo.rcCompose.y = 0;
-	else if(imeInfo.rcCompose.bottom() > szClient.h)
-		imeInfo.rcCompose.y = szClient.h - imeInfo.rcCompose.h;
-	else {}
-	imeInfo.font = m_font;
-	return true;
-}
-
-sizeix CTextBox::GetContentSize() const
-{
-	return maxof(Get2DDevice()->GetTextSize(m_text, m_text.length(), m_font) + m_padding.size(), sizeix(m_font.size / 2, m_font.size));
 }
 
 void CTextBox::OnShow()
@@ -357,7 +330,7 @@ void CTextBox::OnMouseUpR(pointix point)
 			menu.AddItem(4, L"É¾³ý", HasTextSelected() && !IsReadOnly() ? MenuFlagNone : MenuFlagDisable);
 			menu.AddSplit();
 			menu.AddItem(5, L"Ñ¡ÔñÈ«²¿", bCanSelectAll ? 0 : MenuFlagDisable);
-			switch(PopupMenu(point, &menu))
+			switch(PopupMenu(ToNoneCl(point), &menu))
 			{
 			case 1:
 				DoCut();
@@ -393,12 +366,6 @@ void CTextBox::OnMouseMove(pointix point)
 		TlSetIndex(range.crange.index);
 	}
 	CControl::OnMouseMove(point);
-}
-
-void CTextBox::OnScroll(intx2 scroll, intx2 offset)
-{
-	Repaint();
-	CControl::OnScroll(scroll, offset);
 }
 
 void CTextBox::UpdateScroll()
@@ -835,6 +802,27 @@ void CTextBox::ScrollToCaret()
 	SetScrollPos(sclText.x, sclText.y);
 }
 
+bool CTextBox::GetImeInfo(ImeInfoT & imeInfo) const
+{
+	if(m_bReadOnly)
+		return false;
+
+	sizeix szClient = GetClient().size;
+	pointix sclText = GetScrollPos();
+	imeInfo.eImeMode = m_eImeMode;
+	tl_cluster_t cluster = TlGetCluster(m_iIndex);
+	imeInfo.rcCompose.set(cluster.tlrect.x - sclText.x, cluster.tlrect.y + cluster.tlrect.w - sclText.y, 1, cluster.tlrect.h);
+	imeInfo.rcCompose.w = szClient.w - imeInfo.rcCompose.x;
+	imeInfo.rcCompose.h = szClient.h - imeInfo.rcCompose.y;
+	if(imeInfo.rcCompose.y < 0)
+		imeInfo.rcCompose.y = 0;
+	else if(imeInfo.rcCompose.bottom() > szClient.h)
+		imeInfo.rcCompose.y = szClient.h - imeInfo.rcCompose.h;
+	else {}
+	imeInfo.font = m_font;
+	return true;
+}
+
 rectix CTextBox::_GetCaretRect(int_x iIndex) const
 {
 	tl_cluster_t cluster = TlGetCluster(iIndex);
@@ -890,6 +878,12 @@ void CTextBox::OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * 
 			pointix(rcCaret.x - sclText.x, rcCaret.y - sclText.y + rcCaret.h - 1),
 			/*clrHlText*/Colors::Red);
 	}
+}
+
+void CTextBox::OnScroll(intx2 scroll, intx2 offset)
+{
+	UpdateIme();
+	Repaint();
 }
 
 doc_source_t CTextBox::GetDocSource() const
@@ -951,7 +945,7 @@ void CTextBox::OnDebugMenu(int_x iBase, int_x iResult)
 //--------------------------------------------------------------------------------------------------
 err_t CTextBox::TlLayout()
 {
-	int_x iWidth = maxof(GetClient().w - 1, (int_x)1);
+	int_x iWidth = GetClient().w - 1;
 	for(int_x cnt = 0, len = m_paras.size(); cnt < len; ++cnt)
 		SafeRelease(m_paras[cnt].pLayout);
 	m_paras.clear();
@@ -973,7 +967,7 @@ err_t CTextBox::TlLayout()
 	int_x cluster_count = 0;
 	int_x iy = 0, itext = 0, icluster = 0, iline = 0;
 	vector<doc_paragraph_t> paragraphs = TextParseParagraphs(m_text, m_text.length());
-	if(paragraphs.is_empty())
+	if(paragraphs.empty())
 	{
 		txb_paragraph_t para;
 		para.pLayout = nullptr;
@@ -992,10 +986,7 @@ err_t CTextBox::TlLayout()
 			const doc_paragraph_t & docpara = paragraphs[ipara];
 			ITextLayout * pLayout = Get2DDevice()->CreateTextLayout();
 			pLayout->Initialize(this);
-			err_t err = pLayout->Layout({docpara.trange.index, docpara.trange.length - GetParagraphTagLength(docpara.tag)}, iWidth, docpara.tag);
-			if(err)
-				return err;
-
+			pLayout->Layout({docpara.trange.index, docpara.trange.length - GetParagraphTagLength(docpara.tag)}, iWidth, docpara.tag);
 			tl_metrics_t metric = pLayout->GetMetrics();
 
 			txb_paragraph_t & para = m_paras.add();
@@ -1100,7 +1091,7 @@ err_t CTextBox::TlInsertText(int_x iIndex, const char_16 * szText, int_x iLength
 	else
 		tLength = m_text.length() - tIndex;
 
-	if(cluster.para == 0 && m_paras.is_empty())
+	if(cluster.para == 0 && m_paras.empty())
 		;
 	else
 	{
@@ -1256,7 +1247,7 @@ int_x CTextBox::TlGetClusterCount() const
 
 tl_cluster_t CTextBox::TlFindCluster(int_x iIndex) const
 {
-	if(iIndex == 0 && m_paras.is_empty())
+	if(iIndex == 0 && m_paras.empty())
 	{
 		tl_cluster_t cluster = {};
 		cluster.tlrect.h = m_font.size;
@@ -1305,7 +1296,7 @@ tl_cluster_t CTextBox::TlFindCluster(int_x iIndex) const
 
 tl_cluster_t CTextBox::TlGetCluster(int_x iIndex) const
 {
-	if(iIndex == 0 && m_paras.is_empty())
+	if(iIndex == 0 && m_paras.empty())
 	{
 		tl_cluster_t cluster = {};
 		cluster.tlrect.h = m_font.size;
@@ -1351,7 +1342,7 @@ tl_cluster_t CTextBox::TlGetCluster(int_x iIndex) const
 
 tl_line_t CTextBox::TlGetLine(int_x iIndex) const
 {
-	if(!iIndex && m_paras.is_empty())
+	if(!iIndex && m_paras.empty())
 	{
 		tl_line_t line;
 		line.line = 0;
@@ -1394,7 +1385,7 @@ tl_line_t CTextBox::TlGetLine(int_x iIndex) const
 
 tl_para_t CTextBox::TlGetPara(int_x iIndex) const
 {
-	if(!iIndex && m_paras.is_empty())
+	if(!iIndex && m_paras.empty())
 	{
 		tl_para_t para;
 		para.para = 0;
@@ -1412,7 +1403,7 @@ tl_para_t CTextBox::TlGetPara(int_x iIndex) const
 
 tl_range_t CTextBox::TlGetRange(pointix point) const
 {
-	if(m_paras.is_empty())
+	if(m_paras.empty())
 	{
 		tl_range_t range = {};
 		return range;
@@ -1490,7 +1481,7 @@ int_x CTextBox::TlGetRanges(int_x iCluster, int_x iLength, tl_range_t * ranges, 
 
 int_x CTextBox::TlGetRanges(int_x iCluster, int_x iLength, tl_range_t * ranges, int_x iCount, int_x iY, int_x iHeight) const
 {
-	if(m_paras.is_empty())
+	if(m_paras.empty())
 		return 0;
 
 	int_x iResult = 0;

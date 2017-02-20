@@ -167,7 +167,7 @@ int_x CMainWindow::OnTreeMouseDownR(IControl * pControl, pointix point)
 	menu.AddSplit();
 	menu.AddItem(0, L"TextLine ×ÖÌå(&F)", &menuFont);
 
-	int_x iResult = pControl->PopupMenu(point, &menu);
+	int_x iResult = pControl->PopupMenu(ToNoneCl(point), &menu);
 	switch(iResult)
 	{
 	case 7:

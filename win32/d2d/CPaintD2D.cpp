@@ -142,7 +142,7 @@ ShapeRenderLevelE CPaintD2D::GetShapeRenderLevel() const
 
 void CPaintD2D::PushOrign(int_x iX, int_x iY)
 {
-	if(m_origns.is_empty())
+	if(m_origns.empty())
 		m_origns.push(pointix(iX, iY));
 	else
 	{
@@ -158,7 +158,7 @@ void CPaintD2D::PushOrign(const pointix & point)
 
 pointix CPaintD2D::GetOrign() const
 {
-	if(m_origns.is_empty())
+	if(m_origns.empty())
 		return pointix();
 	else
 		return m_origns.back();
@@ -176,7 +176,7 @@ void CPaintD2D::PushClip(int_x iX, int_x iY, int_x iWidth, int_x iHeight)
 	rcClip.x += orign.x;
 	rcClip.y += orign.y;
 
-	if(m_clips.is_valid())
+	if(m_clips.valid())
 	{
 		rectix rcParent = m_clips.back();
 		int_x iLeft = rcClip.left;
@@ -787,7 +787,7 @@ void CPaintD2D::AffineXY(float_32 & fX, float_32 & fY)
 
 void CPaintD2D::Affine(pointix & point)
 {
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 	{
 		const pointix & orign = m_origns.back();
 		point += orign;

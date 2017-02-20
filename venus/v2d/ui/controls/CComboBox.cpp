@@ -49,7 +49,6 @@ void CComboBox::OnMouseDownL(pointix point)
 	CTextLine::OnMouseDownL(point);
 	if(m_listBox.GetItemCount())
 	{
-		rectix rcClient = GetClient();
 		sizeix size = m_listBox.GetPreferedSize();
 		if(size.w < GetWidth())
 			size.w = GetWidth();
@@ -62,7 +61,7 @@ void CComboBox::OnMouseDownL(pointix point)
 			else
 			{
 				SetButtonSelected(true);
-				PopupControl(pointix(-rcClient.x, rcClient.h), &m_listBox);
+				PopupControl(pointix(), &m_listBox);
 				SetButtonSelected(false);
 				if(IsMouseNcIn())
 					SetButtonLocked(true);

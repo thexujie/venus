@@ -50,7 +50,7 @@ public:
 	void SetUserData(int_x iUserData) { UserData = iUserData; }
 	int_x GetUserData() const { return UserData; }
 
-	bool CanExpand() const { return Items.is_valid() || ForceExpandable; }
+	bool CanExpand() const { return Items.valid() || ForceExpandable; }
 	textw Text;
 	TreeItemT * Parent;
 	object_ptr<IImage> Image;

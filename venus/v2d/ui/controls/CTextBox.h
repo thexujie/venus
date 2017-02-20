@@ -38,8 +38,6 @@ public:
 
 	bool GetImeInfo(ImeInfoT & imeInfo) const override;
 
-	sizeix GetContentSize() const override;
-
 	void OnShow() override;
 	void OnFontChanged() override;
 	void OnFocusedChanged() override;

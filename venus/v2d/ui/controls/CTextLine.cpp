@@ -232,7 +232,7 @@ void CTextLine::OnMouseDownR(pointix point)
 			menu.AddItem(5, L"选择全部", m_text.is_valid() && IsTextSelectAble() ? 0 : MenuFlagDisable);
 			//menu.AddItem(6, L"只读", IsTextReadOnly());
 			//menu.AddItem(7, L"可选", IsTextSelectAble());
-			switch(PopupMenu(point, &menu))
+			switch(PopupMenu(ToNoneCl(point), &menu))
 			{
 			case 1:
 				DoCut();

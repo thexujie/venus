@@ -300,7 +300,7 @@ err_t CTextLayoutUsp::Branch(int_x iWidth)
 	textformat_t format = m_pSource->GetDefFormat();
 
 	// 空行，直接生成即可.
-	if(m_scpclusters.is_empty())
+	if(m_scpclusters.empty())
 	{
 		m_clusters.resize(1);
 		m_lines.resize(1);
@@ -546,7 +546,7 @@ err_t CTextLayoutUsp::Branch(int_x iWidth)
 	}
 
 #ifdef _DEBUG
-	if(m_clusters.is_empty())
+	if(m_clusters.empty())
 		log2(L"no clusters were generated!");
 #endif
 	return err_ok;

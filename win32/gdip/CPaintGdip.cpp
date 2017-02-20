@@ -167,14 +167,14 @@ void CPaintGdip::PushOrign(int_x iX, int_x iY)
 void CPaintGdip::PushOrign(const pointix & point)
 {
 	pointix temp = point;
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 		temp += m_origns.back();
 	m_origns.add(temp);
 }
 
 pointix CPaintGdip::GetOrign() const
 {
-	if(m_origns.is_empty())
+	if(m_origns.empty())
 		return pointix();
 	else
 		return m_origns.back();
@@ -188,14 +188,14 @@ void CPaintGdip::PopOrign()
 void CPaintGdip::PushClip(int_x iX, int_x iY, int_x iWidth, int_x iHeight)
 {
 	rectix rcClip(iX, iY, iWidth, iHeight);
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 	{
 		const pointix & orign = m_origns.back();
 		rcClip.x += orign.x;
 		rcClip.y += orign.y;
 	}
 
-	if(m_clips.is_valid())
+	if(m_clips.valid())
 	{
 		rectix rcParent = m_clips.back();
 		int_x iLeft = rcClip.left;
@@ -225,7 +225,7 @@ void CPaintGdip::PushClip(const rectix & rect)
 
 rectix CPaintGdip::GetClip() const
 {
-	if(m_clips.is_empty())
+	if(m_clips.empty())
 		return rectix();
 	else
 		return m_clips.back();
@@ -239,7 +239,7 @@ void CPaintGdip::PopClip()
 	//rcClip.X += orign.X;
 	//rcClip.Y += orign.Y;
 
-	if(m_clips.is_empty())
+	if(m_clips.empty())
 		GdipResetClip(m_graphics);
 	else
 	{
@@ -609,7 +609,7 @@ void CPaintGdip::AffineY(int_x & iY)
 }
 void CPaintGdip::AffineXY(int_x & iX, int_x & iY)
 {
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 	{
 		const pointix & orign = m_origns.back();
 		iX += orign.x;
@@ -619,7 +619,7 @@ void CPaintGdip::AffineXY(int_x & iX, int_x & iY)
 
 void CPaintGdip::AffineXY(float_32 & fX, float_32 & fY)
 {
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 	{
 		const pointix & orign = m_origns.back();
 		fX += (float_32)orign.x;
@@ -629,7 +629,7 @@ void CPaintGdip::AffineXY(float_32 & fX, float_32 & fY)
 
 void CPaintGdip::Affine(pointix & point)
 {
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 	{
 		const pointix & orign = m_origns.back();
 		point += orign;
@@ -638,7 +638,7 @@ void CPaintGdip::Affine(pointix & point)
 
 int_x CPaintGdip::GetAffineX() const
 {
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 		return m_origns.back().x;
 	else
 		return 0;
@@ -646,7 +646,7 @@ int_x CPaintGdip::GetAffineX() const
 
 int_x CPaintGdip::GetAffineY() const
 {
-	if(m_origns.is_valid())
+	if(m_origns.valid())
 		return m_origns.back().y;
 	else
 		return 0;

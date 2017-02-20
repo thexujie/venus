@@ -183,7 +183,7 @@ void CListView::RemoveAllCols()
 
 void CListView::RemoveAllRows()
 {
-	if(m_rows.is_valid())
+	if(m_rows.valid())
 	{
 		SetHovingRow(-1);
 		SetSelectedRow(-1);

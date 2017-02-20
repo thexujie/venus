@@ -161,7 +161,7 @@ void CMenuBar::UpdateMenu(int_x iIndex)
 				pointix point(0, GetHeight());
 				for(int_x cnt = 0; cnt < iIndex; ++cnt)
 					point.x += m_arrWidths[cnt];
-				PopupMenu(point, pSubMenu);
+				PopupMenu(ToNoneCl(point), pSubMenu);
 			}
 			else
 				PopupMenu(pointix(), nullptr);

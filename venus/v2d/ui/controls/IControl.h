@@ -79,19 +79,15 @@ class V2D_API anchor_t
 {
 public:
 	AlignE type;
-	
-	int_x left;
-	int_x top;
-	int_x right;
-	int_x bottom;
+	edgeix edge;
 
-	anchor_t():type(AlignNone), left(0), top(0), right(0), bottom(0)
+	anchor_t():type(AlignNone)
 	{
 
 	}
 
 	anchor_t(AlignE _type, int_x _left, int_x _top, int_x _right, int_x _bottom) :
-	type(_type), left(_left), top(_top), right(_right), bottom(_bottom)
+	type(_type), edge(_left, _top, _right, _bottom)
 	{
 
 	}
@@ -101,14 +97,11 @@ public:
 	bool operator==(const anchor_t & another) const
 	{
 		return type == another.type && 
-			left == another.left &&
-			top == another.top &&
-			right == another.right &&
-			bottom == another.bottom;
+			edge == another.edge;
 	}
 	bool operator!=(const anchor_t & another) const { return !operator==(another); }
-	int_x width() const { return maxof((int_x)0, right + left); }
-	int_x height() const { return maxof((int_x)0, bottom + top); }
+	int_x width() const { return edge.width(); }
+	int_x height() const { return edge.height(); }
 };
 
 class IControl;
@@ -174,8 +167,6 @@ public:
 
 	virtual pointix GetRelativePosition(IControl * pAncestor) const = 0;
 
-	// 默认大小
-	virtual sizeix GetDefaultSize() const = 0;
 	// 内容大小
 	virtual sizeix GetContentSize() const = 0;
 	// 期望大小，包括子控件延伸开来的
@@ -333,16 +324,17 @@ public:
 	virtual void Anchor() = 0;
 
 	// ----------------------坐标转换。
-	//! 从非父控件坐标转换到非客户去坐标。
+	//! 父控件 客户区 -> 非客户区
 	virtual pointix ToLocal(const pointix & point) const = 0;
-	//! 从非客户区坐标转换到客户区坐标。
+	//! 非客户区 -> 父控件 客户区
+	virtual pointix ToGlobal(const pointix & point) const = 0;
+
+	//! 非客户区 -> 客户区
 	virtual pointix ToClient(const pointix & point) const = 0;
-	//! 从客户区坐标转换到非客户区坐标
-	virtual pointix ToNoneClient(const pointix & point) const = 0;
-	//! 从客户区坐标转换到最顶层的控件坐标。
-	virtual pointix ToAncestor(const pointix & point) const = 0;
+	//! 客户区 ->非客户区
+	virtual pointix ToNoneCl(const pointix & point) const = 0;
 	//! 从客户区坐标转换到全局坐标。
-	virtual pointix ClientToScreen(const pointix & point) const = 0;
+	virtual pointix ToScreen(const pointix & point) const = 0;
 
 	virtual HitTestE NcHitTest(pointix point) const = 0;
 	virtual HitTestE HitTest(pointix point) const = 0;

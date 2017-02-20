@@ -182,7 +182,7 @@ int_x CMainWindow::OnDetailListViewMouseDownR(IControl * pListView, pointix poin
 		MenuGetFlags(m_lstDetail.GetViewMode() == ListViewModeIcon && m_lstDetail.GetIconSize() == 48));
 	pMenuViewMode->AddItem(107, L"´óÍ¼±ê",
 		MenuGetFlags(m_lstDetail.GetViewMode() == ListViewModeIcon && m_lstDetail.GetIconSize() == 128));
-	int_x iRet = pListView->PopupMenu(point, pMenu);
+	int_x iRet = pListView->PopupMenu(ToNoneCl(point), pMenu);
 	//int_x iRet = 0;
 	switch(iRet)
 	{

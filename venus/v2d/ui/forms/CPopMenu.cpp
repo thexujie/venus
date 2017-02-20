@@ -462,7 +462,7 @@ void CPopMenu::TryShowSubMenu(int_x iIndex)
 			}
 
 			pointix point(GetClient().w + GetBorder().right, iY);
-			point = ClientToScreen(point);
+			point = ToScreen(point);
 			m_pMenuChild->UpdateMenu(point, m_rect.w, iItemH, pMenu);
 		}
 		else if(m_pMenuChild && m_pMenuChild->IsShown())

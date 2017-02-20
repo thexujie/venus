@@ -161,7 +161,7 @@ err_t C3DEntity::Render(I3DContext * pContext, I3DPass * pPass) const
 	indexformat_e idxFormat = m_pMesh->GetIndexFormat();
 	primitiveformat_e priFormat = m_pMesh->GetPrimitiveFormat();
 	const vector<mesh_node_t> & nodes = m_pMesh->GetNodes();
-	if(!pvtxBuffer || nodes.is_empty())
+	if(!pvtxBuffer || nodes.empty())
 		return err_ok;
 
 	I3DCamera * pCamera = pContext->GetCamera();

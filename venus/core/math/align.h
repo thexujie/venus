@@ -97,24 +97,13 @@ enum AlignE
 	AlignTRB = AlignTop | AlignRight | AlignBottom, // 0111
 };
 
-inline AlignE operator | (AlignE left, AlignE right)
-{
-	return (AlignE)((int_32)left | (int_32)right);
-}
-inline AlignE operator & (AlignE left, AlignE right)
-{
-	return (AlignE)((int_32)left & (int_32)right);
-}
-inline AlignE operator ^ (AlignE left, AlignE right)
-{
-	return (AlignE)((int_32)left ^ (int_32)right);
-}
-inline AlignE operator ! (AlignE align)
-{
-	return (AlignE)!((int_32)align);
-}
-inline AlignE operator ~ (AlignE align)
-{
-	return (AlignE)~((int_32)align);
-}
+inline AlignE operator |(AlignE left, AlignE right) { return (AlignE)((int_32)left | (int_32)right); }
+inline AlignE operator &(AlignE left, AlignE right) { return (AlignE)((int_32)left & (int_32)right); }
+inline AlignE operator ^(AlignE left, AlignE right) { return (AlignE)((int_32)left ^ (int_32)right); }
+inline AlignE & operator |=(AlignE & left, AlignE right) { left = (AlignE)((int_32)left | (int_32)right); return left; }
+inline AlignE & operator &=(AlignE & left, AlignE right) { left = (AlignE)((int_32)left & (int_32)right); return left; }
+inline AlignE & operator ^=(AlignE & left, AlignE right) { left = (AlignE)((int_32)left ^ (int_32)right); return left; }
+inline AlignE operator !(AlignE align) { return (AlignE)!((int_32)align); }
+inline AlignE operator ~(AlignE align) { return (AlignE)~((int_32)align); }
+
 VENUS_END

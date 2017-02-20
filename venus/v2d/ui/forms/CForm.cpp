@@ -253,12 +253,12 @@ bool CForm::IsKeyDown(KeyCodeE ekeyCode) const
 		return CControl::IsKeyDown(ekeyCode);
 }
 
-pointix CForm::ClientToScreen(const pointix & point) const
+pointix CForm::ToScreen(const pointix & point) const
 {
 	if(m_pHost)
-		return m_pHost->ClientToScreen(ToNoneClient(point));
+		return m_pHost->ClientToScreen(ToNoneCl(point));
 	else
-		return CControl::ClientToScreen(point);
+		return CControl::ToScreen(point);
 }
 
 void CForm::OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const
@@ -448,7 +448,7 @@ void CForm::OnSizeChanged()
 int_x CForm::PopupMenu(pointix point, IMenu * pMenu)
 {
 	if(!m_pHost)
-		return CControl::PopupMenu(point, pMenu);
+		return CControl::PopupMenu(ToNoneCl(point), pMenu);
 
 	if(!m_pPopupMenu)
 	{
@@ -456,7 +456,7 @@ int_x CForm::PopupMenu(pointix point, IMenu * pMenu)
 		m_pPopupMenu->SetOwner(this);
 	}
 
-	point = ClientToScreen(point);
+	point = ToScreen(point);
 	m_pPopupMenu->UpdateMenu(point, pMenu);
 	if(!m_pPopupMenu->IsShown() && pMenu)
 	{
@@ -487,7 +487,7 @@ int_x CForm::PopupControl(pointix point, IControl * pControl)
 		m_pPopupForm->SetOwner(this);
 	}
 
-	point = ClientToScreen(point);
+	point = ToScreen(point);
 	m_pPopupForm->SetControl(point, pControl);
 	int_x iResult = 0;
 	if(pControl)

@@ -120,7 +120,7 @@ err_t C3DEffect::Load(const I3DFile * pFile)
 		m_passes.add(pPass);
 	}
 
-	if(m_passes.is_empty())
+	if(m_passes.empty())
 	{
 		state_base.name = L"[system pass]";
 		I3DPass * pPass = m_pExplorer->GetVedio()->CreatePass();

@@ -13,7 +13,7 @@ CControl::CControl()
 
 CControl::CControl(int_x iX, int_x iY, int_x iWidth, int_x iHeight)
 	: m_rect(iX, iY, iWidth, iHeight), m_fWeight(0.0f), m_eWidthMode(WHModeAbs), m_eHeightMode(WHModeAbs),
-	m_pParent(nullptr), m_iId(0), m_iZOrder(0), m_eBorderType(BorderTypeNone), m_eLayoutMode(LayoutModeAbsolute), m_bLayouted(false), m_iLayouting(1),
+	m_pParent(nullptr), m_iId(0), m_iZOrder(0), m_eBorderType(BorderTypeNone), m_eLayoutMode(LayoutModeAbsolute), m_iLayouting(0),
 	//m_minSize(0, 0), m_maxSize(CONTROL_MAX_W, CONTROL_MAX_H),
 	m_uiAutoRepaint(0), m_uiBaseAttr(0), m_uiMouseState(0), m_uiState(0),
 	m_uiBackColor(SysColorAuto), m_uiForeColor(Colors::Black),
@@ -143,9 +143,9 @@ void CControl::SetWidthMode(WHModeE eMode)
 	m_eWidthMode = eMode;
 	if((m_eWidthMode == WHModeFill || m_eWidthMode == WHModeAuto) && (m_anchor.type & AlignLR))
 	{
-		log0(L"CControl::SetWidthMode with WHModeFill or WHModeAuto, but m_anchor is AlignLR.");
+		log0(L"CControl::SetWidthMode with WHModeFill or WHModeAuto, but m_eAnchor is AlignLR.");
 		anchor_t anchor = m_anchor;
-		anchor.type = anchor.type & ~AlignLR;
+		anchor.type &= ~AlignLR;
 		SetAnchor(anchor);
 	}
 }
@@ -160,9 +160,9 @@ void CControl::SetHeightMode(WHModeE eMode)
 	m_eHeightMode = eMode;
 	if((m_eHeightMode == WHModeFill || m_eHeightMode == WHModeAuto) && (m_anchor.type & AlignTB))
 	{
-		log0(L"CControl::SetHeightMode with WHModeFill or WHModeAuto, but m_anchor is AlignTB.");
+		log0(L"CControl::SetHeightMode with WHModeFill or WHModeAuto, but m_eAnchor is AlignTB.");
 		anchor_t anchor = m_anchor;
-		anchor.type = anchor.type & ~AlignTB;
+		anchor.type &= ~AlignTB;
 		SetAnchor(anchor);
 	}
 }
@@ -192,9 +192,7 @@ void CControl::SetPosition(pointix position)
 {
 	if(position != m_rect.position)
 	{
-		NcRepaint();
 		m_rect.position = position;
-		NcRepaint();
 		OnPositionChanged();
 	}
 }
@@ -208,9 +206,7 @@ void CControl::SetSize(sizeix size)
 {
 	if(size != m_rect.size)
 	{
-		NcRepaint();
 		m_rect.size = size;
-		NcRepaint();
 		OnSizeChanged();
 	}
 }
@@ -269,11 +265,12 @@ pointix CControl::GetRelativePosition(IControl * pAncestor) const
 
 sizeix CControl::GetPreferedSize() const
 {
-	if(m_eWidthMode != WHModeAuto && m_eHeightMode != WHModeAuto)
-		return m_rect.size;
+	return sizeix(m_font.size, m_font.size);
+}
 
-	// full size of content and sub controls.
-	rectix rcFull(pointix(), GetContentSize());
+sizeix CControl::GetContentSize() const
+{
+	rectix rcFull(pointix(), GetPreferedSize());
 	switch(m_eLayoutMode)
 	{
 	case LayoutModeAbsolute:
@@ -310,31 +307,13 @@ sizeix CControl::GetPreferedSize() const
 			rectix rcChild(pChild->GetPosition(), pChild->GetContentSize());
 			rcChild.size += pChild->GetMargin().size();
 			rcFull.h += rcChild.h;
-			rcFull.w = maxof(rcFull.w, rcChild.w);
+			rcFull.w += maxof(rcFull.w, rcChild.w);
 		}
 		break;
 	default:
 		break;
 	}
-
-	// we expect that the parent control fit my w/h when wmmode is auto or fill.
-	if(m_eWidthMode == WHModeAbs)
-		rcFull.size.w = m_rect.w;
-
-	if(m_eHeightMode == WHModeAbs)
-		rcFull.size.h = m_rect.h;
-
-	return rcFull.size + GetBorder().size();
-}
-
-sizeix CControl::GetDefaultSize() const
-{
-	return sizeix();
-}
-
-sizeix CControl::GetContentSize() const
-{
-	return GetDefaultSize();
+	return rcFull.size;
 }
 
 int_x CControl::GetX() const
@@ -529,8 +508,7 @@ void CControl::SetVisible(bool bVisible)
 	if(bVisible == m_bInvisible)
 	{
 		m_bInvisible = !bVisible;
-		// in OnShow OnHide
-		//NcRepaint();
+		NcRepaint();
 		if(m_bInvisible && m_bShown)
 			SetShown(false);
 		else if(!m_bInvisible && !m_bShown && m_pParent && m_pParent->IsShown())
@@ -552,8 +530,6 @@ void CControl::OnLoaded()
 
 void CControl::OnVisibleChanged()
 {
-	if(m_pParent)
-		m_pParent->Layout();
 	VisibleChanged(this, !m_bInvisible);
 }
 
@@ -635,6 +611,7 @@ void CControl::OnPositionChanged()
 void CControl::OnSizeChanged()
 {
 	OnVisualSizeChanged();
+	NcRepaint();
 
 	if(m_bShown)
 		SizeChanged(this, m_rect.size);
@@ -680,11 +657,9 @@ void CControl::SetShown(bool bShown)
 						pControl->SetShown(true);
 				});
 			}
-			NcRepaint();
 		}
 		else
 		{
-			NcRepaint();
 			if(!m_bDisAutoShowChild)
 			{
 				for_each(m_children,
@@ -694,7 +669,6 @@ void CControl::SetShown(bool bShown)
 						pControl->SetShown(false);
 				});
 			}
-
 			m_bShown = false;
 			OnHide();
 		}
@@ -703,14 +677,10 @@ void CControl::SetShown(bool bShown)
 
 void CControl::OnShow()
 {
-	if(m_iLayouting)
-	{
-		m_iLayouting = 0;
-		Layout();
-	}
-
 	if(m_bBuffered)
 		ConfirmBuffer(m_rect.w, m_rect.h);
+
+	NcRepaint();
 }
 
 void CControl::OnHide()
@@ -1395,12 +1365,12 @@ void CControl::SetAnchor(anchor_t anchor)
 	if(anchor != m_anchor)
 	{
 		m_anchor = anchor;
-		if((m_anchor.type & AlignLR) && (m_eWidthMode == WHModeFill || m_eWidthMode == WHModeAuto))
+		if((anchor.type & AlignLR) && (m_eWidthMode == WHModeFill || m_eWidthMode == WHModeAuto))
 		{
 			log0(L"CControl::SetAnchor with AlignLR, but m_eWidthMode is WHModeFill or WHModeAuto.");
 			SetWidthMode(WHModeAbs);
 		}
-		if((m_anchor.type & AlignTB) && (m_eHeightMode == WHModeFill || m_eHeightMode == WHModeAuto))
+		if((anchor.type & AlignTB) && (m_eHeightMode == WHModeFill || m_eHeightMode == WHModeAuto))
 		{
 			log0(L"CControl::SetAnchor with AlignTB, but m_eHeightMode is WHModeFill or WHModeAuto.");
 			SetHeightMode(WHModeAbs);
@@ -1426,9 +1396,9 @@ void CControl::Anchor()
 			if(m_anchor.type & AlignRight)
 			{
 				if(m_anchor.type & AlignLeft)
-					size.w = m_pParent->GetWidth() - (m_anchor.left + m_anchor.right);
+					size.w = m_pParent->GetWidth() - (m_anchor.edge.left + m_anchor.edge.right);
 				else
-					position.x = m_pParent->GetWidth() - m_anchor.right - size.w;
+					position.x = m_pParent->GetWidth() - m_anchor.edge.right - size.w;
 			}
 			else {}
 		}
@@ -1439,9 +1409,9 @@ void CControl::Anchor()
 			if(m_anchor.type & AlignBottom)
 			{
 				if(m_anchor.type & AlignTop)
-					size.h = m_pParent->GetHeight() - (m_anchor.top + m_anchor.bottom);
+					size.h = m_pParent->GetHeight() - (m_anchor.edge.top + m_anchor.edge.bottom);
 				else
-					position.y = m_pParent->GetHeight() - m_anchor.bottom - size.h;
+					position.y = m_pParent->GetHeight() - m_anchor.edge.bottom - size.h;
 			}
 			else {}
 		}
@@ -1465,17 +1435,19 @@ void CControl::InitLayout()
 	if(m_pParent)
 	{
 		rectix rcClient = m_pParent->GetClient();
-		m_anchor.left = m_rect.x;
-		m_anchor.top = m_rect.y;
-		m_anchor.right = rcClient.w - m_rect.right();
-		m_anchor.bottom = rcClient.h - m_rect.bottom();
+		edgeix edge;
+		edge.left = m_rect.x;
+		edge.top = m_rect.y;
+		edge.right = rcClient.w - m_rect.right();
+		edge.bottom = rcClient.h - m_rect.bottom();
+		m_anchor.edge = edge;
 	}
 }
 
-pointix CControl::ClientToScreen(const pointix & point) const
+pointix CControl::ToScreen(const pointix & point) const
 {
 	if(m_pParent)
-		return m_pParent->ClientToScreen(ClToParentCl(point));
+		return m_pParent->ToScreen(ToGlobal(point));
 	else
 		return point;
 }
@@ -1485,40 +1457,21 @@ pointix CControl::ToLocal(const pointix & point) const
 	return point - m_rect.position;
 }
 
+pointix CControl::ToGlobal(const pointix & point) const
+{
+	return point + m_rect.position;
+}
+
 pointix CControl::ToClient(const pointix & point) const
 {
 	rectix rcClient = GetClient();
 	return point - rcClient.position;
 }
 
-pointix CControl::ToNoneClient(const pointix & point) const
+pointix CControl::ToNoneCl(const pointix & point) const
 {
 	rectix rcClient = GetClient();
 	return point + rcClient.position;
-}
-
-pointix CControl::ClToParentCl(const pointix & point) const
-{
-	rectix rcClient = GetClient();
-	return point + rcClient.position + m_rect.position;
-}
-
-pointix CControl::ParentClToCl(const pointix & point) const
-{
-	rectix rcClient = GetClient();
-	return point - m_rect.position - rcClient.position;
-}
-
-
-pointix CControl::ToAncestor(const pointix & point) const
-{
-	if(m_pParent)
-	{
-		rectix rcClient = GetClient();
-		return m_pParent->ToAncestor(point + rcClient.position);
-	}
-	else
-		return point;
 }
 
 void CControl::CenterToParent()
@@ -1535,7 +1488,7 @@ void CControl::CenterToParent()
 void CControl::ShowTips(pointix point, const char_16 * szTips)
 {
 	if(m_pParent)
-		m_pParent->ShowTips(ClToParentCl(point), szTips);
+		m_pParent->ShowTips(ToGlobal(point), szTips);
 }
 
 void CControl::HideTips()
@@ -1547,13 +1500,13 @@ void CControl::HideTips()
 void CControl::UpdateTips(pointix point)
 {
 	if(m_pParent)
-		m_pParent->UpdateTips(ClToParentCl(point));
+		m_pParent->UpdateTips(ToGlobal(point));
 }
 
 int_x CControl::PopupMenu(pointix point, IMenu * pMenu)
 {
 	if(m_pParent)
-		return m_pParent->PopupMenu(ClToParentCl(point), pMenu);
+		return m_pParent->PopupMenu(ToGlobal(point), pMenu);
 	else
 		return 0;
 }
@@ -1561,7 +1514,7 @@ int_x CControl::PopupMenu(pointix point, IMenu * pMenu)
 int_x CControl::PopupControl(pointix point, IControl * pControl)
 {
 	if(m_pParent)
-		return m_pParent->PopupControl(ClToParentCl(point), pControl);
+		return m_pParent->PopupControl(ToGlobal(point), pControl);
 	else
 		return 0;
 }
@@ -1590,7 +1543,7 @@ void CControl::Repaint(const rectix & rect)
 	{
 		//m_bValidate = false;
 		rectix rcUpdate(rect);
-		rcUpdate.position = ToNoneClient(rcUpdate.position);
+		rcUpdate.position = ToNoneCl(rcUpdate.position);
 		NcRepaint(rcUpdate);
 	}
 }
@@ -1608,7 +1561,7 @@ void CControl::NcRepaint(const rectix & rect)
 		if(rcUpdate.is_valid())
 		{
 			rcUpdate.position += m_rect.position;
-			rcUpdate.position = m_pParent->ToNoneClient(rcUpdate.position);
+			rcUpdate.position = m_pParent->ToNoneCl(rcUpdate.position);
 			m_pParent->NcRepaint(rcUpdate);
 		}
 		else {}
@@ -2116,7 +2069,7 @@ void CControl::PreOnNcMouseDown(pointix point, MouseButtonE eButton)
 			MenuT menu;
 			int_x iBase = 0;
 			QueryDebugMenu(iBase, &menu);
-			int_x iResult = PopupMenu(ptClient, &menu);
+			int_x iResult = PopupMenu(ToNoneCl(ptClient), &menu);
 			OnDebugMenu(iBase, iResult);
 			return;
 		}
@@ -2169,16 +2122,22 @@ void CControl::OnMouseDown(pointix point, MouseButtonE eButton)
 
 void CControl::OnMouseDownL(pointix point)
 {
+	if(m_bRepaintMouseDownUpL)
+		NcRepaint();
 	MouseDownL(this, point);
 }
 
 void CControl::OnMouseDownM(pointix point)
 {
+	if(m_bRepaintMouseDownUpL)
+		NcRepaint();
 	MouseDownM(this, point);
 }
 
 void CControl::OnMouseDownR(pointix point)
 {
+	if(m_bRepaintMouseDownUpR)
+		NcRepaint();
 	MouseDownR(this, point);
 }
 
@@ -2252,16 +2211,22 @@ void CControl::OnMouseUp(pointix point, MouseButtonE eButton)
 
 void CControl::OnMouseUpL(pointix point)
 {
+	if(m_bRepaintMouseDownUpL)
+		NcRepaint();
 	MouseUpL(this, point);
 }
 
 void CControl::OnMouseUpM(pointix point)
 {
+	if(m_bRepaintMouseDownUpM)
+		NcRepaint();
 	MouseUpM(this, point);
 }
 
 void CControl::OnMouseUpR(pointix point)
 {
+	if(m_bRepaintMouseDownUpR)
+		NcRepaint();
 	MouseUpR(this, point);
 }
 
@@ -2449,7 +2414,8 @@ pointix CControl::GetMousePosition() const
 	if(m_pParent)
 	{
 		pointix point = m_pParent->GetMousePosition();
-		return ParentClToCl(point);
+		rectix rcClient = GetClient();
+		return point - m_rect.position - rcClient.position;
 	}
 	else
 		return pointix(I32_MIN, I32_MIN);
@@ -2579,7 +2545,7 @@ void CControl::ConfirmBuffer(int_x iWidth, int_x iHeight)
 
 void CControl::AddControl(IControl * pControl)
 {
-	ensure(pControl);
+	verify(pControl);
 	if(pControl->GetParent())
 		throw exp_bad_state(); // - 控件已经在某一个容器中了。
 
@@ -2605,20 +2571,23 @@ void CControl::AddControl(IControl * pControl)
 	if(pControl->IsDynamic())
 		m_DynamicChildren.add(pControl);
 
+	anchor_t anchor = pControl->GetAnchor();
 	// anchor edge
 	rectix rcClient = GetClient();
 	rectix rcChild = pControl->GetRect();
-	m_anchor.left = rcChild.x;
-	m_anchor.top = rcChild.y;
-	m_anchor.right = rcClient.w - rcChild.right();
-	m_anchor.bottom = rcClient.h - rcChild.bottom();
+	anchor.edge.left = rcChild.x;
+	anchor.edge.top = rcChild.y;
+	anchor.edge.right = rcClient.w - rcChild.right();
+	anchor.edge.bottom = rcClient.h - rcChild.bottom();
+
+	pControl->SetAnchor(anchor);
 
 	Layout();
 }
 
 void CControl::RmvControl(IControl * pControl)
 {
-	ensure(pControl);
+	verify(pControl);
 	if(pControl->GetParent() != this)
 		throw exp_illegal_operation();
 
@@ -2653,7 +2622,7 @@ void CControl::RmvControl(IControl * pControl)
 
 void CControl::RmvAllControl()
 {
-	while(m_children.is_valid())
+	while(m_children.valid())
 	{
 		IControl * pControl = m_children[0];
 		RmvControl(pControl);
@@ -2737,10 +2706,10 @@ void CControl::_LayoutAbsolute()
 			switch(pChild->GetAnchor().type & AlignLeftRight)
 			{
 			case AlignLeftRight:
-				rcChild.w = rcClient.w - pChild->GetAnchor().width();
+				rcChild.w = rcClient.w - pChild->GetAnchor().edge.width();
 				break;
 			case AlignRight:
-				rcChild.x = rcClient.w - pChild->GetAnchor().right - pChild->GetWidth();
+				rcChild.x = rcClient.w - pChild->GetAnchor().edge.right - pChild->GetWidth();
 				break;
 			default:
 				break;
@@ -2763,10 +2732,10 @@ void CControl::_LayoutAbsolute()
 			switch(pChild->GetAnchor().type & AlignTopBottom)
 			{
 			case AlignTopBottom:
-				rcChild.h = rcClient.h - pChild->GetAnchor().height();
+				rcChild.h = rcClient.h - pChild->GetAnchor().edge.height();
 				break;
 			case AlignBottom:
-				rcChild.y = rcClient.h - pChild->GetAnchor().bottom - pChild->GetHeight();
+				rcChild.y = rcClient.h - pChild->GetAnchor().edge.bottom - pChild->GetHeight();
 				break;
 			default:
 				break;
@@ -2789,7 +2758,7 @@ void CControl::_LayoutAbsolute()
 
 void CControl::_LayoutHorizontal()
 {
-	if(m_children.is_empty())
+	if(m_children.empty())
 		return;
 
 	rectix rcVisual = GetVisual();
@@ -2820,10 +2789,10 @@ void CControl::_LayoutHorizontal()
 			switch(pChild->GetAnchor().type & AlignTopBottom)
 			{
 			case AlignTopBottom:
-				rect.h = rcVisual.h - pChild->GetAnchor().height();
+				rect.h = rcVisual.h - pChild->GetAnchor().edge.height();
 				break;
 			case AlignBottom:
-				rect.y = rcVisual.h - pChild->GetAnchor().bottom - pChild->GetHeight();
+				rect.y = rcVisual.h - pChild->GetAnchor().edge.bottom - pChild->GetHeight();
 				break;
 			default:
 				break;
@@ -2878,11 +2847,10 @@ void CControl::_LayoutHorizontal()
 
 void CControl::_LayoutVertical()
 {
-	if(m_children.is_empty())
+	if(m_children.empty())
 		return;
 
 	rectix rcVisual = GetVisual();
-
 	int_x iHeightFixed = 0;
 	float1 fWeight = 0.0f;
 	for(IControl * pChild : m_children)
@@ -2900,7 +2868,7 @@ void CControl::_LayoutVertical()
 		else
 		{
 			if(pChild->GetHeightMode() == WHModeAuto)
-				rect.h = pChild->GetPreferedSize().h;
+				rect.h = pChild->GetContentSize().h;
 			iHeightFixed += rect.h;
 		}
 
@@ -2910,10 +2878,10 @@ void CControl::_LayoutVertical()
 			switch(pChild->GetAnchor().type & AlignLeftRight)
 			{
 			case AlignLeftRight:
-				rect.w = rcVisual.w - pChild->GetAnchor().width();
+				rect.w = rcVisual.w - pChild->GetAnchor().edge.width();
 				break;
 			case AlignRight:
-				rect.x = rcVisual.w - pChild->GetAnchor().right - pChild->GetWidth();
+				rect.x = rcVisual.w - pChild->GetAnchor().edge.right - pChild->GetWidth();
 				break;
 			default:
 				break;
@@ -2924,7 +2892,7 @@ void CControl::_LayoutVertical()
 			rect.w = rcVisual.w - margin.width();
 			break;
 		case WHModeAuto:
-			rect.w = pChild->GetPreferedSize().w;
+			rect.w = pChild->GetContentSize().w;
 			break;
 		default:
 			break;
@@ -3150,7 +3118,7 @@ IForm * CControl::ToIForm() const
 
 void CControl::OnCheckGroup(int_x iGroup)
 {
-	ensure(iGroup > 0);
+	verify(iGroup > 0);
 }
 
 DropResultE CControl::PreOnNcDragEnter(IData * pData, pointix point)
@@ -3284,6 +3252,9 @@ DropResultE CControl::OnDragEnter(IData * pData, pointix point)
 {
 	verify(!m_bMouseDragIn);
 	m_bMouseDragIn = true;
+	if(m_bRepaintMouseDragInOut)
+		NcRepaint();
+
 	DropResultE eResult = DragRequestNone;
 	DragEnter(this, pData, &eResult);
 	return eResult;
@@ -3302,6 +3273,8 @@ void CControl::OnDragLeave(IData * pData, pointix point)
 	verify(m_bMouseDragIn);
 	DragLeave(this, pData);
 	m_bMouseDragIn = false;
+	if(m_bRepaintMouseDragInOut)
+		NcRepaint();
 }
 
 DropResultE CControl::OnDragDrop(IData * pData, pointix point)
@@ -3332,25 +3305,32 @@ bool CControl::IsScrollYAble() const
 	return m_pScrollY && m_pScrollY->IsVisible() && m_pScrollY->IsEnabled();
 }
 
-void CControl::PreOnScroll(IControl * pScroll, int_x iOffset)
+void CControl::PreOnScroll(IControl * pControl, int_x iOffset)
 {
+	ensure(pControl);
+	IScroll * pScroll = pControl->ToIScroll();
 	ensure(pScroll);
-	int_x iValue = pScroll->ToIScroll()->GetValue();
 
-	if(pScroll == m_pScrollX)
+	int_x iValue = pScroll->GetValue();
+
+	if(pControl == m_pScrollX)
 	{
-		OnScroll(GetScroll(), intx2(iOffset, 0));
+		OnScroll(intx2(iValue, 0), intx2(iOffset, 0));
+		if(m_bRepaintScrollX)
+			NcRepaint();
 	}
-	else if(pScroll == m_pScrollY)
+	else if(pControl == m_pScrollY)
 	{
-		OnScroll(GetScroll(), intx2(0, iValue));
+		OnScroll(intx2(0, iValue), intx2(0, iOffset));
+		if(m_bRepaintScrollY)
+			NcRepaint();
 	}
 	else {}
 }
 
 void CControl::OnScroll(intx2 scroll, intx2 offset)
 {
-	
+
 }
 
 void CControl::SetScrollPosX(int_x iX)

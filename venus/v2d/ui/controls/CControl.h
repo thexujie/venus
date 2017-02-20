@@ -56,7 +56,6 @@ public:
 	void SetHeight(int_x iHeight) override;
 
 	pointix GetRelativePosition(IControl * pAncestor) const override;
-	sizeix GetDefaultSize() const override;
 	sizeix GetContentSize() const override;
 	sizeix GetPreferedSize() const override;
 
@@ -218,17 +217,15 @@ public:
 	// ------------- ×ø±ê×ª»»
 	//! parent -> none client
 	pointix ToLocal(const pointix & point) const override;
+	//! client -> parent client
+	pointix ToGlobal(const pointix & point) const override;
+
 	//! none client -> client
 	pointix ToClient(const pointix & point) const override;
 	//! client -> none client
-	pointix ToNoneClient(const pointix & point) const override;
-	//! client -> parent client
-	pointix ClToParentCl(const pointix & point) const;
-	//! parent client -> client
-	pointix ParentClToCl(const pointix & point) const;
-
-	pointix ClientToScreen(const pointix & point) const override;
-	pointix ToAncestor(const pointix & point) const override;
+	pointix ToNoneCl(const pointix & point) const override;
+	//! client -> screen
+	pointix ToScreen(const pointix & point) const override;
 
 	void CenterToParent();
 	void ShowTips(pointix point, const char_16 * szTips) override;

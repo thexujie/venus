@@ -158,7 +158,7 @@ void CWin32App::SetTimer(function<int_x(int_x)> fun, int_x iPeriod, int_x iId)
 void CWin32App::KillTimer(function<int_x(int_x)> fun, int_x iId)
 {
 	TimerT timer = {fun, 0, iId, 0};
-	if(m_timers.remove(timer) && m_timers.is_empty() && m_iTimerId)
+	if(m_timers.remove(timer) && m_timers.empty() && m_iTimerId)
 	{
 		::KillTimer(NULL, m_iTimerId);
 		m_iTimerId = 0;

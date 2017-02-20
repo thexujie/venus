@@ -33,7 +33,7 @@ void C3DScene::RmvNode(I3DNode * pNode)
 
 void C3DScene::RmvAllNode()
 {
-	while(m_nodes.is_valid())
+	while(m_nodes.valid())
 	{
 		I3DNode *& pNode = m_nodes.back();
 		pNode->OnRemoved();
