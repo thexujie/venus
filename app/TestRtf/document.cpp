@@ -149,7 +149,7 @@ void DocTextObject::Break()
 	for(int_x icluster = 0; icluster < clusters.size(); ++icluster)
 	{
 		rtfcluster_t & cluster = clusters[icluster];
-		cluster._debug_text = m_text.sub_text(cluster.trange.index, cluster.trange.index + cluster.trange.length);
+		cluster._debug_text = m_text.sub_text(cluster.trange.index, cluster.trange.length);
 	}
 }
 
@@ -195,7 +195,7 @@ void DocTextObject::Slice()
 	for(int_x run = 0; run < runitems.size(); ++run)
 	{
 		runitem_t & runitem = runitems[run];
-		runitem._debug_text = m_text.sub_text(runitem.trange.index, runitem.trange.index + runitem.trange.length);
+		runitem._debug_text = m_text.sub_text(runitem.trange.index, runitem.trange.length);
 	}
 }
 
@@ -545,14 +545,14 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 			rtfitem.crange.length += 1;
 		}
 
-		line._debug_text = m_text.sub_text(line.trange.index, line.trange.index + line.trange.length);
+		line._debug_text = m_text.sub_text(line.trange.index, line.trange.length);
 	}
 
 	// advance width
 	for(int_x irtf = 0; irtf < rtfitems.size(); ++irtf)
 	{
 		rtfitem_t & rtfitem = rtfitems[irtf];
-		rtfitem._debug_text = m_text.sub_text(rtfitem.trange.index, rtfitem.trange.index + rtfitem.trange.length);
+		rtfitem._debug_text = m_text.sub_text(rtfitem.trange.index, rtfitem.trange.length);
 		for(int_x icluster = 0; icluster < rtfitem.crange.length; ++icluster)
 		{
 			rtfcluster_t & cluster = clusters[rtfitem.crange.index + icluster];
@@ -586,7 +586,7 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 	for(int_x iscp = 0; iscp < scpitems.size(); ++iscp)
 	{
 		scpitem_t & run = scpitems[iscp];
-		run._debug_text = m_text.sub_text(run.trange.index, run.trange.index + run.trange.length);
+		run._debug_text = m_text.sub_text(run.trange.index, run.trange.length);
 	}
 }
 

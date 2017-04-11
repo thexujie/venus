@@ -811,17 +811,15 @@ public:
 			m_data->reallocate(_capability);
 	}
 
-	text_base sub_text(int_x iBegin, int_x iEnd) const
+	text_base sub_text(int_x index, int_x count) const
 	{
-		int_x iLength = length();
-		iBegin = saturate(iBegin, (int_x)0, iLength);
-		iEnd = saturate(iEnd, (int_x)0, iLength);
-		if(iBegin > iEnd)
-			throw exp_illegal_argument();
-		else if(iBegin == iEnd)
+		if(index < 0 || count < 0 || index + count > length())
+			throw exp_out_of_bound();
+		
+		if(!count)
 			return text_base();
-		else/* if(iBegin < iEnd)*/
-			return text_base(m_data->m_buffer + iBegin, iEnd - iBegin);
+		else
+			return text_base(m_data->m_buffer + index, count);
 	}
 
 	int_x find_first(const CharT & ch) const
