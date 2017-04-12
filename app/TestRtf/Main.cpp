@@ -86,6 +86,7 @@ void OnCreate(HWND hWnd)
 	//text = L"אאאא 1234 דדד לל";
 	//text = L"تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
 	//text = L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
+	//dto.SetText(L"ษาไทยรอยยิ้มนักสู้ กเสียก่อน한국어조선말ئۇيغۇر تىلى𪚥𪚥𪚥𪚥𪚥");
 	dto.SetText(text);
 	dto.Break();
 	int_x step = 3;
@@ -94,7 +95,6 @@ void OnCreate(HWND hWnd)
 		dto.SetColor({ cnt, step }, colors[cnt % arraysize(colors)]);
 	}
 
-	//dto.SetText(L"ษาไทยรอยยิ้มนักสู้ กเสียก่อน한국어조선말ئۇيغۇر تىلى𪚥𪚥𪚥𪚥𪚥");
 	dto.Slice();
 	dto.Shape();
 

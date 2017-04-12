@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "document.h"
 
+typedef SCRIPT_LOGATTR TEXT_ATTR;
+
 static bool HasMissingGlyphs(const uint_16 * pGlyphs, int_x iLength, const SCRIPT_FONTPROPERTIES & sfp)
 {
 	uint_16 wDefault = sfp.wgDefault;
@@ -105,7 +107,7 @@ void DocTextObject::Break()
 		scpitem._debug_text = m_text.sub_text(sitem.iCharPos, item_next.iCharPos - sitem.iCharPos);
 #endif
 
-		vector<SCRIPT_LOGATTR> tattrs(scpitem.trange.length, scpitem.trange.length);
+		vector<TEXT_ATTR> tattrs(scpitem.trange.length, scpitem.trange.length);
 
 		ScriptBreak(m_text + scpitem.trange.index, scpitem.trange.length, &scpitem.sa, tattrs);
 
@@ -119,7 +121,7 @@ void DocTextObject::Break()
 			cluster.trange = { scpitem.trange.index + itext, 1 };
 			cluster.rtf = { 0, 0 };
 
-			const SCRIPT_LOGATTR & attr_first = tattrs[itext];
+			const TEXT_ATTR & attr_first = tattrs[itext];
 			if(attr_first.fSoftBreak)
 				cluster.softbreak = true;
 			if(attr_first.fWhiteSpace)
@@ -128,14 +130,14 @@ void DocTextObject::Break()
 			// check the next char.
 			while(itext < tattrs.size() - 1)
 			{
-				const SCRIPT_LOGATTR & attr = tattrs[itext + 1];
+				const TEXT_ATTR & tattr = tattrs[itext + 1];
 
-				if(attr.fCharStop || attr.fInvalid)
+				if(tattr.fCharStop || tattr.fInvalid)
 					break;
 
-				if(attr.fSoftBreak)
+				if(tattr.fSoftBreak)
 					cluster.softbreak = true;
-				if(attr.fWhiteSpace)
+				if(tattr.fWhiteSpace)
 					cluster.whitespace = true;
 
 				++cluster.trange.length;

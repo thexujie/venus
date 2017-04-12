@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 15
+VisualStudioVersion = 15.0
+MinimumVisualStudioVersion = 10.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{4A0E8FD1-00C0-47C7-815D-E76E227FC4B9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{BBAB80EF-2700-42E7-9B92-C618DBA07BA1}"
