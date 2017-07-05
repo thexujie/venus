@@ -390,7 +390,10 @@ void DocTextObject::Shape()
 	{
 		rtfcluster_t & cluster = clusters[iclt];
 		for(int_x iglyph = 0; iglyph < cluster.grange.length; ++iglyph)
-			cluster.advance += advances[cluster.grange.index + iglyph];
+		{
+			cluster.width += advances[cluster.grange.index + iglyph];
+			cluster.height = GetFont(cluster.rtf.font).font.size;
+		}
 	}
 
 	for(int_x run = 0; run < runitems.size(); ++run)
@@ -399,7 +402,7 @@ void DocTextObject::Shape()
 		for(int_x iclt = 0; iclt < runitem.crange.length; ++iclt)
 		{
 			rtfcluster_t & cluster = clusters[iclt];
-			runitem.advance += cluster.advance;
+			runitem.advance += cluster.width;
 		}
 	}
 }
@@ -413,20 +416,18 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 	if(iadvance && clusters.valid())
 	{
 		const rtfcluster_t & cluster = clusters[0];
-		if(iadvance + cluster.advance > rect.w)
+		if(iadvance + cluster.width > rect.w)
 		{
 			rtfline_t & rtfline_empty = rtflines.add();
 			rtfline_empty.line = rtflines.size() - 1;
-			rtfline_empty.offset = start_x;
-
+			rtfline_empty.rect = { start_x, 0, 0, m_source->GetDefFormat().font.size };
 			iadvance = 0;
 		}
 	}
 
 	rtfline_t & rtfline_first = rtflines.add();
 	rtfline_first.line = rtflines.size() - 1;
-	rtfline_first.offset = iadvance;
-
+	rtfline_first.rect = { iadvance, 0, 0, 0};
 	for(int_x irun = 0; irun < runitems.size(); ++irun)
 	{
 		runitem_t & runitem = runitems[irun];
@@ -449,13 +450,14 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 			{
 				//...
 			}
-			else if(iadvance + cluster.advance > rect.w)
+			else if(iadvance + cluster.width > rect.w)
 			{
 				if(wrapmode == wrapmode_char || icluster_break < 0)
 				{
 					rtfline_t & rtfline_new = rtflines.add();
 					rtfline_new.line = rtflines.size() - 1;
 					rtfline_new.crange.index = icluster;
+					rtfline_new.rect = {0, 0, 0, 0};
 					icluster_break = -1;
 					iadvance = 0;
 				}
@@ -467,6 +469,7 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 					rtfline_t & rtfline_new = rtflines.add();
 					rtfline_new.line = rtflines.size() - 1;
 					rtfline_new.crange = { icluster_break, 0 };
+					rtfline_new.rect = { 0, 0, 0, 0 };
 					icluster_break = -1;
 					iadvance = 0;
 				}
@@ -474,20 +477,22 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 
 			rtfline_t & rtfline = rtflines.back();
 			rtfline.crange.length += 1;
-			iadvance += clusters[icluster].advance;
+			iadvance += cluster.width;
 		}
 	}
 
 	for(int_x iline = 0; iline < rtflines.size(); ++iline)
 	{
-		rtfline_t & line = rtflines[iline];
-		if(line.crange.length < 0)
+		rtfline_t & rtfline = rtflines[iline];
+		// break lines fallback
+		if(rtfline.crange.length < 0)
 		{
-			line.crange.index = line.crange.index + line.crange.length + 1;
-			line.crange.length = -line.crange.length;
+			rtfline.crange.index = rtfline.crange.index + rtfline.crange.length + 1;
+			rtfline.crange.length = -rtfline.crange.length;
 		}
 	}
 
+	int_x line_y = 0;
 	for(int_x iline = 0; iline < rtflines.size(); ++iline)
 	{
 		rtfline_t & line = rtflines[iline];
@@ -504,7 +509,11 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 				++icluster)
 		{
 			const rtfcluster_t & cluster = clusters[icluster];
-			line.advance += cluster.advance;
+			line.advance += cluster.width;
+			line.rect.y = line_y;
+			line.rect.w += cluster.width;
+			line.rect.h = maxof(cluster.height, line.rect.h);
+			line_y += line.rect.h;
 			if(!line.trange.length)
 				line.trange = cluster.trange;
 			else
@@ -558,7 +567,7 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 		for(int_x icluster = 0; icluster < rtfitem.crange.length; ++icluster)
 		{
 			rtfcluster_t & cluster = clusters[rtfitem.crange.index + icluster];
-			rtfitem.advance += cluster.advance;
+			rtfitem.advance += cluster.width;
 		}
 	}
 
@@ -576,7 +585,7 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 		}
 		ScriptLayout(rtfline.rrange.length, eles, orders, orders2);
 
-		int_x offset = rtfline.offset;
+		int_x offset = rtfline.rect.x;
 		for(int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
 		{
 			rtfitem_t & rtfitem = rtfitems[rtfline.rrange.index + orders[irtf]];
@@ -663,4 +672,45 @@ void DocTextObject::Destroy()
 	clusters.destroy();
 	m_text.destroy();
 	caches.destroy();
+}
+
+
+err_t DocTextObject::Layout(trange_t range, int_x iWidth, paragraph_tag_e tag)
+{
+	return err_ok;
+}
+
+err_t DocTextObject::Branch(int_x iWidth)
+{
+	return err_ok;
+}
+
+tl_metrics_t DocTextObject::GetMetrics() const
+{
+	return tl_metrics_t();
+}
+
+tl_cluster_t DocTextObject::FindCluster(int_x iIndex) const
+{
+	return tl_cluster_t();
+}
+
+tl_cluster_t DocTextObject::GetCluster(int_x iCluster) const
+{
+	return tl_cluster_t();
+}
+
+tl_line_t DocTextObject::GetLine(int_x iLine) const
+{
+	return tl_line_t();
+}
+
+tl_range_t DocTextObject::HitTest(pointix point) const
+{
+	return tl_range_t();
+}
+
+int_x DocTextObject::HitTestRange(int_x iIndex, int_x iLength, tl_range_t * rects, int_x iCount) const
+{
+	return 0;
 }

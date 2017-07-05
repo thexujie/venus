@@ -52,13 +52,32 @@ void Main()
 	}
 }
 
+class DocSource : public IDocSource
+{
+public:
+	textformat_t GetDefFormat() const
+	{
+		return textformat_t();
+	}
+	doc_source_t GetDocSource() const
+	{
+		return { m_text.length(), m_text.buffer() };
+	}
+
+	textw m_text;
+
+};
+
 CScriptEngine engine;
 CScriptDocument doc;
 int iBaseY = 0;
+DocSource source;
 DocTextObject dto;
-
 void OnCreate(HWND hWnd)
 {
+	for(int cnt = 0;;cnt ++)
+		::SetCaretPos(10, 10);
+
 	//::CreateCaret(hWnd, NULL, 1, 22);
 	//::SetCaretPos(10, 10);
 	//::ShowCaret(hWnd);
@@ -87,6 +106,8 @@ void OnCreate(HWND hWnd)
 	//text = L"تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
 	//text = L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
 	//dto.SetText(L"ษาไทยรอยยิ้มนักสู้ กเสียก่อน한국어조선말ئۇيغۇر تىلى𪚥𪚥𪚥𪚥𪚥");
+	source.m_text = text;
+	dto.Initialize(&source);
 	dto.SetText(text);
 	dto.Break();
 	int_x step = 3;

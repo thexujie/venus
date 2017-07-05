@@ -3,6 +3,14 @@
 VENUS_BEG
 
 typedef sizeix textsize_t;
+
+struct tlsize_t
+{
+	int_x w;
+	int_x h;
+};
+
+
 struct tlrect_t
 {
 	int_x x;

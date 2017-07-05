@@ -97,7 +97,8 @@ struct rtfcluster_t
 	int_x scp;
 	trange_t trange;
 	grange_t grange;
-	int_x advance;
+	int_x width;
+	int_x height;
 
 	rtf_t rtf;
 
@@ -123,14 +124,12 @@ struct rtfline_t
 	crange_t crange;
 	trange_t trange;
 
-	int_x offset;
 	int_x advance;
+	tlrect_t rect;
 	textw _debug_text;
-
-	void additem(rtfitem_t run) {}
 };
 
-class DocTextObject : public DocObject
+class DocTextObject : public DocObject, public ObjectT<ITextLayout>
 {
 public:
 	DocTextObject();
@@ -242,7 +241,23 @@ public:
 
 	void Destroy();
 
+public:
+	err_t Initialize(IDocSource * pSrouce) { return err_ok; }
+	IDocSource * GetSource() const { return m_source; }
+
+	err_t Layout(trange_t range, int_x iWidth, paragraph_tag_e tag = paragraph_tag_none);
+	err_t Branch(int_x iWidth);
+
+	tl_metrics_t GetMetrics() const;
+
+	tl_cluster_t FindCluster(int_x iIndex) const;
+	tl_cluster_t GetCluster(int_x iCluster) const;
+	tl_line_t GetLine(int_x iLine) const;
+
+	tl_range_t HitTest(pointix point) const;
+	int_x HitTestRange(int_x iIndex, int_x iLength, tl_range_t * rects, int_x iCount) const;
 protected:
+	IDocSource * m_source;
 	HDC m_hdc;
 
 	vector<doc_font_t> caches;
