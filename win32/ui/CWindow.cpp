@@ -1180,8 +1180,11 @@ void CWindow::SetText(const char_16 * szText, int_x iLength)
 
 void CWindow::SetBoxes(bool bMinBox, bool bMaxBox, bool bCloseBox)
 {
-	ModifyStyle(WS_MINIMIZEBOX, bMinBox);
-	ModifyStyle(WS_MAXIMIZEBOX, bMaxBox);
+	//if(!(m_uiStyle & WS_POPUP))
+	{
+		ModifyStyle(WS_MINIMIZEBOX, bMinBox);
+		ModifyStyle(WS_MAXIMIZEBOX, bMaxBox);
+	}
 }
 
 bool CWindow::Capture(bool bCapture)
