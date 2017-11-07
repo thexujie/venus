@@ -7,7 +7,6 @@ int Main()
 	CWin32App app;
 	app.Create2DDevice(Device2DTypeGdip);
 	
-	auto pfn = CreateThread;
 	CMainWindow wndMain;
 	wndMain.Show(ShowModeNormal, HostInitPosCenterScreen);
 	return (int)GetApp()->Run(0, AppRunLoop);

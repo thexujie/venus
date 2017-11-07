@@ -23,7 +23,7 @@ void RestartApp()
 	}
 }
 
-Device2DTypeE g_iDevice2DType = Device2DTypeGdi;
+Device2DTypeE g_iDevice2DType = Device2DTypeDirect2D;
 
 class BaseT
 {

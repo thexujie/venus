@@ -9,8 +9,8 @@ void Test()
 	if(ver > winver_windows_xp_x86)
 		ver.major = 1;
 	CWin32App app;
-	//app.Create2DDevice(Device2DTypeGdip);
-	app.Create2DDevice(Device2DTypeDirect2D);
+	app.Create2DDevice(Device2DTypeGdip);
+	//app.Create2DDevice(Device2DTypeDirect2D);
 
 	CMainWindow wnd;
 
