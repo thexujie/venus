@@ -1,7 +1,7 @@
 #pragma once
 
-#include "text.h"
-#include "vector.h"
+#include "base/text.h"
+#include "base/vector.h"
 
 VENUS_BEG
 

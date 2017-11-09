@@ -572,6 +572,204 @@ inline uint_x uxfromih(int_h lval, int_h hval)
 	return val;
 }
 
+
+/*! @brief 设置高地位*/
+
+inline void i16setli8(int_16 & val, int_8 set)
+{
+	((int_8 *)&val)[0] = set;
+}
+
+inline void i16sethi8(int_16 & val, int_8 set)
+{
+	((int_8 *)&val)[1] = set;
+}
+
+inline void i16setlu8(int_16 & val, uint_8 set)
+{
+	((uint_8 *)&val)[0] = set;
+}
+
+inline void i16sethu8(int_16 & val, uint_8 set)
+{
+	((uint_8 *)&val)[1] = set;
+}
+
+inline void u16setli8(uint_16 & val, int_8 set)
+{
+	((int_8 *)&val)[0] = set;
+}
+
+inline int_16 u16sethi8(uint_16 & val, int_8 set)
+{
+	((int_8 *)&val)[1] = set;
+}
+
+inline void u16setlu8(uint_16 & val, uint_8 set)
+{
+	((uint_8 *)&val)[0] = set;
+}
+
+inline void u16sethu8(uint_16 & val, uint_8 set)
+{
+	((uint_8 *)&val)[1] = set;
+}
+
+
+inline void i32setli16(int_32 & val, int_16 set)
+{
+	((int_16 *)&val)[0] = set;
+}
+
+inline void i32sethi16(int_32 & val, int_16 set)
+{
+	((int_16 *)&val)[1] = set;
+}
+
+inline void i32setlu16(int_32 & val, uint_16 set)
+{
+	((uint_16 *)&val)[0] = set;
+}
+
+inline void i32sethu16(int_32 & val, uint_16 set)
+{
+	((uint_16 *)&val)[1] = set;
+}
+
+inline void u32setlu16(uint_32 & val, uint_16 set)
+{
+	((uint_16 *)&val)[0] = set;
+}
+
+inline void u32sethu16(uint_32 & val, uint_16 set)
+{
+	((uint_16 *)&val)[1] = set;
+}
+
+inline void u32setli16(uint_32 & val, int_16 set)
+{
+	((int_16 *)&val)[0] = set;
+}
+
+inline int_16 u32sethi16(uint_32 & val, int_16 set)
+{
+	((int_16 *)&val)[1] = set;
+}
+
+inline void i64setli32(int_64 & val, int_32 set)
+{
+	((int_32 *)&val)[0] = set;
+}
+
+inline void i64sethi32(int_64 & val, int_32 set)
+{
+	((int_32 *)&val)[1] = set;
+}
+
+inline void i64setlu32(int_64 & val, uint_32 set)
+{
+	((uint_32 *)&val)[0] = set;
+}
+
+inline void i64sethu32(int_64 & val, uint_32 set)
+{
+	((uint_32 *)&val)[1] = set;
+}
+
+inline void u64setlu32(uint_64 & val, uint_32 set)
+{
+	((uint_32 *)&val)[0] = set;
+}
+
+inline void u64sethu32(uint_64 & val, uint_32 set)
+{
+	((uint_32 *)&val)[1] = set;
+}
+
+inline void u64setli32(uint_64 & val, int_32 set)
+{
+	((int_32 *)&val)[0] = set;
+}
+
+inline void u64sethi32(uint_64 & val, int_32 set)
+{
+	((int_32 *)&val)[1] = set;
+}
+
+/*! @brief 获取 int_x 类型值的低16/32位。*/
+inline void ixsetlih(int_x & val, int_h set)
+{
+#ifdef BIT64
+	i64setli32(val, set);
+#else
+	i32setli16(val, set);
+#endif
+}
+
+inline void ixsethih(int_x & val, int_h set)
+{
+#ifdef BIT64
+	i64sethi32(val, set);
+#else
+	i32sethi16(val, set);
+#endif
+}
+
+inline void ixsetluh(int_x & val, uint_h set)
+{
+#ifdef BIT64
+	i64setlu32(val, set);
+#else
+	i32setlu16(val, set);
+#endif
+}
+
+/*! @brief 获取 int_x 类型值的高16/32位。*/
+inline void ixsethuh(int_x & val, uint_h set)
+{
+#ifdef BIT64
+	i64sethu32(val, set);
+#else
+	i32sethu16(val, set);
+#endif
+}
+
+inline void uxsetlih(uint_x & val, int_h set)
+{
+#ifdef BIT64
+	u64setli32(val, set);
+#else
+	u32setli16(val, set);
+#endif
+}
+
+inline void uxsethih(uint_x & val, int_h set)
+{
+#ifdef BIT64
+	u64sethi32(val, set);
+#else
+	u32sethi16(val, set);
+#endif
+}
+
+inline void uxsetluh(uint_x & val, uint_h set)
+{
+#ifdef BIT64
+	u64setlu32(val, set);
+#else
+	u32setlu16(val, set);
+#endif
+}
+
+inline void uxsethuh(uint_x & val, uint_h set)
+{
+#ifdef BIT64
+	u64sethu32(val, set);
+#else
+	u32sethu16(val, set);
+#endif
+}
+
 template<typename IntT>
 inline bool bittest(const IntT & value, int_x index)
 {

@@ -3,20 +3,20 @@
 VENUS_BEG
 
 template<typename PT>
-class CORE_API TriangleTmpl
+class CORE_API triangle_tmpl
 {
 public:
-	TriangleTmpl();
+	triangle_tmpl();
 
 	template<typename ValT>
-	TriangleTmpl(const vec2<ValT> & a, const vec2<ValT> & b, const vec2<ValT> & c)
+	triangle_tmpl(const vec2<ValT> & a, const vec2<ValT> & b, const vec2<ValT> & c)
 		: A(a), B(b), C(c)
 	{
 
 	}
 
 	template<typename ValT>
-	TriangleTmpl(const ValT & ax, const ValT & ay, const ValT & bx, const ValT & by, const ValT & cx, const ValT & cy)
+	triangle_tmpl(const ValT & ax, const ValT & ay, const ValT & bx, const ValT & by, const ValT & cx, const ValT & cy)
 		: A(ax, ay), B(bx, by), C(cx, cy)
 	{
 

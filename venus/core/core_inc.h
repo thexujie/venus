@@ -39,22 +39,22 @@ namespace venus
 
 #include "stl/stl.h"
 
-#include "array.h"
-#include "vector.h"
-#include "pair.h"
-#include "list.h"
-#include "dictionary.h"
-#include "hashtable.h"
-#include "byte_buffer.h"
-#include "object_ptr.h"
+#include "base/array.h"
+#include "base/vector.h"
+#include "base/pair.h"
+#include "base/list.h"
+#include "base/dictionary.h"
+#include "base/hashtable.h"
+#include "base/byte_buffer.h"
+#include "base/object_ptr.h"
+#include "base/function.h"
 
-#include "function.h"
-
-#include "codepage.h"
-#include "unicode.h"
-#include "text.h"
-#include "color.h"
-#include "datetime.h"
+#include "base/codepage.h"
+#include "base/unicode.h"
+#include "base/text.h"
+#include "base/suid.h"
+#include "base/color.h"
+#include "base/datetime.h"
 
 #include "platform_api.h"
 

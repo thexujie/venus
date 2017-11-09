@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="test::guid">
+		<DisplayString>{*(const GUID *)this}</DisplayString>
+	</Type>
 	<Type Name="venus::function&lt;*&gt;">
 		<DisplayString Condition="m_this==0">{_global_}</DisplayString>
 		<DisplayString Condition="m_this!=0">{_class_}</DisplayString>

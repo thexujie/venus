@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MatrixTmpl.h"
+#include "matrix_tmpl.h"
 
 VENUS_BEG
 
@@ -8,39 +8,39 @@ VENUS_BEG
 // 用于支持2D平面内的图形转换
 
 template<typename ValueT>
-class CORE_API Matrix5Tmpl : public MatrixTmpl<ValueT, 5, 5>
+class CORE_API matrix5_tmpl : public matrix_tmpl<ValueT, 5, 5>
 {
 	typedef vec2<ValueT> MatrixPoint;
-	typedef MatrixTmpl<ValueT, 5, 5> BaseT;
+	typedef matrix_tmpl<ValueT, 5, 5> BaseT;
 public :
-	Matrix5Tmpl()
+	matrix5_tmpl()
 		: BaseT()
 	{
 	}
-	Matrix5Tmpl(const Matrix5Tmpl & another)
+	matrix5_tmpl(const matrix5_tmpl & another)
 		: BaseT(another)
 	{
 
 	}
-	Matrix5Tmpl(const ValueT & val)
+	matrix5_tmpl(const ValueT & val)
 		: BaseT(val)
 	{
 
 	}
-	Matrix5Tmpl(const ValueT (& _values)[3][3])
+	matrix5_tmpl(const ValueT (& _values)[3][3])
 		: BaseT(_values)
 	{
 
 	}
 
-	Matrix5Tmpl(
+	matrix5_tmpl(
 		const ValueT & __11, const ValueT & __12, 
 		const ValueT & __21, const ValueT & __22, 
 		const ValueT & __31, const ValueT & __32)
 	{
 		Set(__11, __12, __21, __22, __31, __32);
 	}
-	Matrix5Tmpl(
+	matrix5_tmpl(
 		const ValueT & __11, const ValueT & __12, const ValueT & __13, 
 		const ValueT & __21, const ValueT & __22, const ValueT & __23, 
 		const ValueT & __31, const ValueT & __32, const ValueT & __33)

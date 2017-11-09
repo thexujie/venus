@@ -29,9 +29,7 @@ protected:
 	int_x m_iBoxSize;
 
 public:
-	//! ��Ǵ�С
 	static const int_x BOX_SIZE = 12;
-	//! ��Ǻ��ı��ļ��
 	static const int_x BOX_SPACE = 3;
 public:
 	event<IControl *, bool, bool *> Checking;

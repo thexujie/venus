@@ -8,11 +8,9 @@
 #include "math/rect.h"
 #include "math/edge.h"
 #include "random.h"
-
-#include "CTriangle.h"
-
-#include "CMatrix3.h"
-#include "CMatrix5.h"
+#include "triangle.h"
+#include "matrix3.h"
+#include "matrix5.h"
 
 VENUS_BEG
 
@@ -52,8 +50,8 @@ typedef rect_tmpl<float_64> rectf64;
 typedef edge_tmpl<int_32> edgei32;
 typedef edge_tmpl<int_x> edgeix;
 
-typedef Matrix3Tmpl<float_32> matrix3f;
-typedef Matrix5Tmpl<float_32> matrix5f;
+typedef matrix3_tmpl<float_32> matrix3f;
+typedef matrix5_tmpl<float_32> matrix5f;
 
 CORE_API vec2ix round(const vec2f & ptf);
 CORE_API vec2f roundf(const vec2f & ptf);

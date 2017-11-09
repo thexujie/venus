@@ -24,10 +24,9 @@ class CORE_API IApp : public IObject
 public:
 	virtual ~IApp() {}
 
-	virtual err_t Initialize() = 0;
-	virtual void UnInitialize() = 0;
-
+	virtual IStdIO & StdIO() = 0;
 	virtual IObject * CreateObject(const cid_t & oid, void * pParam = nullptr) = 0;
+
 	virtual bool RegisterObject(const cid_t & oid, function<IObject *(void *)> fnCreate, bool bReplace) = 0;
 	virtual bool UnregisterObject(const cid_t & oid) = 0;
 
@@ -37,7 +36,6 @@ public:
 	virtual void SetTimer(function<int_x(int_x)> fun, int_x iPeriod, int_x iId = 0) = 0;
 	virtual void KillTimer(function<int_x(int_x)> fun, int_x iId = 0) = 0;
 
-	virtual IStdIO & StdIO() = 0;
 
 	virtual int_x OnRun() = 0;
 	virtual int_x Run(int_x iFormId, AppRunE eAppRun) = 0;

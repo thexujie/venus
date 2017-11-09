@@ -63,9 +63,6 @@
     <ClInclude Include="tools\UnknownT.h">
       <Filter>tools</Filter>
     </ClInclude>
-    <ClInclude Include="tools\guid.h">
-      <Filter>tools</Filter>
-    </ClInclude>
     <ClInclude Include="gdi\CImageGdi.h">
       <Filter>gdi</Filter>
     </ClInclude>

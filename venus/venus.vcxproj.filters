@@ -2,23 +2,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="core\text.cpp">
-      <Filter>core\base</Filter>
-    </ClCompile>
     <ClCompile Include="core\file.cpp">
       <Filter>core\tools</Filter>
     </ClCompile>
     <ClCompile Include="core\math.cpp">
       <Filter>core\math</Filter>
-    </ClCompile>
-    <ClCompile Include="core\unicode.cpp">
-      <Filter>core\base</Filter>
-    </ClCompile>
-    <ClCompile Include="core\function.cpp">
-      <Filter>core\base\struct</Filter>
-    </ClCompile>
-    <ClCompile Include="core\color.cpp">
-      <Filter>core\base</Filter>
     </ClCompile>
     <ClCompile Include="core\core_inc.cpp">
       <Filter>core</Filter>
@@ -26,17 +14,8 @@
     <ClCompile Include="core\core_api.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="core\platform_api_win32.cpp">
-      <Filter>core\base</Filter>
-    </ClCompile>
-    <ClCompile Include="core\support.cpp">
-      <Filter>core\base</Filter>
-    </ClCompile>
     <ClCompile Include="core\math\xmm\float4x4.cpp">
       <Filter>core\math\xmm</Filter>
-    </ClCompile>
-    <ClCompile Include="core\codepage.cpp">
-      <Filter>core\base</Filter>
     </ClCompile>
     <ClCompile Include="v2d\ui\base\Menu.cpp">
       <Filter>v2d\ui\base</Filter>
@@ -338,50 +317,41 @@
     <ClCompile Include="core\io\CTextStream.cpp">
       <Filter>core\io</Filter>
     </ClCompile>
-    <ClCompile Include="core\byte_buffer.cpp">
+    <ClCompile Include="core\base\byte_buffer.cpp">
       <Filter>core\base</Filter>
     </ClCompile>
-    <ClCompile Include="core\datetime.cpp">
+    <ClCompile Include="core\base\codepage.cpp">
       <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\base\color.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\base\datetime.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\base\function.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\base\text.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\base\unicode.cpp">
+      <Filter>core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="core\support.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\platform_api_win32.cpp">
+      <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="vs2003.h" />
-    <ClInclude Include="core\CMatrix3.h">
-      <Filter>core\math</Filter>
-    </ClInclude>
-    <ClInclude Include="core\CMatrix5.h">
-      <Filter>core\math</Filter>
-    </ClInclude>
-    <ClInclude Include="core\MatrixTmpl.h">
-      <Filter>core\math</Filter>
-    </ClInclude>
-    <ClInclude Include="core\text.h">
-      <Filter>core\base</Filter>
-    </ClInclude>
-    <ClInclude Include="core\CTriangle.h">
-      <Filter>core\math</Filter>
-    </ClInclude>
     <ClInclude Include="core\file.h">
       <Filter>core\tools</Filter>
     </ClInclude>
-    <ClInclude Include="core\unicode.h">
-      <Filter>core\base</Filter>
-    </ClInclude>
-    <ClInclude Include="core\function.h">
-      <Filter>core\base\struct</Filter>
-    </ClInclude>
-    <ClInclude Include="core\list.h">
-      <Filter>core\base\struct</Filter>
-    </ClInclude>
-    <ClInclude Include="core\pair.h">
-      <Filter>core\base\struct</Filter>
-    </ClInclude>
     <ClInclude Include="core\doc.h" />
-    <ClInclude Include="core\color.h">
-      <Filter>core\base</Filter>
-    </ClInclude>
     <ClInclude Include="core\core_inc.h">
       <Filter>core</Filter>
     </ClInclude>
@@ -391,17 +361,8 @@
     <ClInclude Include="core\core_exp.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="core\platform_api.h">
-      <Filter>core\base</Filter>
-    </ClInclude>
-    <ClInclude Include="core\support.h">
-      <Filter>core\base</Filter>
-    </ClInclude>
     <ClInclude Include="core\math\xmm\float4x4.h">
       <Filter>core\math\xmm</Filter>
-    </ClInclude>
-    <ClInclude Include="core\codepage.h">
-      <Filter>core\base</Filter>
     </ClInclude>
     <ClInclude Include="v2d\v2d_inc.h">
       <Filter>v2d</Filter>
@@ -574,9 +535,6 @@
     <ClInclude Include="v2d\image\formats\jpg.h">
       <Filter>v2d\image\formats</Filter>
     </ClInclude>
-    <ClInclude Include="core\object_ptr.h">
-      <Filter>core\base\struct</Filter>
-    </ClInclude>
     <ClInclude Include="v2d\ui\base\TreeItem.h">
       <Filter>v2d\ui\base</Filter>
     </ClInclude>
@@ -591,9 +549,6 @@
     </ClInclude>
     <ClInclude Include="v3d\engine\C3DCamera.h">
       <Filter>v3d\engine\cameras</Filter>
-    </ClInclude>
-    <ClInclude Include="core\vector.h">
-      <Filter>core\base\struct</Filter>
     </ClInclude>
     <ClInclude Include="v3d\engine\C3DFileDriver.h">
       <Filter>v3d\engine</Filter>
@@ -753,9 +708,6 @@
     <ClInclude Include="core\math.h">
       <Filter>core\math</Filter>
     </ClInclude>
-    <ClInclude Include="core\array.h">
-      <Filter>core\base\struct</Filter>
-    </ClInclude>
     <ClInclude Include="v3d\engine\C3DEffect.h">
       <Filter>v3d\engine</Filter>
     </ClInclude>
@@ -786,23 +738,74 @@
     <ClInclude Include="core\io\IStream.h">
       <Filter>core\io</Filter>
     </ClInclude>
-    <ClInclude Include="core\byte_buffer.h">
-      <Filter>core\base</Filter>
-    </ClInclude>
-    <ClInclude Include="core\datetime.h">
-      <Filter>core\base</Filter>
-    </ClInclude>
-    <ClInclude Include="core\dictionary.h">
-      <Filter>core\base\struct</Filter>
-    </ClInclude>
-    <ClInclude Include="core\hashtable.h">
-      <Filter>core\base\struct</Filter>
-    </ClInclude>
     <ClInclude Include="core\core_api_text.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="core\core_api_buff.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\array.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\byte_buffer.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\codepage.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\color.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\datetime.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\dictionary.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\function.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\hashtable.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\list.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\object_ptr.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\pair.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\text.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\unicode.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\vector.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\support.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\matrix_tmpl.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\matrix5.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\matrix3.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\triangle.h">
+      <Filter>core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\platform_api.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base\suid.h">
+      <Filter>core\base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -814,9 +817,6 @@
     </Filter>
     <Filter Include="core\tools">
       <UniqueIdentifier>{87ff0e34-2702-49af-9a78-7a4a113100d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="core\base\struct">
-      <UniqueIdentifier>{314e216b-9930-4776-955b-258d5c59ebe4}</UniqueIdentifier>
     </Filter>
     <Filter Include="core\math">
       <UniqueIdentifier>{151399a3-4d53-468e-8b52-d09184b6b006}</UniqueIdentifier>

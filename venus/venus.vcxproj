@@ -51,9 +51,13 @@
   <Import Condition="Exists('$(SolutionDir)\$(SolutionName).props')" Project="$(SolutionDir)\$(SolutionName).props" />
   <ItemGroup>
     <ClCompile Include="CButtonBase.cpp" />
-    <ClCompile Include="core\byte_buffer.cpp" />
-    <ClCompile Include="core\codepage.cpp" />
-    <ClCompile Include="core\color.cpp" />
+    <ClCompile Include="core\base\byte_buffer.cpp" />
+    <ClCompile Include="core\base\codepage.cpp" />
+    <ClCompile Include="core\base\color.cpp" />
+    <ClCompile Include="core\base\datetime.cpp" />
+    <ClCompile Include="core\base\function.cpp" />
+    <ClCompile Include="core\base\text.cpp" />
+    <ClCompile Include="core\base\unicode.cpp" />
     <ClCompile Include="core\core_api.cpp" />
     <ClCompile Include="core\core_inc.cpp" />
     <ClCompile Include="core\io\CBufferedStream.cpp" />
@@ -62,9 +66,9 @@
     <ClCompile Include="core\io\CFileStream.cpp" />
     <ClCompile Include="core\io\CMemoryStream.cpp" />
     <ClCompile Include="core\io\CTextStream.cpp" />
+    <ClCompile Include="core\platform_api_win32.cpp" />
     <ClCompile Include="core\random.cpp" />
     <ClCompile Include="core\file.cpp" />
-    <ClCompile Include="core\function.cpp" />
     <ClCompile Include="core\math.cpp" />
     <ClCompile Include="core\math\math_base.cpp" />
     <ClCompile Include="core\math\xmm\float2.cpp" />
@@ -76,13 +80,9 @@
     <ClCompile Include="core\math\xmm\xm\xmf.cpp" />
     <ClCompile Include="core\math\xmm\xm\xmi.cpp" />
     <ClCompile Include="core\math\xmm\xm\xmi_argb.cpp" />
-    <ClCompile Include="core\platform_api_win32.cpp" />
     <ClCompile Include="core\support.cpp" />
-    <ClCompile Include="core\datetime.cpp" />
-    <ClCompile Include="core\text.cpp" />
     <ClCompile Include="core\tools\IData.cpp" />
     <ClCompile Include="core\tools\IMetaHelper.cpp" />
-    <ClCompile Include="core\unicode.cpp" />
     <ClCompile Include="core\xml.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -158,8 +158,21 @@
     <ClCompile Include="v3d\engine\C3DFileDriver.cpp" />
     <ClCompile Include="v3d\engine\C3DMaterial.cpp" />
     <ClCompile Include="v3d\engine\C3DMesh.cpp" />
-    <ClInclude Include="core\array.h" />
-    <ClInclude Include="core\byte_buffer.h" />
+    <ClInclude Include="core\base\array.h" />
+    <ClInclude Include="core\base\byte_buffer.h" />
+    <ClInclude Include="core\base\codepage.h" />
+    <ClInclude Include="core\base\color.h" />
+    <ClInclude Include="core\base\datetime.h" />
+    <ClInclude Include="core\base\dictionary.h" />
+    <ClInclude Include="core\base\function.h" />
+    <ClInclude Include="core\base\suid.h" />
+    <ClInclude Include="core\base\hashtable.h" />
+    <ClInclude Include="core\base\list.h" />
+    <ClInclude Include="core\base\object_ptr.h" />
+    <ClInclude Include="core\base\pair.h" />
+    <ClInclude Include="core\base\text.h" />
+    <ClInclude Include="core\base\unicode.h" />
+    <ClInclude Include="core\base\vector.h" />
     <ClInclude Include="core\core_api_buff.h" />
     <ClInclude Include="core\core_api_text.h" />
     <ClInclude Include="core\core_def.h" />
@@ -177,9 +190,10 @@
     <ClInclude Include="core\math\vec2.h" />
     <ClInclude Include="core\math\vec3.h" />
     <ClInclude Include="core\math\vec4.h" />
+    <ClInclude Include="core\platform_api.h" />
     <ClInclude Include="core\stl\stl.h" />
     <ClInclude Include="core\stl\type_traits.h" />
-    <ClInclude Include="core\datetime.h" />
+    <ClInclude Include="core\support.h" />
     <ClInclude Include="core\tools\IData.h" />
     <ClInclude Include="core\tools\IMetaHelper.h" />
     <ClInclude Include="v2d\image\image_save.h" />
@@ -224,21 +238,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CButtonBase.h" />
-    <ClInclude Include="core\vector.h" />
-    <ClInclude Include="core\codepage.h" />
     <ClInclude Include="core\core_exp.h" />
     <ClInclude Include="core\core_inc.h" />
-    <ClInclude Include="core\CMatrix3.h" />
-    <ClInclude Include="core\CMatrix5.h" />
-    <ClInclude Include="core\color.h" />
+    <ClInclude Include="core\matrix3.h" />
+    <ClInclude Include="core\matrix5.h" />
     <ClInclude Include="core\random.h" />
-    <ClInclude Include="core\CTriangle.h" />
+    <ClInclude Include="core\triangle.h" />
     <ClInclude Include="core\doc.h" />
     <ClInclude Include="core\file.h" />
-    <ClInclude Include="core\function.h" />
-    <ClInclude Include="core\hashtable.h" />
-    <ClInclude Include="core\list.h" />
-    <ClInclude Include="core\dictionary.h" />
     <ClInclude Include="core\math.h" />
     <ClInclude Include="core\math\xmm\float2.h" />
     <ClInclude Include="core\math\xmm\float3.h" />
@@ -250,14 +257,8 @@
     <ClInclude Include="core\math\xmm\xm\xmf.h" />
     <ClInclude Include="core\math\xmm\xm\xmi.h" />
     <ClInclude Include="core\math\xmm\xm\xmi_argb.h" />
-    <ClInclude Include="core\MatrixTmpl.h" />
-    <ClInclude Include="core\object_ptr.h" />
-    <ClInclude Include="core\pair.h" />
-    <ClInclude Include="core\platform_api.h" />
-    <ClInclude Include="core\support.h" />
-    <ClInclude Include="core\text.h" />
+    <ClInclude Include="core\matrix_tmpl.h" />
     <ClInclude Include="core\core_api.h" />
-    <ClInclude Include="core\unicode.h" />
     <ClInclude Include="core\xml.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="v2d\image\CImage.h" />

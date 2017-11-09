@@ -113,7 +113,6 @@ public:
 VENUS_END
 
 // tools
-#include "tools/guid.h"
 #include "tools/bitmap.h"
 #include "tools/ResTools.h"
 #include "tools/CHandle.h"

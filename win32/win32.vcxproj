@@ -72,7 +72,6 @@
     <ClInclude Include="tools\CMonitor.h" />
     <ClInclude Include="tools\CRegKey.h" />
     <ClInclude Include="tools\CSimpleStdOut.h" />
-    <ClInclude Include="tools\guid.h" />
     <ClInclude Include="tools\process\CProcess.h" />
     <ClInclude Include="tools\process\CProcessSnapshot.h" />
     <ClInclude Include="tools\process\PEB.h" />

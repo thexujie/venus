@@ -8,9 +8,6 @@ class IDockNode;
 class IDockFrame;
 class IDockPane;
 
-/**
- * ͣ���ڵ㣬�� IDockFrame �еķָԪ������״��ϵ��
- */
 class V2D_API IDockNode : public IObject
 {
 public:
@@ -49,19 +46,12 @@ public:
 	virtual void DockNodeUpdateFramework() = 0;
 };
 
-/**
-* ͣ�����
-* ͣ�������һ������Ľӿڣ��ýӿڿ��Խ��� IDockPane��ͣ�����񣩣�������Щ IDockPane ���ŵ�Ԥ���Ĳ��ֿ���С�
-*/
 class V2D_API IDockFrame : public IDockNode
 {
 public:
 	virtual ~IDockFrame() {}
 };
 
-/**
-* ͣ������
-*/
 class V2D_API IDockPane
 {
 public:

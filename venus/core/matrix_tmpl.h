@@ -1,6 +1,5 @@
 #pragma once
 
-#include "vector.h"
 
 VENUS_BEG
 
@@ -8,19 +7,19 @@ VENUS_BEG
 // 用于支持2D平面内的图形转换
 
 template<typename ValueT, int_x ROW, int_x COL>
-class MatrixTmpl
+class matrix_tmpl
 {
 public :
 	static const int_x COUNT = ROW * COL;
-	MatrixTmpl()
+	matrix_tmpl()
 	{
 		Identity();
 	}
-	MatrixTmpl(const MatrixTmpl & another)
+	matrix_tmpl(const matrix_tmpl & another)
 	{
 		buffcpy<ValueT>((ValueT *)Values, COUNT, (ValueT *)another.Values, COUNT);
 	}
-	MatrixTmpl(const ValueT & val)
+	matrix_tmpl(const ValueT & val)
 	{
 		Set(val);
 	}
@@ -41,7 +40,7 @@ public :
 		arrayfill((ValueT *)Values, COUNT, val);
 	}
 
-	MatrixTmpl & Identity()
+	matrix_tmpl & Identity()
 	{
 		for(int_x row = 0; row != ROW; ++row)
 		{
@@ -92,7 +91,7 @@ public :
 	//	return matrRet;
 	//}
 
-	MatrixTmpl & operator = (const MatrixTmpl & another)
+	matrix_tmpl & operator = (const matrix_tmpl & another)
 	{
 		buffcpy<ValueT>((ValueT *)Values, COUNT, (ValueT *)another.Values, COUNT);
 		return *this;

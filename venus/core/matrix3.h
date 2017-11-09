@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MatrixTmpl.h"
+#include "matrix_tmpl.h"
 
 VENUS_BEG
 
@@ -8,39 +8,39 @@ VENUS_BEG
 // 用于支持2D平面内的图形转换
 
 template<typename ValueT>
-class CORE_API Matrix3Tmpl : public MatrixTmpl<ValueT, 3, 3>
+class CORE_API matrix3_tmpl : public matrix_tmpl<ValueT, 3, 3>
 {
 	typedef vec2<ValueT> MatrixPoint;
-	typedef MatrixTmpl<ValueT, 3, 3> BaseT;
+	typedef matrix_tmpl<ValueT, 3, 3> BaseT;
 public :
-	Matrix3Tmpl()
+	matrix3_tmpl()
 		: BaseT()
 	{
 	}
-	Matrix3Tmpl(const Matrix3Tmpl & another)
+	matrix3_tmpl(const matrix3_tmpl & another)
 		: BaseT(another)
 	{
 
 	}
-	Matrix3Tmpl(const ValueT & val)
+	matrix3_tmpl(const ValueT & val)
 		: BaseT(val)
 	{
 
 	}
-	Matrix3Tmpl(const ValueT (& _values)[3][3])
+	matrix3_tmpl(const ValueT (& _values)[3][3])
 		: BaseT(_values)
 	{
 
 	}
 
-	Matrix3Tmpl(
+	matrix3_tmpl(
 		const ValueT & __11, const ValueT & __12, 
 		const ValueT & __21, const ValueT & __22, 
 		const ValueT & __31, const ValueT & __32)
 	{
 		Set(__11, __12, __21, __22, __31, __32);
 	}
-	Matrix3Tmpl(
+	matrix3_tmpl(
 		const ValueT & __11, const ValueT & __12, const ValueT & __13, 
 		const ValueT & __21, const ValueT & __22, const ValueT & __23, 
 		const ValueT & __31, const ValueT & __32, const ValueT & __33)
@@ -225,9 +225,9 @@ public :
 		return true;
 	}
 
-	bool InverseTo(Matrix3Tmpl & another, const float_32 & mistake = 0.001f)
+	bool InverseTo(matrix3_tmpl & another, const float_32 & mistake = 0.001f)
 	{
-		Matrix3Tmpl result(*this);
+		matrix3_tmpl result(*this);
 		if(result.InverseIn(mistake))
 		{
 			another = result;
@@ -236,9 +236,9 @@ public :
 		else
 			return false;
 	}
-	Matrix3Tmpl Inverse(const float_32 & mistake = 0.001f) const
+	matrix3_tmpl Inverse(const float_32 & mistake = 0.001f) const
 	{
-		Matrix3Tmpl result(*this);
+		matrix3_tmpl result(*this);
 		if(result.InverseIn(mistake))
 			return result;
 		else
