@@ -47,7 +47,7 @@ public:
 	CListBox();
 	~CListBox();
 
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 
 	int_x AddItem(const char_16 * szText, IImage * pImage = nullptr, int_x iId = -1);
 	void RemoveAll();

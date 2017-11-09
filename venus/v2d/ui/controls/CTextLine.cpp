@@ -27,7 +27,7 @@ CTextLine::~CTextLine()
 	EndBlink();
 }
 
-const oid_t & CTextLine::GetOid() const
+const cid_t & CTextLine::GetOid() const
 {
 	return OID_TextLine;
 }
@@ -49,7 +49,7 @@ void CTextLine::SetText(const char_16 * szText, int_x iLength)
 	if(iLength < 0)
 		iLength = textlen(szText);
 
-	if(!m_text.equal(szText, iLength))
+	if(!m_text.equals(szText, iLength))
 	{
 		m_text.set(szText, iLength);
 		TlLayout();
@@ -771,7 +771,7 @@ err_t CTextLine::TlLayout()
 {
 	if(!m_pLayout)
 	{
-		m_pLayout = Get2DDevice()->CreateTextLayout();
+		m_pLayout = Device2D()->CreateTextLayout();
 		m_pLayout->Initialize(this);
 	}
 

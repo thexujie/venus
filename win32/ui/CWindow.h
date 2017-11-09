@@ -49,7 +49,7 @@ public:
 	CWindow();
 	~CWindow();
 
-	IObject * GetInterface(const oid_t & oid);
+	IObject * GetInterface(const cid_t & oid);
 	int_x CreateHost(IControl * pControl, FormTypeE eHostType);
 	bool Attach(int_x iHostId);
 	void Detach();

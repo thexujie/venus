@@ -28,7 +28,7 @@ CFoldingView::~CFoldingView()
 	m_items.clear();
 }
 
-const oid_t & CFoldingView::GetOid() const
+const cid_t & CFoldingView::GetOid() const
 {
 	return OID_FoldingView;
 }
@@ -88,7 +88,7 @@ void CFoldingView::Update()
 		return;
 	}
 
-	I2DDevice * pDevice = Get2DDevice();
+	IDevice2D * pDevice = Device2D();
 	for(int_x cnt = 0; cnt < m_items.size(); ++cnt)
 	{
 		FoldingViewItemT * pItem = m_items[cnt];

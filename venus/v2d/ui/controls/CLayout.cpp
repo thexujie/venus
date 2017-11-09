@@ -15,7 +15,7 @@ CLayout::~CLayout()
 
 }
 
-const oid_t & CLayout::GetOid() const
+const cid_t & CLayout::GetOid() const
 {
 	return OID_Layout;
 }

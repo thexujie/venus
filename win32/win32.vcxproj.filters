@@ -36,9 +36,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="d2d\C2DDeviceD2D.h">
-      <Filter>d2d</Filter>
-    </ClInclude>
     <ClInclude Include="d2d\CPaintD2D.h">
       <Filter>d2d</Filter>
     </ClInclude>
@@ -69,9 +66,6 @@
     <ClInclude Include="tools\guid.h">
       <Filter>tools</Filter>
     </ClInclude>
-    <ClInclude Include="gdi\C2DDeviceGdi.h">
-      <Filter>gdi</Filter>
-    </ClInclude>
     <ClInclude Include="gdi\CImageGdi.h">
       <Filter>gdi</Filter>
     </ClInclude>
@@ -80,9 +74,6 @@
     </ClInclude>
     <ClInclude Include="gdi\GdiInc.h">
       <Filter>gdi</Filter>
-    </ClInclude>
-    <ClInclude Include="gdip\C2DDeviceGdip.h">
-      <Filter>gdip</Filter>
     </ClInclude>
     <ClInclude Include="gdip\CPaintGdip.h">
       <Filter>gdip</Filter>
@@ -161,11 +152,20 @@
     </ClInclude>
     <ClInclude Include="win32.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="d2d\GdiTextRenderer.h">
+      <Filter>d2d</Filter>
+    </ClInclude>
+    <ClInclude Include="gdi\CDevice2DGdi.h">
+      <Filter>gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="gdip\CDevice2DGdip.h">
+      <Filter>gdip</Filter>
+    </ClInclude>
+    <ClInclude Include="d2d\CDevice2DD2D.h">
+      <Filter>d2d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="d2d\C2DDeviceD2D.cpp">
-      <Filter>d2d</Filter>
-    </ClCompile>
     <ClCompile Include="d2d\CPaintD2D.cpp">
       <Filter>d2d</Filter>
     </ClCompile>
@@ -193,9 +193,6 @@
     <ClCompile Include="tools\CHandle.cpp">
       <Filter>tools</Filter>
     </ClCompile>
-    <ClCompile Include="gdi\C2DDeviceGdi.cpp">
-      <Filter>gdi</Filter>
-    </ClCompile>
     <ClCompile Include="gdi\CImageGdi.cpp">
       <Filter>gdi</Filter>
     </ClCompile>
@@ -204,9 +201,6 @@
     </ClCompile>
     <ClCompile Include="gdi\GdiInc.cpp">
       <Filter>gdi</Filter>
-    </ClCompile>
-    <ClCompile Include="gdip\C2DDeviceGdip.cpp">
-      <Filter>gdip</Filter>
     </ClCompile>
     <ClCompile Include="gdip\CPaintGdip.cpp">
       <Filter>gdip</Filter>
@@ -285,5 +279,17 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="win32.cpp" />
+    <ClCompile Include="d2d\GdiTextRenderer.cpp">
+      <Filter>d2d</Filter>
+    </ClCompile>
+    <ClCompile Include="gdi\CDevice2DGdi.cpp">
+      <Filter>gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="gdip\CDevice2DGdip.cpp">
+      <Filter>gdip</Filter>
+    </ClCompile>
+    <ClCompile Include="d2d\CDevice2DD2D.cpp">
+      <Filter>d2d</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

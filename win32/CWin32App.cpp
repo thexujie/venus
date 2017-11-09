@@ -5,6 +5,8 @@ VENUS_BEG
 
 CWin32App::CWin32App() :
 m_iTimerId(0)
+, m_pStdIO(nullptr)
+, m_pDevice2D(nullptr)
 {
 	SetApp(this);
 	Initialize();
@@ -18,9 +20,7 @@ CWin32App::~CWin32App()
 
 err_t CWin32App::Initialize()
 {
-	IStdOut * pStdOut = new CSimpleStdOut();
-	SetService(OID_IStdOut, pStdOut);
-	SafeRelease(pStdOut);
+	m_pStdIO = new CSimpleStdOut();
 
 	IMonitorManager * pMonitorManager = new CMonitorManager();
 	SetService(OID_IMonitorManager, pMonitorManager);
@@ -33,7 +33,7 @@ err_t CWin32App::Initialize()
 }
 
 
-IObject * CWin32App::CreateObject(const oid_t & oid, void * pParam)
+IObject * CWin32App::CreateObject(const cid_t & oid, void * pParam)
 {
 	if(oid == OID_IHost)
 	{
@@ -43,7 +43,7 @@ IObject * CWin32App::CreateObject(const oid_t & oid, void * pParam)
 	return nullptr;
 }
 
-bool CWin32App::RegisterObject(const oid_t & oid, function<IObject *(void *)> fnCreate, bool bReplace)
+bool CWin32App::RegisterObject(const cid_t & oid, function<IObject *(void *)> fnCreate, bool bReplace)
 {
 	for(int_x cnt = 0, size = m_objectInfos.size(); cnt < size; ++cnt)
 	{
@@ -64,7 +64,7 @@ bool CWin32App::RegisterObject(const oid_t & oid, function<IObject *(void *)> fn
 	return true;
 }
 
-bool CWin32App::UnregisterObject(const oid_t & oid)
+bool CWin32App::UnregisterObject(const cid_t & oid)
 {
 	int_x iIndex = -1;
 	for(int_x cnt = 0, size = m_objectInfos.size(); cnt < size; ++cnt)
@@ -97,9 +97,12 @@ void CWin32App::UnInitialize()
 	for(int_x cnt = 0, len = m_services.size(); cnt < len; ++cnt)
 		SafeRelease(m_services[cnt].pService);
 	m_services.clear();
+
+	SafeRelease(m_pDevice2D);
+	SafeRelease(m_pStdIO);
 }
 
-void CWin32App::SetService(const oid_t & oid, IService * pService)
+void CWin32App::SetService(const cid_t & oid, IService * pService)
 {
 	for(int_x cnt = 0, len = m_services.size(); cnt < len; ++cnt)
 	{
@@ -118,18 +121,25 @@ void CWin32App::SetService(const oid_t & oid, IService * pService)
 	SafeAddRef(pService);
 }
 
-IService * CWin32App::GetService(const oid_t & oid) const
+IService * CWin32App::GetService(const cid_t & cid)
 {
+	if(cid == CID_IDevice2D)
+	{
+		if(!m_pDevice2D)
+			m_pDevice2D = Win32::Create2DDevice(Device2DTypeUnknown);
+		return m_pDevice2D;
+	}
+
 	for(int_x cnt = 0, len = m_services.size(); cnt < len; ++cnt)
 	{
 		const ServiceT & service = m_services[cnt];
-		if(service.oid == oid)
+		if(service.oid == cid)
 			return service.pService;
 	}
-	if(oid == OID_CSHFileInfoBuffer)
+	if(cid == OID_CSHFileInfoBuffer)
 	{
 		CSHFileInfoBuffer * psh = new CSHFileInfoBuffer();
-		((CWin32App *)this)->SetService(oid, psh);
+		((CWin32App *)this)->SetService(cid, psh);
 		psh->Release();
 		return psh;
 	}
@@ -165,11 +175,16 @@ void CWin32App::KillTimer(function<int_x(int_x)> fun, int_x iId)
 	}
 }
 
+IStdIO & CWin32App::StdIO()
+{
+	if(!m_pStdIO)
+		m_pStdIO = new CSimpleStdOut();
+	return *m_pStdIO;
+}
+	
 void CWin32App::Create2DDevice(Device2DTypeE eType)
 {
-	I2DDevice * pDevice = Win32::Create2DDevice(eType);
-	SetService(OID_IDevice2D, pDevice);
-	SafeRelease(pDevice);
+	m_pDevice2D = Win32::Create2DDevice(eType);
 }
 
 int_x CWin32App::OnRun()

@@ -29,21 +29,21 @@ addressmode_e MapAddressMode(const textw & text)
 
 compare_e MapComparison(const textw & text)
 {
-	if(text.equal(L"Never", -1, false))
+	if(text.equals(L"Never", -1, false))
 		return compare_never;
-	else if(text.equal(L"Always", -1, false))
+	else if(text.equals(L"Always", -1, false))
 		return compare_always;
-	else if(text.equal(L"Equal", -1, false))
+	else if(text.equals(L"Equal", -1, false))
 		return compare_equal;
-	else if(text.equal(L"NotEqual", -1, false))
+	else if(text.equals(L"NotEqual", -1, false))
 		return compare_notequal;
-	else if(text.equal(L"Less", -1, false))
+	else if(text.equals(L"Less", -1, false))
 		return compare_less;
-	else if(text.equal(L"LessEqual", -1, false))
+	else if(text.equals(L"LessEqual", -1, false))
 		return compare_lessequal;
-	else if(text.equal(L"Greater", -1, false))
+	else if(text.equals(L"Greater", -1, false))
 		return compare_greater;
-	else if(text.equal(L"GreaterEqual", -1, false))
+	else if(text.equals(L"GreaterEqual", -1, false))
 		return compare_greaterequal;
 	else
 		return compare_never;
@@ -51,11 +51,11 @@ compare_e MapComparison(const textw & text)
 
 cullmode_e MapCullMode(const textw & text)
 {
-	if(text.equal(L"None", -1, false))
+	if(text.equals(L"None", -1, false))
 		return cullmode_none;
-	else if(text.equal(L"Front", -1, false))
+	else if(text.equals(L"Front", -1, false))
 		return cullmode_front;
-	else if(text.equal(L"Back", -1, false))
+	else if(text.equals(L"Back", -1, false))
 		return cullmode_back;
 	else
 		return cullmode_none;
@@ -63,9 +63,9 @@ cullmode_e MapCullMode(const textw & text)
 
 fillmode_e MapFillMode(const textw & text)
 {
-	if(text.equal(L"Solid", -1, false))
+	if(text.equals(L"Solid", -1, false))
 		return fillmode_solid;
-	else if(text.equal(L"Wireframe", -1, false))
+	else if(text.equals(L"Wireframe", -1, false))
 		return fillmode_frame;
 	else
 		return fillmode_solid;
@@ -73,13 +73,13 @@ fillmode_e MapFillMode(const textw & text)
 
 il_valuetype_e MapElementFormat(const textw & text)
 {
-	if(text.equal(L"float1", -1, false))
+	if(text.equals(L"float1", -1, false))
 		return il_valuetype_float1;
-	else if(text.equal(L"float2", -1, false))
+	else if(text.equals(L"float2", -1, false))
 		return il_valuetype_float2;
-	else if(text.equal(L"float3", -1, false))
+	else if(text.equals(L"float3", -1, false))
 		return il_valuetype_float3;
-	else if(text.equal(L"float4", -1, false))
+	else if(text.equals(L"float4", -1, false))
 		return il_valuetype_float4;
 	else
 		return valuetype_invalid;
@@ -87,29 +87,29 @@ il_valuetype_e MapElementFormat(const textw & text)
 
 blendfactor_e MapBlend(const textw & text)
 {
-	if(text.equal(L"Zero", -1, false))
+	if(text.equals(L"Zero", -1, false))
 		return blendfactor_zero;
-	else if(text.equal(L"One", -1, false))
+	else if(text.equals(L"One", -1, false))
 		return blendfactor_one;
-	else if(text.equal(L"SrcAlpha", -1, false))
+	else if(text.equals(L"SrcAlpha", -1, false))
 		return blendfactor_srcalpha;
-	else if(text.equal(L"DstAlpha", -1, false))
+	else if(text.equals(L"DstAlpha", -1, false))
 		return blendfactor_dstalpha;
-	else if(text.equal(L"SrcAlphaInv", -1, false))
+	else if(text.equals(L"SrcAlphaInv", -1, false))
 		return blendfactor_srcalpha_inv;
-	else if(text.equal(L"DstAlphaInv", -1, false))
+	else if(text.equals(L"DstAlphaInv", -1, false))
 		return blendfactor_dstalpha_inv;
-	else if(text.equal(L"SrcColor", -1, false))
+	else if(text.equals(L"SrcColor", -1, false))
 		return blendfactor_srccolor;
-	else if(text.equal(L"DstColor", -1, false))
+	else if(text.equals(L"DstColor", -1, false))
 		return blendfactor_dstcolor;
-	else if(text.equal(L"SrcColorInv", -1, false))
+	else if(text.equals(L"SrcColorInv", -1, false))
 		return blendfactor_srccolor_inv;
-	else if(text.equal(L"DstColorInv", -1, false))
+	else if(text.equals(L"DstColorInv", -1, false))
 		return blendfactor_dstcolor_inv;
-	else if(text.equal(L"Factor", -1, false))
+	else if(text.equals(L"Factor", -1, false))
 		return blendfactor_user;
-	else if(text.equal(L"FactorInv", -1, false))
+	else if(text.equals(L"FactorInv", -1, false))
 		return blendfactor_user_inv;
 	else
 		return blendfactor_zero;
@@ -117,15 +117,15 @@ blendfactor_e MapBlend(const textw & text)
 
 blendop_e MapBlendMode(const textw & text)
 {
-	if(text.equal(L"Add", -1, false))
+	if(text.equals(L"Add", -1, false))
 		return blendop_add;
-	if(text.equal(L"Subtract", -1, false))
+	if(text.equals(L"Subtract", -1, false))
 		return blendop_sub;
-	if(text.equal(L"RevSubtract", -1, false))
+	if(text.equals(L"RevSubtract", -1, false))
 		return blendop_revert_sub;
-	if(text.equal(L"Min", -1, false))
+	if(text.equals(L"Min", -1, false))
 		return blendop_min;
-	if(text.equal(L"Max", -1, false))
+	if(text.equals(L"Max", -1, false))
 		return blendop_max;
 	else
 		return blendop_add;

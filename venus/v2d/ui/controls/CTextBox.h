@@ -30,7 +30,7 @@ public:
 	~CTextBox();
 
 public:
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 	void GetMeta(IMetaHelper * pHelper) override;
 
 	void SetText(const char_16 * szText, int_x iLength = -1) override;

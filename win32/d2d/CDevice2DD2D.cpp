@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include "C2DDeviceD2D.h"
+#include "CDevice2DD2D.h"
 #include "CTextLayoutD2D.h"
 #include "CPaintD2D.h"
 
 VENUS_BEG
 
-C2DDeviceD2D::C2DDeviceD2D()
+CDevice2DD2D::CDevice2DD2D()
 	:m_hModuleD2D(NULL), m_hModuleDWrite(NULL),
 	m_pFactory(nullptr), m_pDWrite(nullptr)
 {
@@ -59,7 +59,7 @@ C2DDeviceD2D::C2DDeviceD2D()
 	}
 }
 
-C2DDeviceD2D::~C2DDeviceD2D()
+CDevice2DD2D::~CDevice2DD2D()
 {
 	for(int_x cnt = 0, len = m_fonts.size(); cnt < len; ++cnt)
 		SafeRelease(m_fonts[cnt].pFormat);
@@ -80,12 +80,12 @@ C2DDeviceD2D::~C2DDeviceD2D()
 	}
 }
 
-Device2DTypeE C2DDeviceD2D::GetType() const
+Device2DTypeE CDevice2DD2D::GetType() const
 {
 	return Device2DTypeDirect2D;
 }
 
-IDWriteTextFormat * C2DDeviceD2D::GetTextFormat(const textformat_t & format)
+IDWriteTextFormat * CDevice2DD2D::GetTextFormat(const textformat_t & format)
 {
 	if(!m_pDWrite)
 		return nullptr;
@@ -121,7 +121,7 @@ IDWriteTextFormat * C2DDeviceD2D::GetTextFormat(const textformat_t & format)
 	HRESULT hResult = m_pDWrite->CreateTextFormat(chbName, pFontCollection,
 		(DWRITE_FONT_WEIGHT)format.font.weight,
 		format.font.italic ? DWRITE_FONT_STYLE_ITALIC : DWRITE_FONT_STYLE_NORMAL,
-		DWRITE_FONT_STRETCH_ULTRA_CONDENSED,
+        DWRITE_FONT_STRETCH_NORMAL,
 		fFontSize,
 		L"",
 		&pFormat);
@@ -184,7 +184,7 @@ IDWriteTextFormat * C2DDeviceD2D::GetTextFormat(const textformat_t & format)
 		return nullptr;
 }
 
-fontmetrics_t C2DDeviceD2D::GetFontMetric(const font_t & font)
+fontmetrics_t CDevice2DD2D::GetFontMetric(const font_t & font)
 {
 	IDWriteTextFormat * pTextFormat = GetTextFormat(font);
 	fontmetrics_t metrics;
@@ -206,12 +206,12 @@ fontmetrics_t C2DDeviceD2D::GetFontMetric(const font_t & font)
 	return metrics;
 }
 
-ITextLayout * C2DDeviceD2D::CreateTextLayout()
+ITextLayout * CDevice2DD2D::CreateTextLayout()
 {
 	return new CTextLayoutD2D(this);
 }
 
-textsize_t C2DDeviceD2D::GetTextSize(const char_16 * szText, int_x iLength, const font_t & font)
+textsize_t CDevice2DD2D::GetTextSize(const char_16 * szText, int_x iLength, const font_t & font)
 {
 	if(!m_pDWrite)
 		return textsize_t();
@@ -233,23 +233,23 @@ textsize_t C2DDeviceD2D::GetTextSize(const char_16 * szText, int_x iLength, cons
 }
 
 bool d2d_rule_full(image_convert_rule_t * rule);
-image_convert_rule_fun_t C2DDeviceD2D::GetImageConvertRuleFun() const
+image_convert_rule_fun_t CDevice2DD2D::GetImageConvertRuleFun() const
 {
 	return d2d_rule_full;
 }
 
-IPaint * C2DDeviceD2D::CreatePaint(I2DRTarget * pRenderTarget)
+IPaint * CDevice2DD2D::CreatePaint(I2DRTarget * pRenderTarget)
 {
 	CPaintD2D * pPaint = new CPaintD2D(pRenderTarget, this);
 	return pPaint;
 }
 
-ID2D1Factory * C2DDeviceD2D::GetFactory()
+ID2D1Factory * CDevice2DD2D::GetFactory()
 {
 	return m_pFactory;
 }
 
-IDWriteFactory * C2DDeviceD2D::GetDWrite()
+IDWriteFactory * CDevice2DD2D::GetDWrite()
 {
 	return m_pDWrite;
 }

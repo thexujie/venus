@@ -13,11 +13,11 @@ struct WIN32_API D2DFontT
 	IDWriteTextFormat * pFormat;
 };
 
-class WIN32_API C2DDeviceD2D : public ObjectT<I2DDevice>
+class WIN32_API CDevice2DD2D : public ObjectT<IDevice2D>
 {
 public:
-	C2DDeviceD2D();
-	~C2DDeviceD2D();
+	CDevice2DD2D();
+	~CDevice2DD2D();
 
 	Device2DTypeE GetType() const;
 

@@ -87,7 +87,7 @@ class V2D_API CListView : public CControl
 public:
 	CListView();
 	~CListView();
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 	void GetMeta(IMetaHelper * pHelper) override;
 
 	int_x AddCol(const char_16 * szText, int_x iWidth = 0, AlignE eTextAlign = AlignLeftCenterY, int_x iUserData = 0);

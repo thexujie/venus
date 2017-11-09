@@ -10,7 +10,7 @@ public:
 	CButton();
 	~CButton();
 
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 	
 	/**
 	* @brief …Ë÷√Õº±Í°£
@@ -73,7 +73,7 @@ protected:
 	DialogResultE m_eDialogResult;
 
 public:
-	static const oid_t & Oid() { return OID_Button; }
+	static const cid_t & Oid() { return OID_Button; }
 };
 
 VENUS_END

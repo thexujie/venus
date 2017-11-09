@@ -8,7 +8,7 @@ static const int_x ITEM_SPACE_Y = 3;
 static const int_x ITEM_SPACE_X = 7;
 static const int_x SPLIT_HEIGHT = 1;
 
-static const oid_t OID_MENU = {L"CPopMenu"};
+static const cid_t OID_MENU = {L"CPopMenu"};
 
 CPopMenu::CPopMenu(CPopMenu * pParent) :
 m_pMenu(nullptr), m_iHoverIndex(-1), m_pMenuParent(pParent), m_pMenuChild(nullptr)
@@ -38,7 +38,7 @@ CPopMenu::~CPopMenu()
 	SafeRelease(m_pMenu);
 }
 
-const oid_t & CPopMenu::GetOid() const
+const cid_t & CPopMenu::GetOid() const
 {
 	return OID_MENU;
 }
@@ -188,7 +188,7 @@ void CPopMenu::SetShowMenu(IMenu * pMenu)
 	if(m_pMenu)
 	{
 		SafeAddRef(m_pMenu);
-		I2DDevice * pService = Get2DDevice();
+		IDevice2D * pService = Device2D();
 		int_x iWidth = 0, iHeight = 0;
 		int_x iItemH = ITEM_SPACE_Y + m_font.size + ITEM_SPACE_Y;
 		int_x iSplitH = ITEM_SPACE_Y + SPLIT_HEIGHT + ITEM_SPACE_Y;

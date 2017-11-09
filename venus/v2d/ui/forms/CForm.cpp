@@ -24,7 +24,7 @@ CForm::~CForm()
 	SafeRelease(m_pHost);
 }
 
-const oid_t & CForm::GetOid() const
+const cid_t & CForm::GetOid() const
 {
 	return OID_Form;
 }
@@ -315,7 +315,7 @@ void CForm::OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * p
 		int_x iSize = m_iCaptionHeight * 1 / 3;
 		int_x iOffset = m_iCaptionHeight * 1 / 3;
 		int_x iY = rcCaption.y + iOffset;
-		// �رհ�ť
+		// �رհ�ť
 		int_x iX = rcCaption.right() - rcCaption.h;
 		if(m_bCloseBox && iX > rcCaption.x)
 		{
@@ -377,6 +377,10 @@ void CForm::OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * p
 			iX -= rcCaption.h;
 		}
 	}
+}
+
+void CForm::AftOnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const
+{
 }
 
 void CForm::OnNcMouseMove(pointix point)

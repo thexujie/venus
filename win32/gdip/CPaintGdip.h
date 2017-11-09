@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GdipInc.h"
-#include "C2DDeviceGdip.h"
+#include "CDevice2DGdip.h"
 
 #ifdef WIN32_DEVICE_GDIP
 
@@ -10,7 +10,7 @@ VENUS_BEG
 class WIN32_API CPaintGdip : public CPaintBase
 {
 public:
-	CPaintGdip(I2DRTarget * pRenderTarget, C2DDeviceGdip * pService);
+	CPaintGdip(I2DRTarget * pRenderTarget, CDevice2DGdip * pService);
 	~CPaintGdip();
 	HDC GetHDC();
 
@@ -110,7 +110,7 @@ private:
 	HBITMAP m_hBitmap;
 
 	I2DRTarget * m_pTarget;
-	C2DDeviceGdip * m_pService;
+	CDevice2DGdip * m_pService;
 	Gdiplus::GpGraphics * m_graphics;
 
 

@@ -19,7 +19,7 @@ CProgressBar::~CProgressBar()
 	}
 }
 
-const oid_t & CProgressBar::GetOid() const
+const cid_t & CProgressBar::GetOid() const
 {
 	return OID_ProgressBar;
 }

@@ -8,7 +8,7 @@ static const int_x ITEM_SPACE_Y = 3;
 static const int_x ITEM_SPACE_X = 7;
 static const int_x SPLIT_HEIGHT = 1;
 
-static const oid_t OID_PopForm= {L"PopForm"};
+static const cid_t OID_PopForm= {L"PopForm"};
 
 CPopForm::CPopForm()
 {
@@ -22,7 +22,7 @@ CPopForm::~CPopForm()
 {
 }
 
-const oid_t & CPopForm::GetOid() const
+const cid_t & CPopForm::GetOid() const
 {
 	return OID_PopForm;
 }

@@ -17,7 +17,7 @@ CDxgiSurface::~CDxgiSurface()
 	SafeRelease(m_pSurface);
 }
 
-const oid_t & CDxgiSurface::GetOid() const
+const cid_t & CDxgiSurface::GetOid() const
 {
 	return OID_CDxgiSurface;
 }

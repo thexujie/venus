@@ -3,14 +3,14 @@
 
 VENUS_BEG
 
-void Set2DDevice(I2DDevice * pDevice)
+void Set2DDevice(IDevice2D * pDevice)
 {
-	SetService(OID_IDevice2D, pDevice);
+	SetService(CID_IDevice2D, pDevice);
 }
 
-I2DDevice * Get2DDevice()
+IDevice2D * Device2D()
 {
-	return GetService<I2DDevice>(OID_IDevice2D);
+	return GetService<IDevice2D>(CID_IDevice2D);
 }
 
 VENUS_END

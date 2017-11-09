@@ -8,14 +8,14 @@ CSimpleStdOut::CSimpleStdOut()
 	m_hOutput = ::GetStdHandle(STD_OUTPUT_HANDLE);
 	m_hInput  = ::GetStdHandle(STD_INPUT_HANDLE);
 
-	if(m_hInput)
-		GetApp()->SetTimer(bind(this, &CSimpleStdOut::_cmd_ontimer), 100, 0);
+	//if(m_hInput)
+	//	GetApp()->SetTimer(bind(this, &CSimpleStdOut::_cmd_ontimer), 100, 0);
 }
 
 CSimpleStdOut::~CSimpleStdOut()
 {
-	if(m_hInput)
-		GetApp()->KillTimer(bind(this, &CSimpleStdOut::_cmd_ontimer), 0);
+	//if(m_hInput)
+	//	GetApp()->KillTimer(bind(this, &CSimpleStdOut::_cmd_ontimer), 0);
 
 	m_hOutput = m_hInput = NULL;
 }

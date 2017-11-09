@@ -5,7 +5,7 @@
 int Main()
 {
 	CWin32App app;
-	app.Create2DDevice(Device2DTypeGdip);
+	app.Create2DDevice(Device2DTypeDirect2D);
 	
 	CMainWindow wndMain;
 	wndMain.Show(ShowModeNormal, HostInitPosCenterScreen);

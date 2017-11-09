@@ -2,10 +2,10 @@
 
 VENUS_BEG
 
-const oid_t OID_I3DApp = {L"I3DApp"};
-const oid_t OID_I3DFileDriver = {L"I3DFileDriver"};
-const oid_t OID_I3DVedioDriver = {L"I3DVedioDriver"};
-const oid_t OID_I3DAudioDriver = {L"I3DAudioDriver"};
+const cid_t OID_I3DApp = {L"I3DApp"};
+const cid_t OID_I3DFileDriver = {L"I3DFileDriver"};
+const cid_t OID_I3DVedioDriver = {L"I3DVedioDriver"};
+const cid_t OID_I3DAudioDriver = {L"I3DAudioDriver"};
 
 const char_16 SHADER_NAME[shader_num][3] = {L"vs", L"ps", L"hs", L"ds", L"gs", L"cs"};
 

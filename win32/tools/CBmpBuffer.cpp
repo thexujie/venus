@@ -15,7 +15,7 @@ CBmpBuffer::~CBmpBuffer()
 	m_hdc = NULL;
 }
 
-const oid_t & CBmpBuffer::GetOid() const
+const cid_t & CBmpBuffer::GetOid() const
 {
 	return OID_CBmpBuffer;
 }

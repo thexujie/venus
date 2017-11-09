@@ -386,57 +386,13 @@ public:
 		return *this;
 	}
 
-	void insert(int_x _index, const CharT & _ch)
+	text_base & insert(int_x _index, const CharT & _ch)
 	{
-		if(!m_data)
-		{
-			if(_index)
-				throw exp_out_of_bound();
-
-			CharT _text[2] = {_ch, 0};
-			m_data = new textdata_t(_text, 1, -1);
-		}
-		else if(m_data->ref() > 1)
-		{
-			int_x capability = textdata_t::fit_capability(m_data->m_size + 1);
-			textdata_t * _data = new textdata_t(capability);
-			buffcpy(_data->m_buffer, m_data->m_buffer, _index);
-			_data->m_buffer[_index] = _ch;
-			buffcpy(_data->m_buffer + _index + 1, m_data->m_buffer + _index, m_data->m_size - _index);
-			_data->m_size = m_data->m_size + 1;
-			_data->m_buffer[_data->m_size] = 0;
-			m_data->release();
-			m_data = _data;
-		}
-		else
-			m_data->insert(_index, _ch);
+		CharT _text[2] = { _ch, 0 };
+		return insert(_index, _text, 1);
 	}
 
-	void remove(int_x _index)
-	{
-		int_x iLength = length();
-		if(_index < 0 || _index >= iLength)
-			throw exp_out_of_bound();
-
-		if(m_data->ref() > 1)
-		{
-			int_x capability = m_data->m_capability;
-			textdata_t * _data = new textdata_t(capability);
-
-			CharT * pNewText = _data->m_buffer;
-			buffcpy(_data->m_buffer, m_data->m_buffer, _index);
-			buffcpy(_data->m_buffer + _index, m_data->m_buffer + _index + 1, m_data->m_size - _index - 1);
-
-			_data->m_size = m_data->m_size - 1;
-			_data->m_buffer[_data->m_size] = 0;
-			m_data->release();
-			m_data = _data;
-		}
-		else
-			m_data->remove(_index);
-	}
-
-	void insert(int_x _index, const CharT * _text, int_x _length = -1)
+	text_base & insert(int_x _index, const CharT * _text, int_x _length = -1)
 	{
 		if(_index < 0 || _index > length())
 			throw exp_out_of_bound();
@@ -464,12 +420,18 @@ public:
 		{
 			m_data->insert(_index, _text, _length);
 		}
+		return *this;
 	}
 
-	void remove(int_x _index, int_x _length)
+	text_base & remove(int_x _index)
+	{
+		return remove(_index, 0);
+	}
+
+	text_base & remove(int_x _index, int_x _length)
 	{
 		if(!_length)
-			return;
+			return *this;
 
 		if(_length < 0)
 			throw exp_illegal_argument();
@@ -495,15 +457,17 @@ public:
 			else
 				m_data->remove(_index, _length);
 		}
+		return *this;
 	}
 
-	void clear()
+	text_base & clear()
 	{
 		if(m_data)
 		{
 			m_data->release();
 			m_data = nullptr;
 		}
+		return *this;
 	}
 
 	void destroy()
@@ -515,7 +479,7 @@ public:
 		}
 	}
 
-	bool equal(const CharT * szText, int_x iLength = -1, bool bCase = true) const
+	bool equals(const CharT * szText, int_x iLength = -1, bool bCase = true) const
 	{
 		if(iLength < 0)
 			iLength = textlen(szText);
@@ -822,13 +786,13 @@ public:
 			return text_base(m_data->m_buffer + index, count);
 	}
 
-	int_x find_first(const CharT & ch) const
+	int_x first_of(const CharT & ch) const
 	{
 		const CharT * pBuffer = buffer();
 		return textch(pBuffer, length(), ch);
 	}
 
-	int_x find_last(const CharT & ch) const
+	int_x last_of(const CharT & ch) const
 	{
 		const CharT * pBuffer = buffer();
 		return textrch(pBuffer, length(), ch);
@@ -841,7 +805,7 @@ public:
 
 		int_x length_new = length() + (pattern_length - (index_end - index_beg));
 		reallocate(length_new + 1);
-		return textrplstr(buffer(), length(), capability(), index_beg, index_end, pattern, pattern_length);
+		return textrplstr(ptr(), length(), capability(), index_beg, index_end, pattern, pattern_length);
 	}
 
 	int_x replace(const CharT * src, int_x src_length, const CharT * dst, int_x dst_length, bool caps = true)
@@ -862,7 +826,7 @@ public:
 		int_x length_new = length_old + (dst_length - src_length) * count;
 		int_x _capability = textdata_t::fit_capability(length_new);
 		reallocate(_capability);
-		int_x count2 = textrplstr(buffer(), length_old, capability(), src, src_length, dst, dst_length, caps);
+		int_x count2 = textrplstr(ptr(), length_old, capability(), src, src_length, dst, dst_length, caps);
 		verify(count == count2);
 		resize(length_new);
 		return count;
@@ -894,7 +858,7 @@ public:
 	int_x length() const { return size(); }
 	int_x capability() const { return m_data ? m_data->m_capability : 0; }
 	const CharT * buffer() const { return m_data ? m_data->m_buffer : nullptr; }
-	CharT * buffer() { return m_data ? m_data->m_buffer : nullptr; }
+	CharT * ptr() { return m_data ? m_data->m_buffer : nullptr; }
 
 	void swap(text_base & another) { ::swap(m_data, another.m_data); }
 
@@ -904,6 +868,7 @@ protected:
 
 typedef text_base<char_16, encodings::utf16.codepage> textw;
 typedef text_base<char_8, encodings::ansi.codepage> texta;
+typedef text_base<byte_t, encodings::utf8.codepage> textt;
 
 namespace encodings
 {

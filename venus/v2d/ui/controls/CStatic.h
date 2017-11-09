@@ -9,7 +9,7 @@ class V2D_API CStatic : public CControl
 public:
 	CStatic();
 	~CStatic();
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 
 	void SetImage(IImage * pImage);
 	void SetTextAlign(AlignE eTextAlign);

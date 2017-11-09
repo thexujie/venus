@@ -75,7 +75,7 @@ err_t C3DEntity::Load(const char_16 * szEntity)
 			vector<texture_t> & textures = m_textures[inode];
 			for(const xml_node & node_param: node_material.children)
 			{
-				if(node_param.name.equal(L"texture", -1, false))
+				if(node_param.name.equals(L"texture", -1, false))
 				{
 					const xml_attr & name = node_param[L"name"];
 					const xml_attr & file = node_param[L"file"];

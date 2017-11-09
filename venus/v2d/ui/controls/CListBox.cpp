@@ -34,7 +34,7 @@ CListBox::~CListBox()
 
 }
 
-const oid_t & CListBox::GetOid() const
+const cid_t & CListBox::GetOid() const
 {
 	return OID_ListBox;
 }
@@ -87,7 +87,7 @@ void CListBox::Update()
 		return;
 	}
 
-	I2DDevice * pService = Get2DDevice();
+	IDevice2D * pService = Device2D();
 	int_x iWidthExt = m_iItemSpace;
 	if(m_bShowSelect)
 		iWidthExt += m_iIconSize + m_iItemSpace;

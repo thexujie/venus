@@ -15,7 +15,7 @@ CRadio::~CRadio()
 
 }
 
-const oid_t & CRadio::GetOid() const
+const cid_t & CRadio::GetOid() const
 {
 	return OID_Radio;
 }

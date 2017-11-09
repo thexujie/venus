@@ -13,7 +13,7 @@ CDockFrameTest::~CDockFrameTest()
 
 }
 
-const oid_t & CDockFrameTest::GetOid() const
+const cid_t & CDockFrameTest::GetOid() const
 {
 	return OID_DockFrame;
 }
@@ -65,7 +65,7 @@ void CDockFrameTest::OnMouseMove(pointix point)
 
 		if(m_pNodeHoving->parent->horizontal)
 		{
-			// ÎÞÂÛÈçºÎ¿í¶È¶¼²»¹»
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½È¶ï¿½ï¿½ï¿½ï¿½ï¿½
 			if(rcLeft.w + rcRight.w >= szLeftMin.w + szRightMin.w)
 			{
 				rectix left = rcLeft;
@@ -103,7 +103,7 @@ void CDockFrameTest::OnMouseMove(pointix point)
 		}
 		else
 		{
-			// ÎÞÂÛÈçºÎ¸ß¶È¶¼²»¹»
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¸ß¶È¶ï¿½ï¿½ï¿½ï¿½ï¿½
 			if(rcLeft.h + rcRight.h >= szLeftMin.h + szRightMin.h)
 			{
 				rectix left = rcLeft;
@@ -361,16 +361,16 @@ void frame_node_t::update()
 	if(iCount <= 0)
 		return;
 
-	// ºáÏò
+	// ï¿½ï¿½ï¿½ï¿½
 	if(horizontal)
 	{
-		//½Úµã¼ä¼ä¾à×ÜºÍ¡£
+		//ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ÜºÍ¡ï¿½
 		int_x iSpace = DRAGBAR_SIZE * (iCount - 1);
-		//¹Ì¶¨´óÐ¡µÄ½Úµã´óÐ¡×ÜºÍ¡£
+		//ï¿½Ì¶ï¿½ï¿½ï¿½Ð¡ï¿½Ä½Úµï¿½ï¿½Ð¡ï¿½ÜºÍ¡ï¿½
 		int_x iFixed = 0;
-		//¿É±ä´óÐ¡µÄ½ÚµãÈ¨ÖØ×ÜºÍ¡£
+		//ï¿½É±ï¿½ï¿½Ð¡ï¿½Ä½Úµï¿½È¨ï¿½ï¿½ï¿½ÜºÍ¡ï¿½
 		float_32 fWeight = 0.0f;
-		//×îºóÒ»¸ö¿É±ä½Úµã£¬×îºóÒ»¸ö½ÚµãµÄ´óÐ¡ÒªÌîÂúÕû¸ö¸¸µ¥Ôª¡£
+		//ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½É±ï¿½Úµã£¬ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Úµï¿½Ä´ï¿½Ð¡Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 		frame_node_t * last_weight_node = nullptr;
 
 		frame_node_t * temp = child;
@@ -410,13 +410,13 @@ void frame_node_t::update()
 	}
 	else
 	{
-		//½Úµã¼ä¼ä¾à×ÜºÍ¡£
+		//ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ÜºÍ¡ï¿½
 		int_x iSpace = DRAGBAR_SIZE * (iCount - 1);
-		//¹Ì¶¨´óÐ¡µÄ½Úµã´óÐ¡×ÜºÍ¡£
+		//ï¿½Ì¶ï¿½ï¿½ï¿½Ð¡ï¿½Ä½Úµï¿½ï¿½Ð¡ï¿½ÜºÍ¡ï¿½
 		int_x iFixed = 0;
-		//¿É±ä´óÐ¡µÄ½ÚµãÈ¨ÖØ×ÜºÍ¡£
+		//ï¿½É±ï¿½ï¿½Ð¡ï¿½Ä½Úµï¿½È¨ï¿½ï¿½ï¿½ÜºÍ¡ï¿½
 		float_32 fWeight = 0.0f;
-		//×îºóÒ»¸ö¿É±ä½Úµã£¬×îºóÒ»¸ö½ÚµãµÄ´óÐ¡ÒªÌîÂúÕû¸ö¸¸µ¥Ôª¡£
+		//ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½É±ï¿½Úµã£¬ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Úµï¿½Ä´ï¿½Ð¡Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 		frame_node_t * last_weight_node = nullptr;
 
 		frame_node_t * temp = child;

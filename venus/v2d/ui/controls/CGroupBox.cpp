@@ -14,7 +14,7 @@ CGroupBox::~CGroupBox()
 
 }
 
-const oid_t & CGroupBox::GetOid() const
+const cid_t & CGroupBox::GetOid() const
 {
 	return OID_GroupBox;
 }
@@ -35,7 +35,7 @@ rectix CGroupBox::GetClient() const
 void CGroupBox::OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const
 {
 	CControl::OnNcPaint(pPaint, rcClip, pTheme);
-	I2DDevice * pService = Get2DDevice();
+	IDevice2D * pService = Device2D();
 	sizeix size = pService->GetTextSize(m_text, m_text.length(), m_font);
 	int_x iTextWidth = size.w;
 	int_x iTextHeight = size.h;

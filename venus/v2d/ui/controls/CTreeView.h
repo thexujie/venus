@@ -22,7 +22,7 @@ class V2D_API CTreeView : public CControl
 public:
 	CTreeView();
 	~CTreeView();
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 	void GetMeta(IMetaHelper * pHelper) override;
 
 	/**Ôö¼Ó/ÒÆ³ıÏî*/

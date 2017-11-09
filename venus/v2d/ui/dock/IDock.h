@@ -2,14 +2,14 @@
 
 VENUS_BEG
 
-const oid_t OID_IDockNode = {L"IDockNode"};
+const cid_t OID_IDockNode = {L"IDockNode"};
 
 class IDockNode;
 class IDockFrame;
 class IDockPane;
 
 /**
- * Í£¿¿½Úµã£¬ÊÇ IDockFrame ÖÐµÄ·Ö¸îµ¥Ôª£¬³ÊÊ÷×´¹ØÏµ¡£
+ * Í£ï¿½ï¿½ï¿½Úµã£¬ï¿½ï¿½ IDockFrame ï¿½ÐµÄ·Ö¸îµ¥Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´ï¿½ï¿½Ïµï¿½ï¿½
  */
 class V2D_API IDockNode : public IObject
 {
@@ -50,8 +50,8 @@ public:
 };
 
 /**
-* Í£¿¿¿ò¼Ü
-* Í£¿¿¿ò¼ÜÊÇÒ»ÖÖÌØÊâµÄ½Ó¿Ú£¬¸Ã½Ó¿Ú¿ÉÒÔ½ÓÊÜ IDockPane£¨Í£¿¿´°¸ñ£©£¬²¢½«ÕâÐ© IDockPane °²·Åµ½Ô¤¶¨µÄ²¼¾Ö¿ò¼ÜÖÐ¡£
+* Í£ï¿½ï¿½ï¿½ï¿½ï¿½
+* Í£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä½Ó¿Ú£ï¿½ï¿½Ã½Ó¿Ú¿ï¿½ï¿½Ô½ï¿½ï¿½ï¿½ IDockPaneï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½ï¿½ñ£©£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð© IDockPane ï¿½ï¿½ï¿½Åµï¿½Ô¤ï¿½ï¿½ï¿½Ä²ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½Ð¡ï¿½
 */
 class V2D_API IDockFrame : public IDockNode
 {
@@ -60,7 +60,7 @@ public:
 };
 
 /**
-* Í£¿¿´°¸ñ
+* Í£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 */
 class V2D_API IDockPane
 {

@@ -10,7 +10,7 @@ struct SHFileInfoT
 	int_64 tWrite;
 	chbufferw<64> chbType;
 };
-const oid_t OID_CSHFileInfoBuffer = {L"CSHFileInfoBuffer"};
+const cid_t OID_CSHFileInfoBuffer = {L"CSHFileInfoBuffer"};
 class WIN32_API CSHFileInfoBuffer : public ObjectT<IService>
 {
 public:

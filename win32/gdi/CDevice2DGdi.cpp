@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include "C2DDeviceGdi.h"
+#include "CDevice2DGdi.h"
 #include "CPaintGdi.h"
 
 #ifdef WIN32_DEVICE_GDI
 
 VENUS_BEG
 
-C2DDeviceGdi::C2DDeviceGdi()
+CDevice2DGdi::CDevice2DGdi()
 {
 	HDC hdcScreen = ::GetDC(NULL);
 	m_hdc = ::CreateCompatibleDC(hdcScreen);
@@ -16,7 +16,7 @@ C2DDeviceGdi::C2DDeviceGdi()
 	m_pUspFactory->LoadUsp10();
 }
 
-C2DDeviceGdi::~C2DDeviceGdi()
+CDevice2DGdi::~CDevice2DGdi()
 {
 	SafeDelete(m_pUspFactory);
 	for(int_x cnt = 0, len = m_sPens.size(); cnt < len; ++cnt)
@@ -32,12 +32,12 @@ C2DDeviceGdi::~C2DDeviceGdi()
 	::DeleteDC(m_hdc);
 }
 
-Device2DTypeE C2DDeviceGdi::GetType() const
+Device2DTypeE CDevice2DGdi::GetType() const
 {
 	return Device2DTypeGdi;
 }
 
-HPEN C2DDeviceGdi::GetPen(uint_32 color, float_32 fWidth)
+HPEN CDevice2DGdi::GetPen(uint_32 color, float_32 fWidth)
 {
 	if(!(color & 0xFF000000))
 		color = Colors::Transparent;
@@ -60,7 +60,7 @@ HPEN C2DDeviceGdi::GetPen(uint_32 color, float_32 fWidth)
 	return hPen;
 }
 
-HBRUSH C2DDeviceGdi::GetSolidBrush(uint_32 color)
+HBRUSH CDevice2DGdi::GetSolidBrush(uint_32 color)
 {
 	if(!(color & 0xFF000000))
 		color = Colors::Transparent;
@@ -83,7 +83,7 @@ HBRUSH C2DDeviceGdi::GetSolidBrush(uint_32 color)
 	return hBrush;
 }
 
-HFONT C2DDeviceGdi::GetFont(const font_t & font)
+HFONT CDevice2DGdi::GetFont(const font_t & font)
 {
 	int_x iHash = font.Hash();
 	for(int_x cnt = 0, len = m_fonts.size(); cnt < len; ++cnt)
@@ -102,7 +102,7 @@ HFONT C2DDeviceGdi::GetFont(const font_t & font)
 	return hFont;
 }
 
-fontmetrics_t C2DDeviceGdi::GetFontMetric(const font_t & font)
+fontmetrics_t CDevice2DGdi::GetFontMetric(const font_t & font)
 {
 	HFONT hFont = GetFont(font);
 	
@@ -119,12 +119,12 @@ fontmetrics_t C2DDeviceGdi::GetFontMetric(const font_t & font)
 	return metrics;
 }
 
-ITextLayout * C2DDeviceGdi::CreateTextLayout()
+ITextLayout * CDevice2DGdi::CreateTextLayout()
 {
 	return m_pUspFactory->CreateLayout();
 }
 
-textsize_t C2DDeviceGdi::GetTextSize(const char_16 * szText, int_x iLength, const font_t & font)
+textsize_t CDevice2DGdi::GetTextSize(const char_16 * szText, int_x iLength, const font_t & font)
 {
 	if(iLength < 0)
 		iLength = textlen(szText);
@@ -143,12 +143,12 @@ textsize_t C2DDeviceGdi::GetTextSize(const char_16 * szText, int_x iLength, cons
 	return tSize;
 }
 
-image_convert_rule_fun_t C2DDeviceGdi::GetImageConvertRuleFun() const
+image_convert_rule_fun_t CDevice2DGdi::GetImageConvertRuleFun() const
 {
 	return nullptr;
 }
 
-IPaint * C2DDeviceGdi::CreatePaint(I2DRTarget * pRenderTarget)
+IPaint * CDevice2DGdi::CreatePaint(I2DRTarget * pRenderTarget)
 {
 	CPaintGdi * pPaint = new CPaintGdi(pRenderTarget, this);
 	return pPaint;

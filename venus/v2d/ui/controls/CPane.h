@@ -9,7 +9,7 @@ class V2D_API CPane : public CControl
 public:
 	CPane();
 	~CPane();
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 
 	pointix GetOffset() const override;
 	rectix GetVisual() const override;

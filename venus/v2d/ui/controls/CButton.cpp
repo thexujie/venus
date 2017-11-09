@@ -25,7 +25,7 @@ CButton::~CButton()
 	SafeRelease(m_pIcon);
 }
 
-const oid_t & CButton::GetOid() const
+const cid_t & CButton::GetOid() const
 {
 	return OID_Button;
 }
@@ -115,16 +115,16 @@ void CButton::OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * p
 	pPaint->FillRect(rectix(pointix(), rcClient.size), clrBack);
 	pPaint->DrawRect(0, 0, rcClient.w - 1, rcClient.h - 1, clrFrame);
 
-	// »­Í¼±êºÍÎÄ×Ö
+	// ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	if(m_pIcon && !m_text.is_empty())
 		DrawIconText(pPaint);
-	// Ö»ÓÐÍ¼±ê
+	// Ö»ï¿½ï¿½Í¼ï¿½ï¿½
 	else if(m_pIcon)
 		DrawIconOnly(pPaint);
-	// Ö»ÓÐÎÄ×Ö
+	// Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	else if(!m_text.is_empty())
 		DrawTextOnly(pPaint);
-	else {/* Ê²Ã´¶¼Ã»ÓÐ */}
+	else {/* Ê²Ã´ï¿½ï¿½Ã»ï¿½ï¿½ */}
 }
 
 void CButton::DrawIconOnly(IPaint * pPaint) const
@@ -176,11 +176,11 @@ void CButton::DrawTextOnly(IPaint * pPaint) const
 
 void CButton::DrawIconText(IPaint * pPaint) const
 {
-	// ÎÄ±¾µÄ¿í¶È
+	// ï¿½Ä±ï¿½ï¿½Ä¿ï¿½ï¿½
 	int_x iTextSize = GetTextSize();
-	// ÎÄ±¾µÄ¸ß¶È¡¢Í¼±êµÄ¿í¶ÈºÍ¸ß¶È
+	// ï¿½Ä±ï¿½ï¿½Ä¸ß¶È¡ï¿½Í¼ï¿½ï¿½Ä¿ï¿½ÈºÍ¸ß¶ï¿½
 	int_x iTextHeight = m_font.size;
-	// Í¼±êµÄ¿í¶ÈºÍ¸ß¶È£¬iIconSize = iTextHeight¡£
+	// Í¼ï¿½ï¿½Ä¿ï¿½ÈºÍ¸ß¶È£ï¿½iIconSize = iTextHeightï¿½ï¿½
 	int_x iIconSize = iTextHeight;
 
 	sizeix siTotal;

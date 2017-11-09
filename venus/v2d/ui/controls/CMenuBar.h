@@ -9,7 +9,7 @@ class V2D_API CMenuBar : public CControl, public IPopupHost
 public:
 	CMenuBar();
 	~CMenuBar();
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 	void GetMeta(IMetaHelper * pHelper) override;
 
 	void OnMouseMove(pointix point) override;

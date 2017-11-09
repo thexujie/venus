@@ -160,6 +160,8 @@
     <ClCompile Include="v3d\engine\C3DMesh.cpp" />
     <ClInclude Include="core\array.h" />
     <ClInclude Include="core\byte_buffer.h" />
+    <ClInclude Include="core\core_api_buff.h" />
+    <ClInclude Include="core\core_api_text.h" />
     <ClInclude Include="core\core_def.h" />
     <ClInclude Include="core\io\CBufferedStream.h" />
     <ClInclude Include="core\io\CByteStream.h" />

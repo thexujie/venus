@@ -9,7 +9,7 @@ class V2D_API CProgressBar : public CControl
 public:
 	CProgressBar();
 	~CProgressBar();
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 
 	void SetMaxValue(int_x iMaxValue);
 	void SetMinValue(int_x iMinValue);

@@ -20,7 +20,7 @@ enum PreMessageResultE
 	PreMessageResultNotTranslate,
 };
 
-const oid_t OID_IWindow = {L"IWindow"};
+const cid_t OID_IWindow = {L"IWindow"};
 class WIN32_API IWindow : public IObject
 {
 public:

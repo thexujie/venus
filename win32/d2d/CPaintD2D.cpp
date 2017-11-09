@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "CPaintD2D.h"
-#include "C2DDeviceD2D.h"
+#include "CDevice2DD2D.h"
 
 VENUS_BEG
 
-CPaintD2D::CPaintD2D(I2DRTarget * pTarget, C2DDeviceD2D * pService)
-	: m_pTarget(nullptr), m_pFactory(nullptr), m_pDWrite(nullptr), m_pService(pService), m_pRenderTarget(nullptr), m_hResult(S_OK)
+CPaintD2D::CPaintD2D(I2DRTarget * pTarget, CDevice2DD2D * pService)
+	: m_pTarget(nullptr), m_pFactory(nullptr), m_pDWriteFactory(nullptr), m_pService(pService), m_pRenderTarget(nullptr), m_hResult(S_OK)
 {
 	m_pFactory = m_pService->GetFactory();
-	m_pDWrite = m_pService->GetDWrite();
+	m_pDWriteFactory = m_pService->GetDWrite();
 	Win32::GetSysColors(m_colors, SysColorCount);
 	ResetTarget(pTarget);
 }
@@ -16,7 +16,7 @@ CPaintD2D::CPaintD2D(I2DRTarget * pTarget, C2DDeviceD2D * pService)
 CPaintD2D::~CPaintD2D()
 {
 	ResetTarget(nullptr);
-	SafeNull(m_pDWrite);
+	SafeNull(m_pDWriteFactory);
 	SafeNull(m_pFactory);
 }
 
@@ -44,13 +44,13 @@ void CPaintD2D::ResetTarget(I2DRTarget * pTarget)
 		float_32 fDpiX = 0.0f, fDpiY = 0.0f;
 		m_pFactory->GetDesktopDpi(&fDpiX, &fDpiY);
 
-		const oid_t & cid = pTarget->GetOid();
+		const cid_t & cid = pTarget->GetOid();
 		if(cid == OID_CBmpBuffer)
 		{
 			D2D1_RENDER_TARGET_PROPERTIES d2drtp =
 				D2D1::RenderTargetProperties(
 					D2D1_RENDER_TARGET_TYPE_DEFAULT,
-					D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED),
+					D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_IGNORE),
 					fDpiX, fDpiY);
 
 			ID2D1DCRenderTarget * pRenderTarget = nullptr;
@@ -95,7 +95,7 @@ bool CPaintD2D::BeginPaint()
 {
 	if(m_pRenderTarget)
 	{
-		oid_t cid = m_pTarget->GetOid();
+		cid_t cid = m_pTarget->GetOid();
 		if(cid == OID_CBmpBuffer)
 		{
 			CBmpBuffer * pBitmap = (CBmpBuffer *)m_pTarget;
@@ -497,9 +497,8 @@ void CPaintD2D::DrawString(const char_16 * szText, int_x iLength, const textform
 	D2D_POINT_2F d2dPoint = {d2dRect.left, d2dRect.top};
 	IDWriteTextLayout * pLayout = nullptr;
 	IDWriteTextFormat * pFormat = GetTextFormat(format);
-	pFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);
-
-	m_pDWrite->CreateTextLayout(szText, (uint_32)iLength, pFormat, F32_MAX, F32_MAX, &pLayout);
+	//m_pRenderTarget->DrawTextW(szText, iLength, pFormat, &d2dRect, GetBrush(pBrush), D2D1_DRAW_TEXT_OPTIONS_CLIP);
+	m_pDWriteFactory->CreateTextLayout(szText, (uint_32)iLength, pFormat, F32_MAX, F32_MAX, &pLayout);
 	if(pLayout)
 	{
 		m_pRenderTarget->DrawTextLayout(d2dPoint, pLayout, GetBrush(pBrush), D2D1_DRAW_TEXT_OPTIONS_CLIP);
@@ -525,7 +524,7 @@ void CPaintD2D::DrawString(const char_16 * szText, int_x iLength, const textform
 
 	// 如果在调用 DrawText 之前，SetAntialiasMode(D2D1_ANTIALIAS_MODE_PER_PRIMITIVE),
 	// DrawText 会非常卡。
-	m_pRenderTarget->DrawText(szText, (uint_32)iLength,
+	m_pRenderTarget->DrawTextW(szText, (uint_32)iLength,
 		pFormat,
 		d2dRect,
 		GetBrush(pBrush),

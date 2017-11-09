@@ -23,7 +23,7 @@ IScroll * CScrollBar::ToIScroll() const
 	return (IScroll *)this;
 }
 
-const oid_t & CScrollBar::GetOid() const
+const cid_t & CScrollBar::GetOid() const
 {
 	return OID_ScrollBar;
 }

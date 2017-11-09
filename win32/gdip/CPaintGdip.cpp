@@ -8,7 +8,7 @@ VENUS_BEG
 using namespace Gdiplus;
 using namespace DllExports;
 
-CPaintGdip::CPaintGdip(I2DRTarget * pTarget, C2DDeviceGdip * pService)
+CPaintGdip::CPaintGdip(I2DRTarget * pTarget, CDevice2DGdip * pService)
 	: m_hdc(NULL), m_hBitmap(NULL), m_pTarget(nullptr), m_pService(pService), m_graphics(nullptr), m_bColorMatrix(false)
 {
 	Win32::GetSysColors(m_colors, SysColorCount);
@@ -30,7 +30,7 @@ void CPaintGdip::ResetTarget(I2DRTarget * pTarget)
 	if(pTarget == m_pTarget)
 		return;
 
-	const oid_t & oid = m_pTarget ? m_pTarget->GetOid() : pTarget->GetOid();
+	const cid_t & oid = m_pTarget ? m_pTarget->GetOid() : pTarget->GetOid();
 	SafeRelease(m_pTarget);
 	if(oid == OID_CBmpBuffer)
 	{
@@ -64,7 +64,7 @@ void CPaintGdip::ResetTarget(I2DRTarget * pTarget)
 
 bool CPaintGdip::BeginPaint()
 {
-	const oid_t & oid = m_pTarget->GetOid();
+	const cid_t & oid = m_pTarget->GetOid();
 	if(oid == OID_CBmpBuffer)
 	{
 		CBmpBuffer * pBitmap = (CBmpBuffer *)m_pTarget;
@@ -112,7 +112,7 @@ bool CPaintGdip::BeginPaint()
 
 void CPaintGdip::EndPaint()
 {
-	const oid_t & oid = m_pTarget->GetOid();
+	const cid_t & oid = m_pTarget->GetOid();
 	if(oid == OID_CBmpBuffer)
 	{
 		GdipFlush(m_graphics, FlushIntentionFlush);

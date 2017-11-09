@@ -798,6 +798,12 @@
     <ClInclude Include="core\hashtable.h">
       <Filter>core\base\struct</Filter>
     </ClInclude>
+    <ClInclude Include="core\core_api_text.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\core_api_buff.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="core">

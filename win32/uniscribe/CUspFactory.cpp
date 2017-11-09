@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CUspFactory.h"
 #include "CTextLayoutUsp.h"
-#include "gdi/C2DDeviceGdi.h"
+#include "gdi/CDevice2DGdi.h"
 
 VENUS_BEG
 

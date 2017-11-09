@@ -92,13 +92,13 @@ static anchor_t to_anchor(const textw & str)
 
 static ImeModeE to_imemode(const textw & str)
 {
-	if(str.equal(L"default", -1, false))
+	if(str.equals(L"default", -1, false))
 		return ImeModeDefault;
-	else if(str.equal(L"on", -1, false))
+	else if(str.equals(L"on", -1, false))
 		return ImeModeOn;
-	else if(str.equal(L"off", -1, false))
+	else if(str.equals(L"off", -1, false))
 		return ImeModeOff;
-	else if(str.equal(L"disable", -1, false))
+	else if(str.equals(L"disable", -1, false))
 		return ImeModeDisable;
 	else
 		return ImeModeDefault;
@@ -106,13 +106,13 @@ static ImeModeE to_imemode(const textw & str)
 
 static LayoutModeE to_layoutmode(const textw & str)
 {
-	if(str.equal(L"absolute", -1, false))
+	if(str.equals(L"absolute", -1, false))
 		return LayoutModeAbsolute;
-	if(str.equal(L"horizontal", -1, false))
+	if(str.equals(L"horizontal", -1, false))
 		return LayoutModeHorizontal;
-	else if(str.equal(L"vertical", -1, false))
+	else if(str.equals(L"vertical", -1, false))
 		return LayoutModeVertical;
-	else if(str.equal(L"table", -1, false))
+	else if(str.equals(L"table", -1, false))
 		return LayoutModeTable;
 	else
 		return LayoutModeAbsolute;
@@ -120,29 +120,29 @@ static LayoutModeE to_layoutmode(const textw & str)
 
 static BorderTypeE to_bordertype(const textw & str)
 {
-	if(str.equal(L"none", 4, false))
+	if(str.equals(L"none", 4, false))
 		return BorderTypeNone;
-	if(str.equal(L"border1", 7, false))
+	if(str.equals(L"border1", 7, false))
 		return BorderType1;
-	if(str.equal(L"border2", 7, false))
+	if(str.equals(L"border2", 7, false))
 		return BorderType2;
-	if(str.equal(L"border3", 7, false))
+	if(str.equals(L"border3", 7, false))
 		return BorderType3;
-	if(str.equal(L"border4", 7, false))
+	if(str.equals(L"border4", 7, false))
 		return BorderType4;
-	if(str.equal(L"border5", 7, false))
+	if(str.equals(L"border5", 7, false))
 		return BorderType5;
-	if(str.equal(L"border1ia", 9, false))
+	if(str.equals(L"border1ia", 9, false))
 		return BorderType1Inactive;
-	if(str.equal(L"border2ia", 9, false))
+	if(str.equals(L"border2ia", 9, false))
 		return BorderType2Inactive;
-	if(str.equal(L"border3ia", 9, false))
+	if(str.equals(L"border3ia", 9, false))
 		return BorderType3Inactive;
-	if(str.equal(L"border4ia", 9, false))
+	if(str.equals(L"border4ia", 9, false))
 		return BorderType4Inactive;
-	if(str.equal(L"border5ia", 9, false))
+	if(str.equals(L"border5ia", 9, false))
 		return BorderType5Inactive;
-	if(str.equal(L"user", 4, false))
+	if(str.equals(L"user", 4, false))
 		return BorderTypeUser;
 	else
 		return BorderTypeNone;
@@ -150,9 +150,9 @@ static BorderTypeE to_bordertype(const textw & str)
 
 static WHModeE to_whmode(const textw & str)
 {
-	if(str.equal(L"fill", -1, false))
+	if(str.equals(L"fill", -1, false))
 		return WHModeFill;
-	else if(str.equal(L"auto", -1, false))
+	else if(str.equals(L"auto", -1, false))
 		return WHModeAuto;
 	else
 		return WHModeAbs;
@@ -214,12 +214,12 @@ void CUILoaderXml::Load(const byte_t * pData, int_x iSize, IControl * pControl)
 	doc.load_text((const char_x *)pData, iSize / 2);
 
 	CLoaderDefines defines;
-	if(doc.name.equal(L"ui", 2, false))
+	if(doc.name.equals(L"ui", 2, false))
 	{
 		for(int_x cnt = 0, size = doc.children.size(); cnt < size; ++cnt)
 		{
 			const xml_node & child = doc.children[cnt];
-			if(child.name.equal(L"defines", 7, false))
+			if(child.name.equals(L"defines", 7, false))
 			{
 				defines.load(child);
 				break;
@@ -229,7 +229,7 @@ void CUILoaderXml::Load(const byte_t * pData, int_x iSize, IControl * pControl)
 		for(int_x cnt = 0, size = doc.children.size(); cnt < size; ++cnt)
 		{
 			const xml_node & child = doc.children[cnt];
-			if(child.name.equal(L"form", 4, false))
+			if(child.name.equals(L"form", 4, false))
 			{
 				Load(child, pControl, defines);
 				break;
@@ -312,7 +312,7 @@ err_t CUILoaderXml::ParseChild(const xml_node & node, IControl *& pControl, CMet
 	for(int_x cnt = 0; cnt < node.children.size(); ++cnt)
 	{
 		const xml_node & child = node.children[cnt];
-		if(child.name.equal(L"defines", 7, false))
+		if(child.name.equals(L"defines", 7, false))
 		{
 			defines.load(child);
 			continue;
@@ -472,11 +472,11 @@ err_t CUILoaderXml::ParseForm(const xml_node & node, IControl *& pControl, CMeta
 	CForm * pForm = (CForm *)pControl;
 	xml_attr_parse_type(node, L"formtype", [](const textw & str)->FormTypeE
 	{
-		if(str.equal(L"default", -1, false))
+		if(str.equals(L"default", -1, false))
 			return FormTypeDefault;
-		if(str.equal(L"popup", -1, false))
+		if(str.equals(L"popup", -1, false))
 			return FormTypePopup;
-		else if(str.equal(L"layered", -1, false))
+		else if(str.equals(L"layered", -1, false))
 			return FormTypeLayered;
 		else
 			return FormTypeDefault;
@@ -506,13 +506,13 @@ err_t CUILoaderXml::ParseButton(const xml_node & node, IControl *& pControl, CMe
 	CButton * pButton = (CButton *)pControl;
 	xml_attr_parse_type(node, L"dialogresult", [](const textw & str)
 	{
-		if(str.equal(L"ok", -1, false))
+		if(str.equals(L"ok", -1, false))
 			return DialogResultOk;
-		if(str.equal(L"cancel", -1, false))
+		if(str.equals(L"cancel", -1, false))
 			return DialogResultCancel;
-		else if(str.equal(L"yes", -1, false))
+		else if(str.equals(L"yes", -1, false))
 			return DialogResultYes;
-		else if(str.equal(L"no", -1, false))
+		else if(str.equals(L"no", -1, false))
 			return DialogResultNo;
 		else
 			return DialogResultNone;
@@ -613,7 +613,7 @@ err_t CUILoaderXml::ParseScrollView(const xml_node & node, IControl *& pControl,
 	for(int_x cnt = 0; cnt < node.children.size(); ++cnt)
 	{
 		const xml_node & child0 = node.children[cnt];
-		if(child0.name.equal(L"defines", 7, false))
+		if(child0.name.equals(L"defines", 7, false))
 		{
 			defines.load(child0);
 		}
@@ -670,7 +670,7 @@ err_t CUILoaderXml::ParseTabControl(const xml_node & node, IControl *& pControl,
 	for(int_x cnt = 0; cnt < node.children.size(); ++cnt)
 	{
 		const xml_node & child0 = node.children[cnt];
-		if(child0.name.equal(L"defines", 7, false))
+		if(child0.name.equals(L"defines", 7, false))
 		{
 			defines.load(child0);
 		}
@@ -719,7 +719,7 @@ err_t CUILoaderXml::ParseMenuBar(const xml_node & node, IControl *& pControl, CM
 	for(int_x cnt = 0; cnt < node.children.size(); ++cnt)
 	{
 		const xml_node & child = node.children[cnt];
-		if(child.name.equal(L"defines", 7, false))
+		if(child.name.equals(L"defines", 7, false))
 		{
 			defines.load(child);
 		}
@@ -758,7 +758,7 @@ err_t CUILoaderXml::ParsePane(const xml_node & node, IControl *& pControl, CMeta
 	for(int_x cnt = 0; cnt < node.children.size(); ++cnt)
 	{
 		const xml_node & child = node.children[cnt];
-		if(child.name.equal(L"defines", 7, false))
+		if(child.name.equals(L"defines", 7, false))
 		{
 			defines.load(child);
 			continue;
@@ -793,12 +793,12 @@ err_t CUILoaderXml::ParseDockFrame(const xml_node & node, IControl *& pControl, 
 
 	CDockFrame * pDockFrame = (CDockFrame *)pControl;
 	if(node.has_attribute(L"direction"))
-		pDockFrame->DockNodeSetHorizontal(node[L"direction"].value.equal(L"horizontal", 10, false));
+		pDockFrame->DockNodeSetHorizontal(node[L"direction"].value.equals(L"horizontal", 10, false));
 
 	for(int_x cnt = 0; cnt < node.children.size(); ++cnt)
 	{
 		const xml_node & child = node.children[cnt];
-		if(child.name.equal(L"defines", 7, false))
+		if(child.name.equals(L"defines", 7, false))
 		{
 			defines.load(child);
 		}
@@ -846,7 +846,7 @@ IMenu * CUILoaderXml::ParseMenu(const xml_node & node, CLoaderDefines & defines)
 	for(int_x cnt = 0; cnt < node.children.size(); ++cnt)
 	{
 		const xml_node & child = node.children[cnt];
-		if(child.name.equal(L"submenu", 7, false))
+		if(child.name.equals(L"submenu", 7, false))
 		{
 			SubMenuT submenu;
 			submenu.pMenu = ParseMenu(child, defines);
@@ -859,7 +859,7 @@ IMenu * CUILoaderXml::ParseMenu(const xml_node & node, CLoaderDefines & defines)
 	for(int_x cnt = 0; cnt < node.children.size(); ++cnt)
 	{
 		const xml_node & child = node.children[cnt];
-		if(child.name.equal(L"item", 4, false))
+		if(child.name.equals(L"item", 4, false))
 		{
 			IMenu * pSubMenu = nullptr;
 			textw submenuname = child[L"submenu"].value;
@@ -889,7 +889,7 @@ IMenu * CUILoaderXml::ParseMenu(const xml_node & node, CLoaderDefines & defines)
 
 			pMenu->AddItem(iId, child[L"text"].value, pSubMenu);
 		}
-		else if(child.name.equal(L"split", 5, false))
+		else if(child.name.equals(L"split", 5, false))
 			pMenu->AddSplit();
 		else {}
 	}
@@ -904,7 +904,7 @@ void CUILoaderXml::ParseDockNode(IDockNode *& pDockNode, const xml_node & node, 
 		pDockNode = new CDockNode(nullptr);
 
 	if(node.has_attribute(L"direction"))
-		pDockNode->DockNodeSetHorizontal(node[L"direction"].value.equal(L"horizontal", 10, false));
+		pDockNode->DockNodeSetHorizontal(node[L"direction"].value.equals(L"horizontal", 10, false));
 
 	xml_attr_parse_intx(node, L"fixedsize", [&pDockNode](int_x value) { pDockNode->DockNodeSetFixedSize(value); });
 	xml_attr_parse_f32(node, L"weight", [&pDockNode](float_32 value) { pDockNode->DockNodeSetWeight(value); });
@@ -918,7 +918,7 @@ void CUILoaderXml::ParseDockNode(IDockNode *& pDockNode, const xml_node & node, 
 		if(child.type != xml_node_type_node)
 			continue;
 
-		if(child.name.equal(L"docknode", 8, false))
+		if(child.name.equals(L"docknode", 8, false))
 		{
 			IDockNode * pNode = nullptr;
 			ParseDockNode(pNode, child, meta, defines);
@@ -942,7 +942,7 @@ const CUILoaderXml::ui_load_info_t * CUILoaderXml::FindInfo(const xml_node & nod
 	for(int_x cnt = 0, size = m_infos.size(); cnt < size; ++cnt)
 	{
 		const ui_load_info_t & info = m_infos[cnt];
-		if(node.name.equal(info.oid.name, -1, false))
+		if(node.name.equals(info.oid.name, -1, false))
 			return &info;
 	}
 	return  nullptr;

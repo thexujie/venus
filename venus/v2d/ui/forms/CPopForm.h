@@ -9,7 +9,7 @@ class V2D_API CPopForm : public CForm
 public:
 	CPopForm();
 	~CPopForm();
-	const oid_t & GetOid() const;
+	const cid_t & GetOid() const;
 
 	bool MouseActiving(pointix point) const;
 

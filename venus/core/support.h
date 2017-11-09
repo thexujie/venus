@@ -4,13 +4,13 @@ VENUS_BEG
 
 typedef IObject IService;
 
-class CORE_API IStdOut : public IService
+class CORE_API IStdIO : public IService
 {
 public:
 	virtual void out(int_x level, const char_8 * format, void * args) = 0;
 	virtual void out(int_x level, const char_16 * format, void * args) = 0;
 };
-static const oid_t OID_IStdOut = {L"IStdOut"};
+static const cid_t OID_IStdOut = {L"IStdOut"};
 
 enum AppRunE
 {
@@ -27,23 +27,26 @@ public:
 	virtual err_t Initialize() = 0;
 	virtual void UnInitialize() = 0;
 
-	virtual IObject * CreateObject(const oid_t & oid, void * pParam = nullptr) = 0;
-	virtual bool RegisterObject(const oid_t & oid, function<IObject *(void *)> fnCreate, bool bReplace) = 0;
-	virtual bool UnregisterObject(const oid_t & oid) = 0;
+	virtual IObject * CreateObject(const cid_t & oid, void * pParam = nullptr) = 0;
+	virtual bool RegisterObject(const cid_t & oid, function<IObject *(void *)> fnCreate, bool bReplace) = 0;
+	virtual bool UnregisterObject(const cid_t & oid) = 0;
 
-	virtual void SetService(const oid_t & oid, IService * pService) = 0;
-	virtual IService * GetService(const oid_t & oid) const = 0;
+	virtual void SetService(const cid_t & oid, IService * pService) = 0;
+	virtual IService * GetService(const cid_t & oid) = 0;
 
 	virtual void SetTimer(function<int_x(int_x)> fun, int_x iPeriod, int_x iId = 0) = 0;
 	virtual void KillTimer(function<int_x(int_x)> fun, int_x iId = 0) = 0;
 
+	virtual IStdIO & StdIO() = 0;
+
 	virtual int_x OnRun() = 0;
 	virtual int_x Run(int_x iFormId, AppRunE eAppRun) = 0;
 	virtual int_x EndRun(int_x iFormId, int_x iResult) = 0;
+
 };
 
 template<typename ST>
-ST * GetService(const oid_t & oid)
+ST * GetService(const cid_t & oid)
 {
 	IApp * pApp = GetApp();
 	if(!pApp)
@@ -60,7 +63,7 @@ ST * GetService(const oid_t & oid)
 }
 
 template<typename ST>
-void SetService(const oid_t & oid, ST * pService)
+void SetService(const cid_t & oid, ST * pService)
 {
 	IApp * pApp = GetApp();
 	if(pApp)
@@ -70,9 +73,6 @@ void SetService(const oid_t & oid, ST * pService)
 CORE_API IApp * GetApp();
 CORE_API IApp * SetApp(IApp * pApp);
 
-inline IStdOut * GetStdOut()
-{
-	return GetService<IStdOut>(OID_IStdOut);
-}
+CORE_API IApp & App();
 
 VENUS_END

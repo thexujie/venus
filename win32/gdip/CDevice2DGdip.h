@@ -54,11 +54,11 @@ public:
 	Gdiplus::GpImage * pImage;
 };
 
-class WIN32_API C2DDeviceGdip : public ObjectT<I2DDevice>
+class WIN32_API CDevice2DGdip : public ObjectT<IDevice2D>
 {
 public:
-	C2DDeviceGdip();
-	~C2DDeviceGdip();
+	CDevice2DGdip();
+	~CDevice2DGdip();
 
 	Device2DTypeE GetType() const;
 

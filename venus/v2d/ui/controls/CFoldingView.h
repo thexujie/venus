@@ -33,7 +33,7 @@ class V2D_API CFoldingView : public CControl
 public:
 	CFoldingView();
 	~CFoldingView();
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 
 	FoldingViewItemT * AddItem(const char_16 * szText, int_x iMinWidth = 0, IImage * pImage = nullptr, int_x iUserData = 0);
 	FoldingViewItemT * AddItem(FoldingViewItemT * pItem);

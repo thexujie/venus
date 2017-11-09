@@ -17,7 +17,7 @@ CCheckBox::~CCheckBox()
 
 }
 
-const oid_t & CCheckBox::GetOid() const
+const cid_t & CCheckBox::GetOid() const
 {
 	return OID_CheckBox;
 }
@@ -31,7 +31,7 @@ void CCheckBox::GetMeta(IMetaHelper * pHelper)
 
 sizeix CCheckBox::GetPreferedSize() const
 {
-	I2DDevice * pDevice = Get2DDevice();
+	IDevice2D * pDevice = Device2D();
 	sizeix size;
 	size.w = m_iBoxSize + BOX_SPACE +
 		pDevice->GetTextSize(m_text, m_text.length(), m_font).w;

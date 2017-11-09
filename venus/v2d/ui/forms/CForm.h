@@ -9,7 +9,7 @@ class V2D_API CForm : public CControl, public IForm
 public:
 	CForm();
 	~CForm();
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 	void GetMeta(IMetaHelper * pHelper) override;
 
 	void SetParent(IControl * pParent) override;
@@ -42,7 +42,7 @@ public:
 	pointix ToScreen(const pointix & point) const override;
 
 	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
-
+	void AftOnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
 	void OnNcMouseMove(pointix point) override;
 	void OnNcMouseOut(pointix point) override;
 	void OnNcMouseDown(pointix point, MouseButtonE eButton) override;

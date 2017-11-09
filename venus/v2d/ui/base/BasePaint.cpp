@@ -189,7 +189,7 @@ void PaintMenuString(IPaint * pPaint,
 	if(!iLength)
 		return;
 
-	I2DDevice * pService = Get2DDevice();
+	IDevice2D * pService = Device2D();
 	int_x iAnd = textch(szText, iLength, L'&');
 	if(iAnd < 0 || iLength - iAnd - 2 < 0)
 		pPaint->DrawString(szText, iLength, font, pointix(iX, iY), uiColor);
@@ -210,7 +210,7 @@ void PaintMenuString(IPaint * pPaint,
 
 sizeix MeasureMenuString(const char_16 * szText, int_x iLength, const font_t & font)
 {
-	I2DDevice * pService = Get2DDevice();
+	IDevice2D * pService = Device2D();
 	int_x iAnd = textch(szText, iLength, L'&');
 	if(iAnd < 0 || iLength - iAnd - 2 < 0)
 		return pService->GetTextSize(szText, iLength, font);

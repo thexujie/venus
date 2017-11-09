@@ -21,7 +21,7 @@ public:
 	CControl(int_x iX, int_x iY, int_x iWidth, int_x iHeight);
 	~CControl();
 
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 	void GetMeta(IMetaHelper * pHelper) override;
 
 	void SetParent(IControl * pParent) override;

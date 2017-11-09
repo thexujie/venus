@@ -10,7 +10,7 @@ public:
 	CLabel();
 	~CLabel();
 
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 public: // CControl
 	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 };

@@ -24,7 +24,7 @@ public:
 class WIN32_API CPaintD2D : public CPaintBase
 {
 public:
-	CPaintD2D(I2DRTarget * pRenderTarget, class C2DDeviceD2D * pService);
+	CPaintD2D(I2DRTarget * pRenderTarget, class CDevice2DD2D * pService);
 	~CPaintD2D();
 
 	void ResetTarget(I2DRTarget * pTarget);
@@ -122,10 +122,10 @@ private:
 	ShapeRenderLevelE m_eShapeRenderLevel;
 
 	I2DRTarget * m_pTarget;
-	class C2DDeviceD2D * m_pService;
+	class CDevice2DD2D * m_pService;
 	ID2D1Factory * m_pFactory;
 	ID2D1RenderTarget * m_pRenderTarget;
-	IDWriteFactory * m_pDWrite;
+	IDWriteFactory * m_pDWriteFactory;
 	mutable HRESULT m_hResult;
 
 	vector<D2DSolidBrushT> m_sBrushs;

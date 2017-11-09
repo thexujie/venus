@@ -25,11 +25,11 @@ struct WIN32_API GdiFontT
 	HFONT hFont;
 };
 
-class WIN32_API C2DDeviceGdi : public ObjectT<I2DDevice>
+class WIN32_API CDevice2DGdi : public ObjectT<IDevice2D>
 {
 public:
-	C2DDeviceGdi();
-	~C2DDeviceGdi();
+	CDevice2DGdi();
+	~CDevice2DGdi();
 
 	Device2DTypeE GetType() const;
 

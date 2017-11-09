@@ -6,14 +6,14 @@
 
 VENUS_BEG
 
-const oid_t OID_CDxgiSurface = {L"CDxgiSurface"};
+const cid_t OID_CDxgiSurface = {L"CDxgiSurface"};
 
 class WIN32_API CDxgiSurface : public ObjectT<I2DRTarget>
 {
 public:
 	CDxgiSurface(IDXGISurface * pSurface);
 	~CDxgiSurface();
-	const oid_t & GetOid() const;
+	const cid_t & GetOid() const;
 
 	int_x GetWidth() const;
 	int_x GetHeight() const;

@@ -23,12 +23,13 @@ enum ConsoleColorModeE
 	CCM_WHITE,
 };
 
-class WIN32_API CSimpleStdOut : public ObjectT<IStdOut>
+class WIN32_API CSimpleStdOut : public ObjectT<IStdIO>
 {
 public:
 	CSimpleStdOut();
 	~CSimpleStdOut();
 
+	void init();
 	void out(int_x level, const char_8 * format, void * args);
 	void out(int_x level, const char_16 * format, void * args);
 

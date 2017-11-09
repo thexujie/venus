@@ -23,7 +23,7 @@ void RestartApp()
 	}
 }
 
-Device2DTypeE g_iDevice2DType = Device2DTypeDirect2D;
+Device2DTypeE g_iDevice2DType = Device2DTypeUnknown;
 
 class BaseT
 {
@@ -93,12 +93,9 @@ public:
 bool Test()
 {
 	CoInitialize(nullptr);
-
 	CWin32App app;
-	I2DDevice * p2DDevice = Win32::Create2DDevice(Device2DTypeUnknown);
-	Set2DDevice(p2DDevice);
-	SafeRelease(p2DDevice);
-	g_iDevice2DType = Device2DTypeUnknown;
+	if(g_iDevice2DType != Device2DTypeUnknown)
+		app.Create2DDevice(g_iDevice2DType);
 	CMainWindow window;
 	CUILoaderXml loader;
 	loader.Load(L"TaskManager.xml", &window);
@@ -118,6 +115,7 @@ bool Test()
 		RestartApp();
 		break;
 	default:
+		g_iDevice2DType = Device2DTypeUnknown;
 		break;
 	}
 	bool bRet = g_iDevice2DType != Device2DTypeUnknown;
@@ -138,7 +136,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	{
 		while(Test())
 		{
-
 		}
 	}
 	//catch(CException & exp)

@@ -2,33 +2,33 @@
 
 VENUS_BEG
 
-static const oid_t OID_Control = {L"control"};
-static const oid_t OID_Space = {L"space"};
-static const oid_t OID_Form = {L"form"};
-static const oid_t OID_Static = {L"static"};
-static const oid_t OID_Lable = {L"label"};
-static const oid_t OID_Button = {L"button"};
-static const oid_t OID_Radio = {L"radio"};
-static const oid_t OID_CheckBox = {L"checkbox"};
-static const oid_t OID_ScrollBar = {L"scrollbar"};
-static const oid_t OID_ProgressBar = {L"progressbar"};
-static const oid_t OID_TextLine = {L"textline"};
-static const oid_t OID_Layout = {L"layout"};
+static const cid_t OID_Control = {L"control"};
+static const cid_t OID_Space = {L"space"};
+static const cid_t OID_Form = {L"form"};
+static const cid_t OID_Static = {L"static"};
+static const cid_t OID_Lable = {L"label"};
+static const cid_t OID_Button = {L"button"};
+static const cid_t OID_Radio = {L"radio"};
+static const cid_t OID_CheckBox = {L"checkbox"};
+static const cid_t OID_ScrollBar = {L"scrollbar"};
+static const cid_t OID_ProgressBar = {L"progressbar"};
+static const cid_t OID_TextLine = {L"textline"};
+static const cid_t OID_Layout = {L"layout"};
 
-static const oid_t OID_ListBox = {L"listbox"};
-static const oid_t OID_TextBox = {L"textbox"};
-static const oid_t OID_GroupBox = {L"groupbox"};
-static const oid_t OID_TabControl = {L"tabcontrol"};
+static const cid_t OID_ListBox = {L"listbox"};
+static const cid_t OID_TextBox = {L"textbox"};
+static const cid_t OID_GroupBox = {L"groupbox"};
+static const cid_t OID_TabControl = {L"tabcontrol"};
 
-static const oid_t OID_ListView = {L"listview"};
-static const oid_t OID_TreeView = {L"treeview"};
-static const oid_t OID_FoldingView = {L"foldingview"};
+static const cid_t OID_ListView = {L"listview"};
+static const cid_t OID_TreeView = {L"treeview"};
+static const cid_t OID_FoldingView = {L"foldingview"};
 
-static const oid_t OID_MenuBar = {L"menubar"};
+static const cid_t OID_MenuBar = {L"menubar"};
 
-static const oid_t OID_Pane = {L"pane"};
+static const cid_t OID_Pane = {L"pane"};
 
-static const oid_t OID_IHost = {L"IHost"};
+static const cid_t OID_IHost = {L"IHost"};
 
 /**
 * 表示范围信息，最小值、最大值和当前值。
@@ -125,7 +125,7 @@ class V2D_API IControl : public IObject
 public:
 	virtual ~IControl() {}
 
-	const oid_t & GetOid() const override = 0;
+	const cid_t & GetOid() const override = 0;
 	virtual void GetMeta(IMetaHelper * pHelper) = 0;
 
 	virtual void SetParent(IControl * pParent) = 0;
@@ -723,7 +723,7 @@ public:
 public:
 	static IMonitorManager * GetInstance();
 };
-const oid_t OID_IMonitorManager = {L"IMonitorManager"};
+const cid_t OID_IMonitorManager = {L"IMonitorManager"};
 
 class V2D_API IUILoader : public IService
 {
@@ -736,7 +736,7 @@ public:
 public:
 	static IUILoader * GetInstance();
 };
-const oid_t OID_IUILoader = {L"IUILoader"};
+const cid_t OID_IUILoader = {L"IUILoader"};
 
 class V2D_API IViewItem : public IObject
 {

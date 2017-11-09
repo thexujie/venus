@@ -17,7 +17,7 @@ CImageGdi::~CImageGdi()
 	::DeleteObject(m_hBitmap);
 }
 
-const oid_t & CImageGdi::GetOid() const
+const cid_t & CImageGdi::GetOid() const
 {
 	return CID_CImageGdi;
 }

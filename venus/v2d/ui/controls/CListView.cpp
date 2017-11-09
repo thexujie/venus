@@ -46,7 +46,7 @@ CListView::~CListView()
 	m_cols.clear();
 }
 
-const oid_t & CListView::GetOid() const
+const cid_t & CListView::GetOid() const
 {
 	return OID_ListView;
 }
@@ -71,7 +71,7 @@ int_x CListView::AddCol(const char_16 * szText, int_x iWidth, AlignE eTextAlign,
 	if(iWidth > 0)
 		col.Width = iWidth;
 	else
-		col.Width = Get2DDevice()->GetTextSize(col.Text, col.Text.length(), m_font).w + m_iColSpace * 2;
+		col.Width = Device2D()->GetTextSize(col.Text, col.Text.length(), m_font).w + m_iColSpace * 2;
 	col.TextAlign = eTextAlign;
 	col.UserData = iUserData;
 	UpdateScroll();
@@ -104,7 +104,7 @@ int_x CListView::AddItem(int_x iRow, const char_16 * szText, IImage * pImage, in
 	pItem->Text = szText;
 	pItem->Image = pImage;
 	pItem->UserData = iUserData;
-	pItem->ContentSize = Get2DDevice()->GetTextSize(szText, -1, m_font);
+	pItem->ContentSize = Device2D()->GetTextSize(szText, -1, m_font);
 	SafeAddRef(pImage);
 	return AddItem(iRow, pItem);
 }

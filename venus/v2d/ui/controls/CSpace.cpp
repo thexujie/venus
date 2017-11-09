@@ -15,7 +15,7 @@ CSpace::~CSpace()
 
 }
 
-const oid_t & CSpace::GetOid() const
+const cid_t & CSpace::GetOid() const
 {
 	return OID_Space;
 }

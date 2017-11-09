@@ -170,7 +170,7 @@ int_x CMainWindow::OnDetailListViewMouseDownR(IControl * pListView, pointix poin
 	menu.AddSplit();
 	menu.AddItem(0, L"Device2D", pMenuDevice2D);
 
-	Device2DTypeE eType = Get2DDevice()->GetType();
+	Device2DTypeE eType = Device2D()->GetType();
 	pMenuDevice2D->AddItem(100, L"GDI", MenuGetFlags(eType == Device2DTypeGdi));
 	pMenuDevice2D->AddItem(101, L"GDI+", MenuGetFlags(eType == Device2DTypeGdip));
 	pMenuDevice2D->AddItem(102, L"Direct2D", MenuGetFlags(eType == Device2DTypeDirect2D));

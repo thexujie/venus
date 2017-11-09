@@ -23,7 +23,7 @@ CTabControl::~CTabControl()
 
 }
 
-const oid_t & CTabControl::GetOid() const
+const cid_t & CTabControl::GetOid() const
 {
 	return OID_TabControl;
 }
@@ -42,7 +42,7 @@ int_x CTabControl::AddTab(const char_16 * szText)
 	if(m_iSelectedIndex < 0)
 		m_iSelectedIndex = 0;
 
-	panel.WidthOrg = Get2DDevice()->GetTextSize(panel.Name, panel.Name.length(), m_font).w;
+	panel.WidthOrg = Device2D()->GetTextSize(panel.Name, panel.Name.length(), m_font).w;
 	panel.Width = TAB_CONTROL_SPACE_X + panel.WidthOrg + TAB_CONTROL_SPACE_X;
 	return iIndex;
 }

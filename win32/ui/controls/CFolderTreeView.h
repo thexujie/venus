@@ -2,14 +2,14 @@
 
 VENUS_BEG
 
-const oid_t OID_CFolderTreeView = {L"foldertreeview"};
+const cid_t OID_CFolderTreeView = {L"foldertreeview"};
 
 class WIN32_API CFolderTreeView : public CTreeView
 {
 public:
 	CFolderTreeView();
 	~CFolderTreeView();
-	const oid_t & GetOid() const;
+	const cid_t & GetOid() const;
 
 	void SetRoot(const char_16 * szPath);
 	void SelectPath(const char_x * szFolder);

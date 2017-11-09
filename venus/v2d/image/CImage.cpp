@@ -23,7 +23,7 @@ CImage::~CImage()
 void CImage::Load(const byte_t * pBuffer, int_x iLength, image_convert_rule_fun_t pfn_convert)
 {
 	if(!pfn_convert)
-		pfn_convert = Get2DDevice()->GetImageConvertRuleFun();
+		pfn_convert = Device2D()->GetImageConvertRuleFun();
 	if(!pfn_convert)
 		return;
 
@@ -48,7 +48,7 @@ void CImage::Load(const byte_t * pBuffer, int_x iLength, image_convert_rule_fun_
 void CImage::Load(const char_16 * szFile, image_convert_rule_fun_t pfn_convert)
 {
 	if(!pfn_convert)
-		pfn_convert = Get2DDevice()->GetImageConvertRuleFun();
+		pfn_convert = Device2D()->GetImageConvertRuleFun();
 	if(!pfn_convert)
 		return;
 

@@ -53,7 +53,7 @@ CTextBox::~CTextBox()
 	EndBlink();
 }
 
-const oid_t & CTextBox::GetOid() const
+const cid_t & CTextBox::GetOid() const
 {
 	return OID_TextBox;
 }
@@ -70,7 +70,7 @@ void CTextBox::SetText(const char_16 * szText, int_x iLength)
 	if(iLength < 0)
 		iLength = textlen(szText);
 
-	if(!m_text.equal(szText, iLength))
+	if(!m_text.equals(szText, iLength))
 	{
 		m_text.set(szText, iLength);
 		TlLayout();
@@ -984,7 +984,7 @@ err_t CTextBox::TlLayout()
 		for(int_x ipara = 0; ipara < paragraphs.size(); ++ipara)
 		{
 			const doc_paragraph_t & docpara = paragraphs[ipara];
-			ITextLayout * pLayout = Get2DDevice()->CreateTextLayout();
+			ITextLayout * pLayout = Device2D()->CreateTextLayout();
 			pLayout->Initialize(this);
 			pLayout->Layout({docpara.trange.index, docpara.trange.length - GetParagraphTagLength(docpara.tag)}, iWidth, docpara.tag);
 			tl_metrics_t metric = pLayout->GetMetrics();
@@ -1106,7 +1106,7 @@ err_t CTextBox::TlInsertText(int_x iIndex, const char_16 * szText, int_x iLength
 	for(int_x cnt = 0; cnt < iParaCount; ++cnt)
 	{
 		const doc_paragraph_t & docpara = paragraphs[cnt];
-		ITextLayout * pLayout = Get2DDevice()->CreateTextLayout();
+		ITextLayout * pLayout = Device2D()->CreateTextLayout();
 		pLayout->Initialize(this);
 		pLayout->Layout({tIndex, docpara.trange.length - GetParagraphTagLength(docpara.tag)}, iWidth, docpara.tag);
 		tl_metrics_t metric = pLayout->GetMetrics();
@@ -1190,7 +1190,7 @@ err_t CTextBox::TlDeleteText(int_x iIndex, int_x iLength)
 	{
 		const doc_paragraph_t & docpara = paragraphs[cnt];
 
-		ITextLayout * pLayout = Get2DDevice()->CreateTextLayout();
+		ITextLayout * pLayout = Device2D()->CreateTextLayout();
 		pLayout->Initialize(this);
 		pLayout->Layout({tIndex, docpara.trange.length - GetParagraphTagLength(docpara.tag)}, iWidth, docpara.tag);
 		tl_metrics_t metric = pLayout->GetMetrics();

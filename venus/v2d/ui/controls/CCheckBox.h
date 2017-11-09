@@ -9,7 +9,7 @@ class V2D_API CCheckBox : public CControl
 public:
 	CCheckBox();
 	~CCheckBox();
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 	void GetMeta(IMetaHelper * pHelper) override;
 
 public:
@@ -29,9 +29,9 @@ protected:
 	int_x m_iBoxSize;
 
 public:
-	//! ±ê¼Ç´óÐ¡
+	//! ï¿½ï¿½Ç´ï¿½Ð¡
 	static const int_x BOX_SIZE = 12;
-	//! ±ê¼ÇºÍÎÄ±¾µÄ¼ä¾à
+	//! ï¿½ï¿½Çºï¿½ï¿½Ä±ï¿½ï¿½Ä¼ï¿½ï¿½
 	static const int_x BOX_SPACE = 3;
 public:
 	event<IControl *, bool, bool *> Checking;

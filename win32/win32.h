@@ -103,7 +103,7 @@ public:
 	static void DebugSetLastError(uint_32 uiErroeCode = 0);
 	static const char_16 * DebugFormatLastError();
 
-	static I2DDevice * Create2DDevice(Device2DTypeE eType);
+	static IDevice2D * Create2DDevice(Device2DTypeE eType);
 
 	static font_t MappingFont(const LOGFONTW & logfont);
 	static LOGFONTW MappingFont(const font_t & logfont);

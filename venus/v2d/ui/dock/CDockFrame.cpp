@@ -15,12 +15,12 @@ CDockFrame::~CDockFrame()
 
 }
 
-const oid_t & CDockFrame::GetOid() const
+const cid_t & CDockFrame::GetOid() const
 {
 	return OID_CDockFrame;
 }
 
-IObject * CDockFrame::GetInterface(const oid_t & oid)
+IObject * CDockFrame::GetInterface(const cid_t & oid)
 {
 	if(oid == OID_IDockNode)
 		return (IDockNode *)this;

@@ -28,7 +28,7 @@ CFolderTreeView::~CFolderTreeView()
 
 }
 
-const oid_t & CFolderTreeView::GetOid() const
+const cid_t & CFolderTreeView::GetOid() const
 {
 	return OID_CFolderTreeView;
 }

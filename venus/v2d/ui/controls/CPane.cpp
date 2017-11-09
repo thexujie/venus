@@ -17,7 +17,7 @@ CPane::~CPane()
 
 }
 
-const oid_t & CPane::GetOid() const
+const cid_t & CPane::GetOid() const
 {
 	return OID_Pane;
 }

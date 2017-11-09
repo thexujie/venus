@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GdiInc.h"
-#include "C2DDeviceGdi.h"
+#include "CDevice2DGdi.h"
 
 #ifdef WIN32_DEVICE_GDI
 
@@ -20,7 +20,7 @@ public:
 class WIN32_API CPaintGdi : public CPaintBase
 {
 public:
-	CPaintGdi(I2DRTarget * pRenderTarget, C2DDeviceGdi * pService);
+	CPaintGdi(I2DRTarget * pRenderTarget, CDevice2DGdi * pService);
 	~CPaintGdi();
 	HDC GetHDC();
 
@@ -120,7 +120,7 @@ private:
 	HDC m_hdc;
 	HDC m_hdcDraw;
 	I2DRTarget * m_pTarget;
-	C2DDeviceGdi * m_pService;
+	CDevice2DGdi * m_pService;
 
 	HRGN m_hRgnClip;
 	HGDIOBJ m_hOldPen;

@@ -13,7 +13,7 @@ CDockPane::~CDockPane()
 
 }
 
-const oid_t & CDockPane::GetOid() const
+const cid_t & CDockPane::GetOid() const
 {
 	return OID_DockPane;
 }

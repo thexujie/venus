@@ -32,7 +32,7 @@ CControl::~CControl()
 	m_children.clear();
 }
 
-const oid_t & CControl::GetOid() const
+const cid_t & CControl::GetOid() const
 {
 	return OID_Control;
 }
@@ -3624,7 +3624,7 @@ void CControl::OutputInfo(int_x iDepth) const
 		szTemp[iIndex++] = L'©®';
 	}
 
-	const oid_t & oid = GetOid();
+	const cid_t & oid = GetOid();
 
 	textcat_format(szBuffer, 512, L"%s%s \"%s\" [%d,%d,%d,%d](enable[%d]|visible[%d]|shown[%d])",
 		szTemp, oid.name, m_name.buffer(),

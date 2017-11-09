@@ -47,13 +47,13 @@ public:
 	frame_node_t * child;
 };
 
-const oid_t OID_DockFrame = {L"dockframe"};
+const cid_t OID_DockFrame = {L"dockframe"};
 class V2D_API CDockFrameTest : public CControl
 {
 public:
 	CDockFrameTest();
 	~CDockFrameTest();
-	const oid_t & GetOid() const;
+	const cid_t & GetOid() const;
 
 	IControl * GetDockTargetControl();
 	frame_node_t * InitialRoot(bool bHorizontal);

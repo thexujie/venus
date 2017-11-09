@@ -32,7 +32,7 @@ CTreeView::~CTreeView()
 	m_items.clear();
 }
 
-const oid_t & CTreeView::GetOid() const
+const cid_t & CTreeView::GetOid() const
 {
 	return OID_TreeView;
 }
@@ -355,7 +355,7 @@ void CTreeView::_UpdateItem(TreeItemT * pItem)
 
 	if(!pItem->ValidContent)
 	{
-		pItem->ContentWidth = Get2DDevice()->GetTextSize(pItem->Text, pItem->Text.length(), m_font).w;
+		pItem->ContentWidth = Device2D()->GetTextSize(pItem->Text, pItem->Text.length(), m_font).w;
 		pItem->ContentHeight = m_font.size;
 		pItem->ValidContent = true;
 	}

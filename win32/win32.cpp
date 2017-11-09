@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "win32.h"
 
-#include "gdi/C2DDeviceGdi.h"
-#include "gdip/C2DDeviceGdip.h"
-#include "d2d/C2DDeviceD2D.h"
+#include "gdi/CDevice2DGdi.h"
+#include "gdip/CDevice2DGdip.h"
+#include "d2d/CDevice2DD2D.h"
 
 VENUS_BEG
 
@@ -202,18 +202,33 @@ const char_16 * Win32::DebugFormatLastError()
 #endif
 }
 
-I2DDevice * Win32::Create2DDevice(Device2DTypeE eType)
+IDevice2D * Win32::Create2DDevice(Device2DTypeE eType)
 {
+	if(eType == Device2DTypeUnknown)
+	{
+		typedef HRESULT(__stdcall * D2D1CreateFactoryFunT)(
+			D2D1_FACTORY_TYPE factoryType,
+			const IID & riid,
+			const D2D1_FACTORY_OPTIONS * pFactoryOptions,
+			void ** factory);
+
+		eType = Device2DTypeGdip;
+		//检测最合适的类型
+		CModule d2d1Module(L"d2d1.dll");
+		if(d2d1Module.Handle() && d2d1Module.GetProc<D2D1CreateFactoryFunT>("D2D1CreateFactory"))
+			eType = Device2DTypeDirect2D;
+	}
+
 	switch(eType)
 	{
 	case Device2DTypeGdi:
-		return new C2DDeviceGdi();
+		return new CDevice2DGdi();
 	case Device2DTypeGdip:
-		return new C2DDeviceGdip();
+		return new CDevice2DGdip();
 	case Device2DTypeDirect2D:
-		return new C2DDeviceD2D();
+		return new CDevice2DD2D();
 	default:
-		return new C2DDeviceGdip();
+		return new CDevice2DGdip();
 	}
 }
 

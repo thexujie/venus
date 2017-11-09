@@ -2,7 +2,7 @@
 
 VENUS_BEG
 
-const oid_t OID_CFolderListView = {L"folderlistview"};
+const cid_t OID_CFolderListView = {L"folderlistview"};
 
 class WIN32_API FolderListViewRowT: public ListViewRowT
 {

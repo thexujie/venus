@@ -25,7 +25,7 @@ class V2D_API CTabControl : public CControl
 public:
 	CTabControl();
 	~CTabControl();
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 	void GetMeta(IMetaHelper * pHelper) override;
 
 	rectix GetClient() const override;

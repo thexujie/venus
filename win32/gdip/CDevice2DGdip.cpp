@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "C2DDeviceGdip.h"
+#include "CDevice2DGdip.h"
 #include "CPaintGdip.h"
 
 #ifdef WIN32_DEVICE_GDIP
@@ -9,7 +9,7 @@ VENUS_BEG
 using namespace Gdiplus;
 using namespace DllExports;
 
-C2DDeviceGdip::C2DDeviceGdip():
+CDevice2DGdip::CDevice2DGdip():
 m_hResult(S_OK), m_pUspFactory(nullptr)
 {
 	GdiplusStartupInput input;
@@ -22,7 +22,7 @@ m_hResult(S_OK), m_pUspFactory(nullptr)
 	InitializeGdipGraphics(m_pGraphics);
 }
 
-C2DDeviceGdip::~C2DDeviceGdip()
+CDevice2DGdip::~CDevice2DGdip()
 {
 	SafeDelete(m_pUspFactory);
 	for(int_x cnt = 0, len = m_sPens.size(); cnt < len; ++cnt)
@@ -53,12 +53,12 @@ C2DDeviceGdip::~C2DDeviceGdip()
 	::DeleteDC(m_hdc);
 }
 
-Device2DTypeE C2DDeviceGdip::GetType() const
+Device2DTypeE CDevice2DGdip::GetType() const
 {
 	return Device2DTypeGdip;
 }
 
-GpPen * C2DDeviceGdip::GetPen(uint_32 color, float_32 fWidth)
+GpPen * CDevice2DGdip::GetPen(uint_32 color, float_32 fWidth)
 {
 	for(int_x cnt = 0, len = m_sPens.size(); cnt < len; ++cnt)
 	{
@@ -74,7 +74,7 @@ GpPen * C2DDeviceGdip::GetPen(uint_32 color, float_32 fWidth)
 	return pPen;
 }
 
-GpBrush * C2DDeviceGdip::GetSolidBrush(uint_32 color)
+GpBrush * CDevice2DGdip::GetSolidBrush(uint_32 color)
 {
 	for(int_x cnt = 0, len = m_sBrushs.size(); cnt < len; ++cnt)
 	{
@@ -90,7 +90,7 @@ GpBrush * C2DDeviceGdip::GetSolidBrush(uint_32 color)
 	return pBrush;
 }
 
-GpFontFamily * C2DDeviceGdip::GetFontFamily(const char_16 * szFamily, int_x iLength)
+GpFontFamily * CDevice2DGdip::GetFontFamily(const char_16 * szFamily, int_x iLength)
 {
 	if(iLength < 0)
 		iLength = textlen(szFamily);
@@ -116,7 +116,7 @@ GpFontFamily * C2DDeviceGdip::GetFontFamily(const char_16 * szFamily, int_x iLen
 	return pFamily;
 }
 
-gpfont_t C2DDeviceGdip::GetFont(const textformat_t & format)
+gpfont_t CDevice2DGdip::GetFont(const textformat_t & format)
 {
 	int_x iHash = format.font.Hash();
 	for(int_x cnt = 0, len = m_fonts.size(); cnt < len; ++cnt)
@@ -155,7 +155,7 @@ gpfont_t C2DDeviceGdip::GetFont(const textformat_t & format)
 	return cache.font;
 }
 
-Gdiplus::GpStringFormat * C2DDeviceGdip::GetFontFormat(const textformat_t & format)
+Gdiplus::GpStringFormat * CDevice2DGdip::GetFontFormat(const textformat_t & format)
 {
 	int_x iHash = hashx(format.align);
 	iHash = hashx(format.wrap, iHash);
@@ -246,7 +246,7 @@ Gdiplus::GpStringFormat * C2DDeviceGdip::GetFontFormat(const textformat_t & form
 	return pFormat;
 }
 
-Gdiplus::GpImage * C2DDeviceGdip::GetImage(IImage * pImage)
+Gdiplus::GpImage * CDevice2DGdip::GetImage(IImage * pImage)
 {
 	if(!pImage)
 		return nullptr;
@@ -284,7 +284,7 @@ Gdiplus::GpImage * C2DDeviceGdip::GetImage(IImage * pImage)
 	}
 }
 
-fontmetrics_t C2DDeviceGdip::GetFontMetric(const font_t & font)
+fontmetrics_t CDevice2DGdip::GetFontMetric(const font_t & font)
 {
 	gpfont_t gpfont = GetFont(font);
 
@@ -303,7 +303,7 @@ fontmetrics_t C2DDeviceGdip::GetFontMetric(const font_t & font)
 	return metrics;
 }
 
-ITextLayout * C2DDeviceGdip::CreateTextLayout()
+ITextLayout * CDevice2DGdip::CreateTextLayout()
 {
 	if(!m_pUspFactory)
 	{
@@ -314,7 +314,7 @@ ITextLayout * C2DDeviceGdip::CreateTextLayout()
 	return m_pUspFactory->CreateLayout();
 }
 
-textsize_t C2DDeviceGdip::GetTextSize(const char_16 * szText, int_x iLength, const font_t & font)
+textsize_t CDevice2DGdip::GetTextSize(const char_16 * szText, int_x iLength, const font_t & font)
 {
 	if(iLength < 0)
 		iLength = textlen(szText);
@@ -336,18 +336,18 @@ textsize_t C2DDeviceGdip::GetTextSize(const char_16 * szText, int_x iLength, con
 
 
 bool d2d_rule_full(image_convert_rule_t * rule);
-image_convert_rule_fun_t C2DDeviceGdip::GetImageConvertRuleFun() const
+image_convert_rule_fun_t CDevice2DGdip::GetImageConvertRuleFun() const
 {
 	return d2d_rule_full;
 }
 
-IPaint * C2DDeviceGdip::CreatePaint(I2DRTarget * pRenderTarget)
+IPaint * CDevice2DGdip::CreatePaint(I2DRTarget * pRenderTarget)
 {
 	CPaintGdip * pPaint = new CPaintGdip(pRenderTarget, this);
 	return pPaint;
 }
 
-PixelFormat C2DDeviceGdip::PixelFormatFromColorMode(cmode_e eMode)
+PixelFormat CDevice2DGdip::PixelFormatFromColorMode(cmode_e eMode)
 {
 	switch(eMode)
 	{

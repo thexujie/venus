@@ -13,7 +13,7 @@ CPanel::~CPanel()
 
 }
 
-const oid_t & CPanel::GetOid() const
+const cid_t & CPanel::GetOid() const
 {
 	return OID_Panel;
 }

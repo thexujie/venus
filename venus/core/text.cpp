@@ -12,7 +12,7 @@ namespace encodings
 
 		int_x dst_length = dst_encoding.length(src_encoding, text, length);
 		textw result(dst_length, dst_length);
-		err_t err = dst_encoding.encode(src_encoding, text, length, result.buffer(), result.length(), nullptr);
+		err_t err = dst_encoding.encode(src_encoding, text, length, result.ptr(), result.length(), nullptr);
 		return result;
 	}
 
@@ -23,7 +23,7 @@ namespace encodings
 
 		int_x dst_length = dst_encoding.length(src_encoding, text, length);
 		texta result(dst_length, dst_length);
-		err_t err = dst_encoding.encode(src_encoding, text, length, result.buffer(), result.length(), nullptr);
+		err_t err = dst_encoding.encode(src_encoding, text, length, result.ptr(), result.length(), nullptr);
 		return result;
 	}
 
@@ -31,7 +31,7 @@ namespace encodings
 	{
 		int_x length = dst_encoding.length(src_encoding, text.buffer(), text.length());
 		textw result(length, length);
-		err_t err = dst_encoding.encode(src_encoding, text.buffer(), text.length(), result.buffer(), result.length(), nullptr);
+		err_t err = dst_encoding.encode(src_encoding, text.buffer(), text.length(), result.ptr(), result.length(), nullptr);
 		return result;
 	}
 
@@ -39,7 +39,7 @@ namespace encodings
 	{
 		int_x length = dst_encoding.length(src_encoding, text.buffer(), text.length());
 		texta result(length, length);
-		err_t err = dst_encoding.encode(src_encoding, text.buffer(), text.length(), result.buffer(), result.length(), nullptr);
+		err_t err = dst_encoding.encode(src_encoding, text.buffer(), text.length(), result.ptr(), result.length(), nullptr);
 		return result;
 	}
 }

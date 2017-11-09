@@ -9,7 +9,7 @@ class V2D_API CRadio : public CButtonBase
 public:
 	CRadio();
 	~CRadio();
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 
 public:
 	void OnMouseClickL(pointix point) override;

@@ -377,11 +377,11 @@ public:
 * @}//VenusCore-Base-Tmpl
 */
 
-union oid_t
+union cid_t
 {
 	char_16 name[32];
 	uint_32 value[16];
-	bool operator == (const oid_t & another) const
+	bool operator == (const cid_t & another) const
 	{
 		for(int_x cnt = 0; cnt < 16; ++cnt)
 		{
@@ -390,7 +390,7 @@ union oid_t
 		}
 		return true;
 	}
-	bool operator != (const oid_t & another) const { return !operator==(another); }
+	bool operator != (const cid_t & another) const { return !operator==(another); }
 };
 
 class CORE_API IObject
@@ -400,11 +400,11 @@ public:
 	virtual int_x AddRef() = 0;
 	virtual int_x Release() = 0;
 	virtual int_x GetRef() const = 0;
-	virtual const oid_t & GetOid() const = 0;
-	virtual IObject * GetInterface(const oid_t & oid) = 0;
+	virtual const cid_t & GetOid() const = 0;
+	virtual IObject * GetInterface(const cid_t & oid) = 0;
 };
 
-const oid_t OID_Object = {L"Object"};
+const cid_t OID_Object = {L"Object"};
 template<typename ...Args>
 class ObjectT : public Args...
 {
@@ -422,8 +422,8 @@ public:
 		return iRef;
 	}
 	int_x GetRef() const override { return m_iRef; }
-	const oid_t & GetOid() const { return OID_Object; }
-	IObject * GetInterface(const oid_t & oid) { return nullptr; }
+	const cid_t & GetOid() const { return OID_Object; }
+	IObject * GetInterface(const cid_t & oid) { return nullptr; }
 
 protected:
 	int_x m_iRef;

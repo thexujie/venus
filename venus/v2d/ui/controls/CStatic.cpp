@@ -18,7 +18,7 @@ CStatic::~CStatic()
 	SafeRelease(m_pImage);
 }
 
-const oid_t & CStatic::GetOid() const
+const cid_t & CStatic::GetOid() const
 {
 	return OID_Static;
 }

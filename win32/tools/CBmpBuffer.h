@@ -2,7 +2,7 @@
 
 VENUS_BEG
 
-const oid_t OID_CBmpBuffer = {L"CBmpBuffer"};
+const cid_t OID_CBmpBuffer = {L"CBmpBuffer"};
 
 class WIN32_API CBmpBuffer : public ObjectT<I2DRTarget>
 {
@@ -10,7 +10,7 @@ public:
 	CBmpBuffer();
 	~CBmpBuffer();
 
-	const oid_t & GetOid() const;
+	const cid_t & GetOid() const;
 
 public: // IBuffer
 	byte_t * GetBuffer() const;

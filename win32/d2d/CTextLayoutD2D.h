@@ -1,14 +1,14 @@
 #pragma once
 
 #include "D2DInc.h"
-#include "C2DDeviceD2D.h"
+#include "CDevice2DD2D.h"
 
 VENUS_BEG
 
 class WIN32_API CTextLayoutD2D : public ObjectT<ITextLayoutD2D>
 {
 public:
-	CTextLayoutD2D(C2DDeviceD2D * pEngine);
+	CTextLayoutD2D(CDevice2DD2D * pEngine);
 	~CTextLayoutD2D();
 
 	err_t Initialize(IDocSource * pSrouce);
@@ -29,7 +29,7 @@ public:
 	IDWriteTextLayout * GetDxTextLayout() const { return m_pLayout; }
 
 private:
-	C2DDeviceD2D * m_pEngine;
+	CDevice2DD2D * m_pEngine;
 
 	IDocSource * m_pSource;
 	IDWriteTextLayout * m_pLayout;

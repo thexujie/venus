@@ -5,14 +5,14 @@
 
 VENUS_BEG
 
-const oid_t OID_CDockFrame= {L"dockframe"};
+const cid_t OID_CDockFrame= {L"dockframe"};
 class V2D_API CDockFrame : public CControl, public CDockNode
 {
 public:
 	CDockFrame();
 	~CDockFrame();
-	const oid_t & GetOid() const;
-	IObject * GetInterface(const oid_t & oid);
+	const cid_t & GetOid() const;
+	IObject * GetInterface(const cid_t & oid);
 
 	void OnAdded(IControl * pContainer);
 	void Layout();

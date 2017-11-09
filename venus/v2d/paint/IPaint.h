@@ -415,10 +415,10 @@ public: // ------------------------------- DrawImage
 	virtual uint_32 GetSystemColor(SysColorE eColor) const = 0;
 };
 
-class V2D_API I2DDevice : public IService
+class V2D_API IDevice2D : public IService
 {
 public:
-	virtual ~I2DDevice() {}
+	virtual ~IDevice2D() {}
 
 	virtual Device2DTypeE GetType() const = 0;
 	virtual fontmetrics_t GetFontMetric(const font_t & font) = 0;
@@ -429,9 +429,9 @@ public:
 	virtual IPaint * CreatePaint(I2DRTarget * pRenderTarget) = 0;
 };
 
-static const oid_t OID_IDevice2D = {L"IDevice2D"};
+static const cid_t CID_IDevice2D = {L"IDevice2D"};
 
-V2D_API void Set2DDevice(I2DDevice * pDevice);
-V2D_API I2DDevice * Get2DDevice();
+V2D_API void Set2DDevice(IDevice2D * pDevice);
+V2D_API IDevice2D * Device2D();
 
 VENUS_END

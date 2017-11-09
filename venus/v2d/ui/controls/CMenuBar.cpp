@@ -19,7 +19,7 @@ CMenuBar::~CMenuBar()
 	SafeRelease(m_pMenu);
 }
 
-const oid_t & CMenuBar::GetOid() const
+const cid_t & CMenuBar::GetOid() const
 {
 	return OID_MenuBar;
 }

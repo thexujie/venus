@@ -9,7 +9,7 @@ static inline auto _mapping_match(MappingT(&mappings)[COUNT], const textw & text
 	for(int_x cnt = 0; cnt < COUNT; ++cnt)
 	{
 		const MappingT & mapping = mappings[cnt];
-		if(text.equal(mapping.text, textlen(mapping.text), false))
+		if(text.equals(mapping.text, textlen(mapping.text), false))
 			return mapping.mode;
 	}
 
@@ -60,13 +60,13 @@ int_x GetIndexedPrimitiveCount(primitiveformat_e ePrimitiveFormat, int_x iIndexC
 
 il_valuetype_e VnMapValueType(const textw & str)
 {
-	if(str.equal(L"float1", 6, false))
+	if(str.equals(L"float1", 6, false))
 		return il_valuetype_float1;
-	else if(str.equal(L"float2", 6, false))
+	else if(str.equals(L"float2", 6, false))
 		return il_valuetype_float2;
-	else if(str.equal(L"float3", 6, false))
+	else if(str.equals(L"float3", 6, false))
 		return il_valuetype_float3;
-	else if(str.equal(L"float4", 6, false))
+	else if(str.equals(L"float4", 6, false))
 		return il_valuetype_float4;
 	else
 		return valuetype_invalid;
@@ -75,15 +75,15 @@ il_valuetype_e VnMapValueType(const textw & str)
 shader_e VnMapShaderType(const textw & str)
 {
 
-	if(str.equal(L"vs", 2, false))
+	if(str.equals(L"vs", 2, false))
 		return shader_vs;
-	else if(str.equal(L"hs", 2, false))
+	else if(str.equals(L"hs", 2, false))
 		return shader_hs;
-	else if(str.equal(L"ds", 2, false))
+	else if(str.equals(L"ds", 2, false))
 		return shader_ds;
-	else if(str.equal(L"ps", 2, false))
+	else if(str.equals(L"ps", 2, false))
 		return shader_ps;
-	else if(str.equal(L"cs", 2, false))
+	else if(str.equals(L"cs", 2, false))
 		return shader_cs;
 	else
 		return shader_invalid;

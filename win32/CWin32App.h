@@ -11,15 +11,17 @@ public:
 	err_t Initialize();
 	void UnInitialize();
 
-	IObject * CreateObject(const oid_t & oid, void * pParam);
-	bool RegisterObject(const oid_t & oid, function<IObject *(void *)> fnCreate, bool bReplace);
-	bool UnregisterObject(const oid_t & oid);
+	IObject * CreateObject(const cid_t & oid, void * pParam);
+	bool RegisterObject(const cid_t & oid, function<IObject *(void *)> fnCreate, bool bReplace);
+	bool UnregisterObject(const cid_t & oid);
 
-	void SetService(const oid_t & oid, IService * pService);
-	IService * GetService(const oid_t & oid) const;
+	void SetService(const cid_t & oid, IService * pService);
+	IService * GetService(const cid_t & oid);
 
 	void SetTimer(function<int_x(int_x)> fun, int_x iPeriod, int_x iId = 0);
 	void KillTimer(function<int_x(int_x)> fun, int_x iId = 0);
+
+	IStdIO & StdIO();
 
 	void Create2DDevice(Device2DTypeE eType);
 
@@ -36,7 +38,7 @@ public:
 private:
 	struct ServiceT
 	{
-		oid_t oid;
+		cid_t oid;
 		IService * pService;
 	};
 	vector<ServiceT> m_services;
@@ -61,12 +63,15 @@ private:
 
 	struct ObjectInfoT
 	{
-		oid_t oid;
+		cid_t oid;
 		function<IObject *(void *)> fnCreate;
 	};
 	vector<ObjectInfoT> m_objectInfos;
 
 	event<int_x> OnTimer100Event;
+
+	IStdIO * m_pStdIO;
+	IDevice2D * m_pDevice2D;
 };
 
 VENUS_END

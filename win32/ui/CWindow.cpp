@@ -21,7 +21,7 @@ CWindow::~CWindow()
 	}
 }
 
-IObject * CWindow::GetInterface(const oid_t & oid)
+IObject * CWindow::GetInterface(const cid_t & oid)
 {
 	if(oid == OID_IWindow)
 		return (IWindow *)this;
@@ -198,7 +198,7 @@ void CWindow::Refresh(rectix rect)
 	m_pBuffer->ReserveSize(rcControl.w, rcControl.h);
 
 	if(!m_pPaint)
-		m_pPaint = Get2DDevice()->CreatePaint(m_pBuffer);
+		m_pPaint = Device2D()->CreatePaint(m_pBuffer);
 
 	if(!m_pPaint)
 		return;

@@ -3,7 +3,7 @@
 
 VENUS_BEG
 
-CTextLayoutD2D::CTextLayoutD2D(C2DDeviceD2D * pEngine) :
+CTextLayoutD2D::CTextLayoutD2D(CDevice2DD2D * pEngine) :
 	m_pEngine(pEngine), m_pSource(nullptr), m_pLayout(nullptr)
 {
 	if(!pEngine)

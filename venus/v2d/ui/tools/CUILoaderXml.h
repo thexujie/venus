@@ -2,7 +2,7 @@
 
 VENUS_BEG
 
-const oid_t OID_UILoaderXml = {L"UILoaderXml"};
+const cid_t OID_UILoaderXml = {L"UILoaderXml"};
 
 class V2D_API CUILoaderXml : public ObjectT<IUILoader>
 {
@@ -24,7 +24,7 @@ public:
 			for(int_x cnt = 0, size = node.children.size(); cnt < size; ++cnt)
 			{
 				const xml_node & child = node.children[cnt];
-				if(child.name.equal(L"define", 6, false))
+				if(child.name.equals(L"define", 6, false))
 				{
 					load_define_t define = {child[L"name"].value, child[L"value"].value};
 					if(define.name.is_valid() && !has(define.name))
@@ -63,7 +63,7 @@ public:
 	{
 		// 如果 parse 正确，就返回 err_ok， 如果ParseFunT 自己处理了 chidren，就返回 err_end。
 		typedef err_t(CUILoaderXml::*ParseFunT)(const xml_node & node, IControl *& pControl, CMetaHelper & meta, CLoaderDefines & defines);
-		oid_t oid;
+		cid_t oid;
 		ParseFunT ParseFun;
 		const type_info & tinfo;
 		IControl * (*CreateFun)();

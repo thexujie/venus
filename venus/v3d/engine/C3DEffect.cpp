@@ -42,7 +42,7 @@ err_t C3DEffect::Load(const I3DFile * pFile)
 	for(int_x cnt = 0; cnt < doc.children.size(); ++cnt)
 	{
 		const xml_node & node = doc.children[cnt];
-		if(node.name.equal(L"include", 7, false))
+		if(node.name.equals(L"include", 7, false))
 		{
 			textw file = node[L"name"].value;
 			file.insert(0, L"effects/", 8);
@@ -76,19 +76,19 @@ err_t C3DEffect::Load(const I3DFile * pFile)
 	for(int_x cnt = 0; cnt < doc.children.size(); ++cnt)
 	{
 		const xml_node & node = doc.children[cnt];
-		if(node.name.equal(L"state", 5, false))
+		if(node.name.equals(L"state", 5, false))
 		{
 			state_nodes[node[L"name"].value] = node[L"value"].value;
 		}
-		else if(node.name.equal(L"pass", 4, false))
+		else if(node.name.equals(L"pass", 4, false))
 		{
 			pass_nodes.add(&node);
 		}
-		else if(node.name.equal(L"sampler", 7, false))
+		else if(node.name.equals(L"sampler", 7, false))
 		{
 			sampler_nodes.add(&node);
 		}
-		else if(node.name.equal(L"shader", 6, false))
+		else if(node.name.equals(L"shader", 6, false))
 		{
 			_ParseShaders(node, state_base);
 		}
@@ -103,7 +103,7 @@ err_t C3DEffect::Load(const I3DFile * pFile)
 		for(int_x cnt = 0; cnt < pass_node.children.size(); ++cnt)
 		{
 			const xml_node & node = pass_node.children[cnt];
-			if(node.name.equal(L"state", 5, false))
+			if(node.name.equals(L"state", 5, false))
 			{
 				state_nodes[node[L"name"].value] = node[L"value"].value;
 			}
@@ -190,7 +190,7 @@ err_t C3DEffect::Load(const I3DFile * pFile)
 		for(int_x cnt = 0; cnt < sampler_node.children.size(); ++cnt)
 		{
 			const xml_node & node = sampler_node.children[cnt];
-			if(node.name.equal(L"state", 5, false))
+			if(node.name.equals(L"state", 5, false))
 			{
 				state_nodes[node[L"name"].value] = node[L"value"].value;
 			}

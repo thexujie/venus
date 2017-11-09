@@ -9,7 +9,7 @@ class V2D_API CPopMenu : public CForm
 public:
 	CPopMenu(CPopMenu * pParent = nullptr);
 	~CPopMenu();
-	const oid_t & GetOid() const;
+	const cid_t & GetOid() const;
 
 	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;
 	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const;

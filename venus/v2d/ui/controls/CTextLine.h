@@ -10,7 +10,7 @@ public:
 	CTextLine();
 	~CTextLine();
 public:
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 	void GetMeta(IMetaHelper * pHelper) override;
 
 	bool CanFocus() const override;
@@ -72,7 +72,7 @@ public:
 	void DoCut();
 	void InsertText(int_x iIndex, const char_16 * szText, int_x iLength = -1);
 
-	// ¹â±ê¿ØÖÆ¡£
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½
 	void DoCaretLeft();
 	void DoCaretRight();
 	void DoCaretHome();
@@ -139,7 +139,7 @@ public:
 	event<IControl *, int_x, int_x> SelectedTextChanged;
 
 public:
-	static const oid_t & Oid() { return OID_TextLine; }
+	static const cid_t & Oid() { return OID_TextLine; }
 };
 
 VENUS_END

@@ -13,7 +13,7 @@ public:
 	~CGroupBox();
 
 public:
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 
 	rectix GetClient() const override;
 	void OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;

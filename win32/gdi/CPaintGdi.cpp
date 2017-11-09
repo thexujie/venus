@@ -9,7 +9,7 @@ VENUS_BEG
 #pragma warning(push)
 #pragma warning(disable : 4244)
 
-CPaintGdi::CPaintGdi(I2DRTarget * pTarget, C2DDeviceGdi * pService)
+CPaintGdi::CPaintGdi(I2DRTarget * pTarget, CDevice2DGdi * pService)
 	: m_hdc(NULL), m_hdcDraw(NULL), m_pTarget(nullptr), m_pService(pService),
 	m_hRgnClip(NULL), m_hOldPen(NULL), m_hOldBrush(NULL), m_hOldFont(NULL), m_iOldBkMode(0)
 {
@@ -36,7 +36,7 @@ void CPaintGdi::ResetTarget(I2DRTarget * pTarget)
 
 bool CPaintGdi::BeginPaint()
 {
-	const oid_t & cid = m_pTarget->GetOid();
+	const cid_t & cid = m_pTarget->GetOid();
 	if(cid == OID_CBmpBuffer)
 	{
 		CBmpBuffer * pBitmap = (CBmpBuffer *)m_pTarget;
@@ -89,7 +89,7 @@ bool CPaintGdi::BeginPaint()
 
 void CPaintGdi::EndPaint()
 {
-	const oid_t & cid = m_pTarget->GetOid();
+	const cid_t & cid = m_pTarget->GetOid();
 	if(cid == OID_CBmpBuffer)
 	{
 		if(m_hdc)

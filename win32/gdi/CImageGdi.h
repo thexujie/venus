@@ -6,7 +6,7 @@
 
 VENUS_BEG
 
-const oid_t CID_CImageGdi = {L"CImageGdi"};
+const cid_t CID_CImageGdi = {L"CImageGdi"};
 
 class WIN32_API CImageGdi : public ObjectT<IImage>
 {
@@ -14,7 +14,7 @@ public:
 	CImageGdi();
 	~CImageGdi();
 
-	const oid_t & GetOid() const;
+	const cid_t & GetOid() const;
 
 	int_x GetWidth() const { return m_size.w; }
 	int_x GetHeight() const { return m_size.h; }

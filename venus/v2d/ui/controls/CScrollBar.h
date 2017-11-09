@@ -108,7 +108,7 @@ public:
 	void SetScrollTarget(IControl * pScrollTarget) override;
 	IControl * GetScrollTarget() const override;
 public:
-	const oid_t & GetOid() const override;
+	const cid_t & GetOid() const override;
 	void OnPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const override;
 	void OnMouseDownL(pointix point) override;
 	void OnMouseUpL(pointix point) override;

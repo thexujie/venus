@@ -141,6 +141,7 @@ public:
 	void * _GetProc(const char_8 * szProc);
 	void * _GetProc(const char_16 * szProc);
 
+	HMODULE Handle() const { return m_hModule; }
 	operator HMODULE() const { return m_hModule; }
 
 	template<typename T>

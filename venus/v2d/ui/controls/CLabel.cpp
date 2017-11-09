@@ -13,7 +13,7 @@ CLabel::~CLabel()
 
 }
 
-const oid_t & CLabel::GetOid() const
+const cid_t & CLabel::GetOid() const
 {
 	return OID_Lable;
 }
