@@ -184,27 +184,27 @@ IDWriteTextFormat * CDevice2DD2D::GetTextFormat(const textformat_t & format)
 		return nullptr;
 }
 
-fontmetrics_t CDevice2DD2D::GetFontMetric(const font_t & font)
-{
-	IDWriteTextFormat * pTextFormat = GetTextFormat(font);
-	fontmetrics_t metrics;
-	DWRITE_LINE_SPACING_METHOD eMethod = DWRITE_LINE_SPACING_METHOD_DEFAULT;
-	float_32 fLineSpace = 0.0f, fBaseLine = 0.0f;
-	pTextFormat->GetLineSpacing(&eMethod, &fLineSpace, &fBaseLine);
-
-	metrics.size = font.size;
-	metrics.weight = pTextFormat->GetFontWeight();
-	metrics.italic = pTextFormat->GetFontStyle() == DWRITE_FONT_STYLE_ITALIC;
-	metrics.linespace = round(fLineSpace);
-	metrics.baseline = round(fBaseLine);
-	metrics.underLine = false;
-	metrics.struckout = false;
-	//IDWriteFontFace * pFace = nullptr;
-	//DWRITE_FONT_METRICS fontMetrics;
-	//pFace->GetMetrics()
-	//fontMetrics.
-	return metrics;
-}
+//fontmetrics_t CDevice2DD2D::GetFontMetric(const font_t & font)
+//{
+//	IDWriteTextFormat * pTextFormat = GetTextFormat(font);
+//	fontmetrics_t metrics;
+//	DWRITE_LINE_SPACING_METHOD eMethod = DWRITE_LINE_SPACING_METHOD_DEFAULT;
+//	float_32 fLineSpace = 0.0f, fBaseLine = 0.0f;
+//	pTextFormat->GetLineSpacing(&eMethod, &fLineSpace, &fBaseLine);
+//
+//	metrics.size = font.size;
+//	metrics.weight = pTextFormat->GetFontWeight();
+//	metrics.italic = pTextFormat->GetFontStyle() == DWRITE_FONT_STYLE_ITALIC;
+//	metrics.linespace = round(fLineSpace);
+//	metrics.baseline = round(fBaseLine);
+//	metrics.underLine = false;
+//	metrics.struckout = false;
+//	//IDWriteFontFace * pFace = nullptr;
+//	//DWRITE_FONT_METRICS fontMetrics;
+//	//pFace->GetMetrics()
+//	//fontMetrics.
+//	return metrics;
+//}
 
 ITextLayout * CDevice2DD2D::CreateTextLayout()
 {

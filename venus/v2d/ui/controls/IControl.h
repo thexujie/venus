@@ -725,19 +725,6 @@ public:
 };
 const cid_t OID_IMonitorManager = {L"IMonitorManager"};
 
-class V2D_API IUILoader : public IService
-{
-public:
-	virtual ~IUILoader() {}
-	virtual void Load(const char_x * szFile, IControl * pControl) = 0;
-	virtual void Load(const byte_t * pData, int_x iSize, IControl * pControl) = 0;
-	virtual void Load(const xml_node & node, IControl * pControl) = 0;
-
-public:
-	static IUILoader * GetInstance();
-};
-const cid_t OID_IUILoader = {L"IUILoader"};
-
 class V2D_API IViewItem : public IObject
 {
 public:

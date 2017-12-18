@@ -62,7 +62,7 @@ public:
 	virtual int_x Seek(SeekE seek, int_x iSeek) = 0;
 };
 
-class CORE_API ITextStream
+class CORE_API ITextStream : public IBaseStream
 {
 public:
 	virtual ~ITextStream() {}
@@ -76,15 +76,6 @@ public:
 	virtual ~IDataStream() {}
 	virtual void SetEndian(EndianE endian) = 0;
 	virtual EndianE GetEndian() const = 0;
-};
-
-class CORE_API IBufferedStream
-{
-public:
-	virtual ~IBufferedStream() {}
-
-	virtual void SetBufferSize(int_x iSize) = 0;
-	virtual int_x GetBufferSize() const = 0;
 };
 
 /************************************************************************/
@@ -114,24 +105,6 @@ public :
 	virtual void Write(byte_t byte) = 0;
 	virtual void Write(const void * pData, int_x iLength) = 0;
 	virtual void Flush() = 0;
-};
-
-/************************************************************************/
-/* 输入缓冲流
-/************************************************************************/
-class CORE_API IBufferedInputStream : public IInputStream, virtual public IBufferedStream
-{
-public:
-	virtual ~IBufferedInputStream() {}
-};
-
-/************************************************************************/
-/* 输出缓冲流
-/************************************************************************/
-class CORE_API IBufferedOutputStream : public IOutputStream, virtual public IBufferedStream
-{
-public :
-	virtual ~IBufferedOutputStream() {}
 };
 
 union DataAdapter32

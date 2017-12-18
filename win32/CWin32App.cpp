@@ -25,10 +25,6 @@ err_t CWin32App::Initialize()
 	IMonitorManager * pMonitorManager = new CMonitorManager();
 	SetService(OID_IMonitorManager, pMonitorManager);
 	SafeRelease(pMonitorManager);
-
-	IUILoader * pUILoader = new CWin32UILoaderXml();
-	SetService(OID_IUILoader, pUILoader);
-	SafeRelease(pUILoader);
 	return err_ok;
 }
 
@@ -100,6 +96,28 @@ void CWin32App::UnInitialize()
 
 	SafeRelease(m_pDevice2D);
 	SafeRelease(m_pStdIO);
+}
+
+encoding_t CWin32App::Encoding() const
+{
+	return encodings::utf8;
+}
+
+int_x CWin32App::SystemMetrics(SystemMetricsE sm)
+{
+	switch(sm)
+	{
+	case SM_ScroolbarW: return ::GetSystemMetrics(SM_CXVSCROLL) - 2;
+	case SM_ScroolbarH: return ::GetSystemMetrics(SM_CYHSCROLL) - 2;
+	default: return 0;
+	}
+}
+
+IStdIO & CWin32App::StdIO()
+{
+	if(!m_pStdIO)
+		m_pStdIO = new CSimpleStdOut();
+	return *m_pStdIO;
 }
 
 void CWin32App::SetService(const cid_t & oid, IService * pService)
@@ -175,13 +193,6 @@ void CWin32App::KillTimer(function<int_x(int_x)> fun, int_x iId)
 	}
 }
 
-IStdIO & CWin32App::StdIO()
-{
-	if(!m_pStdIO)
-		m_pStdIO = new CSimpleStdOut();
-	return *m_pStdIO;
-}
-	
 void CWin32App::Create2DDevice(Device2DTypeE eType)
 {
 	m_pDevice2D = Win32::Create2DDevice(eType);

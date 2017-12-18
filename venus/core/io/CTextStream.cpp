@@ -25,18 +25,6 @@ int_x CTextReader::ReadAviliable() const noexcept
 	return m_pInputStream->ReadAviliable();
 }
 
-byte_t CTextReader::Read()
-{
-	_Ready();
-	return m_pInputStream->Read();
-}
-
-int_x CTextReader::Read(void * data, int_x size)
-{
-	_Ready();
-	return m_pInputStream->Read(data, size);
-}
-
 bool CTextReader::CanSeek() const
 {
 	_Ready();
@@ -59,6 +47,12 @@ encoding_t CTextReader::GetEncoding() const
 	return m_encoding;
 }
 
+byte_t CTextReader::_Read()
+{
+	_Ready();
+	return m_pInputStream->Read();
+}
+
 void CTextReader::_Ready() const
 {
 	ensure(m_pInputStream);
@@ -70,43 +64,43 @@ int_32 CTextReader::ReadChar()
 
 	if(m_encoding == encodings::unknown)
 	{
-		int_32 ch = Read();
+		int_32 ch = _Read();
 
 		// le tag
 		if(ch == 0xEF)
 		{
-			ch = Read();
+			ch = _Read();
 			if(ch != 0xBB)
 				throw exp_io();
-			ch = Read();
+			ch = _Read();
 			if(ch != 0xBF)
 				throw exp_io();
 			m_encoding = encodings::utf8;
 		}
 		else if(ch == 0xFF)
 		{
-			ch = Read();
+			ch = _Read();
 			if(ch != 0xFE)
 				throw exp_io();
 			m_encoding = encodings::utf16;
 		}
 		else if(ch == 0xFE)
 		{
-			ch = Read();
+			ch = _Read();
 			if(ch != 0xFF)
 				throw exp_io();
 			m_encoding = encodings::utf16_be;
 		}
 		else if(ch == 0x5c)
 		{
-			ch = Read();
+			ch = _Read();
 			if(ch != 0x75)
 				throw exp_io();
 			m_encoding = encodings::ansi;
 		}
 		else
 		{
-			m_encoding = encodings::ansi;
+			m_encoding = App().Encoding();
 			return ReadCharAnsi(ch);
 		}
 	}
@@ -129,7 +123,7 @@ int_32 CTextReader::ReadChar()
 		ch = ReadCharUtf8();
 		break;
 	default:
-		ch = Read();
+		ch = _Read();
 		break;
 	}
 	return ch;
@@ -180,7 +174,7 @@ texta CTextReader::ReadTextA(int_x iLength)
 	{
 		if(m_pInputStream->ReadAviliable() && iLength-- > 0)
 		{
-			char_8 ch = Read();
+			char_8 ch = _Read();
 			text.append(ch);
 		}
 		else
@@ -267,7 +261,7 @@ texta CTextReader::ReadLineA()
 	{
 		if(m_pInputStream->ReadAviliable())
 		{
-			ch = Read();
+			ch = _Read();
 			if(ch == L'\r')
 				continue;
 
@@ -286,6 +280,22 @@ texta CTextReader::ReadLineA()
 		else
 			bRuning = false;
 	}
+	return text;
+}
+
+texta CTextReader::ReadAllA()
+{
+	texta text;
+	while(m_pInputStream->ReadAviliable())
+		text.append(_Read());
+	return text;
+}
+
+textw CTextReader::ReadAllW()
+{
+	textw text;
+	while(m_pInputStream->ReadAviliable())
+		text.append(ReadChar());
 	return text;
 }
 
@@ -392,7 +402,12 @@ int_32 CTextReader::ReadCharUtf8()
 		return bVal;
 }
 
-
+textw CTextReader::ReadAllFile(const char_16 * path)
+{
+	CFileStream fs(path, StreamModeRead, OpenModeOpen, ShareModeAll);
+	CTextReader reader(&fs);
+	return reader.ReadAllW();
+}
 
 CTextWriter::CTextWriter(IOutputStream * pOutputStream, encoding_t encoding) :
 	m_pOutputStream(pOutputStream), m_encoding(encoding), m_bom_ready(false), m_linetag(linetag_n)

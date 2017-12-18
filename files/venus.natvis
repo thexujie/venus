@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
-	<Type Name="test::guid">
-		<DisplayString>{*(const GUID *)this}</DisplayString>
-	</Type>
 	<Type Name="venus::function&lt;*&gt;">
 		<DisplayString Condition="m_this==0">{_global_}</DisplayString>
 		<DisplayString Condition="m_this!=0">{_class_}</DisplayString>
@@ -78,7 +75,7 @@
 	<Type Name="__m64">
 		<DisplayString>{{{m64_i16[0]},{m64_i16[1]},{m64_i16[2]},{m64_i16[3]}}}</DisplayString>
 	</Type>
-	<Type Name="venus::guid_t">
+	<Type Name="venus::suid">
 		<DisplayString>{*(const GUID *)this}</DisplayString>
 	</Type>
 	<Type Name="venus::winerr_t">

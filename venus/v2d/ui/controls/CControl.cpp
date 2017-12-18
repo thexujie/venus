@@ -3380,7 +3380,7 @@ void CControl::SetScrollBarX(IControl * pScrollBar)
 	m_pScrollX = pScrollBar;
 	if(m_pScrollX)
 	{
-		m_pScrollX->SetSize(0, SCROLL_DEF_SIZE);
+		m_pScrollX->SetSize(0, App().SystemMetrics(IApp::SM_ScroolbarW));
 		m_pScrollX->SetVisible(m_bAlwaysShowScrollX);
 		m_pScrollX->SetNcControl(true);
 		m_pScrollX->SetZOrder(IX_MAX);
@@ -3394,7 +3394,7 @@ void CControl::SetScrollBarY(IControl * pScrollBar)
 	m_pScrollY = pScrollBar;
 	if(m_pScrollY)
 	{
-		m_pScrollY->SetSize(SCROLL_DEF_SIZE, 0);
+		m_pScrollY->SetSize(App().SystemMetrics(IApp::SM_ScroolbarH), 0);
 		m_pScrollY->SetVisible(m_bAlwaysShowScrollY);
 		m_pScrollY->SetNcControl(true);
 		m_pScrollY->SetZOrder(IX_MAX);
@@ -3557,8 +3557,8 @@ intx2 CControl::GetScroll() const
 void CControl::_LayoutScrollBars(bool bScrollX, bool bScrollY)
 {
 	rectix rcVisual = GetVisual();
-	rectix rcBarX(0, rcVisual.h - SCROLL_DEF_SIZE, rcVisual.w, SCROLL_DEF_SIZE);
-	rectix rcBarY(rcVisual.w - SCROLL_DEF_SIZE, 0, SCROLL_DEF_SIZE, rcVisual.h);
+	rectix rcBarX(0, rcVisual.h - App().SystemMetrics(IApp::SM_ScroolbarH), rcVisual.w, App().SystemMetrics(IApp::SM_ScroolbarH));
+	rectix rcBarY(rcVisual.w - App().SystemMetrics(IApp::SM_ScroolbarW), 0, App().SystemMetrics(IApp::SM_ScroolbarW), rcVisual.h);
 	if(bScrollY || m_bAlwaysShowScrollY)
 	{
 		rcBarX.w -= SCROLL_DEF_SIZE;

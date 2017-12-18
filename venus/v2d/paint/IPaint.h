@@ -421,7 +421,6 @@ public:
 	virtual ~IDevice2D() {}
 
 	virtual Device2DTypeE GetType() const = 0;
-	virtual fontmetrics_t GetFontMetric(const font_t & font) = 0;
 	virtual ITextLayout * CreateTextLayout() = 0;
 	virtual textsize_t GetTextSize(const char_16 * szText, int_x iLength, const font_t & font) = 0;
 

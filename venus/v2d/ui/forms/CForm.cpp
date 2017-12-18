@@ -263,7 +263,7 @@ pointix CForm::ToScreen(const pointix & point) const
 
 void CForm::OnNcPaint(IPaint * pPaint, const rectix & rcClip, const IUITheme * pTheme) const
 {
-	pPaint->FillRect(rcClip, m_uiBackColor);
+	pPaint->FillRect(rcClip, 0xF0FFFFFF);
 	if(m_eFormType != FormTypeDefault &&
 		m_eShowMode != ShowModeMaxisize)
 	{

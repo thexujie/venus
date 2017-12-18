@@ -10,7 +10,6 @@ public:
 	virtual void out(int_x level, const char_8 * format, void * args) = 0;
 	virtual void out(int_x level, const char_16 * format, void * args) = 0;
 };
-static const cid_t OID_IStdOut = {L"IStdOut"};
 
 enum AppRunE
 {
@@ -22,7 +21,18 @@ enum AppRunE
 class CORE_API IApp : public IObject
 {
 public:
+	enum SystemMetricsE
+	{
+		SM_None,
+		SM_ScroolbarW,
+		SM_ScroolbarH,
+	};
+
+public:
 	virtual ~IApp() {}
+
+	virtual encoding_t Encoding() const = 0;
+	virtual int_x SystemMetrics(SystemMetricsE sm) = 0;
 
 	virtual IStdIO & StdIO() = 0;
 	virtual IObject * CreateObject(const cid_t & oid, void * pParam = nullptr) = 0;

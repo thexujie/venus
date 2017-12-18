@@ -2,9 +2,7 @@
 
 VENUS_BEG
 
-const cid_t OID_UILoaderXml = {L"UILoaderXml"};
-
-class V2D_API CUILoaderXml : public ObjectT<IUILoader>
+class V2D_API CUILoaderXml
 {
 public:
 	class CLoaderDefines
@@ -74,7 +72,7 @@ public:
 	~CUILoaderXml();
 
 	void Load(const char_x * szFile, IControl * pControl);
-	void Load(const byte_t * pData, int_x iSize, IControl * pControl);
+	void Load(const char_16 * szText, int_x iLength, IControl * pControl);
 	void Load(const xml_node & node, IControl * pControl);
 	void Load(const xml_node & node, IControl * pControl, CLoaderDefines & defines);
 

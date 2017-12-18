@@ -20,8 +20,6 @@ public:
 	~CDevice2DD2D();
 
 	Device2DTypeE GetType() const;
-
-	fontmetrics_t GetFontMetric(const font_t & font);
 	ITextLayout * CreateTextLayout();
 
 	textsize_t GetTextSize(const char_16 * szText, int_x iLength, const font_t & font);

@@ -284,24 +284,24 @@ Gdiplus::GpImage * CDevice2DGdip::GetImage(IImage * pImage)
 	}
 }
 
-fontmetrics_t CDevice2DGdip::GetFontMetric(const font_t & font)
-{
-	gpfont_t gpfont = GetFont(font);
-
-	fontmetrics_t metrics;
-
-	int iStyle = 0;
-	GdipGetFontStyle(gpfont.font, &iStyle);
-	metrics.size = font.size;
-	metrics.weight = (iStyle & FontStyleBold) ? FONT_WEIGHT_BOLD : FONT_WEIGHT_NORMAL;
-	metrics.italic = (iStyle & FontStyleItalic) ? 1 : 0;
-	metrics.underLine = (iStyle & FontStyleUnderline) ? 1 : 0;;
-	metrics.struckout = (iStyle & FontStyleStrikeout) ? 1 : 0;;
-
-	//metrics.LineSpace = Round(fLineSpace);
-	//metrics.BaseLine = Round(fBaseLine);
-	return metrics;
-}
+//fontmetrics_t CDevice2DGdip::GetFontMetric(const font_t & font)
+//{
+//	gpfont_t gpfont = GetFont(font);
+//
+//	fontmetrics_t metrics;
+//
+//	int iStyle = 0;
+//	GdipGetFontStyle(gpfont.font, &iStyle);
+//	metrics.size = font.size;
+//	metrics.weight = (iStyle & FontStyleBold) ? FONT_WEIGHT_BOLD : FONT_WEIGHT_NORMAL;
+//	metrics.italic = (iStyle & FontStyleItalic) ? 1 : 0;
+//	metrics.underLine = (iStyle & FontStyleUnderline) ? 1 : 0;;
+//	metrics.struckout = (iStyle & FontStyleStrikeout) ? 1 : 0;;
+//
+//	//metrics.LineSpace = Round(fLineSpace);
+//	//metrics.BaseLine = Round(fBaseLine);
+//	return metrics;
+//}
 
 ITextLayout * CDevice2DGdip::CreateTextLayout()
 {

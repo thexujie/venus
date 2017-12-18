@@ -102,23 +102,6 @@ HFONT CDevice2DGdi::GetFont(const font_t & font)
 	return hFont;
 }
 
-fontmetrics_t CDevice2DGdi::GetFontMetric(const font_t & font)
-{
-	HFONT hFont = GetFont(font);
-	
-	
-	fontmetrics_t metrics;
-
-	int iStyle = 0;
-	metrics.size = font.size;
-	metrics.weight = 400;
-	metrics.italic = 0;
-	metrics.underLine = 0;
-	metrics.struckout = 0;
-
-	return metrics;
-}
-
 ITextLayout * CDevice2DGdi::CreateTextLayout()
 {
 	return m_pUspFactory->CreateLayout();

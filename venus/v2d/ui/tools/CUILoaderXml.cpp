@@ -203,15 +203,14 @@ CUILoaderXml::~CUILoaderXml()
 
 void CUILoaderXml::Load(const char_x * szFile, IControl * pControl)
 {
-	CFileStream fs(szFile, StreamModeRead, OpenModeOpen, ShareModeAll);
-	byte_buffer_t buffer = fs.ReadFile();
-	Load(buffer.buffer, buffer.size, pControl);
+	textw text = CTextReader::ReadAllFile(szFile);
+	Load(text.buffer(), text.length(), pControl);
 }
 
-void CUILoaderXml::Load(const byte_t * pData, int_x iSize, IControl * pControl)
+void CUILoaderXml::Load(const char_16 * szText, int_x iLength, IControl * pControl)
 {
 	xml_doc doc;
-	doc.load_text((const char_x *)pData, iSize / 2);
+	doc.load_text(szText, iLength);
 
 	CLoaderDefines defines;
 	if(doc.name.equals(L"ui", 2, false))

@@ -4,7 +4,7 @@
 
 VENUS_BEG
 
-class CORE_API CTextReader : public IInputStream, public ITextStream
+class CORE_API CTextReader : public ITextStream
 {
 public:
 	CTextReader(IInputStream * pInputStream, encoding_t encoding = encodings::unknown);
@@ -12,9 +12,6 @@ public:
 
 	bool CanRead() const noexcept;
 	int_x ReadAviliable() const noexcept;
-
-	byte_t Read();
-	int_x Read(void * data, int_x size);
 
 	bool CanSeek() const;
 	int_x Seek(SeekE seek, int_x iSeek);
@@ -32,7 +29,10 @@ public:
 	textw ReadLine();
 	texta ReadLineA();
 
+	texta ReadAllA();
+	textw ReadAllW();
 protected:
+	byte_t _Read();
 	void _Ready() const;
 
 	int_32 ReadCharAnsi(byte_t last);
@@ -43,6 +43,9 @@ protected:
 protected:
 	IInputStream * m_pInputStream;
 	encoding_t m_encoding;
+
+public:
+	static textw ReadAllFile(const char_16 * path);
 };
 
 class CORE_API CTextWriter : public IOutputStream

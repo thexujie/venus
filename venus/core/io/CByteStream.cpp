@@ -3,12 +3,104 @@
 
 VENUS_BEG
 
+CByteInputStreamm::CByteInputStreamm()
+{
+	m_pBuffer = nullptr;
+	m_iSize = 0;
+	m_iLength = 0;
+}
+
+CByteInputStreamm::CByteInputStreamm(const byte_t * pArray, int_x iLength)
+{
+	m_pBuffer = pArray;
+	m_iSize = iLength;
+	m_iLength = 0;
+}
+
+CByteInputStreamm::~CByteInputStreamm()
+{
+	if(m_pBuffer)
+	{
+		m_pBuffer = nullptr;
+		m_iSize = 0;
+		m_iLength = 0;
+	}
+}
+
+bool CByteInputStreamm::CanRead() const noexcept { return true; }
+
+int_x CByteInputStreamm::ReadAviliable() const noexcept
+{
+	return m_iSize - m_iLength;
+}
+
+byte_t CByteInputStreamm::Read()
+{
+	if(m_iLength < m_iSize)
+		return m_pBuffer[m_iLength++];
+	else
+		throw exp_end_of_stream();
+}
+
+int_x CByteInputStreamm::Read(void * pBytes, int_x iLength)
+{
+	int_x iAviliable = m_iSize - m_iLength;
+	if(iLength <= iAviliable)
+	{
+		buffcpy8(pBytes, iLength, m_pBuffer + m_iLength, iLength);
+		m_iLength += iLength;
+		return iLength;
+	}
+	else
+		return 0;
+}
+
+bool CByteInputStreamm::CanSeek() const
+{
+	return true;
+}
+
+int_x CByteInputStreamm::Seek(SeekE seek, int_x iSeek)
+{
+	if(seek != SeekTell)
+	{
+		int_x iPosition = 0;
+		switch(seek)
+		{
+		case SeekBegin:
+			iPosition = iSeek;
+			break;
+		case SeekEnd:
+			iPosition = m_iSize - iSeek;
+			break;
+		case SeekCurr:
+			iPosition = m_iLength + iSeek;
+			break;
+		default:
+			iPosition = m_iLength;
+			break;
+		}
+
+		if(iPosition < 0 || iPosition > m_iSize)
+			throw exp_end_of_stream();
+
+		m_iLength = iPosition;
+	}
+
+	return m_iLength;
+}
+
+const byte_t * CByteInputStreamm::GetBuffer() const
+{
+	return m_pBuffer;
+}
+
+
 CByteStream::CByteStream()
 {
 	m_pBuffer = nullptr;
 	m_iSize = 0;
 	m_iLength = 0;
-	m_bAutoDelete = false;
 }
 CByteStream::CByteStream(int_x iLength)
 {
@@ -16,39 +108,28 @@ CByteStream::CByteStream(int_x iLength)
 	if(m_pBuffer)
 	{
 		m_iSize = iLength;
-		m_bAutoDelete = true;
 	}
 	else
 	{
 		m_iSize = 0;
-		m_bAutoDelete = false;
 	}
 	m_iLength = 0;
 }
 
-CByteStream::CByteStream(byte_t * pArray, int_x iLength, bool bAutoDelete/* = false*/)
+CByteStream::CByteStream(byte_t * pArray, int_x iLength)
 {
 	m_pBuffer = pArray;
 	m_iSize = iLength;
 	m_iLength = 0;
-	m_bAutoDelete = bAutoDelete;
 }
 
 CByteStream::~CByteStream()
 {
-	if(m_bAutoDelete)
+	if(m_pBuffer)
+	{
 		delete m_pBuffer;
-}
-
-void CByteStream::ResetByteArray(byte_t * pArray, int_x iLength, bool bAutoDelete/* = FALSE*/)
-{
-	if(bAutoDelete)
-		delete m_pBuffer;
-
-	m_pBuffer = pArray;
-	m_iSize = iLength;
-	m_iLength = 0;
-	m_bAutoDelete = bAutoDelete;
+		m_pBuffer = nullptr;
+	}
 }
 
 bool CByteStream::CanRead() const noexcept { return true;}
@@ -108,7 +189,7 @@ void CByteStream::Flush()
 
 }
 
-bool CByteStream::CanSeek(SeekE seek) const
+bool CByteStream::CanSeek() const
 {
 	return true;
 }

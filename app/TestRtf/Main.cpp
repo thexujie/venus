@@ -75,9 +75,6 @@ DocSource source;
 DocTextObject dto;
 void OnCreate(HWND hWnd)
 {
-	for(int cnt = 0;;cnt ++)
-		::SetCaretPos(10, 10);
-
 	//::CreateCaret(hWnd, NULL, 1, 22);
 	//::SetCaretPos(10, 10);
 	//::ShowCaret(hWnd);

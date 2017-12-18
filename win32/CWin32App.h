@@ -11,6 +11,11 @@ public:
 	err_t Initialize();
 	void UnInitialize();
 
+	encoding_t Encoding() const;
+	int_x SystemMetrics(SystemMetricsE sm);
+
+	IStdIO & StdIO();
+
 	IObject * CreateObject(const cid_t & oid, void * pParam);
 	bool RegisterObject(const cid_t & oid, function<IObject *(void *)> fnCreate, bool bReplace);
 	bool UnregisterObject(const cid_t & oid);
@@ -21,7 +26,6 @@ public:
 	void SetTimer(function<int_x(int_x)> fun, int_x iPeriod, int_x iId = 0);
 	void KillTimer(function<int_x(int_x)> fun, int_x iId = 0);
 
-	IStdIO & StdIO();
 
 	void Create2DDevice(Device2DTypeE eType);
 
