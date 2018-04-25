@@ -228,7 +228,7 @@ public:
 	void SetText(textw text);
 	int_x GetClusterCount() const { return clusters.size(); }
 	// generate scripts and clusters(by ScriptBreak).
-	void Break();
+	void Analyse();
 	// generate runs for different font(name¡¢size¡¢bold¡¢italic...)
 	void Slice();
 	// generate glyphs for each run, and calculate widths of all clusters and runs.

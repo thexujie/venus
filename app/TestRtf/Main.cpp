@@ -83,7 +83,8 @@ void OnCreate(HWND hWnd)
 	//dto.SetText(L"𪚥𪚥𪚥ยิ้ยิ้تىلىABCہاں");
 	uint_32 colors[] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Purple };
 	//char_16 chs[] = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ一二三四五六七八九十";
-	char_16 chs[] = L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้אאאא 1234 דדד לל شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
+	//char_16 chs[] = L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้אאאא 1234 דדד לל شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
+    char_16 chs[] = L"一二三‮四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้אאאא 1234 דדד לל شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
 	//char_16 chs[] = L"一二三四五六七八九十ABCDEFGHI";
 	//char_16 chs[] = L"abcd efg להגדיל את המונה על ידי אחד";
 	textw text;
@@ -106,7 +107,7 @@ void OnCreate(HWND hWnd)
 	source.m_text = text;
 	dto.Initialize(&source);
 	dto.SetText(text);
-	dto.Break();
+	dto.Analyse();
 	int_x step = 3;
 	for(int_x cnt = 0; cnt < (dto.GetClusterCount() / step) * step; cnt += step)
 	{

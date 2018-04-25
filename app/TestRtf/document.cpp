@@ -80,7 +80,7 @@ void DocTextObject::SetText(textw text)
 	m_text = text;
 }
 
-void DocTextObject::Break()
+void DocTextObject::Analyse()
 {
 	SCRIPT_DIGITSUBSTITUTE sds = { 0 };
 	ScriptRecordDigitSubstitution(LOCALE_USER_DEFAULT, &sds);
@@ -89,22 +89,22 @@ void DocTextObject::Break()
 	ScriptApplyDigitSubstitution(&sds, &sc, &ss);
 
 	vector<SCRIPT_ITEM> items(m_text.length() + 1, m_text.length() + 1);
-	int_32 nrun = 0;
-	ScriptItemize(m_text, m_text.length(), m_text.length() + 1, &sc, &ss, items, &nrun);
+	int_32 nitems = 0;
+	ScriptItemize(m_text, m_text.length(), m_text.length() + 1, &sc, &ss, items, &nitems);
 
-	scpitems.reallocate(nrun, nrun);
+	scpitems.reallocate(nitems, nitems);
 
 	int_x cluster_num = 0;
-	for(int_x irun = 0; irun < nrun; ++irun)
+	for(int_x iitem = 0; iitem < nitems; ++iitem)
 	{
-		scpitem_t & scpitem = scpitems[irun];
-		SCRIPT_ITEM & sitem = items[irun];
-		SCRIPT_ITEM & item_next = items[irun + 1];
-		scpitem.sa = sitem.a;
-		scpitem.trange = { sitem.iCharPos, item_next.iCharPos - sitem.iCharPos };
+		scpitem_t & scpitem = scpitems[iitem];
+		SCRIPT_ITEM & item = items[iitem];
+		SCRIPT_ITEM & item_next = items[iitem + 1];
+		scpitem.sa = item.a;
+		scpitem.trange = { item.iCharPos, item_next.iCharPos - item.iCharPos };
 		scpitem.crange = { cluster_num, 0 };
 #ifdef _DEBUG
-		scpitem._debug_text = m_text.sub_text(sitem.iCharPos, item_next.iCharPos - sitem.iCharPos);
+		scpitem._debug_text = m_text.sub_text(item.iCharPos, item_next.iCharPos - item.iCharPos);
 #endif
 
 		vector<TEXT_ATTR> tattrs(scpitem.trange.length, scpitem.trange.length);
@@ -116,7 +116,7 @@ void DocTextObject::Break()
 			rtfcluster_t & cluster = clusters.add();
 			++cluster_num;
 
-			cluster.run = irun;
+			cluster.run = iitem;
 			cluster.scp = 0;
 			cluster.trange = { scpitem.trange.index + itext, 1 };
 			cluster.rtf = { 0, 0 };
