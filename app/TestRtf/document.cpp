@@ -25,7 +25,7 @@ DocTextObject::DocTextObject()
 {
 	font_t & font = fonts.add();
 	font.name = Win32::GetDefaultFontName();
-	font.size = 20;
+	font.size = 30;
 	colors.add(Colors::Black);
 
 	HDC hdcScreen = GetDC(NULL);
@@ -148,11 +148,13 @@ void DocTextObject::Analyse()
 		scpitem.crange.length = cluster_num - scpitem.crange.index;
 	}
 
+#ifdef _DEBUG
 	for(int_x icluster = 0; icluster < clusters.size(); ++icluster)
 	{
 		rtfcluster_t & cluster = clusters[icluster];
-		cluster._debug_text = m_text.sub_text(cluster.trange.index, cluster.trange.length);
+		cluster._text = m_text.sub_text(cluster.trange.index, cluster.trange.length);
 	}
+#endif
 }
 
 void DocTextObject::Slice()
@@ -194,11 +196,13 @@ void DocTextObject::Slice()
 		}
 	}
 
+#ifdef _DEBUG
 	for(int_x run = 0; run < runitems.size(); ++run)
 	{
 		runitem_t & runitem = runitems[run];
-		runitem._debug_text = m_text.sub_text(runitem.trange.index, runitem.trange.length);
+		runitem._text = m_text.sub_text(runitem.trange.index, runitem.trange.length);
 	}
+#endif
 }
 
 void DocTextObject::Shape()
@@ -357,43 +361,49 @@ void DocTextObject::Shape()
 
 		int_x iglyph_beg = runitem.grange.index;
 		int_x iglyph_end = runitem.grange.index + runitem.grange.length;
-		int_x iglyph_off = 1;
+		int_x iglyph_inc = 1;
 		if(runitem.sa.fRTL)
 		{
 			iglyph_beg = runitem.grange.index + runitem.grange.length - 1;
 			iglyph_end = runitem.grange.index - 1;
-			iglyph_off = -1;
+			iglyph_inc = -1;
 		}
 
-		for(int_x iglyph = iglyph_beg, icluster = 0; iglyph != iglyph_end; iglyph += iglyph_off, ++icluster)
+		for(int_x iglyph = iglyph_beg, icluster = 0; iglyph != iglyph_end;)
 		{
-			rtfcluster_t & cluster = clusters[icluster + runitem.crange.index];
-
-			// 可能是 fallback 下来的，跟 scp 中不一致。
-			cluster.rtf.font = runitem.font;
-			cluster.grange.index = iglyph;
-			cluster.grange.length = 1;
-
-			while(iglyph < gattrs.size() - 1)
-			{
-				SCRIPT_VISATTR & attr = gattrs[iglyph + 1];
-				if(attr.fClusterStart)
-					break;
-
-				iglyph += iglyph_off;
-				++cluster.grange.length;
-			}
+			rtfcluster_t & cluster = clusters[runitem.crange.index + icluster];
+            if(cluster.grange.length != 0)
+            {
+                SCRIPT_VISATTR & attr = gattrs[iglyph];
+                if (attr.fClusterStart)
+                {
+                    ++icluster;
+                    continue;
+                }
+            }
+            else
+            {
+                // 可能是 fallback 下来的，跟 scp 中不一定相同，从 run 中获取
+                cluster.rtf.font = runitem.font;
+                cluster.grange.index = iglyph;
+            }
+			cluster.grange.length += iglyph_inc;
+            iglyph += iglyph_inc;
 		}
 	}
 
 	for(int_x iclt = 0; iclt < clusters.size(); ++iclt)
 	{
 		rtfcluster_t & cluster = clusters[iclt];
+        if (cluster.grange.length < 0)
+        {
+            cluster.grange.index = cluster.grange.index + cluster.grange.length + 1;
+            cluster.grange.length = -cluster.grange.length;
+        }
+
+        cluster.height = GetFont(cluster.rtf.font).font.size;
 		for(int_x iglyph = 0; iglyph < cluster.grange.length; ++iglyph)
-		{
 			cluster.width += advances[cluster.grange.index + iglyph];
-			cluster.height = GetFont(cluster.rtf.font).font.size;
-		}
 	}
 
 	for(int_x run = 0; run < runitems.size(); ++run)
@@ -497,6 +507,7 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 	{
 		rtfline_t & line = rtflines[iline];
 		line.rrange.index = rtfitems.size();
+        line.rect.y = line_y;
 
 		if(line.crange.length < 0)
 		{
@@ -510,10 +521,8 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 		{
 			const rtfcluster_t & cluster = clusters[icluster];
 			line.advance += cluster.width;
-			line.rect.y = line_y;
 			line.rect.w += cluster.width;
 			line.rect.h = maxof(cluster.height, line.rect.h);
-			line_y += line.rect.h;
 			if(!line.trange.length)
 				line.trange = cluster.trange;
 			else
@@ -556,14 +565,15 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 			rtfitem.crange.length += 1;
 		}
 
-		line._debug_text = m_text.sub_text(line.trange.index, line.trange.length);
+        line_y += line.rect.h;
+		line._text = m_text.sub_text(line.trange.index, line.trange.length);
 	}
 
 	// advance width
 	for(int_x irtf = 0; irtf < rtfitems.size(); ++irtf)
 	{
 		rtfitem_t & rtfitem = rtfitems[irtf];
-		rtfitem._debug_text = m_text.sub_text(rtfitem.trange.index, rtfitem.trange.length);
+		rtfitem._text = m_text.sub_text(rtfitem.trange.index, rtfitem.trange.length);
 		for(int_x icluster = 0; icluster < rtfitem.crange.length; ++icluster)
 		{
 			rtfcluster_t & cluster = clusters[rtfitem.crange.index + icluster];
@@ -592,6 +602,24 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 			rtfitem.offset = offset;
 			offset += rtfitem.advance;
 		}
+
+        for (int_x icluster = 0; icluster < rtfline.crange.length; ++icluster)
+        {
+            rtfcluster_t & cluster = clusters[rtfline.crange.index + icluster];
+            cluster.y = rtfline.rect.y;
+        }
+
+        for (int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
+        {
+            rtfitem_t & rtfitem = rtfitems[rtfline.rrange.index + orders[irtf]];
+            int_x offX = 0;
+            for (int_x icluster = 0; icluster < rtfitem.crange.length; ++icluster)
+            {
+                rtfcluster_t & cluster = clusters[rtfitem.crange.index + icluster];
+                cluster.x = rtfitem.offset + offX;
+                offX += cluster.width;
+            }
+        }
 	}
 
 	for(int_x iscp = 0; iscp < scpitems.size(); ++iscp)
@@ -688,16 +716,6 @@ err_t DocTextObject::Branch(int_x iWidth)
 tl_metrics_t DocTextObject::GetMetrics() const
 {
 	return tl_metrics_t();
-}
-
-tl_cluster_t DocTextObject::FindCluster(int_x iIndex) const
-{
-	return tl_cluster_t();
-}
-
-tl_cluster_t DocTextObject::GetCluster(int_x iCluster) const
-{
-	return tl_cluster_t();
 }
 
 tl_line_t DocTextObject::GetLine(int_x iLine) const

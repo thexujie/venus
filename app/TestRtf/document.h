@@ -57,6 +57,9 @@ struct rrange_t
 
 struct runitem_t
 {
+#ifdef _DEBUG
+    textw _text;
+#endif
 	SCRIPT_ANALYSIS sa;
 	int_x scp;
 	int_x font;
@@ -65,7 +68,6 @@ struct runitem_t
 	grange_t grange;
 	rrange_t rrange;
 	int_x advance;
-	textw _debug_text;
 };
 
 struct scpitem_t
@@ -78,6 +80,9 @@ struct scpitem_t
 
 struct rtfitem_t
 {
+#ifdef _DEBUG
+    textw _text;
+#endif
 	int_x run;
 	int_x scp;
 	int_x line;
@@ -87,16 +92,19 @@ struct rtfitem_t
 	crange_t crange;
 	int_x advance;
 	int_x offset;
-
-	textw _debug_text;
 };
 
 struct rtfcluster_t
 {
+#ifdef _DEBUG
+    textw _text;
+#endif
 	int_x run;
 	int_x scp;
 	trange_t trange;
 	grange_t grange;
+    int_x x;
+    int_x y;
 	int_x width;
 	int_x height;
 
@@ -113,12 +121,13 @@ struct rtfcluster_t
 	bool right2left : 1;
 	//! 是否是行标记
 	bool linetag : 1;
-
-	textw _debug_text;
 };
 
 struct rtfline_t
 {
+#ifdef _DEBUG
+    textw _text;
+#endif
 	int_x line;
 	rrange_t rrange;
 	crange_t crange;
@@ -126,10 +135,9 @@ struct rtfline_t
 
 	int_x advance;
 	tlrect_t rect;
-	textw _debug_text;
 };
 
-class DocTextObject : public DocObject, public ObjectT<ITextLayout>
+class DocTextObject : public DocObject
 {
 public:
 	DocTextObject();
@@ -250,8 +258,9 @@ public:
 
 	tl_metrics_t GetMetrics() const;
 
-	tl_cluster_t FindCluster(int_x iIndex) const;
-	tl_cluster_t GetCluster(int_x iCluster) const;
+    int_x ClusterCount() const { return clusters.size(); }
+    tl_cluster_t FindCluster(int_x iIndex) const { throw 0; }
+    rtfcluster_t GetCluster(int_x iCluster) const { return clusters[iCluster];}
 	tl_line_t GetLine(int_x iLine) const;
 
 	tl_range_t HitTest(pointix point) const;

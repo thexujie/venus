@@ -62,6 +62,7 @@
     <ClInclude Include="document.h" />
     <ClInclude Include="Rtf.h" />
     <ClInclude Include="RtfTag.h" />
+    <ClInclude Include="script.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Uniscribe.h" />
   </ItemGroup>
@@ -70,6 +71,7 @@
     <ClCompile Include="document.cpp" />
     <ClCompile Include="Rtf.cpp" />
     <ClCompile Include="RtfTag.cpp" />
+    <ClCompile Include="script.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

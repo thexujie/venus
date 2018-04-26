@@ -3,6 +3,7 @@
 
 #include "Uniscribe.h"
 #include "CRtf.h"
+#include "script.h"
 
 const char_x APP_NAME[] = _T("TestRtf");
 const char_x RTF_FILE[] = _T("rtf.rtf");
@@ -73,8 +74,12 @@ CScriptDocument doc;
 int iBaseY = 0;
 DocSource source;
 DocTextObject dto;
+usp::ScriptItem si;
+
+HPEN hPen = NULL;
 void OnCreate(HWND hWnd)
 {
+    hPen = CreatePen(PS_SOLID, 2, 0xff);
 	//::CreateCaret(hWnd, NULL, 1, 22);
 	//::SetCaretPos(10, 10);
 	//::ShowCaret(hWnd);
@@ -84,13 +89,15 @@ void OnCreate(HWND hWnd)
 	uint_32 colors[] = { Colors::Red, Colors::Green, Colors::Blue, Colors::Purple };
 	//char_16 chs[] = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ一二三四五六七八九十";
 	//char_16 chs[] = L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้אאאא 1234 דדד לל شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
-    char_16 chs[] = L"一二三‮四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้אאאא 1234 דדד לל شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
+    //char_16 chs[] = L"一二三四ABCD𪚥𪚥𪚥ยิ้ยิ้אאאא 1234 דדד לל شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
+    char_16 chs[] = L"ยิ้ยิ้אאאא 1234 ";
 	//char_16 chs[] = L"一二三四五六七八九十ABCDEFGHI";
 	//char_16 chs[] = L"abcd efg להגדיל את המונה על ידי אחד";
 	textw text;
-	for(int_x cnt = 0; cnt < 1000 * 2; ++cnt)
+    text = chs;
+	//for(int_x cnt = 0; cnt < 1000 * 2; ++cnt)
 	{
-		text.append(chs[cnt % (arraysize(chs) - 1)]);
+		//text.append(chs[cnt % (arraysize(chs) - 1)]);
 	}
 
 	//text = L"تىلى تىلى تىلى تىلى تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ تەتقىق قىلدى";
@@ -100,7 +107,7 @@ void OnCreate(HWND hWnd)
 	//text = L"ABCD许许多多";
 	//text = L"you say אאאא דדד לל   just come on.";
 	//text = L"you say אאאא דדד לל אאאא דדד לל 一二三四just come on.";
-	//text = L"אאאא 1234 דדד לל";
+	text = L"אללדדדאאאא 1234 דדד לל";
 	//text = L"تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
 	//text = L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
 	//dto.SetText(L"ษาไทยรอยยิ้มนักสู้ กเสียก่อน한국어조선말ئۇيغۇر تىلى𪚥𪚥𪚥𪚥𪚥");
@@ -108,14 +115,21 @@ void OnCreate(HWND hWnd)
 	dto.Initialize(&source);
 	dto.SetText(text);
 	dto.Analyse();
-	int_x step = 3;
-	for(int_x cnt = 0; cnt < (dto.GetClusterCount() / step) * step; cnt += step)
-	{
-		dto.SetColor({ cnt, step }, colors[cnt % arraysize(colors)]);
-	}
+	//int_x step = 3;
+	//for(int_x cnt = 0; cnt < (dto.GetClusterCount() / step) * step; cnt += step)
+	//{
+	//	dto.SetColor({ cnt, step }, colors[cnt % arraysize(colors)]);
+	//}
 
 	dto.Slice();
 	dto.Shape();
+
+    //----------------------------
+    si.SetText(L"تەتقىق قىلدى𪚥𪚥ยิ้ยิ้");
+    si.Itemize();
+    si.Slice();
+    si.Shape();
+
 
 	//CRtfParser rtf;
 	//CFileStream sfs(RTF_FILE, StreamModeRead);
@@ -137,7 +151,9 @@ void OnDestroy(HWND hWnd)
 }
 
 int_x frameSize = 60;
-int_x layoutStart = 100;
+int_x layoutStart = 0;
+
+int_x clusterIndex = 0;
 
 void OnSize(HWND hWnd)
 {
@@ -171,25 +187,18 @@ void OnPaint(HWND hWnd)
 	HDC hdc = BeginPaint(hWnd, &ps);
 	HDC hdc2 = CreateCompatibleDC(hdc);
 	HBITMAP hBitmap = CreateBitmap(rc.right, rc.bottom, 1, 32, 0);
-	SelectObject(hdc2, hBitmap);
+    SelectObject(hdc2, hBitmap);
+    SelectObject(hdc2, hPen);
 	SetBkMode(hdc2, TRANSPARENT);
 	
-	recti32 rect(0, 0, rc.right, rc.bottom);
-	Rectangle(hdc2, rect.x, rect.y, rect.right(), rect.bottom());
-	MoveToEx(hdc2, frameSize, frameSize, nullptr);
-	LineTo(hdc2, frameSize, rect.bottom() - frameSize);
+    rtfcluster_t cluster = dto.GetCluster(clusterIndex);
 
-	MoveToEx(hdc2, rect.right() - frameSize, frameSize, nullptr);
-	LineTo(hdc2, rect.right() - frameSize, rect.bottom() - frameSize);
-
-	MoveToEx(hdc2, frameSize, frameSize, nullptr);
-	LineTo(hdc2, rect.right() - frameSize, frameSize);
-
-	MoveToEx(hdc2, frameSize, rect.bottom() - frameSize, nullptr);
-	LineTo(hdc2, rect.right() - frameSize, rect.bottom() - frameSize);
-
+    int drawX = frameSize;
+    int drawY = frameSize;
+    Rectangle(hdc2, drawX, drawY, rc.right - frameSize * 2, rc.bottom - frameSize * 2);
+    Rectangle(hdc2, drawX + cluster.x, drawY + cluster.y, drawX + cluster.x + cluster.width+1, drawY + cluster.y + cluster.height +1);
 	//doc.Draw(&engine, hdc2, 0, rect.y - iBaseY, rect.w, rect.h);
-	dto.Draw(hdc2, frameSize, frameSize, { frameSize, frameSize, rc.right - frameSize * 2, rc.bottom - frameSize * 2});
+	dto.Draw(hdc2, drawX, drawY, { drawX, drawY, rc.right - frameSize * 2, rc.bottom - frameSize * 2});
 
 	BitBlt(hdc, 0, 0, rc.right, rc.bottom, hdc2, 0, 0, SRCCOPY);
 
@@ -202,6 +211,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uiMessage, WPARAM wParam, LPARAM lParam
 {
 	switch(uiMessage)
 	{
+    case WM_KEYDOWN:
+        switch(LOWORD(wParam))
+        {
+        case VK_LEFT:
+            clusterIndex = (clusterIndex - 1 + dto.GetClusterCount()) % dto.GetClusterCount();
+            InvalidateRect(hWnd, NULL, FALSE);
+            break;
+        case VK_RIGHT:
+            clusterIndex = (clusterIndex + 1 + dto.GetClusterCount()) % dto.GetClusterCount();
+            InvalidateRect(hWnd, NULL, FALSE);
+            break;
+        }
+        break;
 	case WM_MOUSEWHEEL:
 		if((int_16)(wParam >> 16) > 0)
 		{
