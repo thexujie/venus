@@ -51,9 +51,11 @@ namespace usp
 #ifdef _DEBUG
         std::wstring _text;
 #endif
-        int32_t item_index;
+        int32_t item_index = 0;
+        int32_t run_index = 0;
         trange_t trange;
         grange_t grange;
+
         int32_t x = 0;
         int32_t y = 0;
         int32_t width = 0;
@@ -90,6 +92,24 @@ namespace usp
         int_x advance;
     };
 
+    struct scp_line
+    {
+        crange_t crange;
+
+        int32_t advance = 0;
+        int32_t height = 0;
+    };
+
+
+    struct scp_render
+    {
+        crange_t crange;
+
+        int32_t advance = 0;
+        int32_t height = 0;
+    };
+
+
     class ScriptItem
     {
     public:
@@ -106,7 +126,7 @@ namespace usp
         void Shape();
 
         // layout all clusters
-        void Layout(int_x start, rectix rect, wrapmode_e wrapmode);
+        void Layout(int_x start, int_x width, wrapmode_e wrapmode);
     private:
         std::wstring _text;
         HRESULT _hr = S_OK;
@@ -119,6 +139,9 @@ namespace usp
 
         // 具有相同字体的一段文字，run 内的文字都是同一语言的，多个 run 一起构成一个 item
         std::vector<scp_run> _runs;
+
+        std::vector<scp_line> _lines;
+        std::vector<scp_render> _renders;
 
         // -----------------------------显示相关
         // glyph indices

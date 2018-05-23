@@ -110,7 +110,6 @@ void DocTextObject::Analyse()
 		vector<TEXT_ATTR> tattrs(scpitem.trange.length, scpitem.trange.length);
 
 		ScriptBreak(m_text + scpitem.trange.index, scpitem.trange.length, &scpitem.sa, tattrs);
-
 		for(int_x itext = 0; itext < tattrs.size(); ++itext)
 		{
 			rtfcluster_t & cluster = clusters.add();

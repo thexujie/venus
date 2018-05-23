@@ -74,7 +74,7 @@ CScriptDocument doc;
 int iBaseY = 0;
 DocSource source;
 DocTextObject dto;
-usp::ScriptItem si;
+usp::ScriptItem item;
 
 HPEN hPen = NULL;
 void OnCreate(HWND hWnd)
@@ -125,10 +125,10 @@ void OnCreate(HWND hWnd)
 	dto.Shape();
 
     //----------------------------
-    si.SetText(L"تەتقىق قىلدى𪚥𪚥ยิ้ยิ้");
-    si.Itemize();
-    si.Slice();
-    si.Shape();
+    item.SetText(L"تەتقىق قىلدى𪚥𪚥ยิ้ยิ้");
+    item.Itemize();
+    item.Slice();
+    item.Shape();
 
 
 	//CRtfParser rtf;
@@ -160,8 +160,8 @@ void OnSize(HWND hWnd)
 	RECT rc;
 	GetClientRect(hWnd, &rc);
 	doc.GenerateLine(&engine, rc.right);
-
 	dto.Layout(layoutStart, { 0, 0, rc.right - frameSize * 2, rc.bottom }, wrapmode_char);
+    item.Layout(layoutStart, rc.right - frameSize * 2, usp::wrapmode_char);
 
 	SCROLLINFO si = {};
 	si.cbSize = sizeof(si);

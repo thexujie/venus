@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include "script.h"
+#include <algorithm>
+
+#undef max
+#undef min
 
 namespace usp
 {
@@ -412,124 +416,95 @@ namespace usp
             for (int_x icluster = 0; icluster < run.crange.length; ++icluster)
             {
                 scp_cluster & cluster = _clusters[icluster];
+                cluster.run_index = irun;
                 run.advance += cluster.width;
             }
         }
     }
 
 
-    void ScriptItem::Layout(int_x start, rectix rect, wrapmode_e wrapmode)
+    void ScriptItem::Layout(int_x start, int_x width, wrapmode_e wrapmode)
     {
-        rtfitems.clear();
-        rtflines.clear();
+        if (!_clusters.size())
+            return;
 
-        int_x iadvance = start_x;
-        if (iadvance && clusters.valid())
+        //rtfitems.clear();
+        //rtflines.clear();
+
+        //int_x iadvance = start_x;
+        //if (iadvance && clusters.valid())
+        //{
+        //    const rtfcluster_t & cluster = clusters[0];
+        //    if (iadvance + cluster.width > rect.w)
+        //    {
+        //        rtfline_t & rtfline_empty = rtflines.add();
+        //        rtfline_empty.line = rtflines.size() - 1;
+        //        rtfline_empty.rect = { start_x, 0, 0, m_source->GetDefFormat().font.size };
+        //        iadvance = 0;
+        //    }
+        //}
+
+
+        int32_t iadvance = 0;
+
+        int_x icluster_curr = 0;
+        int_x icluster_last = 0;
+        int_x icluster_break = 0;
+
+        for (int_x irun = 0; irun < _runs.size(); ++irun)
         {
-            const rtfcluster_t & cluster = clusters[0];
-            if (iadvance + cluster.width > rect.w)
-            {
-                rtfline_t & rtfline_empty = rtflines.add();
-                rtfline_empty.line = rtflines.size() - 1;
-                rtfline_empty.rect = { start_x, 0, 0, m_source->GetDefFormat().font.size };
-                iadvance = 0;
-            }
-        }
-
-        rtfline_t & rtfline_first = rtflines.add();
-        rtfline_first.line = rtflines.size() - 1;
-        rtfline_first.rect = { iadvance, 0, 0, 0 };
-        for (int_x irun = 0; irun < runitems.size(); ++irun)
-        {
-            runitem_t & runitem = runitems[irun];
-
-            int_x icluster_break = -1;
-            if (irun > 0)
-                icluster_break = runitem.crange.index;
+            scp_run & runitem = _runs[irun];
+            icluster_break = runitem.crange.index;
 
             for (int iclt = 0; iclt < runitem.crange.length; ++iclt)
             {
-                int_x icluster = runitem.crange.index + iclt;
-                const rtfcluster_t & cluster = clusters[icluster];
+                icluster_curr = runitem.crange.index + iclt;
+                const scp_cluster & cluster = _clusters[icluster_curr];
                 if (cluster.softbreak || cluster.whitespace)
-                    icluster_break = icluster;
+                    icluster_break = icluster_curr;
 
-                rtfline_t & rtfline_last = rtflines.back();
+                if (icluster_curr - icluster_last < 1)
+                    continue;
 
-                // there must be at least one cluster.
-                if (!rtfline_last.crange.length)
+                if (iadvance + cluster.width < width)
+                    continue;
+
+                if (wrapmode == wrapmode_char || icluster_curr - icluster_last == 1)
                 {
-                    //...
+                    scp_line line;
+                    line.crange = { icluster_last , icluster_curr};
+                    _lines.push_back(line);
+                    icluster_last = icluster_curr;
+                    iadvance = 0;
                 }
-                else if (iadvance + cluster.width > rect.w)
+                else if (wrapmode == wrapmode_word)
                 {
-                    if (wrapmode == wrapmode_char || icluster_break < 0)
-                    {
-                        rtfline_t & rtfline_new = rtflines.add();
-                        rtfline_new.line = rtflines.size() - 1;
-                        rtfline_new.crange.index = icluster;
-                        rtfline_new.rect = { 0, 0, 0, 0 };
-                        icluster_break = -1;
-                        iadvance = 0;
-                    }
-                    else
-                    {
-                        rtfline_last.crange.length = icluster_break - rtfline_last.crange.index;
-                        iclt = icluster_break - runitem.crange.index;
-
-                        rtfline_t & rtfline_new = rtflines.add();
-                        rtfline_new.line = rtflines.size() - 1;
-                        rtfline_new.crange = { icluster_break, 0 };
-                        rtfline_new.rect = { 0, 0, 0, 0 };
-                        icluster_break = -1;
-                        iadvance = 0;
-                    }
                 }
+                else{}
 
-                rtfline_t & rtfline = rtflines.back();
-                rtfline.crange.length += 1;
                 iadvance += cluster.width;
             }
         }
 
-        for (int_x iline = 0; iline < rtflines.size(); ++iline)
+        if (icluster_curr > icluster_last)
         {
-            rtfline_t & rtfline = rtflines[iline];
-            // break lines fallback
-            if (rtfline.crange.length < 0)
-            {
-                rtfline.crange.index = rtfline.crange.index + rtfline.crange.length + 1;
-                rtfline.crange.length = -rtfline.crange.length;
-            }
+            scp_line line;
+            line.crange = { icluster_last, icluster_curr };
+            _lines.push_back(line);
         }
 
         int_x line_y = 0;
-        for (int_x iline = 0; iline < rtflines.size(); ++iline)
+        for (int_x iline = 0; iline < _lines.size(); ++iline)
         {
-            rtfline_t & line = rtflines[iline];
-            line.rrange.index = rtfitems.size();
-            line.rect.y = line_y;
+            scp_line & line = _lines[iline];
 
-            if (line.crange.length < 0)
+            for (int_x icluster = line.crange.index; icluster < line.crange.index + line.crange.length; ++icluster)
             {
-                line.crange.index = line.crange.index + line.crange.length;
-                line.crange.length = -line.crange.length;
-            }
-
-            for (int_x icluster = line.crange.index;
-                icluster < line.crange.index + line.crange.length;
-                ++icluster)
-            {
-                const rtfcluster_t & cluster = clusters[icluster];
+                const scp_cluster & cluster = _clusters[icluster];
                 line.advance += cluster.width;
-                line.rect.w += cluster.width;
-                line.rect.h = maxof(cluster.height, line.rect.h);
-                if (!line.trange.length)
-                    line.trange = cluster.trange;
-                else
-                    line.trange.length += cluster.trange.length;
+                line.height = std::max(cluster.height, line.height);
 
-                const runitem_t & runitem = runitems[cluster.run];
+                const scp_run & runitem = _runs[cluster.run_index];
                 if (!line.rrange.length)
                 {
                     rtfitem_t & rtfitem_new = rtfitems.add();
