@@ -233,14 +233,14 @@ namespace usp
         {
             scp_run & run = _runs[irun];
 
-            int_x ifont_new = run.font;
+            int_x ifont_new = -1;
             font = GetFont(run.font);
             ::SelectObject(_hdc, font.hfont);
 
             int_x gcount_max = run.trange.length * 3 / 2 + 16;
             int_32 gcount = 0;
 
-            _glyph_indices.resize(goffset + gcount_max);
+            _glyphs.resize(goffset + gcount_max);
             _glyph_attrs.resize(goffset + gcount_max);
             _cluster_indices.resize(run.trange.index + run.trange.length);
 
@@ -252,7 +252,7 @@ namespace usp
                     font.cache,
                     _text.c_str() + run.trange.index, run.trange.length,
                     gcount_max, &(run.sa),
-                    _glyph_indices.data() + goffset, 
+                    _glyphs.data() + goffset, 
                     _cluster_indices.data() + run.trange.index,
                     _glyph_attrs.data() + goffset, 
                     &gcount);
@@ -278,7 +278,7 @@ namespace usp
                     if (fallback == fallback_waiting || fallback == fallback_falling)
                     {
                         ScriptGetFontProperties(_hdc, font.cache, &fprop);
-                        if (HasMissingGlyphs(_glyph_indices.data() + goffset, gcount, fprop))
+                        if (HasMissingGlyphs(_glyphs.data() + goffset, gcount, fprop))
                         {
                             if (fallback == fallback_waiting)
                                 fallback = fallback_prepare;
@@ -332,9 +332,10 @@ namespace usp
                 }
             }
 
-            run.font = ifont_new;
+            if(ifont_new >= 0)
+                run.font = ifont_new;
 
-            _glyph_indices.resize(goffset + gcount);
+            _glyphs.resize(goffset + gcount);
             _glyph_attrs.resize(goffset + gcount);
 
             // 获取 advances 和 offsets.
@@ -343,7 +344,7 @@ namespace usp
 
             ABC abc = {};
             _hr = ScriptPlace(_hdc, font.cache,
-                _glyph_indices.data() + goffset, gcount, _glyph_attrs.data() + goffset, 
+                _glyphs.data() + goffset, gcount, _glyph_attrs.data() + goffset, 
                 &run.sa, 
                 _glyph_advances.data() + goffset, _glyph_offsets.data() + goffset, 
                 &abc);
@@ -408,71 +409,43 @@ namespace usp
             for (int_x iglyph = 0; iglyph < cluster.grange.length; ++iglyph)
                 cluster.width += _glyph_advances[cluster.grange.index + iglyph];
         }
-
-        // 计算每个 run 的大小
-        for (int_x irun = 0; irun < _runs.size(); ++irun)
-        {
-            scp_run & run = _runs[irun];
-            for (int_x icluster = 0; icluster < run.crange.length; ++icluster)
-            {
-                scp_cluster & cluster = _clusters[icluster];
-                cluster.run_index = irun;
-                run.advance += cluster.width;
-            }
-        }
     }
 
 
     void ScriptItem::Layout(int_x start, int_x width, wrapmode_e wrapmode)
     {
+        _lines.clear();
         if (!_clusters.size())
             return;
 
-        //rtfitems.clear();
-        //rtflines.clear();
-
-        //int_x iadvance = start_x;
-        //if (iadvance && clusters.valid())
-        //{
-        //    const rtfcluster_t & cluster = clusters[0];
-        //    if (iadvance + cluster.width > rect.w)
-        //    {
-        //        rtfline_t & rtfline_empty = rtflines.add();
-        //        rtfline_empty.line = rtflines.size() - 1;
-        //        rtfline_empty.rect = { start_x, 0, 0, m_source->GetDefFormat().font.size };
-        //        iadvance = 0;
-        //    }
-        //}
-
-
-        int32_t iadvance = 0;
+        int32_t iadvance = start;
 
         int_x icluster_curr = 0;
         int_x icluster_last = 0;
         int_x icluster_break = 0;
 
-        for (int_x irun = 0; irun < _runs.size(); ++irun)
+        for (int32_t irun = 0; irun < _runs.size(); ++irun)
         {
             scp_run & runitem = _runs[irun];
             icluster_break = runitem.crange.index;
 
-            for (int iclt = 0; iclt < runitem.crange.length; ++iclt)
+            for (int iclt = 0; iclt < runitem.crange.length; ++iclt, ++icluster_curr)
             {
-                icluster_curr = runitem.crange.index + iclt;
-                const scp_cluster & cluster = _clusters[icluster_curr];
+                scp_cluster & cluster = _clusters[icluster_curr];
+                cluster.run_index = irun;
                 if (cluster.softbreak || cluster.whitespace)
                     icluster_break = icluster_curr;
 
-                if (icluster_curr - icluster_last < 1)
+                if (icluster_curr - icluster_last < 1 || iadvance + cluster.width < width)
+                {
+                    iadvance += cluster.width;
                     continue;
-
-                if (iadvance + cluster.width < width)
-                    continue;
+                }
 
                 if (wrapmode == wrapmode_char || icluster_curr - icluster_last == 1)
                 {
                     scp_line line;
-                    line.crange = { icluster_last , icluster_curr};
+                    line.crange = { icluster_last , icluster_curr - icluster_last };
                     _lines.push_back(line);
                     icluster_last = icluster_curr;
                     iadvance = 0;
@@ -489,119 +462,160 @@ namespace usp
         if (icluster_curr > icluster_last)
         {
             scp_line line;
-            line.crange = { icluster_last, icluster_curr };
+            line.crange = { icluster_last, icluster_curr - icluster_last };
             _lines.push_back(line);
         }
 
-        int_x line_y = 0;
+
         for (int_x iline = 0; iline < _lines.size(); ++iline)
         {
             scp_line & line = _lines[iline];
-
-            for (int_x icluster = line.crange.index; icluster < line.crange.index + line.crange.length; ++icluster)
+            if(line.crange.length > 0)
             {
-                const scp_cluster & cluster = _clusters[icluster];
-                line.advance += cluster.width;
-                line.height = std::max(cluster.height, line.height);
-
-                const scp_run & runitem = _runs[cluster.run_index];
-                if (!line.rrange.length)
+                const scp_cluster & cluster_beg = _clusters[line.crange.index];
+                const scp_cluster & cluster_end = _clusters[line.crange.index + line.crange.length - 1];
+                line.trange = { cluster_beg.trange.index, cluster_end.trange.index + cluster_end.trange.length - cluster_beg.trange.index };
+                for (int_x icluster = line.crange.index; icluster < line.crange.index + line.crange.length; ++icluster)
                 {
-                    rtfitem_t & rtfitem_new = rtfitems.add();
-                    ++line.rrange.length;
-                    rtfitem_new.run = cluster.run;
-                    rtfitem_new.scp = cluster.scp;
-                    rtfitem_new.line = iline;
-                    rtfitem_new.rtf.font = runitem.font;
-                    rtfitem_new.rtf.color = cluster.rtf.color;
+                    line.width += _clusters[icluster].width;
+                    line.height = std::max(line.height, _clusters[icluster].height);
+                }
+#ifdef _DEBUG
+                line._text = _text.substr(line.trange.index, line.trange.length);
+#endif
+            }
+        }
 
-                    rtfitem_new.crange.index = icluster;
-                    rtfitem_new.trange.index = cluster.trange.index;
+        //for (int_x iline = 0; iline < rtflines.size(); ++iline)
+        //{
+        //    rtfline_t & rtfline = rtflines[iline];
+
+        //    vector<uint_8> eles(rtfline.rrange.length);
+        //    vector<int_32> orders(rtfline.rrange.length);
+        //    vector<int_32> orders2(rtfline.rrange.length);
+
+        //    for (int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
+        //    {
+        //        eles[irtf] = runitems[rtfitems[rtfline.rrange.index + irtf].run].sa.s.uBidiLevel;
+        //    }
+        //    ScriptLayout(rtfline.rrange.length, eles, orders, orders2);
+
+        //    int_x offset = rtfline.rect.x;
+        //    for (int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
+        //    {
+        //        rtfitem_t & rtfitem = rtfitems[rtfline.rrange.index + orders[irtf]];
+        //        rtfitem.offset = offset;
+        //        offset += rtfitem.advance;
+        //    }
+
+        //    for (int_x icluster = 0; icluster < rtfline.crange.length; ++icluster)
+        //    {
+        //        rtfcluster_t & cluster = clusters[rtfline.crange.index + icluster];
+        //        cluster.y = rtfline.rect.y;
+        //    }
+
+        //    for (int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
+        //    {
+        //        rtfitem_t & rtfitem = rtfitems[rtfline.rrange.index + orders[irtf]];
+        //        int_x offX = 0;
+        //        for (int_x icluster = 0; icluster < rtfitem.crange.length; ++icluster)
+        //        {
+        //            rtfcluster_t & cluster = clusters[rtfitem.crange.index + icluster];
+        //            cluster.x = rtfitem.offset + offX;
+        //            offX += cluster.width;
+        //        }
+        //    }
+        //}
+
+        //for (int_x iscp = 0; iscp < scpitems.size(); ++iscp)
+        //{
+        //    scpitem_t & run = scpitems[iscp];
+        //    run._debug_text = m_text.sub_text(run.trange.index, run.trange.length);
+        //}
+    }
+
+
+    void ScriptItem::Draw(HDC hdc, int_x x, int_x y, rectix rect)
+    {
+        ::SetBkMode(hdc, TRANSPARENT);
+        ::SetTextColor(hdc, 0x0000ff);
+        HGDIOBJ hOldFont = nullptr;
+        int_x drawX = x;
+        int_x drawY = rect.y;
+        RECT rc = { rect.x, rect.y, rect.right(), rect.bottom() };
+
+        for(int32_t iline = 0; iline < _lines.size(); ++iline)
+        {
+            const scp_line & line = _lines[iline];
+            if (!line.crange.length)
+                continue;
+
+            int32_t irun = -1;
+            int32_t gindex = -1;
+            int32_t gcount = -1;
+            int32_t run_x = 0;
+            int32_t run_width = 0;
+            for(int32_t icluster = 0; icluster < line.crange.length; ++icluster)
+            {
+                const scp_cluster & cluster = _clusters[line.crange.index + icluster];
+                if(irun < 0)
+                {
+                    irun = cluster.run_index;
+                    gindex = cluster.grange.index;
+                    gcount = 0;
+                }
+                else if(cluster.run_index != irun)
+                {
+                    const scp_run & run = _runs[irun];
+                    const scp_item & item = _items[run.item_index];
+                    view_font_t font = GetFont(run.font);
+                    if (!hOldFont)
+                        hOldFont = ::SelectObject(hdc, font.hfont);
+                    else
+                        ::SelectObject(hdc, font.hfont);
+
+                    HRESULT hResult = ScriptTextOut(hdc, font.cache, drawX + run_x, drawY, ETO_CLIPPED, &rc,
+                        &item.sa, nullptr, 0, 
+                        _glyphs.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex), gcount,
+                        _glyph_advances.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex),
+                        nullptr, 
+                        _glyph_offsets.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex));
+
+                    irun = cluster.run_index;
+                    gindex = cluster.grange.index;
+                    gcount = 0;
+                    run_x = run_width;
                 }
                 else
                 {
-                    rtfitem_t & rtfitem_last = rtfitems.back();
-                    if (rtfitem_last.rtf != cluster.rtf || rtfitem_last.run != cluster.run)
-                    {
-                        rtfitem_t & rtfitem_new = rtfitems.add();
-                        ++line.rrange.length;
-                        rtfitem_new.run = cluster.run;
-                        rtfitem_new.scp = cluster.scp;
-                        rtfitem_new.line = iline;
-                        rtfitem_new.rtf.font = runitem.font;
-                        rtfitem_new.rtf.color = cluster.rtf.color;
-
-                        rtfitem_new.crange.index = icluster;
-                        rtfitem_new.trange.index = cluster.trange.index;
-                    }
                 }
-
-                rtfitem_t & rtfitem = rtfitems.back();
-                rtfitem.trange.length += cluster.trange.length;
-                rtfitem.crange.length += 1;
+                run_width += cluster.width;
+                gcount += cluster.grange.length;
             }
 
-            line_y += line.rect.h;
-            line._text = m_text.sub_text(line.trange.index, line.trange.length);
+            if(gcount > 0)
+            {
+                const scp_run & run = _runs[irun];
+                const scp_item & item = _items[run.item_index];
+                view_font_t font = GetFont(run.font);
+                if (!hOldFont)
+                    hOldFont = ::SelectObject(hdc, font.hfont);
+                else
+                    ::SelectObject(hdc, font.hfont);
+
+                HRESULT hResult = ScriptTextOut(hdc, font.cache, drawX + run_x, drawY, ETO_CLIPPED, &rc,
+                    &item.sa, nullptr, 0,
+                    _glyphs.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex), gcount,
+                    _glyph_advances.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex),
+                    nullptr,
+                    _glyph_offsets.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex));
+            }
+
+            drawX = rect.x;
+            drawY += line.height;
         }
 
-        // advance width
-        for (int_x irtf = 0; irtf < rtfitems.size(); ++irtf)
-        {
-            rtfitem_t & rtfitem = rtfitems[irtf];
-            rtfitem._text = m_text.sub_text(rtfitem.trange.index, rtfitem.trange.length);
-            for (int_x icluster = 0; icluster < rtfitem.crange.length; ++icluster)
-            {
-                rtfcluster_t & cluster = clusters[rtfitem.crange.index + icluster];
-                rtfitem.advance += cluster.width;
-            }
-        }
-
-        for (int_x iline = 0; iline < rtflines.size(); ++iline)
-        {
-            rtfline_t & rtfline = rtflines[iline];
-
-            vector<uint_8> eles(rtfline.rrange.length);
-            vector<int_32> orders(rtfline.rrange.length);
-            vector<int_32> orders2(rtfline.rrange.length);
-
-            for (int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
-            {
-                eles[irtf] = runitems[rtfitems[rtfline.rrange.index + irtf].run].sa.s.uBidiLevel;
-            }
-            ScriptLayout(rtfline.rrange.length, eles, orders, orders2);
-
-            int_x offset = rtfline.rect.x;
-            for (int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
-            {
-                rtfitem_t & rtfitem = rtfitems[rtfline.rrange.index + orders[irtf]];
-                rtfitem.offset = offset;
-                offset += rtfitem.advance;
-            }
-
-            for (int_x icluster = 0; icluster < rtfline.crange.length; ++icluster)
-            {
-                rtfcluster_t & cluster = clusters[rtfline.crange.index + icluster];
-                cluster.y = rtfline.rect.y;
-            }
-
-            for (int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
-            {
-                rtfitem_t & rtfitem = rtfitems[rtfline.rrange.index + orders[irtf]];
-                int_x offX = 0;
-                for (int_x icluster = 0; icluster < rtfitem.crange.length; ++icluster)
-                {
-                    rtfcluster_t & cluster = clusters[rtfitem.crange.index + icluster];
-                    cluster.x = rtfitem.offset + offX;
-                    offX += cluster.width;
-                }
-            }
-        }
-
-        for (int_x iscp = 0; iscp < scpitems.size(); ++iscp)
-        {
-            scpitem_t & run = scpitems[iscp];
-            run._debug_text = m_text.sub_text(run.trange.index, run.trange.length);
-        }
+        if (hOldFont)
+            ::SelectObject(hdc, hOldFont);
     }
 }

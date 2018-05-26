@@ -89,23 +89,17 @@ namespace usp
         crange_t crange;
         grange_t grange;
         rrange_t rrange;
-        int_x advance;
     };
 
     struct scp_line
     {
+#ifdef _DEBUG
+        std::wstring _text;
+#endif
         crange_t crange;
+        trange_t trange;
 
-        int32_t advance = 0;
-        int32_t height = 0;
-    };
-
-
-    struct scp_render
-    {
-        crange_t crange;
-
-        int32_t advance = 0;
+        int32_t width = 0;
         int32_t height = 0;
     };
 
@@ -127,6 +121,8 @@ namespace usp
 
         // layout all clusters
         void Layout(int_x start, int_x width, wrapmode_e wrapmode);
+
+        void Draw(HDC hdc, int_x x, int_x y, rectix rect);
     private:
         std::wstring _text;
         HRESULT _hr = S_OK;
@@ -141,11 +137,10 @@ namespace usp
         std::vector<scp_run> _runs;
 
         std::vector<scp_line> _lines;
-        std::vector<scp_render> _renders;
 
         // -----------------------------œ‘ æœ‡πÿ
         // glyph indices
-        std::vector<uint_16> _glyph_indices;
+        std::vector<uint_16> _glyphs;
         std::vector<SCRIPT_VISATTR> _glyph_attrs;
         std::vector<int_32> _glyph_advances;
         std::vector<GOFFSET> _glyph_offsets;

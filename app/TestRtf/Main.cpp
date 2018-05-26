@@ -108,7 +108,7 @@ void OnCreate(HWND hWnd)
 	//text = L"you say אאאא דדד לל   just come on.";
 	//text = L"you say אאאא דדד לל אאאא דדד לל 一二三四just come on.";
 	text = L"אללדדדאאאא 1234 דדד לל";
-	//text = L"تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
+	//text = L"تەتقىق قىلدى";
 	//text = L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
 	//dto.SetText(L"ษาไทยรอยยิ้มนักสู้ กเสียก่อน한국어조선말ئۇيغۇر تىلى𪚥𪚥𪚥𪚥𪚥");
 	source.m_text = text;
@@ -125,7 +125,11 @@ void OnCreate(HWND hWnd)
 	dto.Shape();
 
     //----------------------------
-    item.SetText(L"تەتقىق قىلدى𪚥𪚥ยิ้ยิ้");
+    //item.SetText(L"تەتقىق قىلدى𪚥𪚥ยิ้ยิ้");
+    //item.SetText(L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى");
+    item.SetText(L"تەتقىق 0 قىلدى 1 تەتقىق 2 قىلدى 3 تەتقىق 4 قىلدى 5 تەتقىق 6 قىلدى 7 تەتقىق 8 قىلدى 9 ");
+    //item.SetText(L"一二三四五六七八九十 ABCD EFGHI 𪚥𪚥𪚥 一二三四五六七八九十 ABCD EFGHI 一二三四五六七八九十 ABCD EFGHI");
+    //item.SetText(L"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
     item.Itemize();
     item.Slice();
     item.Shape();
@@ -191,14 +195,14 @@ void OnPaint(HWND hWnd)
     SelectObject(hdc2, hPen);
 	SetBkMode(hdc2, TRANSPARENT);
 	
-    rtfcluster_t cluster = dto.GetCluster(clusterIndex);
+    //rtfcluster_t cluster = dto.GetCluster(clusterIndex);
 
     int drawX = frameSize;
     int drawY = frameSize;
-    Rectangle(hdc2, drawX, drawY, rc.right - frameSize * 2, rc.bottom - frameSize * 2);
-    Rectangle(hdc2, drawX + cluster.x, drawY + cluster.y, drawX + cluster.x + cluster.width+1, drawY + cluster.y + cluster.height +1);
+    Rectangle(hdc2, drawX, drawY, rc.right - frameSize, rc.bottom - frameSize);
+    //Rectangle(hdc2, drawX + cluster.x, drawY + cluster.y, drawX + cluster.x + cluster.width+1, drawY + cluster.y + cluster.height +1);
 	//doc.Draw(&engine, hdc2, 0, rect.y - iBaseY, rect.w, rect.h);
-	dto.Draw(hdc2, drawX, drawY, { drawX, drawY, rc.right - frameSize * 2, rc.bottom - frameSize * 2});
+    item.Draw(hdc2, drawX, drawY, { drawX, drawY, rc.right - frameSize * 2, rc.bottom - frameSize * 2});
 
 	BitBlt(hdc, 0, 0, rc.right, rc.bottom, hdc2, 0, 0, SRCCOPY);
 
