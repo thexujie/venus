@@ -126,8 +126,8 @@ void OnCreate(HWND hWnd)
 
     //----------------------------
     //item.SetText(L"تەتقىق قىلدى𪚥𪚥ยิ้ยิ้");
-    //item.SetText(L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى");
-    item.SetText(L"تەتقىق 0 قىلدى 1 تەتقىق 2 قىلدى 3 تەتقىق 4 قىلدى 5 تەتقىق 6 قىلدى 7 تەتقىق 8 قىلدى 9 ");
+    item.SetText(L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى");
+    //item.SetText(L"تەتقىق 0 قىلدى 1 تەتقىق 2 قىلدى 3 تەتقىق 4 قىلدى 5 تەتقىق 6 قىلدى 7 تەتقىق 8 قىلدى 9 ");
     //item.SetText(L"一二三四五六七八九十 ABCD EFGHI 𪚥𪚥𪚥 一二三四五六七八九十 ABCD EFGHI 一二三四五六七八九十 ABCD EFGHI");
     //item.SetText(L"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
     item.Itemize();

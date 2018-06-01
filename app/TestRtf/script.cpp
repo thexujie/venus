@@ -111,18 +111,19 @@ namespace usp
 
             for (int_x itext = 0; itext < attrs.size(); ++itext)
             {
-                scp_cluster ch;
+                scp_cluster cluster;
                 ++cluster_num;
 
-                ch.item_index = iscp;
-                ch.trange = { item.trange.index + itext, 1 };
-                ch.grange = {};
+                cluster.index = _clusters.size();
+                cluster.item_index = iscp;
+                cluster.trange = { item.trange.index + itext, 1 };
+                cluster.grange = {};
 
                 const SCRIPT_LOGATTR & attr_first = attrs[itext];
                 if (attr_first.fSoftBreak)
-                    ch.softbreak = true;
+                    cluster.softbreak = true;
                 if (attr_first.fWhiteSpace)
-                    ch.whitespace = true;
+                    cluster.whitespace = true;
 
                 // check the next char.
                 while (itext < attrs.size() - 1)
@@ -133,15 +134,15 @@ namespace usp
                         break;
 
                     if (tattr.fSoftBreak)
-                        ch.softbreak = true;
+                        cluster.softbreak = true;
                     if (tattr.fWhiteSpace)
-                        ch.whitespace = true;
+                        cluster.whitespace = true;
 
-                    ++ch.trange.length;
+                    ++cluster.trange.length;
                     ++itext;
                 }
 
-                _clusters.emplace_back(ch);
+                _clusters.emplace_back(cluster);
                 ++item.crange.length;
             }
         }
@@ -414,6 +415,7 @@ namespace usp
 
     void ScriptItem::Layout(int_x start, int_x width, wrapmode_e wrapmode)
     {
+        _views.clear();
         _lines.clear();
         if (!_clusters.size())
             return;
@@ -424,10 +426,19 @@ namespace usp
         int_x icluster_last = 0;
         int_x icluster_break = 0;
 
+        int_x iview_last = 0;
+        int_x iview_curr = 0;
+        int32_t iline = 0;
+
         for (int32_t irun = 0; irun < _runs.size(); ++irun)
         {
             scp_run & runitem = _runs[irun];
             icluster_break = runitem.crange.index;
+            scp_view view = {};
+
+            view.index = _views.size();
+            view.line = iline;
+            view.run = irun;
 
             for (int iclt = 0; iclt < runitem.crange.length; ++iclt, ++icluster_curr)
             {
@@ -438,17 +449,27 @@ namespace usp
 
                 if (icluster_curr - icluster_last < 1 || iadvance + cluster.width < width)
                 {
-                    iadvance += cluster.width;
-                    continue;
+                    //
                 }
-
-                if (wrapmode == wrapmode_char || icluster_curr - icluster_last == 1)
+                else if (wrapmode == wrapmode_char || icluster_curr - icluster_last == 1)
                 {
+
+                    if (view.crange.length)
+                    {
+                        _views.push_back(view);
+                        view.crange = {};
+                        view.line = iline;
+                        view.index = _views.size();
+                    }
+
                     scp_line line;
+                    line.line = iline++;
                     line.crange = { icluster_last , icluster_curr - icluster_last };
+                    line.vrange = {iview_last, (int32_t)_views.size() - iview_last };
                     _lines.push_back(line);
                     icluster_last = icluster_curr;
                     iadvance = 0;
+                    iview_last = _views.size();
                 }
                 else if (wrapmode == wrapmode_word)
                 {
@@ -456,16 +477,26 @@ namespace usp
                 else{}
 
                 iadvance += cluster.width;
+                view.crange += crange_t{ cluster.index, 1};
+            }
+
+            if(view.crange.length)
+            {
+                _views.push_back(view);
+                view.crange = {};
+                view.line = iline;
+                view.index = _views.size();
             }
         }
 
         if (icluster_curr > icluster_last)
         {
             scp_line line;
+            line.line = iline;
             line.crange = { icluster_last, icluster_curr - icluster_last };
+            line.vrange = { iview_last, (int32_t)_views.size() - iview_last };
             _lines.push_back(line);
         }
-
 
         for (int_x iline = 0; iline < _lines.size(); ++iline)
         {
@@ -486,54 +517,40 @@ namespace usp
             }
         }
 
-        //for (int_x iline = 0; iline < rtflines.size(); ++iline)
-        //{
-        //    rtfline_t & rtfline = rtflines[iline];
+        for (int_x iview = 0; iview < _views.size(); ++iview)
+        {
+            scp_view & view = _views[iview];
+#ifdef _DEBUG
+            const scp_cluster & cluster_beg = _clusters[view.crange.index];
+            const scp_cluster & cluster_end = _clusters[view.crange.index + view.crange.length - 1];
+            view._text = _text.substr(cluster_beg.trange.index, cluster_end.trange.index - cluster_beg.trange.index + cluster_end.trange.length);
+#endif
+            for(int_x icluster = 0; icluster < view.crange.length; ++icluster)
+            {
+                const scp_cluster & cluster = _clusters[view.crange.index + icluster];
+                view.grange += cluster.grange;
+                view.advance += cluster.width;
+            }
+        }
 
-        //    vector<uint_8> eles(rtfline.rrange.length);
-        //    vector<int_32> orders(rtfline.rrange.length);
-        //    vector<int_32> orders2(rtfline.rrange.length);
+        for (int_x iline = 0; iline < _lines.size(); ++iline)
+        {
+            scp_line & line = _lines[iline];
+            std::vector<uint_8> eles(line.vrange.length);
+            std::vector<int_32> visualOrders(line.vrange.length);
 
-        //    for (int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
-        //    {
-        //        eles[irtf] = runitems[rtfitems[rtfline.rrange.index + irtf].run].sa.s.uBidiLevel;
-        //    }
-        //    ScriptLayout(rtfline.rrange.length, eles, orders, orders2);
+            for (int_x iview = 0; iview < line.vrange.length; ++iview)
+                eles[iview] = _runs[_views[line.vrange.index + iview].run].sa.s.uBidiLevel;
 
-        //    int_x offset = rtfline.rect.x;
-        //    for (int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
-        //    {
-        //        rtfitem_t & rtfitem = rtfitems[rtfline.rrange.index + orders[irtf]];
-        //        rtfitem.offset = offset;
-        //        offset += rtfitem.advance;
-        //    }
+            ScriptLayout(line.vrange.length, eles.data(), visualOrders.data(), NULL);
 
-        //    for (int_x icluster = 0; icluster < rtfline.crange.length; ++icluster)
-        //    {
-        //        rtfcluster_t & cluster = clusters[rtfline.crange.index + icluster];
-        //        cluster.y = rtfline.rect.y;
-        //    }
-
-        //    for (int_x irtf = 0; irtf < rtfline.rrange.length; ++irtf)
-        //    {
-        //        rtfitem_t & rtfitem = rtfitems[rtfline.rrange.index + orders[irtf]];
-        //        int_x offX = 0;
-        //        for (int_x icluster = 0; icluster < rtfitem.crange.length; ++icluster)
-        //        {
-        //            rtfcluster_t & cluster = clusters[rtfitem.crange.index + icluster];
-        //            cluster.x = rtfitem.offset + offX;
-        //            offX += cluster.width;
-        //        }
-        //    }
-        //}
-
-        //for (int_x iscp = 0; iscp < scpitems.size(); ++iscp)
-        //{
-        //    scpitem_t & run = scpitems[iscp];
-        //    run._debug_text = m_text.sub_text(run.trange.index, run.trange.length);
-        //}
+            std::sort(_views.begin() + line.vrange.index, _views.begin() + line.vrange.index + line.vrange.length, 
+                [&visualOrders, &line](const scp_view & lhs, const scp_view & rhs)
+            {
+                return visualOrders[lhs.index - line.vrange.index] < visualOrders[rhs.index - line.vrange.index];
+            });
+        }
     }
-
 
     void ScriptItem::Draw(HDC hdc, int_x x, int_x y, rectix rect)
     {
@@ -550,52 +567,12 @@ namespace usp
             if (!line.crange.length)
                 continue;
 
-            int32_t irun = -1;
-            int32_t gindex = -1;
-            int32_t gcount = -1;
             int32_t run_x = 0;
-            int32_t run_width = 0;
-            for(int32_t icluster = 0; icluster < line.crange.length; ++icluster)
+            for(int32_t iview = 0; iview < line.vrange.length; ++iview)
             {
-                const scp_cluster & cluster = _clusters[line.crange.index + icluster];
-                if(irun < 0)
-                {
-                    irun = cluster.run_index;
-                    gindex = cluster.grange.index;
-                    gcount = 0;
-                }
-                else if(cluster.run_index != irun)
-                {
-                    const scp_run & run = _runs[irun];
-                    const scp_item & item = _items[run.item_index];
-                    view_font_t font = GetFont(run.font);
-                    if (!hOldFont)
-                        hOldFont = ::SelectObject(hdc, font.hfont);
-                    else
-                        ::SelectObject(hdc, font.hfont);
+                const scp_view & view = _views[line.vrange.index + iview];
 
-                    HRESULT hResult = ScriptTextOut(hdc, font.cache, drawX + run_x, drawY, ETO_CLIPPED, &rc,
-                        &item.sa, nullptr, 0, 
-                        _glyphs.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex), gcount,
-                        _glyph_advances.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex),
-                        nullptr, 
-                        _glyph_offsets.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex));
-
-                    irun = cluster.run_index;
-                    gindex = cluster.grange.index;
-                    gcount = 0;
-                    run_x = run_width;
-                }
-                else
-                {
-                }
-                run_width += cluster.width;
-                gcount += cluster.grange.length;
-            }
-
-            if(gcount > 0)
-            {
-                const scp_run & run = _runs[irun];
+                const scp_run & run = _runs[view.run];
                 const scp_item & item = _items[run.item_index];
                 view_font_t font = GetFont(run.font);
                 if (!hOldFont)
@@ -605,11 +582,14 @@ namespace usp
 
                 HRESULT hResult = ScriptTextOut(hdc, font.cache, drawX + run_x, drawY, ETO_CLIPPED, &rc,
                     &item.sa, nullptr, 0,
-                    _glyphs.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex), gcount,
-                    _glyph_advances.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex),
+                    _glyphs.data() + view.grange.index, view.grange.length,
+                    _glyph_advances.data() + view.grange.index,
                     nullptr,
-                    _glyph_offsets.data() + (run.sa.fRTL ? (gindex - gcount + 1) : gindex));
+                    _glyph_offsets.data() + view.grange.index);
+
+                run_x += view.advance;
             }
+
 
             drawX = rect.x;
             drawY += line.height;

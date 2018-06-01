@@ -9,11 +9,82 @@
 
 namespace usp
 {
+    inline crange_t operator + ( const crange_t & lhs, const crange_t & rhs)
+    {
+        if (lhs.index < 0 || !lhs.length)
+            return rhs;
+
+        if (rhs.index < 0 || !rhs.length)
+            return lhs;
+
+        if (lhs.index + lhs.length == rhs.index)
+            return { lhs.index, rhs.index + rhs.length };
+
+        if (rhs.index + rhs.length == lhs.index)
+            return { rhs.index, lhs.index + lhs.length };
+
+        return {-1, 0};
+    }
+
+    inline crange_t & operator += (crange_t & lhs, const crange_t & rhs)
+    {
+        if (lhs.index < 0 || !lhs.length)
+            lhs = rhs;
+        else if (rhs.index < 0 || !rhs.length)
+            ;
+        else if (lhs.index + lhs.length == rhs.index)
+            lhs = { lhs.index, lhs.length + rhs.length };
+        else if (rhs.index + rhs.length == lhs.index)
+            lhs ={ rhs.index, lhs.length + rhs.length };
+        else
+            lhs = { -1, 0 };
+        return lhs;
+    }
+
+    inline grange_t operator + (const grange_t & lhs, const grange_t & rhs)
+    {
+        if (lhs.index < 0 || !lhs.length)
+            return rhs;
+
+        if (rhs.index < 0 || !rhs.length)
+            return lhs;
+
+        if (lhs.index + lhs.length == rhs.index)
+            return { lhs.index, rhs.index + rhs.length };
+
+        if (rhs.index + rhs.length == lhs.index)
+            return { rhs.index, lhs.index + lhs.length };
+
+        return { -1, 0 };
+    }
+
+    inline grange_t & operator += (grange_t & lhs, const grange_t & rhs)
+    {
+        if (lhs.index < 0 || !lhs.length)
+            lhs = rhs;
+        else if (rhs.index < 0 || !rhs.length)
+            ;
+        else if (lhs.index + lhs.length == rhs.index)
+            lhs = { lhs.index, lhs.length + rhs.length };
+        else if (rhs.index + rhs.length == lhs.index)
+            lhs = { rhs.index, lhs.length + rhs.length };
+        else
+            lhs = { -1, 0 };
+        return lhs;
+    }
+
     enum wrapmode_e
     {
         wrapmode_none,
         wrapmode_char,
         wrapmode_word,
+    };
+
+    // view range
+    struct vrange_t
+    {
+        int_x index = -1;
+        int_x length = 0;
     };
 
     struct view_font_t
@@ -51,6 +122,7 @@ namespace usp
 #ifdef _DEBUG
         std::wstring _text;
 #endif
+        int32_t index = 0;
         int32_t item_index = 0;
         int32_t run_index = 0;
         trange_t trange;
@@ -91,11 +163,26 @@ namespace usp
         rrange_t rrange;
     };
 
+    struct scp_view
+    {
+#ifdef _DEBUG
+        std::wstring _text;
+#endif
+        int32_t index = -1;
+        int32_t line = -1;
+        int32_t run = -1;
+        crange_t crange;
+        grange_t grange;
+        int32_t advance = 0;
+    };
+
     struct scp_line
     {
 #ifdef _DEBUG
         std::wstring _text;
 #endif
+        int32_t line = 0;
+        vrange_t vrange;
         crange_t crange;
         trange_t trange;
 
@@ -135,6 +222,8 @@ namespace usp
 
         // 具有相同字体的一段文字，run 内的文字都是同一语言的，多个 run 一起构成一个 item
         std::vector<scp_run> _runs;
+
+        std::vector<scp_view> _views;
 
         std::vector<scp_line> _lines;
 
