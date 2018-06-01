@@ -427,7 +427,6 @@ namespace usp
         int_x icluster_break = 0;
 
         int_x iview_last = 0;
-        int_x iview_curr = 0;
         int32_t iline = 0;
 
         for (int32_t irun = 0; irun < _runs.size(); ++irun)
@@ -440,7 +439,7 @@ namespace usp
             view.line = iline;
             view.run = irun;
 
-            for (int iclt = 0; iclt < runitem.crange.length; ++iclt, ++icluster_curr)
+            for (int icluster = 0; icluster < runitem.crange.length; ++icluster, ++icluster_curr)
             {
                 scp_cluster & cluster = _clusters[icluster_curr];
                 cluster.run_index = irun;
@@ -453,7 +452,6 @@ namespace usp
                 }
                 else if (wrapmode == wrapmode_char || icluster_curr - icluster_last == 1)
                 {
-
                     if (view.crange.length)
                     {
                         _views.push_back(view);
