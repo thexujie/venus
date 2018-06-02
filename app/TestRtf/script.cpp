@@ -448,31 +448,34 @@ namespace usp
 
                 if (icluster_curr - icluster_last < 1 || iadvance + cluster.width < width)
                 {
-                    //
+                    // ²»ÓÃ»»ÐÐ
                 }
-                else if (wrapmode == wrapmode_char || icluster_curr - icluster_last == 1)
+                else
                 {
-                    if (view.crange.length)
+                    if (wrapmode == wrapmode_char || icluster_curr - icluster_last == 1)
                     {
-                        _views.push_back(view);
-                        view.crange = {};
-                        view.line = iline;
-                        view.index = _views.size();
-                    }
+                        if (view.crange.length)
+                        {
+                            _views.push_back(view);
+                            view.crange = {};
+                            view.line = iline;
+                            view.index = _views.size();
+                        }
 
-                    scp_line line;
-                    line.line = iline++;
-                    line.crange = { icluster_last , icluster_curr - icluster_last };
-                    line.vrange = {iview_last, (int32_t)_views.size() - iview_last };
-                    _lines.push_back(line);
-                    icluster_last = icluster_curr;
-                    iadvance = 0;
-                    iview_last = _views.size();
+                        scp_line line;
+                        line.line = iline++;
+                        line.crange = { icluster_last, icluster_curr - icluster_last };
+                        line.vrange = { iview_last, (int32_t)_views.size() - iview_last };
+                        _lines.push_back(line);
+                        icluster_last = icluster_curr;
+                        iadvance = 0;
+                        iview_last = _views.size();
+                    }
+                    else if (wrapmode == wrapmode_word)
+                    {
+                    }
+                    else {}
                 }
-                else if (wrapmode == wrapmode_word)
-                {
-                }
-                else{}
 
                 iadvance += cluster.width;
                 view.crange += crange_t{ cluster.index, 1};
