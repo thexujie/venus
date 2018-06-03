@@ -136,12 +136,17 @@ void OnCreate(HWND hWnd)
 
     std::wstring ws(si.seekpos() / 2 + 1, 0);
     fs.read((char *)ws.data(), ws.length());
-    //item.SetText(ws);
-    item.SetText(L"TestRtf.exe”(Win32)");
+    item.SetText(ws);
+    //item.SetText(L"TestRtf.exe”(Win32)");
+    //item.SetText(L"تەتقىق قىلدى𪚥𪚥ยิ้ยิ้");
     //item.SetText(L"تەتقىق 0 قىلدى 1 تەتقىق 2 قىلدى 3 تەتقىق 4 قىلدى 5 تەتقىق 6 قىلدى 7 تەتقىق 8 قىلدى 9 ");
     //item.SetText(L"一二三四五六七八九十 ABCD EFGHI 𪚥𪚥𪚥 一二三四五六七八九十 ABCD EFGHI 一二三四五六七八九十 ABCD EFGHI");
     //item.SetText(L"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
     item.Itemize();
+
+
+    item.SetColor(14, 2, 0xff);
+
     item.Slice();
     item.Shape();
 

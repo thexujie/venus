@@ -495,21 +495,25 @@ namespace usp
             scp_view view;
             view.index = _views.size();
             view.line = iline;
+            view.run = -1;
+            view.color = -1;
             for (int_x icluster = 0; icluster < line.crange.length; ++icluster)
             {
                 const scp_cluster & cluster = _clusters[line.crange.index + icluster];
-                if(cluster.run != view.run && view.crange.length)
+                if((cluster.run != view.run || cluster.format.color != view.color) && view.crange.length)
                 {
                     _views.push_back(view);
                     view.index = _views.size();
                     view.line = iline;
                     view.run = -1;
+                    view.color = -1;
                     view.crange = {};
                     view.grange = {};
                     view.width = 0;
                 }
 
                 view.run = cluster.run;
+                view.color = cluster.format.color;
                 view.crange += {cluster.index, 1};
                 view.grange += cluster.grange;
                 view.width += cluster.advance;
@@ -521,6 +525,7 @@ namespace usp
                 view.index = _views.size();
                 view.line = iline;
                 view.run = -1;
+                view.color = -1;
                 view.crange = {};
                 view.grange = {};
                 view.width = 0;
@@ -605,6 +610,8 @@ namespace usp
                 else
                     ::SelectObject(hdc, font.hfont);
 
+                ::SetTextColor(hdc, view.color);
+
                 HRESULT hResult = ScriptTextOut(hdc, font.cache, drawX + run_x, drawY, ETO_CLIPPED, &rc,
                     &item.sa, nullptr, 0,
                     _glyphs.data() + view.grange.index, view.grange.length,
@@ -617,9 +624,17 @@ namespace usp
 
             drawX = rect.x;
             drawY += line.height;
+            if (drawY > rect.bottom())
+                break;
         }
 
         if (hOldFont)
             ::SelectObject(hdc, hOldFont);
+    }
+
+    void ScriptItem::SetColor(int32_t index, int32_t length, int32_t color)
+    {
+        for (int32_t icluster = index; icluster < index + length; ++icluster)
+            _clusters[icluster].format.color = color;
     }
 }

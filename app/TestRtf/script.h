@@ -171,6 +171,7 @@ namespace usp
         int32_t index = -1;
         int32_t line = -1;
         int32_t run = -1;
+        int32_t color = -1;
         crange_t crange;
         grange_t grange;
         int32_t width = 0;
@@ -209,6 +210,9 @@ namespace usp
         void Layout(int_x start, int_x width, wrapmode_e wrapmode);
 
         void Draw(HDC hdc, int_x x, int_x y, rectix rect);
+
+        void SetColor(int32_t index, int32_t length, int32_t color);
+
     private:
         std::wstring _text;
         HRESULT _hr = S_OK;
