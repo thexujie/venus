@@ -485,6 +485,7 @@ void DocTextObject::Layout(int_x start_x, rectix rect, wrapmode_e wrapmode)
 			}
 
 			rtfline_t & rtfline = rtflines.back();
+            rtfline.crange.index = runitem.crange.index + iclt;
 			rtfline.crange.length += 1;
 			iadvance += cluster.width;
 		}

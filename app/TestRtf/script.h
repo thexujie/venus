@@ -123,29 +123,28 @@ namespace usp
         std::wstring _text;
 #endif
         int32_t index = 0;
-        int32_t item_index = 0;
-        int32_t run_index = 0;
+        int32_t run = 0;
         trange_t trange;
         grange_t grange;
+        int32_t advance = 0;
 
         int32_t x = 0;
         int32_t y = 0;
-        int32_t width = 0;
         int32_t height = 0;
 
         scp_format format;
 
-        bool whitespace : 1;
+        bool whitespace  = false;
         //! 该字符后是否是建议的换行位置.
-        bool softbreak : 1;
+        bool softbreak = false;
         //! 是否是段落标记
-        bool paragraphtag : 1;
+        bool paragraphtag = false;
         //! 是否是连字符
-        bool softhyphen : 1;
+        bool softhyphen = false;
         //! 是否是从右到左的阅读顺序
-        bool right2left : 1;
+        bool right2left = false;
         //! 是否是行标记
-        bool linetag : 1;
+        bool linetag = false;
     };
 
     struct scp_run
@@ -153,7 +152,8 @@ namespace usp
 #ifdef _DEBUG
         std::wstring _text;
 #endif
-        int32_t item_index = -1;
+        int32_t index = -1;
+        int32_t item = -1;
 
         SCRIPT_ANALYSIS sa;
         int32_t font;
@@ -173,7 +173,7 @@ namespace usp
         int32_t run = -1;
         crange_t crange;
         grange_t grange;
-        int32_t advance = 0;
+        int32_t width = 0;
     };
 
     struct scp_line
@@ -182,9 +182,8 @@ namespace usp
         std::wstring _text;
 #endif
         int32_t line = 0;
-        vrange_t vrange;
         crange_t crange;
-        trange_t trange;
+        vrange_t vrange;
 
         int32_t width = 0;
         int32_t height = 0;

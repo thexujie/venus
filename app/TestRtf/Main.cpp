@@ -4,6 +4,7 @@
 #include "Uniscribe.h"
 #include "CRtf.h"
 #include "script.h"
+#include <fstream>
 
 const char_x APP_NAME[] = _T("TestRtf");
 const char_x RTF_FILE[] = _T("rtf.rtf");
@@ -112,21 +113,31 @@ void OnCreate(HWND hWnd)
 	//text = L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى";
 	//dto.SetText(L"ษาไทยรอยยิ้มนักสู้ กเสียก่อน한국어조선말ئۇيغۇر تىلى𪚥𪚥𪚥𪚥𪚥");
 	source.m_text = text;
-	dto.Initialize(&source);
-	dto.SetText(text);
-	dto.Analyse();
+	//dto.Initialize(&source);
+	//dto.SetText(text);
+	//dto.Analyse();
 	//int_x step = 3;
 	//for(int_x cnt = 0; cnt < (dto.GetClusterCount() / step) * step; cnt += step)
 	//{
 	//	dto.SetColor({ cnt, step }, colors[cnt % arraysize(colors)]);
 	//}
 
-	dto.Slice();
-	dto.Shape();
+	//dto.Slice();
+	//dto.Shape();
 
     //----------------------------
     //item.SetText(L"تەتقىق قىلدى𪚥𪚥ยิ้ยิ้");
-    item.SetText(L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى");
+    //item.SetText(L"一二三四五六七八九十ABCD EFGHI𪚥𪚥𪚥ยิ้ยิ้تىلىشۆھرەت زاكىر ئۈرۈمچى شەھىرىدە تەكشۈرۈپ 123456 تەتقىق قىلدى");
+    std::fstream fs;
+    fs.open(L"test.txt", std::ios::in | std::ios::binary);
+    fs.seekg(0, std::ios::end);
+    auto si = fs.tellg();
+    fs.seekg(4, std::ios::beg);
+
+    std::wstring ws(si.seekpos() / 2 + 1, 0);
+    fs.read((char *)ws.data(), ws.length());
+    //item.SetText(ws);
+    item.SetText(L"TestRtf.exe”(Win32)");
     //item.SetText(L"تەتقىق 0 قىلدى 1 تەتقىق 2 قىلدى 3 تەتقىق 4 قىلدى 5 تەتقىق 6 قىلدى 7 تەتقىق 8 قىلدى 9 ");
     //item.SetText(L"一二三四五六七八九十 ABCD EFGHI 𪚥𪚥𪚥 一二三四五六七八九十 ABCD EFGHI 一二三四五六七八九十 ABCD EFGHI");
     //item.SetText(L"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
@@ -163,9 +174,9 @@ void OnSize(HWND hWnd)
 {
 	RECT rc;
 	GetClientRect(hWnd, &rc);
-	doc.GenerateLine(&engine, rc.right);
-	dto.Layout(layoutStart, { 0, 0, rc.right - frameSize * 2, rc.bottom }, wrapmode_char);
-    item.Layout(layoutStart, rc.right - frameSize * 2, usp::wrapmode_char);
+	//doc.GenerateLine(&engine, rc.right);
+	//dto.Layout(layoutStart, { 0, 0, rc.right - frameSize * 2, rc.bottom }, wrapmode_char);
+    item.Layout(layoutStart, rc.right - frameSize * 2, usp::wrapmode_word);
 
 	SCROLLINFO si = {};
 	si.cbSize = sizeof(si);

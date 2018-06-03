@@ -46,29 +46,29 @@ struct doc_source_t
 // text range
 struct trange_t
 {
-	int_x index;
-	int_x length;
+    int_x index = -1;
+    int_x length = 0;
 };
 
 // glyph range
 struct grange_t
 {
-	int_x index;
-	int_x length;
+    int_x index = -1;
+    int_x length = 0;
 };
 
 // cluster range
 struct crange_t
 {
-	int_x index;
-	int_x length;
+	int_x index = -1;
+	int_x length = 0;
 };
 
 // line range
 struct lrange_t
 {
-	int_x index;
-	int_x length;
+    int_x index = -1;
+    int_x length = 0;
 };
 
 struct doc_paragraph_t
